@@ -102,8 +102,8 @@ class DocumentAPI extends DataTableSourceAsync {
   Future<void> fetchData(int startIndex, int count,
       [CustomTableFilter? filter]) async {
     try {
-      final restOperation = Amplify.API.get('/test',
-          apiName: 'AmplifyAPI',
+      final restOperation = Amplify.API.get('/documents',
+          apiName: 'AmplifyCrewAPI',
           queryParameters: {
             "offset": startIndex.toString(),
             "limit": count.toString()
@@ -120,6 +120,8 @@ class DocumentAPI extends DataTableSourceAsync {
       _documents = tempList;
     } on ApiException catch (e) {
       safePrint('GET call failed: $e');
+      _totalRecords = 0;
+      _documents = [];
     } on Error catch (e) {
       safePrint('Error: $e');
       rethrow;
