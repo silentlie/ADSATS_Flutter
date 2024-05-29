@@ -10,8 +10,10 @@ class AppBarTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final colorScheme = Theme.of(context).colorScheme;
     final screenWidth = MediaQuery.of(context).size.width;
+    // ignore: unused_local_variable
     final double maxWidth = screenWidth < 800 ? 100 : 600;
 
     return Row(
