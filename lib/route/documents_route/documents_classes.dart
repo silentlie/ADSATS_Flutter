@@ -47,6 +47,7 @@ class Document {
   final String _category;
   final String _subcategory;
   final String? _aircraft;
+
   int get id => _id;
   String get fileName => _fileName;
   bool? get archived => _archived;
@@ -56,6 +57,9 @@ class Document {
   String get subcategory => _subcategory;
   String get category => _category;
   String? get aircraft => _aircraft;
+
+  String get archivedStatus => _archived == true ? 'Archived' : "Active";
+
   static bool intToBool(int value) {
     return value != 0;
   }
@@ -140,7 +144,32 @@ class DocumentAPI extends DataTableSourceAsync {
       return DataRow(cells: <DataCell>[
         cellFor(document.fileName),
         cellFor(document.email),
-        cellFor(document.archived),
+        //cellFor(document.archived),
+        DataCell(
+          Builder(
+            builder: (context) {
+              final theme = Theme.of(context);
+              return Container(
+                width: 75,
+                height: 20,
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(20),
+                  color: document.archived!
+                      ? Colors.grey
+                      : theme.colorScheme.primaryContainer,
+                ),
+                child: Center(
+                  child: Text(
+                    document.archived! ? "Archived" : "Active",
+                    style:
+                        TextStyle(color: theme.colorScheme.onPrimaryContainer),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
         cellFor(document.dateCreated),
         cellFor(document.lastModified),
         cellFor(document.subcategory),

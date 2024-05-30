@@ -46,6 +46,7 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return AsyncPaginatedDataTable2(
       headingRowColor: WidgetStateColor.resolveWith(
           (states) => colorScheme.surfaceContainerHighest),
@@ -103,6 +104,7 @@ abstract class DataTableSourceAsync extends AsyncDataTableSource {
   bool get showCheckBox;
   int get totalRecords;
   Widget get header;
+
   DataCell cellFor(Object? data) {
     Widget widget = const Text("");
     if (data == null) {
@@ -117,7 +119,8 @@ abstract class DataTableSourceAsync extends AsyncDataTableSource {
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(20),
-          color: data ? Colors.green : Colors.red,
+          // TODO: add colors.primary or some other suitable theme color here.
+          color: data ? Colors.green : Colors.redAccent,
         ),
         child: Center(child: Text(data ? "Yes" : "No")),
       );

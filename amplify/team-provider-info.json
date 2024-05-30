@@ -29,7 +29,7 @@
         },
         "placeHolder": {
           "deploymentBucketName": "amplify-adsatsflutter-dev-438c7-deployment",
-          "s3Key": "amplify-builds/placeHolder-78753076306352307342-build.zip"
+          "s3Key": "amplify-builds/placeHolder-756d4941306a58537464-build.zip"
         }
       },
       "auth": {
