@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:go_router/go_router.dart';
 
 import 'package:adsats_flutter/abstract_data_table_async.dart';
+import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 class Document {
   Document({
@@ -187,66 +188,14 @@ class AddADocumentButton extends StatelessWidget {
   }
 }
 
-class DateTimeRangePicker extends StatefulWidget {
-  const DateTimeRangePicker({super.key, required this.mutableDateTimeRange});
-  final MutableDateTimeRange mutableDateTimeRange;
-
-  @override
-  State<DateTimeRangePicker> createState() => _DateTimeRangePickerState();
-}
-
-class _DateTimeRangePickerState extends State<DateTimeRangePicker> {
-  DateTimeRange? _dateTimeRange;
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () async {
-        _dateTimeRange = await showDateRangePicker(
-          context: context,
-          firstDate: DateTime(2000),
-          lastDate: DateTime.now(),
-          initialDateRange: _dateTimeRange,
-          builder: (context, child) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ConstrainedBox(
-                  constraints:
-                      const BoxConstraints(maxWidth: 500, maxHeight: 800),
-                  child: child,
-                )
-              ],
-            );
-          },
-        );
-        if (_dateTimeRange != null) {
-          widget.mutableDateTimeRange.dateTimeRange = _dateTimeRange;
-        }
-        setState(() {});
-      },
-      child: Text(
-        _dateTimeRange == null
-            ? "Select a date range"
-            // need to modify for readable string
-            : "${_dateTimeRange!.start.toIso8601String()} - ${_dateTimeRange!.end.toIso8601String()}",
-      ),
-    );
-  }
-}
-
-class HeaderWidget extends StatefulWidget {
-  const HeaderWidget(
+class HeaderWidget extends StatelessWidget {
+  HeaderWidget(
       {super.key, required this.filters, required this.refreshDatasource});
 
   final CustomTableFilter filters;
   final Function refreshDatasource;
-  @override
-  State<HeaderWidget> createState() => _HeaderWidgetState();
-}
+  final TextEditingController _searchController = TextEditingController();
 
-class _HeaderWidgetState extends State<HeaderWidget> {
-  final MutableDateTimeRange _mutableDateTimeRange = MutableDateTimeRange();
-  final TextEditingController _textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -267,53 +216,118 @@ class _HeaderWidgetState extends State<HeaderWidget> {
           constraints: const BoxConstraints(
             maxWidth: 360,
           ),
-          controller: _textEditingController,
+          controller: _searchController,
           leading: const Icon(Icons.search),
           onSubmitted: (value) {
             if (value.isNotEmpty) {
-              _textEditingController.text = value;
-              widget.filters.search = value;
-              widget.refreshDatasource();
+              _searchController.text = value;
+              filters.search = value;
+              refreshDatasource();
             } else {
-              widget.filters.search = null;
-              widget.refreshDatasource();
+              filters.search = null;
+              refreshDatasource();
             }
           },
         ),
         const SizedBox(
           width: 10,
         ),
-        ElevatedButton(
-          onPressed: () => showDialog<String>(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    DateTimeRangePicker(
-                      mutableDateTimeRange: _mutableDateTimeRange,
-                    )
-                  ],
-                ),
-                actions: [
-                  TextButton(
-                      onPressed: () => Navigator.pop(context, 'Cancel'),
-                      child: const Text('Cancel')),
-                  TextButton(
-                    onPressed: () {
-                      widget.refreshDatasource();
-                      Navigator.pop(context, 'Apply');
-                    },
-                    child: const Text('Apply'),
-                  ),
-                ],
-              );
-            },
-          ),
-          child: const Text("Filter By"),
-        ),
       ],
+    );
+  }
+}
+
+class FilterBy extends StatefulWidget {
+  const FilterBy(
+      {super.key, required this.filters, required this.refreshDatasource});
+  final CustomTableFilter filters;
+  final Function refreshDatasource;
+  @override
+  State<FilterBy> createState() => _FilterByState();
+}
+
+class _FilterByState extends State<FilterBy> {
+  final MutableDateTimeRange _mutableDateTimeRange = MutableDateTimeRange();
+
+  List<String> subcategories = [];
+
+  List<String> categories = [];
+
+  List<String> roles = [];
+
+  List<String> emails = [];
+
+  List<String> aircrafts = [];
+
+  Future<List<Map<String, dynamic>>> fetchData(
+      String endpoint, String apiName) async {
+    var queryParameters = {"offset": "0", "limit": "5"};
+    var restOperation = Amplify.API
+        .get(endpoint, apiName: apiName, queryParameters: queryParameters);
+    var response = await restOperation.response;
+    String jsonStr = response.decodeBody();
+    Map<String, dynamic> rawData = jsonDecode(jsonStr);
+    return List<Map<String, dynamic>>.from(rawData["rows"]);
+  }
+
+  Future<void> fetchFilters() async {
+    try {
+      var futures = <Future>[
+        fetchData('/crews', 'AmplifyAdminAPI'),
+        fetchData('/roles', 'AmplifyAdminAPI'),
+        fetchData('/aircrafts', 'AmplifyAdminAPI')
+      ];
+      var results = await Future.wait(futures);
+      // Process the results
+      emails = results[0].map((row) => row["email"] as String).toList();
+      roles = results[1].map((row) => row["role"] as String).toList();
+      aircrafts = results[2].map((row) => row["name"] as String).toList();
+      safePrint("did fetch Filter");
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                MultiSelectDropDown(
+                  onOptionSelected: (selectedOptions) {},
+                  options: const <ValueItem>[],
+                  hint: "Crew's emails",
+                  searchEnabled: true,
+                ),
+                DateTimeRangePicker(
+                  mutableDateTimeRange: _mutableDateTimeRange,
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel')),
+              TextButton(
+                onPressed: () {
+                  widget.refreshDatasource();
+                  Navigator.pop(context, 'Apply');
+                },
+                child: const Text('Apply'),
+              ),
+            ],
+          );
+        },
+      ),
+      child: const Text("Filter By"),
     );
   }
 }
