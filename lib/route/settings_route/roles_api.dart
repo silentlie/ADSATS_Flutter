@@ -1,5 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'search_widget.dart';
 
 import 'package:adsats_flutter/abstract_data_table_async.dart';
 
@@ -63,16 +64,7 @@ class RolesAPI extends DataTableSourceAsync {
       const AddNewCrewButton(),
       const Spacer(),
       // TODO: implement search function
-      const SizedBox(
-        width: 250,
-        child: TextField(
-          decoration: InputDecoration(
-            hintText: 'Search',
-            suffixIcon: Icon(Icons.search),
-            border: OutlineInputBorder(),
-          ),
-        ),
-    ),
+      SearchWidget(),
     const SizedBox(width: 10,),
     ElevatedButton(onPressed: () {
       // TODO: implement filter function

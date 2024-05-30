@@ -119,9 +119,9 @@ class DropdownRow extends StatelessWidget {
               dropdownMenuEntries: const <DropdownMenuEntry>[
                 DropdownMenuEntry(value: 'All', label: 'All'),
                 DropdownMenuEntry(
-                    value: 'Crew documents', label: 'Crew documents'),
+                    value: 'Aircraft 1', label: 'Aircraft 1'),
                 DropdownMenuEntry(
-                    value: 'Aircraft documents', label: 'Aircraft documents')
+                    value: 'Aircraft 2', label: 'Aircraft 2')
               ],
             ),
           ),

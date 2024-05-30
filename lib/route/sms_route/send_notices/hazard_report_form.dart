@@ -363,7 +363,7 @@ class DateFormField extends StatelessWidget {
       padding: const EdgeInsets.all(5),
       width: MediaQuery.of(context).size.width * 0.3,
       child: InputDatePickerFormField(
-        initialDate: DateTime.now(),
+        initialDate: DateTime.timestamp(),
         firstDate: DateTime(2020),
         lastDate: DateTime.now(),
       ),

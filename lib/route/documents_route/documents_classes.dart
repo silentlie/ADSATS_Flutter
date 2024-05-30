@@ -146,7 +146,7 @@ class DocumentAPI extends DataTableSourceAsync {
         cellFor(document.subcategory),
         cellFor(document.category),
         cellFor(document.aircraft),
-        cellFor("actions"),
+        const DataCell(ActionsRow())
       ]);
     }).toList();
   }
@@ -164,29 +164,59 @@ class DocumentAPI extends DataTableSourceAsync {
     }
   }
 
-  final Widget _header = const Row(
+  final Widget _header =  Row(
     children: [
-      Text(
+      const Text(
         "Documents",
         style: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
       ),
-      SizedBox(
+      const SizedBox(
         width: 10,
       ),
-      AddADocumentButton(),
-      Spacer(),
-      SearchTextField(),
-      SizedBox(
+      const AddADocumentButton(),
+      const Spacer(),
+      SearchWidget(),
+      const SizedBox(
         width: 10,
       ),
-      FilterBy(),
+      const FilterBy(),
     ],
   );
   @override
   Widget get header => _header;
+}
+
+class ActionsRow extends StatelessWidget {
+  const ActionsRow({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        IconButton(
+          onPressed: (){}, 
+          icon: const Icon(Icons.remove_red_eye)
+        ),
+        IconButton(
+          onPressed: (){}, 
+          icon: const Icon(Icons.edit)
+        ),
+        IconButton(
+          onPressed: (){}, 
+          icon: const Icon(Icons.delete)
+        ),
+        IconButton(
+          onPressed: (){}, 
+          icon: const Icon(Icons.info)
+        ),
+      ],
+    );
+  }
 }
 
 class FilterBy extends StatelessWidget {
@@ -237,11 +267,28 @@ class AddADocumentButton extends StatelessWidget {
         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
-            side: const BorderSide(color: Colors.black),
+            side: const BorderSide(color: Color(0xFF05ABC4)),
           ),
         ),
       ),
       child: const Text('+ Add a document'),
+    );
+  }
+}
+
+class SearchWidget extends StatelessWidget {
+  SearchWidget({super.key});
+
+  final TextEditingController _textEditingController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return SearchBar(
+      constraints: const BoxConstraints(
+        maxWidth: 360,
+      ),
+      leading: const Icon(Icons.search),
+      controller: _textEditingController,
     );
   }
 }

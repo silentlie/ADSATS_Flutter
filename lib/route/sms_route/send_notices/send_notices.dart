@@ -83,20 +83,23 @@ class _SendNoticesState extends State<SendNotices> {
         return Row(
           children: [
             SafeArea(
-              child: NavigationRail(
-                onDestinationSelected: (value) {
-                  setState(() {
-                    _selectedIndex = value;
-                  });
-                },
-                destinations: _navigationRailDestinations,
-                selectedIndex: _selectedIndex,
-                elevation: 10,
-                extended: constraints.maxWidth >= 1440,
-                minExtendedWidth: 144,
-                minWidth: 72,
-                labelType: NavigationRailLabelType.none,
-                useIndicator: true,
+              child: SizedBox(
+                width: 270,
+                child: NavigationRail(
+                  onDestinationSelected: (value) {
+                    setState(() {
+                      _selectedIndex = value;
+                    });
+                  },
+                  destinations: _navigationRailDestinations,
+                  selectedIndex: _selectedIndex,
+                  elevation: 10,
+                  extended: constraints.maxWidth >= 1440,
+                  minExtendedWidth: 144,
+                  minWidth: 50,
+                  labelType: NavigationRailLabelType.none,
+                  useIndicator: true,
+                ),
               ),
             ),
             const VerticalDivider(thickness: 1, width: 1),

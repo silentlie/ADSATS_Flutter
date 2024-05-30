@@ -50,4 +50,8 @@ class GlobalThemeData {
     // onSurface: Colors.white,
     brightness: Brightness.dark,
   );
+
+  // Button Theme
+
+  // Font theme
 }

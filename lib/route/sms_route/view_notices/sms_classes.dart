@@ -2,6 +2,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:go_router/go_router.dart';
+import 'filter_by_sms.dart';
 
 import 'package:adsats_flutter/abstract_data_table_async.dart';
 import 'mock_data.dart';
@@ -154,18 +155,29 @@ class NoticeAPI extends DataTableSourceAsync {
         const SizedBox(
           width: 10,
         ),
-        ElevatedButton(
-          onPressed: () {
-            // TODO: implement filter function
-          },
-          child: const Text("Filter By"),
-        ),
+        const FilterByButton(),
       ],
     );
   }
 
   @override
   Widget get header => _header;
+}
+
+class FilterByButton extends StatelessWidget {
+  const FilterByButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => const FilterByAlertDialog()),
+      child: const Text("Filter By"),
+    );
+  }
 }
 
 class SendANoticeButton extends StatelessWidget {
@@ -193,7 +205,7 @@ class SendANoticeButton extends StatelessWidget {
           ),
           SizedBox(width: 5),
           Text(
-            'Send a notice',
+            'Create a new notification',
             style: TextStyle(
               fontSize: 16,
             ),
