@@ -5,7 +5,7 @@ class SendANotice extends StatefulWidget {
   const SendANotice({super.key});
 
   @override
-  _SendANoticeState createState() => _SendANoticeState();
+  State<SendANotice> createState() => _SendANoticeState();
 }
 
 class _SendANoticeState extends State<SendANotice> {
@@ -38,11 +38,11 @@ class _SendANoticeState extends State<SendANotice> {
                 decoration: InputDecoration(
                   hintText: 'Search',
                   border: const OutlineInputBorder(),
-                  contentPadding: const EdgeInsets.symmetric(
-                      vertical: 8, horizontal: 12),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                   suffixIcon: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 0, horizontal: 1),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 1),
                     child: IconButton(
                       icon: const Icon(Icons.search),
                       onPressed: () {
@@ -117,8 +117,10 @@ class _SendANoticeState extends State<SendANotice> {
         const SizedBox(height: 10),
         Row(
           children: [
-            _buildCheckboxColumn('By Role:', ['Role 1', 'Role 2', 'Role 3', 'Role 4']),
-            _buildCheckboxColumn('By Plane:', ['Plane 1', 'Plane 2', 'Plane 3', 'Plane 4']),
+            _buildCheckboxColumn(
+                'By Role:', ['Role 1', 'Role 2', 'Role 3', 'Role 4']),
+            _buildCheckboxColumn(
+                'By Plane:', ['Plane 1', 'Plane 2', 'Plane 3', 'Plane 4']),
             _buildRecipientComboBox(),
           ],
         ),
@@ -146,9 +148,11 @@ class _SendANoticeState extends State<SendANotice> {
                     decoration: InputDecoration(
                       hintText: 'Name',
                       border: const OutlineInputBorder(),
-                      contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 12),
                       suffixIcon: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 1),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 0, horizontal: 1),
                         child: IconButton(
                           icon: const Icon(Icons.search),
                           onPressed: () {
@@ -194,9 +198,11 @@ class _SendANoticeState extends State<SendANotice> {
                     decoration: InputDecoration(
                       hintText: 'Author',
                       border: const OutlineInputBorder(),
-                      contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 12),
                       suffixIcon: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 1),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 0, horizontal: 1),
                         child: IconButton(
                           icon: const Icon(Icons.search),
                           onPressed: () {
@@ -227,9 +233,11 @@ class _SendANoticeState extends State<SendANotice> {
                     decoration: InputDecoration(
                       hintText: 'Auto-generated',
                       border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                       suffixIcon: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 1),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 1),
                       ),
                     ),
                   ),
@@ -264,9 +272,11 @@ class _SendANoticeState extends State<SendANotice> {
                     decoration: InputDecoration(
                       hintText: 'Subject name',
                       border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                       suffixIcon: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 1),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 1),
                       ),
                     ),
                   ),
@@ -304,9 +314,11 @@ class _SendANoticeState extends State<SendANotice> {
                     decoration: InputDecoration(
                       hintText: 'Text Area',
                       border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                       suffixIcon: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 1),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 1),
                       ),
                     ),
                   ),
@@ -316,7 +328,8 @@ class _SendANoticeState extends State<SendANotice> {
           ),
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.end, // Align buttons to the right
+          mainAxisAlignment:
+              MainAxisAlignment.end, // Align buttons to the right
           children: [
             ElevatedButton(
               onPressed: () {
@@ -339,7 +352,8 @@ class _SendANoticeState extends State<SendANotice> {
               child: const Row(
                 children: [
                   Icon(Icons.mail), // Replace 'some_icon' with the desired icon
-                  SizedBox(width: 5), // Adjust the spacing between the icon and text
+                  SizedBox(
+                      width: 5), // Adjust the spacing between the icon and text
                   Text('Send Notification'),
                 ],
               ),
@@ -393,51 +407,52 @@ class _SendANoticeState extends State<SendANotice> {
   }
 
   Widget _buildCheckboxColumn(String title, List<String> checkboxes) {
-  return Expanded(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.bold,
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 10),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: checkboxes.map((checkbox) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                children: [
-                  Checkbox(
-                    value: _selectedRecipients.contains(checkbox), // Adjusted to check the selected recipients
-                    onChanged: (value) {
-                      setState(() {
-                        if (value != null && value) {
-                          _selectedRecipients.add(checkbox); // Adjusted to add/remove the selected recipient
-                        } else {
-                          _selectedRecipients.remove(checkbox);
-                        }
-                      });
-                    },
-                  ),
-                  Text(checkbox),
-                ],
-              ),
-            );
-          }).toList(),
-        ),
-      ],
-    ),
-  );
-}
-
+          const SizedBox(height: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: checkboxes.map((checkbox) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    Checkbox(
+                      value: _selectedRecipients.contains(
+                          checkbox), // Adjusted to check the selected recipients
+                      onChanged: (value) {
+                        setState(() {
+                          if (value != null && value) {
+                            _selectedRecipients.add(
+                                checkbox); // Adjusted to add/remove the selected recipient
+                          } else {
+                            _selectedRecipients.remove(checkbox);
+                          }
+                        });
+                      },
+                    ),
+                    Text(checkbox),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildRecipientComboBox() {
     return Expanded(
@@ -460,7 +475,8 @@ class _SendANoticeState extends State<SendANotice> {
             child: DropdownButtonFormField<String>(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               ),
               value: null,
               onChanged: (newValue) {
@@ -555,4 +571,3 @@ class _SendANoticeState extends State<SendANotice> {
     );
   }
 }
-

@@ -5,7 +5,7 @@ class SafetyNotice extends StatefulWidget {
   const SafetyNotice({super.key});
 
   @override
-  _SafetyNoticeState createState() => _SafetyNoticeState();
+  State<SafetyNotice> createState() => _SafetyNoticeState();
 }
 
 class _SafetyNoticeState extends State<SafetyNotice> {

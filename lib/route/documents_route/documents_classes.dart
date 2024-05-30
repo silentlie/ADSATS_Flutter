@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
-import 'package:multi_dropdown/multiselect_dropdown.dart';
 
-import 'package:adsats_flutter/route/documents_route/filter_by.dart';
 import 'package:adsats_flutter/abstract_data_table_async.dart';
 
 class Document {
@@ -90,24 +88,17 @@ class DocumentAPI extends DataTableSourceAsync {
 
   @override
   get showCheckBox => false;
-  CustomTableFilter? _filters;
-  @override
-  CustomTableFilter? get filters => _filters;
-  @override
-  set filters(CustomTableFilter? newFilters) {
-    filters = newFilters;
-    refreshDatasource();
-  }
-
+  final CustomTableFilter _filters = CustomTableFilter();
   Future<void> fetchData(int startIndex, int count,
       [CustomTableFilter? filter]) async {
     try {
+      final queryParameters = {
+        "offset": startIndex.toString(),
+        "limit": count.toString()
+      };
+      if (filter != null) {}
       final restOperation = Amplify.API.get('/documents',
-          apiName: 'AmplifyCrewAPI',
-          queryParameters: {
-            "offset": startIndex.toString(),
-            "limit": count.toString()
-          });
+          apiName: 'AmplifyCrewAPI', queryParameters: queryParameters);
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
       Map<String, dynamic> rawData = jsonDecode(jsonStr);
@@ -118,12 +109,13 @@ class DocumentAPI extends DataTableSourceAsync {
         tempList.add(Document.fromJSON(row));
       }
       _documents = tempList;
+      safePrint("did fetch Data");
     } on ApiException catch (e) {
-      safePrint('GET call failed: $e');
+      debugPrint('GET call failed: $e');
       _totalRecords = 0;
       _documents = [];
     } on Error catch (e) {
-      safePrint('Error: $e');
+      debugPrint('Error: $e');
       rethrow;
     }
   }
@@ -155,7 +147,7 @@ class DocumentAPI extends DataTableSourceAsync {
   Future<AsyncRowsResponse> getRows(int startIndex, int count) async {
     try {
       // implement filtering
-      await fetchData(startIndex, count, filters);
+      await fetchData(startIndex, count, _filters);
       AsyncRowsResponse response = AsyncRowsResponse(totalRecords, rows);
       return response;
     } on Error catch (e) {
@@ -164,61 +156,10 @@ class DocumentAPI extends DataTableSourceAsync {
     }
   }
 
-  final Widget _header = const Row(
-    children: [
-      Text(
-        "Documents",
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      SizedBox(
-        width: 10,
-      ),
-      AddADocumentButton(),
-      Spacer(),
-      SearchTextField(),
-      SizedBox(
-        width: 10,
-      ),
-      FilterBy(),
-    ],
-  );
   @override
-  Widget get header => _header;
-}
-
-class FilterBy extends StatelessWidget {
-  const FilterBy({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () => showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => const FilterByAlertDialog()),
-        child: const Text("Filter By"));
-  }
-}
-
-class SearchTextField extends StatelessWidget {
-  const SearchTextField({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox(
-      width: 250,
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: 'Search',
-          suffixIcon: Icon(Icons.search),
-          border: OutlineInputBorder(),
-        ),
-      ),
-    );
+  Widget get header {
+    return HeaderWidget(
+        filters: _filters, refreshDatasource: refreshDatasource);
   }
 }
 
@@ -242,6 +183,137 @@ class AddADocumentButton extends StatelessWidget {
         ),
       ),
       child: const Text('+ Add a document'),
+    );
+  }
+}
+
+class DateTimeRangePicker extends StatefulWidget {
+  const DateTimeRangePicker({super.key, required this.mutableDateTimeRange});
+  final MutableDateTimeRange mutableDateTimeRange;
+
+  @override
+  State<DateTimeRangePicker> createState() => _DateTimeRangePickerState();
+}
+
+class _DateTimeRangePickerState extends State<DateTimeRangePicker> {
+  DateTimeRange? _dateTimeRange;
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () async {
+        _dateTimeRange = await showDateRangePicker(
+          context: context,
+          firstDate: DateTime(2000),
+          lastDate: DateTime.now(),
+          initialDateRange: _dateTimeRange,
+          builder: (context, child) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ConstrainedBox(
+                  constraints:
+                      const BoxConstraints(maxWidth: 500, maxHeight: 800),
+                  child: child,
+                )
+              ],
+            );
+          },
+        );
+        if (_dateTimeRange != null) {
+          widget.mutableDateTimeRange.dateTimeRange = _dateTimeRange;
+        }
+        setState(() {});
+      },
+      child: Text(
+        _dateTimeRange == null
+            ? "Select a date range"
+            // need to modify for readable string
+            : "${_dateTimeRange!.start.toIso8601String()} - ${_dateTimeRange!.end.toIso8601String()}",
+      ),
+    );
+  }
+}
+
+class HeaderWidget extends StatefulWidget {
+  const HeaderWidget(
+      {super.key, required this.filters, required this.refreshDatasource});
+
+  final CustomTableFilter filters;
+  final Function refreshDatasource;
+  @override
+  State<HeaderWidget> createState() => _HeaderWidgetState();
+}
+
+class _HeaderWidgetState extends State<HeaderWidget> {
+  final MutableDateTimeRange _mutableDateTimeRange = MutableDateTimeRange();
+  final TextEditingController _textEditingController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const Text(
+          "Documents",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        const AddADocumentButton(),
+        const Spacer(),
+        SearchBar(
+          constraints: const BoxConstraints(
+            maxWidth: 360,
+          ),
+          controller: _textEditingController,
+          leading: const Icon(Icons.search),
+          onSubmitted: (value) {
+            if (value.isNotEmpty) {
+              _textEditingController.text = value;
+              widget.filters.search = value;
+              widget.refreshDatasource();
+            } else {
+              widget.filters.search = null;
+              widget.refreshDatasource();
+            }
+          },
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        ElevatedButton(
+          onPressed: () => showDialog<String>(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    DateTimeRangePicker(
+                      mutableDateTimeRange: _mutableDateTimeRange,
+                    )
+                  ],
+                ),
+                actions: [
+                  TextButton(
+                      onPressed: () => Navigator.pop(context, 'Cancel'),
+                      child: const Text('Cancel')),
+                  TextButton(
+                    onPressed: () {
+                      widget.refreshDatasource();
+                      Navigator.pop(context, 'Apply');
+                    },
+                    child: const Text('Apply'),
+                  ),
+                ],
+              );
+            },
+          ),
+          child: const Text("Filter By"),
+        ),
+      ],
     );
   }
 }

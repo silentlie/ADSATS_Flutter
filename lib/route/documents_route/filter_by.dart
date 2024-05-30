@@ -47,7 +47,9 @@ class _FilterByAlertDialogState extends State<FilterByAlertDialog> {
         TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),
             child: const Text('Cancel')),
-        TextButton(onPressed: () {}, child: const Text('Apply'))
+        TextButton(onPressed: () {
+          
+        }, child: const Text('Apply'))
       ],
     );
   }
