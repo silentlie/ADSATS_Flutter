@@ -114,7 +114,7 @@ class NoticeAPI extends DataTableSourceAsync {
   Future<AsyncRowsResponse> getRows(int startIndex, int count) async {
     try {
       // implement filtering
-      await fetchData(startIndex, count, filters);
+      await fetchData(startIndex, count, _filters);
       AsyncRowsResponse response = AsyncRowsResponse(totalRecords, rows);
       return response;
     } on Error catch (e) {
@@ -124,15 +124,6 @@ class NoticeAPI extends DataTableSourceAsync {
   }
 
   CustomTableFilter? _filters;
-
-  @override
-  CustomTableFilter? get filters => _filters;
-
-  @override
-  set filters(CustomTableFilter? newFilters) {
-    filters = newFilters;
-    refreshDatasource();
-  }
 
   Widget get _header {
     return Row(

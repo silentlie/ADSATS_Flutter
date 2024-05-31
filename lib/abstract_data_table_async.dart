@@ -23,12 +23,8 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
   void didChangeDependencies() {
     // need to check _dataSource has changed based on filter
     safePrint("didChangeDependencies");
-    // ignore: unused_local_variable
-    // int count = dataSource.totalRecords;
     setState(
       () {
-        // in example: initialRow = count - _rowsPerPage
-        // not sure why
         _initialRow = 0;
       },
     );
@@ -98,8 +94,6 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
 abstract class DataTableSourceAsync extends AsyncDataTableSource {
   // TODO: need implement error handling
   List<DataColumn> get columns;
-  CustomTableFilter? get filters;
-  set filters(CustomTableFilter? newFilters);
   bool get showCheckBox;
   int get totalRecords;
   Widget get header;
@@ -148,7 +142,7 @@ class CustomTableFilter {
   bool? sortAscending;
 
   bool? read;
-  String? aircraft;
+  List<String>? aircraft;
 
   DateTimeRange? createdTimeRange;
 
@@ -160,4 +154,9 @@ class CustomTableFilter {
     this.aircraft,
     this.createdTimeRange,
   });
+}
+
+class MutableDateTimeRange {
+  MutableDateTimeRange(this.dateTimeRange);
+  DateTimeRange dateTimeRange;
 }

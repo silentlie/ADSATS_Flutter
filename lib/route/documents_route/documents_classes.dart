@@ -84,14 +84,7 @@ class DocumentAPI extends DataTableSourceAsync {
 
   @override
   get showCheckBox => false;
-  CustomTableFilter? _filters;
-  @override
-  CustomTableFilter? get filters => _filters;
-  @override
-  set filters(CustomTableFilter? newFilters) {
-    filters = newFilters;
-    refreshDatasource();
-  }
+  final CustomTableFilter _filters = CustomTableFilter();
 
   Future<void> fetchData(int startIndex, int count,
       [CustomTableFilter? filter]) async {
@@ -148,7 +141,7 @@ class DocumentAPI extends DataTableSourceAsync {
   Future<AsyncRowsResponse> getRows(int startIndex, int count) async {
     try {
       // implement filtering
-      await fetchData(startIndex, count, filters);
+      await fetchData(startIndex, count, _filters);
       AsyncRowsResponse response = AsyncRowsResponse(totalRecords, rows);
       return response;
     } on Error catch (e) {
@@ -157,34 +150,60 @@ class DocumentAPI extends DataTableSourceAsync {
     }
   }
 
-  final Widget _header = const Row(
-    children: [
-      Text(
-        "Documents",
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      SizedBox(
-        width: 10,
-      ),
-      AddADocumentButton(),
-      Spacer(),
-      SearchTextField(),
-      SizedBox(
-        width: 10,
-      ),
-      FilterBy(),
-    ],
-  );
   @override
-  Widget get header => _header;
+  Widget get header => Header(
+        filter: _filters,
+        refreshDatasource: refreshDatasource,
+      );
 }
 
-class FilterBy extends StatelessWidget {
+class Header extends StatelessWidget {
+  const Header(
+      {super.key, required this.filter, required this.refreshDatasource});
+  final CustomTableFilter filter;
+  final Function refreshDatasource;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const Text(
+          "Documents",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        const AddADocumentButton(),
+        const Spacer(),
+        SearchBar(
+          constraints: const BoxConstraints(
+            maxWidth: 360,
+          ),
+          leading: const Icon(Icons.search),
+          onSubmitted: (value) {
+            refreshDatasource();
+          },
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        const FilterBy(),
+      ],
+    );
+  }
+}
+
+class FilterBy extends StatefulWidget {
   const FilterBy({super.key});
 
+  @override
+  State<FilterBy> createState() => _FilterByState();
+}
+
+class _FilterByState extends State<FilterBy> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
