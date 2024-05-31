@@ -70,10 +70,10 @@ class DocumentAPI extends DataTableSourceAsync {
 
   List<String> get columnNames => [
         "Name",
-        "Author",
+        //"Author",
         "Archived",
         "Date",
-        "Last Modified",
+        //"Last Modified",
         "Sub category",
         "Category",
         "Aircrafts",
@@ -143,7 +143,7 @@ class DocumentAPI extends DataTableSourceAsync {
     return _documents.map((document) {
       return DataRow(cells: <DataCell>[
         cellFor(document.fileName),
-        cellFor(document.email),
+        //cellFor(document.email),
         //cellFor(document.archived),
         DataCell(
           Builder(
@@ -171,7 +171,7 @@ class DocumentAPI extends DataTableSourceAsync {
           ),
         ),
         cellFor(document.dateCreated),
-        cellFor(document.lastModified),
+        //cellFor(document.lastModified),
         cellFor(document.subcategory),
         cellFor(document.category),
         cellFor(document.aircraft),

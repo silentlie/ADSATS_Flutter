@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/hazard_report_form.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/safety_Notice.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/send_a_notice.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SendNotices extends StatefulWidget {
   const SendNotices({super.key});
@@ -16,22 +17,22 @@ class _SendNoticesState extends State<SendNotices> {
     const NavigationRailDestination(
       icon: Icon(Icons.notifications_outlined),
       selectedIcon: Icon(Icons.notifications),
-      label: Text("Notice to Crews"),
+      label: Text("Notice to crew"),
     ),
     const NavigationRailDestination(
-      icon: Icon(Icons.gpp_maybe_outlined),
-      selectedIcon: Icon(Icons.gpp_maybe),
-      label: Text("Safety Notice"),
-    ),
-    const NavigationRailDestination(
-      icon: Icon(Icons.report_outlined),
-      selectedIcon: Icon(Icons.report),
-      label: Text("Hazard Report"),
+      icon: Icon(FontAwesomeIcons.helmetSafety),
+      selectedIcon: Icon(FontAwesomeIcons.helmetSafety),
+      label: Text("Safety notice"),
     ),
     const NavigationRailDestination(
       icon: Icon(Icons.report_outlined),
       selectedIcon: Icon(Icons.report),
-      label: Text("BCAA Aircraft Occurrence Reports"),
+      label: Text("Hazard report"),
+    ),
+    const NavigationRailDestination(
+      icon: Icon(Icons.report_outlined),
+      selectedIcon: Icon(Icons.report),
+      label: Text("BCAA reports"),
     ),
   ];
   final List<NavigationDestination> _navigationDestinations = [
@@ -64,16 +65,23 @@ class _SendNoticesState extends State<SendNotices> {
           // https://api.flutter.dev/flutter/material/NavigationBar-class.html
           return Column(
             children: [
-              Expanded(child: Center(child: Container(constraints: const BoxConstraints(maxWidth: 1500),child: buildPages(_selectedIndex),)),),
+              Expanded(
+                child: Center(
+                    child: Container(
+                  constraints: const BoxConstraints(maxWidth: 1500),
+                  child: buildPages(_selectedIndex),
+                )),
+              ),
               SafeArea(
-                child: NavigationBar(onDestinationSelected: (value) {
-                  setState(() {
-                    _selectedIndex = value;
-                  });
-                },destinations: _navigationDestinations,
-                selectedIndex: _selectedIndex,
-                elevation: 10,
-                
+                child: NavigationBar(
+                  onDestinationSelected: (value) {
+                    setState(() {
+                      _selectedIndex = value;
+                    });
+                  },
+                  destinations: _navigationDestinations,
+                  selectedIndex: _selectedIndex,
+                  elevation: 10,
                 ),
               ),
             ],
@@ -100,7 +108,13 @@ class _SendNoticesState extends State<SendNotices> {
               ),
             ),
             const VerticalDivider(thickness: 1, width: 1),
-            Expanded(child: Center(child: Container(constraints: const BoxConstraints(maxWidth: 1500),child: buildPages(_selectedIndex),)),),
+            Expanded(
+              child: Center(
+                  child: Container(
+                constraints: const BoxConstraints(maxWidth: 1500),
+                child: buildPages(_selectedIndex),
+              )),
+            ),
           ],
         );
       },
