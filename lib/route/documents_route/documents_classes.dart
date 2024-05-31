@@ -60,7 +60,7 @@ class DocumentAPI extends DataTableSourceAsync {
   DocumentAPI();
 
   List<String> get columnNames => [
-        "Name",
+        "File name",
         "Author",
         "Archived",
         "Date",
@@ -212,26 +212,6 @@ class _FilterByState extends State<FilterBy> {
             context: context,
             builder: (BuildContext context) => const FilterByAlertDialog()),
         child: const Text("Filter By"));
-  }
-}
-
-class SearchTextField extends StatelessWidget {
-  const SearchTextField({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox(
-      width: 250,
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: 'Search',
-          suffixIcon: Icon(Icons.search),
-          border: OutlineInputBorder(),
-        ),
-      ),
-    );
   }
 }
 

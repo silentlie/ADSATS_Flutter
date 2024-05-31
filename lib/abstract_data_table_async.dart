@@ -140,14 +140,14 @@ class CustomTableFilter {
   bool sortAscending = true;
 
   String? search;
-  bool? status;
+  bool? archived = false;
 
   DateTimeRange? createdTimeRange;
   DateTimeRange? dueTimeRange;
-  CustomTableFilter.empty() : sortAscending = true;
   CustomTableFilter({
     this.sortColumn,
     this.sortAscending = true,
+    this.archived = false,
     this.createdTimeRange,
   });
   Map<String, dynamic> toJSON() {
@@ -159,9 +159,7 @@ class CustomTableFilter {
       tempJson["sort_column"] = sortColumn!;
       tempJson["asc"] = sortAscending;
     }
-    if (status != null) {
-      tempJson["status"] = status;
-    }
+    tempJson["archived"] = archived;
     return tempJson;
   }
 }
