@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:adsats_flutter/abstract_data_table_async.dart';
 import 'package:adsats_flutter/route/documents_route/filter_by2.dart';
+import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 class Document {
   Document({
@@ -159,6 +160,72 @@ class DocumentAPI extends DataTableSourceAsync {
         filter: _filters,
         refreshDatasource: refreshDatasource,
       );
+
+  Future<List<Widget>> get filterContent async {
+    List<List<ValueItem>> filterData = await fetchFilter();
+    List<List<ValueItem>> filterResult = List.generate(filterData.length, (index) => []);
+    return List.generate(
+      filterData.length,
+      (index) {
+        return MultiSelectDropDown(
+            onOptionSelected: (selectedOptions) {
+              filterResult[index] = selectedOptions;
+            },
+            options: filterData[index]);
+      },
+    );
+  }
+
+  Future<List<List<ValueItem>>> fetchFilter() async {
+    try {
+      // Function to make API requests and return the parsed response
+      Future<List<Map<String, dynamic>>> fetchData(String endpoint) async {
+        var restOperation =
+            Amplify.API.get(endpoint, apiName: 'AmplifyCrewAPI');
+        var response = await restOperation.response;
+        String jsonStr = response.decodeBody();
+        Map<String, dynamic> rawData = jsonDecode(jsonStr);
+        return List<Map<String, dynamic>>.from(rawData["rows"]);
+      }
+
+      // Perform all fetches concurrently
+      List<Future<List<Map<String, dynamic>>>> futures = [
+        fetchData('/crews'),
+        fetchData('/roles'),
+        fetchData('/aircrafts'),
+        fetchData('/categories'),
+        fetchData('/sub-categories'),
+      ];
+
+      List<List<Map<String, dynamic>>> results = await Future.wait(futures);
+
+      // Process the results
+      List<ValueItem> emails = results[0]
+          .map((row) => ValueItem(label: row["email"], value: row["email"]))
+          .toList();
+      List<ValueItem> roles = results[1]
+          .map((row) => ValueItem(label: row["role"], value: row["role"]))
+          .toList();
+      List<ValueItem> aircrafts = results[2]
+          .map((row) => ValueItem(label: row["name"], value: row["name"]))
+          .toList();
+      List<ValueItem> categories = results[3]
+          .map((row) => ValueItem(label: row["name"], value: row["name"]))
+          .toList();
+      List<ValueItem> subCategories = results[4]
+          .map((row) => ValueItem(label: row["name"], value: row["name"]))
+          .toList();
+
+      safePrint("did fetch Filter");
+      return [emails, roles, aircrafts, categories, subCategories];
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+      rethrow;
+    } catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
 }
 
 class Header extends StatelessWidget {
