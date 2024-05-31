@@ -15,7 +15,6 @@ class Document {
     required bool archived,
     required String email,
     required DateTime dateCreated,
-    DateTime? lastModified,
     required String subcategory,
     required String category,
     String? aircraft,
@@ -24,7 +23,6 @@ class Document {
         _archived = archived,
         _email = email,
         _dateCreated = dateCreated,
-        _lastModified = lastModified,
         _subcategory = subcategory,
         _category = category,
         _aircraft = aircraft;
@@ -34,8 +32,7 @@ class Document {
         _archived = intToBool(json["archived"] as int),
         _email = json["email"] as String,
         _dateCreated = DateTime.parse(json["created_at"]),
-        _lastModified = DateTime.parse(json["modified_at"]),
-        _subcategory = json["subcategory"] as String,
+        _subcategory = json["sub_category"] as String,
         _category = json["category"] as String,
         _aircraft = json["aircrafts"] as String?;
   final int _id;
@@ -43,7 +40,6 @@ class Document {
   final bool? _archived;
   final String _email;
   final DateTime _dateCreated;
-  final DateTime? _lastModified;
   final String _category;
   final String _subcategory;
   final String? _aircraft;
@@ -52,7 +48,6 @@ class Document {
   bool? get archived => _archived;
   String get email => _email;
   DateTime get dateCreated => _dateCreated;
-  DateTime? get lastModified => _lastModified;
   String get subcategory => _subcategory;
   String get category => _category;
   String? get aircraft => _aircraft;
@@ -69,7 +64,6 @@ class DocumentAPI extends DataTableSourceAsync {
         "Author",
         "Archived",
         "Date",
-        "Last Modified",
         "Sub category",
         "Category",
         "Aircrafts",
@@ -142,7 +136,6 @@ class DocumentAPI extends DataTableSourceAsync {
         cellFor(document.email),
         cellFor(document.archived),
         cellFor(document.dateCreated),
-        cellFor(document.lastModified),
         cellFor(document.subcategory),
         cellFor(document.category),
         cellFor(document.aircraft),

@@ -222,154 +222,6 @@
         "functionadsatsFlutterAuthPostConfirmation"
       ]
     },
-    "authuserPoolGroups": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
-        "Parameters": {
-          "AuthRoleArn": {
-            "Fn::GetAtt": [
-              "AuthRole",
-              "Arn"
-            ]
-          },
-          "UnauthRoleArn": {
-            "Fn::GetAtt": [
-              "UnauthRole",
-              "Arn"
-            ]
-          },
-          "authadsatsFlutterAuthUserPoolId": {
-            "Fn::GetAtt": [
-              "authadsatsFlutterAuth",
-              "Outputs.UserPoolId"
-            ]
-          },
-          "authadsatsFlutterAuthAppClientIDWeb": {
-            "Fn::GetAtt": [
-              "authadsatsFlutterAuth",
-              "Outputs.AppClientIDWeb"
-            ]
-          },
-          "authadsatsFlutterAuthAppClientID": {
-            "Fn::GetAtt": [
-              "authadsatsFlutterAuth",
-              "Outputs.AppClientID"
-            ]
-          },
-          "authadsatsFlutterAuthIdentityPoolId": {
-            "Fn::GetAtt": [
-              "authadsatsFlutterAuth",
-              "Outputs.IdentityPoolId"
-            ]
-          },
-          "env": "dev"
-        }
-      }
-    },
-    "authadsatsFlutterAuth": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/auth/adsatsFlutterAuth-cloudformation-template.json",
-        "Parameters": {
-          "identityPoolName": "adsatsFlutterAuth_identitypool_cf7c6381",
-          "allowUnauthenticatedIdentities": false,
-          "resourceNameTruncated": "adsatse277f7c5",
-          "userPoolName": "adsatsFlutterUserPool",
-          "autoVerifiedAttributes": "email",
-          "mfaConfiguration": "OFF",
-          "mfaTypes": "SMS Text Message",
-          "smsAuthenticationMessage": "Your authentication code is {####}",
-          "smsVerificationMessage": "Your verification code is {####}",
-          "emailVerificationSubject": "Your verification code",
-          "emailVerificationMessage": "Your verification code is {####}",
-          "defaultPasswordPolicy": true,
-          "passwordPolicyMinLength": 8,
-          "passwordPolicyCharacters": "Requires Lowercase,Requires Uppercase,Requires Numbers,Requires Symbols",
-          "requiredAttributes": "email",
-          "aliasAttributes": "",
-          "userpoolClientGenerateSecret": false,
-          "userpoolClientRefreshTokenValidity": 30,
-          "userpoolClientWriteAttributes": "email",
-          "userpoolClientReadAttributes": "email",
-          "userpoolClientLambdaRole": "adsatse277f7c5_userpoolclient_lambda_role",
-          "userpoolClientSetAttributes": false,
-          "sharedId": "e277f7c5",
-          "resourceName": "adsatsFlutterAuth",
-          "authSelections": "identityPoolAndUserPool",
-          "useDefault": "manual",
-          "usernameAttributes": "email",
-          "userPoolGroups": true,
-          "adminQueries": true,
-          "triggers": "{\"PostConfirmation\":[\"add-to-group\"]}",
-          "hostedUI": false,
-          "userPoolGroupList": "dev,admin,crew",
-          "adminQueryGroup": "admin",
-          "serviceName": "Cognito",
-          "usernameCaseSensitive": false,
-          "useEnabledMfas": true,
-          "authRoleArn": {
-            "Fn::GetAtt": [
-              "AuthRole",
-              "Arn"
-            ]
-          },
-          "unauthRoleArn": {
-            "Fn::GetAtt": [
-              "UnauthRole",
-              "Arn"
-            ]
-          },
-          "breakCircularDependency": true,
-          "dependsOn": "[object Object]",
-          "permissions": "{\"policyName\":\"AddToGroupCognito\",\"trigger\":\"PostConfirmation\",\"effect\":\"Allow\",\"actions\":[\"cognito-idp:AdminAddUserToGroup\",\"cognito-idp:GetGroup\",\"cognito-idp:CreateGroup\"],\"resource\":{\"paramType\":\"!GetAtt\",\"keys\":[\"UserPool\",\"Arn\"]}}",
-          "authTriggerConnections": "{\"triggerType\":\"PostConfirmation\",\"lambdaFunctionName\":\"adsatsFlutterAuthPostConfirmation\"}",
-          "env": "dev"
-        }
-      }
-    },
-    "functionadsatsFlutterAuthPostConfirmation": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/function/adsatsFlutterAuthPostConfirmation-cloudformation-template.json",
-        "Parameters": {
-          "modules": "add-to-group",
-          "resourceName": "adsatsFlutterAuthPostConfirmation",
-          "GROUP": "crew",
-          "deploymentBucketName": "amplify-adsatsflutter-dev-438c7-deployment",
-          "s3Key": "amplify-builds/adsatsFlutterAuthPostConfirmation-54635052695955544d6a-build.zip",
-          "env": "dev"
-        }
-      }
-    },
-    "functionAdminQueries93b1e66a": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/function/AdminQueries93b1e66a-cloudformation-template.json",
-        "Parameters": {
-          "deploymentBucketName": "amplify-adsatsflutter-dev-438c7-deployment",
-          "s3Key": "amplify-builds/AdminQueries93b1e66a-47644162736d53334532-build.zip",
-          "authadsatsFlutterAuthUserPoolId": {
-            "Fn::GetAtt": [
-              "authadsatsFlutterAuth",
-              "Outputs.UserPoolId"
-            ]
-          },
-          "env": "dev"
-        }
-      }
-    },
-    "functionplaceHolder": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/function/placeHolder-cloudformation-template.json",
-        "Parameters": {
-          "deploymentBucketName": "amplify-adsatsflutter-dev-438c7-deployment",
-          "s3Key": "amplify-builds/placeHolder-78753076306352307342-build.zip",
-          "env": "dev"
-        }
-      }
-    },
     "apiAdminQueries": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
@@ -483,6 +335,154 @@
               "Outputs.crewGroupRole"
             ]
           },
+          "env": "dev"
+        }
+      }
+    },
+    "authadsatsFlutterAuth": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/auth/adsatsFlutterAuth-cloudformation-template.json",
+        "Parameters": {
+          "identityPoolName": "adsatsFlutterAuth_identitypool_cf7c6381",
+          "allowUnauthenticatedIdentities": false,
+          "resourceNameTruncated": "adsatse277f7c5",
+          "userPoolName": "adsatsFlutterUserPool",
+          "autoVerifiedAttributes": "email",
+          "mfaConfiguration": "OFF",
+          "mfaTypes": "SMS Text Message",
+          "smsAuthenticationMessage": "Your authentication code is {####}",
+          "smsVerificationMessage": "Your verification code is {####}",
+          "emailVerificationSubject": "Your verification code",
+          "emailVerificationMessage": "Your verification code is {####}",
+          "defaultPasswordPolicy": true,
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": "Requires Lowercase,Requires Uppercase,Requires Numbers,Requires Symbols",
+          "requiredAttributes": "email",
+          "aliasAttributes": "",
+          "userpoolClientGenerateSecret": false,
+          "userpoolClientRefreshTokenValidity": 30,
+          "userpoolClientWriteAttributes": "email",
+          "userpoolClientReadAttributes": "email",
+          "userpoolClientLambdaRole": "adsatse277f7c5_userpoolclient_lambda_role",
+          "userpoolClientSetAttributes": false,
+          "sharedId": "e277f7c5",
+          "resourceName": "adsatsFlutterAuth",
+          "authSelections": "identityPoolAndUserPool",
+          "useDefault": "manual",
+          "usernameAttributes": "email",
+          "userPoolGroups": true,
+          "adminQueries": true,
+          "triggers": "{\"PostConfirmation\":[\"add-to-group\"]}",
+          "hostedUI": false,
+          "userPoolGroupList": "dev,admin,crew",
+          "adminQueryGroup": "admin",
+          "serviceName": "Cognito",
+          "usernameCaseSensitive": false,
+          "useEnabledMfas": true,
+          "authRoleArn": {
+            "Fn::GetAtt": [
+              "AuthRole",
+              "Arn"
+            ]
+          },
+          "unauthRoleArn": {
+            "Fn::GetAtt": [
+              "UnauthRole",
+              "Arn"
+            ]
+          },
+          "breakCircularDependency": true,
+          "dependsOn": "[object Object]",
+          "permissions": "{\"policyName\":\"AddToGroupCognito\",\"trigger\":\"PostConfirmation\",\"effect\":\"Allow\",\"actions\":[\"cognito-idp:AdminAddUserToGroup\",\"cognito-idp:GetGroup\",\"cognito-idp:CreateGroup\"],\"resource\":{\"paramType\":\"!GetAtt\",\"keys\":[\"UserPool\",\"Arn\"]}}",
+          "authTriggerConnections": "{\"triggerType\":\"PostConfirmation\",\"lambdaFunctionName\":\"adsatsFlutterAuthPostConfirmation\"}",
+          "env": "dev"
+        }
+      }
+    },
+    "authuserPoolGroups": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
+        "Parameters": {
+          "AuthRoleArn": {
+            "Fn::GetAtt": [
+              "AuthRole",
+              "Arn"
+            ]
+          },
+          "UnauthRoleArn": {
+            "Fn::GetAtt": [
+              "UnauthRole",
+              "Arn"
+            ]
+          },
+          "authadsatsFlutterAuthUserPoolId": {
+            "Fn::GetAtt": [
+              "authadsatsFlutterAuth",
+              "Outputs.UserPoolId"
+            ]
+          },
+          "authadsatsFlutterAuthAppClientIDWeb": {
+            "Fn::GetAtt": [
+              "authadsatsFlutterAuth",
+              "Outputs.AppClientIDWeb"
+            ]
+          },
+          "authadsatsFlutterAuthAppClientID": {
+            "Fn::GetAtt": [
+              "authadsatsFlutterAuth",
+              "Outputs.AppClientID"
+            ]
+          },
+          "authadsatsFlutterAuthIdentityPoolId": {
+            "Fn::GetAtt": [
+              "authadsatsFlutterAuth",
+              "Outputs.IdentityPoolId"
+            ]
+          },
+          "env": "dev"
+        }
+      }
+    },
+    "functionAdminQueries93b1e66a": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/function/AdminQueries93b1e66a-cloudformation-template.json",
+        "Parameters": {
+          "deploymentBucketName": "amplify-adsatsflutter-dev-438c7-deployment",
+          "s3Key": "amplify-builds/AdminQueries93b1e66a-47644162736d53334532-build.zip",
+          "authadsatsFlutterAuthUserPoolId": {
+            "Fn::GetAtt": [
+              "authadsatsFlutterAuth",
+              "Outputs.UserPoolId"
+            ]
+          },
+          "env": "dev"
+        }
+      }
+    },
+    "functionadsatsFlutterAuthPostConfirmation": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/function/adsatsFlutterAuthPostConfirmation-cloudformation-template.json",
+        "Parameters": {
+          "modules": "add-to-group",
+          "resourceName": "adsatsFlutterAuthPostConfirmation",
+          "GROUP": "crew",
+          "deploymentBucketName": "amplify-adsatsflutter-dev-438c7-deployment",
+          "s3Key": "amplify-builds/adsatsFlutterAuthPostConfirmation-54635052695955544d6a-build.zip",
+          "env": "dev"
+        }
+      }
+    },
+    "functionplaceHolder": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/function/placeHolder-cloudformation-template.json",
+        "Parameters": {
+          "deploymentBucketName": "amplify-adsatsflutter-dev-438c7-deployment",
+          "s3Key": "amplify-builds/placeHolder-756d4941306a58537464-build.zip",
           "env": "dev"
         }
       }
