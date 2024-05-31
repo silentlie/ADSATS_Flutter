@@ -1,0 +1,237 @@
+{
+  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.12.1\",\"stackType\":\"auth-Cognito-UserPool-Groups\",\"metadata\":{}}",
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Parameters": {
+    "env": {
+      "Type": "String"
+    },
+    "AuthRoleArn": {
+      "Type": "String"
+    },
+    "UnauthRoleArn": {
+      "Type": "String"
+    },
+    "authadsatsFlutterAuthUserPoolId": {
+      "Type": "String",
+      "Default": "authadsatsFlutterAuthUserPoolId"
+    },
+    "authadsatsFlutterAuthIdentityPoolId": {
+      "Type": "String",
+      "Default": "authadsatsFlutterAuthIdentityPoolId"
+    },
+    "authadsatsFlutterAuthAppClientID": {
+      "Type": "String",
+      "Default": "authadsatsFlutterAuthAppClientID"
+    },
+    "authadsatsFlutterAuthAppClientIDWeb": {
+      "Type": "String",
+      "Default": "authadsatsFlutterAuthAppClientIDWeb"
+    }
+  },
+  "Conditions": {
+    "ShouldNotCreateEnvResources": {
+      "Fn::Equals": [
+        {
+          "Ref": "env"
+        },
+        "NONE"
+      ]
+    }
+  },
+  "Resources": {
+    "devGroup": {
+      "Type": "AWS::Cognito::UserPoolGroup",
+      "Properties": {
+        "UserPoolId": {
+          "Ref": "authadsatsFlutterAuthUserPoolId"
+        },
+        "Description": "override success",
+        "GroupName": "dev",
+        "Precedence": 1,
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "devGroupRole",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "devGroupRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "",
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "cognito-identity.amazonaws.com"
+              },
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition": {
+                "StringEquals": {
+                  "cognito-identity.amazonaws.com:aud": {
+                    "Ref": "authadsatsFlutterAuthIdentityPoolId"
+                  }
+                },
+                "ForAnyValue:StringLike": {
+                  "cognito-identity.amazonaws.com:amr": "authenticated"
+                }
+              }
+            }
+          ]
+        },
+        "RoleName": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "authadsatsFlutterAuthUserPoolId"
+              },
+              "-devGroupRole"
+            ]
+          ]
+        }
+      }
+    },
+    "adminGroup": {
+      "Type": "AWS::Cognito::UserPoolGroup",
+      "Properties": {
+        "UserPoolId": {
+          "Ref": "authadsatsFlutterAuthUserPoolId"
+        },
+        "Description": "override success",
+        "GroupName": "admin",
+        "Precedence": 2,
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "adminGroupRole",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "adminGroupRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "",
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "cognito-identity.amazonaws.com"
+              },
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition": {
+                "StringEquals": {
+                  "cognito-identity.amazonaws.com:aud": {
+                    "Ref": "authadsatsFlutterAuthIdentityPoolId"
+                  }
+                },
+                "ForAnyValue:StringLike": {
+                  "cognito-identity.amazonaws.com:amr": "authenticated"
+                }
+              }
+            }
+          ]
+        },
+        "RoleName": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "authadsatsFlutterAuthUserPoolId"
+              },
+              "-adminGroupRole"
+            ]
+          ]
+        }
+      }
+    },
+    "crewGroup": {
+      "Type": "AWS::Cognito::UserPoolGroup",
+      "Properties": {
+        "UserPoolId": {
+          "Ref": "authadsatsFlutterAuthUserPoolId"
+        },
+        "Description": "override success",
+        "GroupName": "crew",
+        "Precedence": 3,
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "crewGroupRole",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "crewGroupRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "",
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "cognito-identity.amazonaws.com"
+              },
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition": {
+                "StringEquals": {
+                  "cognito-identity.amazonaws.com:aud": {
+                    "Ref": "authadsatsFlutterAuthIdentityPoolId"
+                  }
+                },
+                "ForAnyValue:StringLike": {
+                  "cognito-identity.amazonaws.com:amr": "authenticated"
+                }
+              }
+            }
+          ]
+        },
+        "RoleName": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "authadsatsFlutterAuthUserPoolId"
+              },
+              "-crewGroupRole"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "devGroupRole": {
+      "Value": {
+        "Fn::GetAtt": [
+          "devGroupRole",
+          "Arn"
+        ]
+      }
+    },
+    "adminGroupRole": {
+      "Value": {
+        "Fn::GetAtt": [
+          "adminGroupRole",
+          "Arn"
+        ]
+      }
+    },
+    "crewGroupRole": {
+      "Value": {
+        "Fn::GetAtt": [
+          "crewGroupRole",
+          "Arn"
+        ]
+      }
+    }
+  }
+}
