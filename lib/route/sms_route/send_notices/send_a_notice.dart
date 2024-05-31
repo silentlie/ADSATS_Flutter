@@ -184,7 +184,12 @@ class UploadWidget extends StatelessWidget {
     return const SizedBox(
       height: 300,
       width: 300,
-      child: Icon(Icons.upload),
+      child: Column(
+        children: [
+          Text('Upload a file'),
+          Icon(Icons.upload),
+        ],
+      ),
     );
   }
 }

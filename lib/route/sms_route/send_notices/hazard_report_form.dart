@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'recepients.dart';
 
 class HazardReport extends StatelessWidget {
   const HazardReport({super.key});
@@ -15,7 +16,7 @@ class HazardReport extends StatelessWidget {
                 child: const Text(
                   'Send a notice - Hazard report',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -37,6 +38,14 @@ class HazardReportForm extends StatelessWidget {
     return const Form(
       child: Column(
         children: [
+          Row(
+            children: [
+              RoleRecipientsMultiSelect(),
+              PlanesRecepientsMultiSelect(),
+              RecepientMultiSelect()
+            ]
+          ),
+          Divider(),
           Row(
             children: [
               AuthorTextField(),
