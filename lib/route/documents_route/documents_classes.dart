@@ -273,9 +273,9 @@ class _FilterByState extends State<FilterBy> {
   Future<void> fetchFilters() async {
     try {
       var futures = <Future>[
-        fetchData('/crews', 'AmplifyAdminAPI'),
-        fetchData('/roles', 'AmplifyAdminAPI'),
-        fetchData('/aircrafts', 'AmplifyAdminAPI')
+        fetchData('/crews', 'AmplifyCrewAPI'),
+        fetchData('/roles', 'AmplifyCrewAPI'),
+        fetchData('/aircrafts', 'AmplifyCrewAPI')
       ];
       var results = await Future.wait(futures);
       // Process the results
