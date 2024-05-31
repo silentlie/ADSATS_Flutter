@@ -1,6 +1,8 @@
+import 'package:adsats_flutter/scaffold/app_bar_components/app_bar_title.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'app_bar_components/app_bar_items.dart';
 
 import 'package:adsats_flutter/theme/theme_notifier.dart';
 import 'package:adsats_flutter/scaffold/default_widget.dart';
@@ -61,9 +63,10 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             DefaultLogoWidget(),
             // DefaultTextLogo(),
           ],
-        ), 
-        title: AppBarTextButtonList(),
-        centerTitle: true, 
+        ),
+        title: const AppBarTitle(),
+        // AppBarTextButtonList(),
+        centerTitle: true,
         // bottom: AppBarTextButtonList(),
         actions: [
           // AppBarTextButtonList(),
