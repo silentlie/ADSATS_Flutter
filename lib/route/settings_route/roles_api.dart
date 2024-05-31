@@ -10,19 +10,19 @@ class RolesAPI extends DataTableSourceAsync {
   get showCheckBox => false;
   CustomTableFilter? _filters;
   @override
-  CustomTableFilter? get filters => _filters;
-  @override
-  set filters(CustomTableFilter? newFilters) {
-    filters = newFilters;
-    refreshDatasource();
-  }
-  @override
-  List<DataColumn> get columns{
+  List<DataColumn> get columns {
     return <DataColumn>[
-      const DataColumn(label: Text("Name"), tooltip: "Name of the role",),
-      const DataColumn(label: Text("Description"), tooltip: "Brief description about the role",),
+      const DataColumn(
+        label: Text("Name"),
+        tooltip: "Name of the role",
+      ),
+      const DataColumn(
+        label: Text("Description"),
+        tooltip: "Brief description about the role",
+      ),
     ];
   }
+
   List<DataRow> get rows {
     return roles.map(
       (row) {
@@ -33,6 +33,7 @@ class RolesAPI extends DataTableSourceAsync {
       },
     ).toList();
   }
+
   Future<void> fetchData(int startIndex, int count,
       [CustomTableFilter? filter]) async {
     // TODO: implement getData one API finish
@@ -46,7 +47,7 @@ class RolesAPI extends DataTableSourceAsync {
   @override
   Future<AsyncRowsResponse> getRows(int startIndex, int count) async {
     // implement filtering
-    await fetchData(startIndex, count, filters);
+    await fetchData(startIndex, count, _filters);
     AsyncRowsResponse response = AsyncRowsResponse(totalRecords, rows);
     return response;
   }
@@ -60,7 +61,9 @@ class RolesAPI extends DataTableSourceAsync {
           fontWeight: FontWeight.bold,
         ),
       ),
-      const SizedBox(width: 10,),
+      const SizedBox(
+        width: 10,
+      ),
       const AddNewCrewButton(),
       const Spacer(),
       // TODO: implement search function
@@ -81,38 +84,42 @@ class AddNewCrewButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: () {
-          // context.go('/');
-        },
-        style: ButtonStyle(
-          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-              side: const BorderSide(color: Colors.black),
-            ),
+      onPressed: () {
+        // context.go('/');
+      },
+      style: ButtonStyle(
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: const BorderSide(color: Colors.black),
           ),
         ),
-        child: const Row(
-          children: [
-            Icon(
-              Icons.add,
-              size: 30,
+      ),
+      child: const Row(
+        children: [
+          Icon(
+            Icons.add,
+            size: 30,
+          ),
+          SizedBox(width: 5),
+          Text(
+            'Add new role',
+            style: TextStyle(
+              fontSize: 16,
             ),
-            SizedBox(width: 5),
-            Text(
-              'Add new role',
-              style: TextStyle(
-                fontSize: 16,
-              ),
-            ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
   }
 }
 
 class Role {
-  Role(this._id, this._name, this._description,);
+  Role(
+    this._id,
+    this._name,
+    this._description,
+  );
   final int _id;
   final String _name;
   final String _description;

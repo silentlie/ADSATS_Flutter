@@ -145,6 +145,60 @@
           ]
         }
       }
+    },
+    "/roles": {
+      "name": "/roles",
+      "lambdaFunction": "placeHolder",
+      "permissions": {
+        "groups": {
+          "dev": [
+            "read"
+          ],
+          "admin": [
+            "read"
+          ],
+          "crew": [
+            "read"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/aircrafts": {
+      "name": "/aircrafts",
+      "lambdaFunction": "placeHolder",
+      "permissions": {
+        "groups": {
+          "dev": [
+            "read"
+          ],
+          "admin": [
+            "read"
+          ],
+          "crew": [
+            "read"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/crews": {
+      "name": "/crews",
+      "lambdaFunction": "placeHolder",
+      "permissions": {
+        "groups": {
+          "dev": [
+            "read"
+          ],
+          "admin": [
+            "read"
+          ],
+          "crew": [
+            "read"
+          ]
+        },
+        "setting": "private"
+      }
     }
   }
 }

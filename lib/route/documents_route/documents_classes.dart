@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
-import 'package:multi_dropdown/multiselect_dropdown.dart';
 
-import 'package:adsats_flutter/route/documents_route/filter_by.dart';
 import 'package:adsats_flutter/abstract_data_table_async.dart';
+import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 class Document {
   Document({
@@ -91,24 +90,17 @@ class DocumentAPI extends DataTableSourceAsync {
 
   @override
   get showCheckBox => false;
-  CustomTableFilter? _filters;
-  @override
-  CustomTableFilter? get filters => _filters;
-  @override
-  set filters(CustomTableFilter? newFilters) {
-    filters = newFilters;
-    refreshDatasource();
-  }
-
+  final CustomTableFilter _filters = CustomTableFilter();
   Future<void> fetchData(int startIndex, int count,
       [CustomTableFilter? filter]) async {
     try {
+      final queryParameters = {
+        "offset": startIndex.toString(),
+        "limit": count.toString()
+      };
+      if (filter != null) {}
       final restOperation = Amplify.API.get('/documents',
-          apiName: 'AmplifyCrewAPI',
-          queryParameters: {
-            "offset": startIndex.toString(),
-            "limit": count.toString()
-          });
+          apiName: 'AmplifyCrewAPI', queryParameters: queryParameters);
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
       Map<String, dynamic> rawData = jsonDecode(jsonStr);
@@ -119,12 +111,13 @@ class DocumentAPI extends DataTableSourceAsync {
         tempList.add(Document.fromJSON(row));
       }
       _documents = tempList;
+      safePrint("did fetch Data");
     } on ApiException catch (e) {
-      safePrint('GET call failed: $e');
+      debugPrint('GET call failed: $e');
       _totalRecords = 0;
       _documents = [];
     } on Error catch (e) {
-      safePrint('Error: $e');
+      debugPrint('Error: $e');
       rethrow;
     }
   }
@@ -156,7 +149,7 @@ class DocumentAPI extends DataTableSourceAsync {
   Future<AsyncRowsResponse> getRows(int startIndex, int count) async {
     try {
       // implement filtering
-      await fetchData(startIndex, count, filters);
+      await fetchData(startIndex, count, _filters);
       AsyncRowsResponse response = AsyncRowsResponse(totalRecords, rows);
       return response;
     } on Error catch (e) {
@@ -220,18 +213,6 @@ class ActionsRow extends StatelessWidget {
   }
 }
 
-class FilterBy extends StatelessWidget {
-  const FilterBy({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () => showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => const FilterByAlertDialog()),
-        child: const Text("Filter By"));
-  }
-}
 
 class SearchTextField extends StatelessWidget {
   const SearchTextField({

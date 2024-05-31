@@ -43,6 +43,9 @@ class CustomSignInForm extends StatefulWidget {
 class _CustomSignInFormState extends State<CustomSignInForm> {
   @override
   Widget build(BuildContext context) {
+    if (rememberDevice) {
+      rememberCurrentDevice();
+    }
     return AuthenticatorForm(
       child: Column(
         children: [

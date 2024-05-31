@@ -23,12 +23,8 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
   void didChangeDependencies() {
     // need to check _dataSource has changed based on filter
     safePrint("didChangeDependencies");
-    // ignore: unused_local_variable
-    // int count = dataSource.totalRecords;
     setState(
       () {
-        // in example: initialRow = count - _rowsPerPage
-        // not sure why
         _initialRow = 0;
       },
     );
@@ -39,7 +35,7 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
   @override
   void dispose() {
     // dispose to refresh every time
-    dataSource.dispose();
+    // dataSource.dispose();
     super.dispose();
   }
 
@@ -98,8 +94,6 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
 abstract class DataTableSourceAsync extends AsyncDataTableSource {
   // TODO: need implement error handling
   List<DataColumn> get columns;
-  CustomTableFilter? get filters;
-  set filters(CustomTableFilter? newFilters);
   bool get showCheckBox;
   int get totalRecords;
   Widget get header;
@@ -142,22 +136,85 @@ abstract class DataTableSourceAsync extends AsyncDataTableSource {
 }
 
 class CustomTableFilter {
-  String? search;
-
   String? sortColumn;
-  bool? sortAscending;
+  bool sortAscending = true;
 
-  bool? read;
-  String? aircraft;
+  String? search;
+  bool? status;
 
   DateTimeRange? createdTimeRange;
-
+  DateTimeRange? dueTimeRange;
   CustomTableFilter.empty() : sortAscending = true;
   CustomTableFilter({
     this.sortColumn,
     this.sortAscending = true,
-    this.read,
-    this.aircraft,
     this.createdTimeRange,
   });
+  Map<String, dynamic> toJSON() {
+    Map<String, dynamic> tempJson = {};
+    if (search != null) {
+      tempJson["search"] = "%25${search!}%25";
+    }
+    if (sortColumn != null) {
+      tempJson["sort_column"] = sortColumn!;
+      tempJson["asc"] = sortAscending;
+    }
+    if (status != null) {
+      tempJson["status"] = status;
+    }
+    return tempJson;
+  }
+}
+
+class MutableDateTimeRange {
+  // this class was created because DateTimeRange is immutable class
+  MutableDateTimeRange([this.dateTimeRange]);
+  DateTimeRange? dateTimeRange;
+}
+
+class DateTimeRangePicker extends StatefulWidget {
+  const DateTimeRangePicker({super.key, required this.mutableDateTimeRange});
+  final MutableDateTimeRange mutableDateTimeRange;
+
+  @override
+  State<DateTimeRangePicker> createState() => _DateTimeRangePickerState();
+}
+
+class _DateTimeRangePickerState extends State<DateTimeRangePicker> {
+  DateTimeRange? _dateTimeRange;
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () async {
+        _dateTimeRange = await showDateRangePicker(
+          context: context,
+          firstDate: DateTime(2000),
+          lastDate: DateTime.now(),
+          initialDateRange: _dateTimeRange,
+          builder: (context, child) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ConstrainedBox(
+                  constraints:
+                      const BoxConstraints(maxWidth: 500, maxHeight: 800),
+                  child: child,
+                )
+              ],
+            );
+          },
+        );
+        if (_dateTimeRange != null) {
+          widget.mutableDateTimeRange.dateTimeRange = _dateTimeRange;
+        }
+        setState(() {});
+      },
+      child: Text(
+        _dateTimeRange == null
+            ? "Select a date range"
+            // need to modify for readable string
+            : "${_dateTimeRange!.start.toIso8601String()} - ${_dateTimeRange!.end.toIso8601String()}",
+      ),
+    );
+  }
 }

@@ -103,6 +103,7 @@ class NoticeAPI extends DataTableSourceAsync {
   Future<void> fetchData(int startIndex, int count,
       [CustomTableFilter? filter]) async {
     // TODO: implement getData one API finish
+    debugPrint("fetch Data");
   }
 
   @override
@@ -115,7 +116,7 @@ class NoticeAPI extends DataTableSourceAsync {
   Future<AsyncRowsResponse> getRows(int startIndex, int count) async {
     try {
       // implement filtering
-      await fetchData(startIndex, count, filters);
+      await fetchData(startIndex, count, _filters);
       AsyncRowsResponse response = AsyncRowsResponse(totalRecords, rows);
       return response;
     } on Error catch (e) {
@@ -126,15 +127,7 @@ class NoticeAPI extends DataTableSourceAsync {
 
   CustomTableFilter? _filters;
 
-  @override
-  CustomTableFilter? get filters => _filters;
-
-  @override
-  set filters(CustomTableFilter? newFilters) {
-    filters = newFilters;
-    refreshDatasource();
-  }
-
+  final TextEditingController _textEditingController = TextEditingController();
   Widget get _header {
     return Row(
       children: [
@@ -151,7 +144,16 @@ class NoticeAPI extends DataTableSourceAsync {
         const SendANoticeButton(),
         // TODO: implement search function
         const Spacer(),
-        SearchWidget(),
+        SearchBar(
+          constraints: const BoxConstraints(
+            maxWidth: 360,
+          ),
+          leading: const Icon(Icons.search),
+          controller: _textEditingController,
+          onSubmitted: (value) {
+            refreshDatasource();
+          },
+        ),
         const SizedBox(
           width: 10,
         ),

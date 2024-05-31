@@ -10,24 +10,39 @@ class CrewsApi extends DataTableSourceAsync {
   get showCheckBox => false;
   CustomTableFilter? _filters;
   @override
-  CustomTableFilter? get filters => _filters;
-  @override
-  set filters(CustomTableFilter? newFilters) {
-    filters = newFilters;
-    refreshDatasource();
-  }
-  @override
-  List<DataColumn> get columns{
+  List<DataColumn> get columns {
     return <DataColumn>[
-      const DataColumn(label: Text("First Name"), tooltip: "First Name",),
-      const DataColumn(label: Text("Last Name"), tooltip: "Last Name",),
-      const DataColumn(label: Text("Email"), tooltip: "Email",),
-      const DataColumn(label: Text("Role"), tooltip: "Role",),
-      const DataColumn(label: Text("Active"), tooltip: "Active",),
-      const DataColumn(label: Text("Created At"), tooltip: "Created At",),
-      const DataColumn(label: Text("Modified At"), tooltip: "Modified At",),
+      const DataColumn(
+        label: Text("First Name"),
+        tooltip: "First Name",
+      ),
+      const DataColumn(
+        label: Text("Last Name"),
+        tooltip: "Last Name",
+      ),
+      const DataColumn(
+        label: Text("Email"),
+        tooltip: "Email",
+      ),
+      const DataColumn(
+        label: Text("Role"),
+        tooltip: "Role",
+      ),
+      const DataColumn(
+        label: Text("Active"),
+        tooltip: "Active",
+      ),
+      const DataColumn(
+        label: Text("Created At"),
+        tooltip: "Created At",
+      ),
+      const DataColumn(
+        label: Text("Modified At"),
+        tooltip: "Modified At",
+      ),
     ];
   }
+
   List<DataRow> get rows {
     return crews.map(
       (row) {
@@ -43,6 +58,7 @@ class CrewsApi extends DataTableSourceAsync {
       },
     ).toList();
   }
+
   Future<void> fetchData(int startIndex, int count,
       [CustomTableFilter? filter]) async {
     // TODO: implement getData one API finish
@@ -56,7 +72,7 @@ class CrewsApi extends DataTableSourceAsync {
   @override
   Future<AsyncRowsResponse> getRows(int startIndex, int count) async {
     // implement filtering
-    await fetchData(startIndex, count, filters);
+    await fetchData(startIndex, count, _filters);
     AsyncRowsResponse response = AsyncRowsResponse(totalRecords, rows);
     return response;
   }
@@ -70,7 +86,9 @@ class CrewsApi extends DataTableSourceAsync {
           fontWeight: FontWeight.bold,
         ),
       ),
-      const SizedBox(width: 10,),
+      const SizedBox(
+        width: 10,
+      ),
       const AddNewCrewButton(),
       const Spacer(),
       // TODO: implement search function
@@ -91,38 +109,41 @@ class AddNewCrewButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: () {
-          // context.go('/');
-        },
-        style: ButtonStyle(
-          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-              side: const BorderSide(color: Colors.black),
-            ),
+      onPressed: () {
+        // context.go('/');
+      },
+      style: ButtonStyle(
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: const BorderSide(color: Colors.black),
           ),
         ),
-        child: const Row(
-          children: [
-            Icon(
-              Icons.add,
-              size: 30,
+      ),
+      child: const Row(
+        children: [
+          Icon(
+            Icons.add,
+            size: 30,
+          ),
+          SizedBox(width: 5),
+          Text(
+            'Add new crew',
+            style: TextStyle(
+              fontSize: 16,
             ),
-            SizedBox(width: 5),
-            Text(
-              'Add new crew',
-              style: TextStyle(
-                fontSize: 16,
-              ),
-            ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
   }
 }
 
 class Crew {
-  Crew(this._id, this._firstName, this._lastName, this._email, this._status, this._createdAt, this._roles, {DateTime? modifiedAt} ) : _modifiedAt = modifiedAt ;
+  Crew(this._id, this._firstName, this._lastName, this._email, this._status,
+      this._createdAt, this._roles,
+      {DateTime? modifiedAt})
+      : _modifiedAt = modifiedAt;
   final int _id;
   final String _firstName;
   final String _lastName;
@@ -143,6 +164,9 @@ class Crew {
 
 List<Crew> crews = [
   Crew(0, "John", "Doe", "john@example.com", true, DateTime.now(), ["Admin"]),
-  Crew(1, "Jane", "Smith", "jane@example.com", false, DateTime.now(), ["Crew"], modifiedAt: DateTime.now()),
-  Crew(1, "Bob", "Johnson", "bob@example.com", false, DateTime.now(), ["Manager"], modifiedAt: DateTime.now()),
+  Crew(1, "Jane", "Smith", "jane@example.com", false, DateTime.now(), ["Crew"],
+      modifiedAt: DateTime.now()),
+  Crew(1, "Bob", "Johnson", "bob@example.com", false, DateTime.now(),
+      ["Manager"],
+      modifiedAt: DateTime.now()),
 ];

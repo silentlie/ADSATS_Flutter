@@ -1,33 +1,6 @@
 {
   "version": 1,
   "paths": {
-    "/crews": {
-      "name": "/crews",
-      "lambdaFunction": "placeHolder",
-      "permissions": {
-        "setting": "private",
-        "auth": [
-          "read"
-        ],
-        "groups": {
-          "dev": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ],
-          "admin": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ],
-          "crew": [
-            "read"
-          ]
-        }
-      }
-    },
     "/roles": {
       "name": "/roles",
       "lambdaFunction": "placeHolder",
@@ -55,14 +28,10 @@
         }
       }
     },
-    "/aircrafts": {
-      "name": "/aircrafts",
+    "/crews": {
+      "name": "/crews",
       "lambdaFunction": "placeHolder",
       "permissions": {
-        "setting": "private",
-        "auth": [
-          "read"
-        ],
         "groups": {
           "dev": [
             "create",
@@ -75,11 +44,30 @@
             "read",
             "update",
             "delete"
-          ],
-          "crew": [
-            "read"
           ]
-        }
+        },
+        "setting": "private"
+      }
+    },
+    "/aircrafts": {
+      "name": "/aircrafts",
+      "lambdaFunction": "placeHolder",
+      "permissions": {
+        "groups": {
+          "dev": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
       }
     }
   }
