@@ -87,7 +87,6 @@ class DocumentAPI extends DataTableSourceAsync {
     });
   }
 
-
   @override
   get showCheckBox => false;
   final CustomTableFilter _filters = CustomTableFilter();
@@ -158,7 +157,7 @@ class DocumentAPI extends DataTableSourceAsync {
     }
   }
 
-  final Widget _header =  Row(
+  final Widget _header = Row(
     children: [
       const Text(
         "Documents",
@@ -176,7 +175,6 @@ class DocumentAPI extends DataTableSourceAsync {
       const SizedBox(
         width: 10,
       ),
-      const FilterBy(),
     ],
   );
   @override
@@ -192,27 +190,14 @@ class ActionsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        IconButton(
-          onPressed: (){}, 
-          icon: const Icon(Icons.remove_red_eye)
-        ),
-        IconButton(
-          onPressed: (){}, 
-          icon: const Icon(Icons.edit)
-        ),
-        IconButton(
-          onPressed: (){}, 
-          icon: const Icon(Icons.delete)
-        ),
-        IconButton(
-          onPressed: (){}, 
-          icon: const Icon(Icons.info)
-        ),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.remove_red_eye)),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.info)),
       ],
     );
   }
 }
-
 
 class SearchTextField extends StatelessWidget {
   const SearchTextField({
