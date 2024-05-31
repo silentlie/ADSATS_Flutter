@@ -35,7 +35,7 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
   @override
   void dispose() {
     // dispose to refresh every time
-    dataSource.dispose();
+    // dataSource.dispose();
     super.dispose();
   }
 
@@ -136,28 +136,39 @@ abstract class DataTableSourceAsync extends AsyncDataTableSource {
 }
 
 class CustomTableFilter {
-  String? search;
-
   String? sortColumn;
-  bool? sortAscending;
+  bool sortAscending = true;
 
-  bool? read;
-  List<String>? aircraft;
+  String? search;
+  bool? status;
 
   DateTimeRange? createdTimeRange;
-
+  DateTimeRange? dueTimeRange;
   CustomTableFilter.empty() : sortAscending = true;
   CustomTableFilter({
     this.sortColumn,
     this.sortAscending = true,
-    this.read,
-    this.aircraft,
     this.createdTimeRange,
   });
+  Map<String, dynamic> toJSON() {
+    Map<String, dynamic> tempJson = {};
+    if (search != null) {
+      tempJson["search"] = "%25${search!}%25";
+    }
+    if (sortColumn != null) {
+      tempJson["sort_column"] = sortColumn!;
+      tempJson["asc"] = sortAscending;
+    }
+    if (status != null) {
+      tempJson["status"] = status;
+    }
+    return tempJson;
+  }
 }
 
 class MutableDateTimeRange {
-  MutableDateTimeRange(this.dateTimeRange);
+  // this class was created because DateTimeRange is immutable class
+  MutableDateTimeRange([this.dateTimeRange]);
   DateTimeRange? dateTimeRange;
 }
 
