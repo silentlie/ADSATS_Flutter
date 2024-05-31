@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:go_router/go_router.dart';
 import 'filter_by_sms.dart';
+import 'package:adsats_flutter/theme/theme_data.dart';
 
 import 'package:adsats_flutter/abstract_data_table_async.dart';
 import 'mock_data.dart';
@@ -175,8 +176,8 @@ class FilterByButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () => showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => const FilterByAlertDialog()),
+          context: context,
+          builder: (BuildContext context) => const FilterByAlertDialog()),
       child: const Text("Filter By"),
     );
   }
@@ -187,6 +188,7 @@ class SendANoticeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final buttonTheme = Theme.of(context).colorScheme;
     return ElevatedButton(
       onPressed: () {
         context.go('/send-notices');

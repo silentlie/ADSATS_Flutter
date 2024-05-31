@@ -176,6 +176,7 @@ class DocumentAPI extends DataTableSourceAsync {
       const SizedBox(
         width: 10,
       ),
+      const FilterByButton(),
     ],
   );
   @override
@@ -257,6 +258,22 @@ class SearchWidget extends StatelessWidget {
       ),
       leading: const Icon(Icons.search),
       controller: _textEditingController,
+    );
+  }
+}
+
+class FilterByButton extends StatelessWidget {
+  const FilterByButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () => showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => const FilterByAlertDialog()),
+      child: const Text("Filter By"),
     );
   }
 }
