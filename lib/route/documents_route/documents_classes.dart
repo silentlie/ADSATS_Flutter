@@ -184,6 +184,7 @@ class Header extends StatelessWidget {
           ),
           leading: const Icon(Icons.search),
           onSubmitted: (value) {
+            filter.search = value;
             refreshDatasource();
           },
         ),
