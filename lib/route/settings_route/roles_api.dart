@@ -9,13 +9,6 @@ class RolesAPI extends DataTableSourceAsync {
   get showCheckBox => false;
   CustomTableFilter? _filters;
   @override
-  CustomTableFilter? get filters => _filters;
-  @override
-  set filters(CustomTableFilter? newFilters) {
-    filters = newFilters;
-    refreshDatasource();
-  }
-  @override
   List<DataColumn> get columns{
     return <DataColumn>[
       const DataColumn(label: Text("Name"), tooltip: "Name of the role",),
@@ -45,7 +38,7 @@ class RolesAPI extends DataTableSourceAsync {
   @override
   Future<AsyncRowsResponse> getRows(int startIndex, int count) async {
     // implement filtering
-    await fetchData(startIndex, count, filters);
+    await fetchData(startIndex, count, _filters);
     AsyncRowsResponse response = AsyncRowsResponse(totalRecords, rows);
     return response;
   }

@@ -97,42 +97,6 @@ abstract class DataTableSourceAsync extends AsyncDataTableSource {
   bool get showCheckBox;
   int get totalRecords;
   Widget get header;
-  DataCell cellFor(Object? data) {
-    Widget widget = const Text("");
-    if (data == null) {
-      widget = const Text("");
-    } else if (data is DateTime) {
-      widget = Text(
-          '${data.year}-${data.month.toString().padLeft(2, '0')}-${data.day.toString().padLeft(2, '0')}');
-    } else if (data is bool) {
-      widget = Container(
-        width: 60,
-        height: 20,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(20),
-          color: data ? Colors.green : Colors.red,
-        ),
-        child: Center(child: Text(data ? "Yes" : "No")),
-      );
-    }
-    // need to fix
-    else if (data is List<String>) {
-      widget = Row(
-          children: data.map(
-        (string) {
-          return Text(string);
-        },
-      ).toList());
-    } else {
-      widget = Text(data.toString());
-    }
-    return DataCell(widget);
-  }
-
-  bool intToBool(int value) {
-    return value != 0;
-  }
 }
 
 class CustomTableFilter {
@@ -215,4 +179,62 @@ class _DateTimeRangePickerState extends State<DateTimeRangePicker> {
       ),
     );
   }
+}
+
+class SearchBarWidget extends StatefulWidget {
+  const SearchBarWidget(
+      {super.key, required this.filter, required this.refreshDatasource});
+  final CustomTableFilter filter;
+  final Function refreshDatasource;
+  @override
+  State<SearchBarWidget> createState() => _SearchBarWidgetState();
+}
+
+class _SearchBarWidgetState extends State<SearchBarWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return SearchBar(
+      constraints: const BoxConstraints(
+        maxWidth: 360,
+      ),
+      leading: const Icon(Icons.search),
+      onSubmitted: (value) {
+        widget.filter.search = value;
+        widget.refreshDatasource();
+      },
+    );
+  }
+}
+
+DataCell cellFor(Object? data) {
+  Widget widget = const Text("");
+  if (data == null) {
+    widget = const Text("");
+  } else if (data is DateTime) {
+    widget = Text(
+        '${data.year}-${data.month.toString().padLeft(2, '0')}-${data.day.toString().padLeft(2, '0')}');
+  } else if (data is bool) {
+    widget = Container(
+      width: 60,
+      height: 20,
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.circular(20),
+        color: data ? Colors.green : Colors.red,
+      ),
+      child: Center(child: Text(data ? "Yes" : "No")),
+    );
+  }
+  // need to fix
+  else if (data is List<String>) {
+    widget = Row(
+        children: data.map(
+      (string) {
+        return Text(string);
+      },
+    ).toList());
+  } else {
+    widget = Text(data.toString());
+  }
+  return DataCell(widget);
 }

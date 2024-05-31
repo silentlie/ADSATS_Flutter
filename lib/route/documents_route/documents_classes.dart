@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
-import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 import 'package:adsats_flutter/route/documents_route/filter_by.dart';
 import 'package:adsats_flutter/abstract_data_table_async.dart';
@@ -54,26 +53,39 @@ class Document {
   static bool intToBool(int value) {
     return value != 0;
   }
+
+  DataRow toDataRow() {
+    return DataRow(cells: <DataCell>[
+      cellFor(fileName),
+      cellFor(email),
+      cellFor(archived),
+      cellFor(dateCreated),
+      cellFor(subcategory),
+      cellFor(category),
+      cellFor(aircraft),
+      cellFor("actions"),
+    ]);
+  }
+
+  static List<String> columnNames = [
+    "File name",
+    "Author",
+    "Archived",
+    "Date",
+    "Sub category",
+    "Category",
+    "Aircrafts",
+    "Actions",
+  ];
 }
 
 class DocumentAPI extends DataTableSourceAsync {
   DocumentAPI();
 
-  List<String> get columnNames => [
-        "File name",
-        "Author",
-        "Archived",
-        "Date",
-        "Sub category",
-        "Category",
-        "Aircrafts",
-        "Actions",
-      ];
-
   @override
   List<DataColumn> get columns {
-    return List.generate(columnNames.length, (index) {
-      String columnName = columnNames[index];
+    return List.generate(Document.columnNames.length, (index) {
+      String columnName = Document.columnNames[index];
       return DataColumn(
           label: Text(
             columnName,
@@ -89,12 +101,13 @@ class DocumentAPI extends DataTableSourceAsync {
   Future<void> fetchData(int startIndex, int count,
       [CustomTableFilter? filter]) async {
     try {
+      Map<String, String> queryParameters = {
+        "offset": startIndex.toString(),
+        "limit": count.toString()
+      };
       final restOperation = Amplify.API.get('/documents',
-          apiName: 'AmplifyCrewAPI',
-          queryParameters: {
-            "offset": startIndex.toString(),
-            "limit": count.toString()
-          });
+          apiName: 'AmplifyCrewAPI', queryParameters: queryParameters);
+
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
       Map<String, dynamic> rawData = jsonDecode(jsonStr);
@@ -105,12 +118,13 @@ class DocumentAPI extends DataTableSourceAsync {
         tempList.add(Document.fromJSON(row));
       }
       _documents = tempList;
+      debugPrint("finished fetch table data");
     } on ApiException catch (e) {
-      safePrint('GET call failed: $e');
+      debugPrint('GET call failed: $e');
       _totalRecords = 0;
       _documents = [];
     } on Error catch (e) {
-      safePrint('Error: $e');
+      debugPrint('Error: $e');
       rethrow;
     }
   }
@@ -121,19 +135,8 @@ class DocumentAPI extends DataTableSourceAsync {
   int get totalRecords => _totalRecords;
 
   List<DataRow> get rows {
-    _documents;
-
     return _documents.map((document) {
-      return DataRow(cells: <DataCell>[
-        cellFor(document.fileName),
-        cellFor(document.email),
-        cellFor(document.archived),
-        cellFor(document.dateCreated),
-        cellFor(document.subcategory),
-        cellFor(document.category),
-        cellFor(document.aircraft),
-        cellFor("actions"),
-      ]);
+      return document.toDataRow();
     }).toList();
   }
 
@@ -145,7 +148,7 @@ class DocumentAPI extends DataTableSourceAsync {
       AsyncRowsResponse response = AsyncRowsResponse(totalRecords, rows);
       return response;
     } on Error catch (e) {
-      safePrint('Error: $e');
+      debugPrint('Error: $e');
       rethrow;
     }
   }
@@ -178,15 +181,9 @@ class Header extends StatelessWidget {
         ),
         const AddADocumentButton(),
         const Spacer(),
-        SearchBar(
-          constraints: const BoxConstraints(
-            maxWidth: 360,
-          ),
-          leading: const Icon(Icons.search),
-          onSubmitted: (value) {
-            filter.search = value;
-            refreshDatasource();
-          },
+        SearchBarWidget(
+          filter: filter,
+          refreshDatasource: refreshDatasource,
         ),
         const SizedBox(
           width: 10,
