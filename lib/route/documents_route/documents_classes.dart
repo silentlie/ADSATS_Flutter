@@ -1,11 +1,12 @@
+import 'dart:convert';
+
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
-import 'dart:convert';
 import 'package:go_router/go_router.dart';
 
-import 'package:adsats_flutter/route/documents_route/filter_by.dart';
 import 'package:adsats_flutter/abstract_data_table_async.dart';
+import 'package:adsats_flutter/route/documents_route/filter_by2.dart';
 
 class Document {
   Document({
@@ -188,27 +189,12 @@ class Header extends StatelessWidget {
         const SizedBox(
           width: 10,
         ),
-        const FilterBy(),
+        FilterBy(
+          filter: filter,
+          refreshDatasource: refreshDatasource,
+        ),
       ],
     );
-  }
-}
-
-class FilterBy extends StatefulWidget {
-  const FilterBy({super.key});
-
-  @override
-  State<FilterBy> createState() => _FilterByState();
-}
-
-class _FilterByState extends State<FilterBy> {
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () => showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => const FilterByAlertDialog()),
-        child: const Text("Filter By"));
   }
 }
 

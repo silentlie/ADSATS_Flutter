@@ -1,4 +1,3 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
 
@@ -22,7 +21,7 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
   @override
   void didChangeDependencies() {
     // need to check _dataSource has changed based on filter
-    safePrint("didChangeDependencies");
+    debugPrint("didChangeDependencies");
     setState(
       () {
         _initialRow = 0;
@@ -63,7 +62,7 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
         _rowsPerPage = value!;
       },
       onPageChanged: (rowIndex) {
-        safePrint(rowIndex / _rowsPerPage);
+        debugPrint((rowIndex / _rowsPerPage).toString());
       },
       // can add more widget if need
       header: dataSource.header,
@@ -238,3 +237,5 @@ DataCell cellFor(Object? data) {
   }
   return DataCell(widget);
 }
+
+
