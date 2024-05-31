@@ -88,6 +88,7 @@ class DocumentAPI extends DataTableSourceAsync {
     });
   }
 
+
   @override
   get showCheckBox => false;
   CustomTableFilter? _filters;
