@@ -1,9 +1,8 @@
+import 'package:adsats_flutter/route/sms_route/view_notices/filter_by.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:go_router/go_router.dart';
-import 'filter_by_sms.dart';
-import 'package:adsats_flutter/theme/theme_data.dart';
 
 import 'package:adsats_flutter/abstract_data_table_async.dart';
 import 'mock_data.dart';
@@ -101,6 +100,7 @@ class NoticeAPI extends DataTableSourceAsync {
     ).toList();
   }
 
+  final CustomTableFilter _filters = CustomTableFilter();
   Future<void> fetchData(int startIndex, int count,
       [CustomTableFilter? filter]) async {
     // TODO: implement getData one API finish
@@ -126,14 +126,24 @@ class NoticeAPI extends DataTableSourceAsync {
     }
   }
 
-  CustomTableFilter? _filters;
+  @override
+  Widget get header => Header(
+        filter: _filters,
+        refreshDatasource: refreshDatasource,
+      );
+}
 
-  final TextEditingController _textEditingController = TextEditingController();
-  Widget get _header {
+class Header extends StatelessWidget {
+  const Header(
+      {super.key, required this.filter, required this.refreshDatasource});
+  final CustomTableFilter filter;
+  final Function refreshDatasource;
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         const Text(
-          'My Notifications',
+          "Documents",
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -143,42 +153,19 @@ class NoticeAPI extends DataTableSourceAsync {
           width: 10,
         ),
         const SendANoticeButton(),
-        // TODO: implement search function
         const Spacer(),
-        SearchBar(
-          constraints: const BoxConstraints(
-            maxWidth: 360,
-          ),
-          leading: const Icon(Icons.search),
-          controller: _textEditingController,
-          onSubmitted: (value) {
-            refreshDatasource();
-          },
+        SearchBarWidget(
+          filter: filter,
+          refreshDatasource: refreshDatasource,
         ),
         const SizedBox(
           width: 10,
         ),
-        const FilterByButton(),
+        FilterBy(
+          filter: filter,
+          refreshDatasource: refreshDatasource,
+        ),
       ],
-    );
-  }
-
-  @override
-  Widget get header => _header;
-}
-
-class FilterByButton extends StatelessWidget {
-  const FilterByButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () => showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => const FilterByAlertDialog()),
-      child: const Text("Filter By"),
     );
   }
 }
@@ -216,23 +203,6 @@ class SendANoticeButton extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class SearchWidget extends StatelessWidget {
-  SearchWidget({super.key});
-
-  final TextEditingController _textEditingController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return SearchBar(
-      constraints: const BoxConstraints(
-        maxWidth: 360,
-      ),
-      leading: const Icon(Icons.search),
-      controller: _textEditingController,
     );
   }
 }

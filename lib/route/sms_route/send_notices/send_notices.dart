@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/hazard_report_form.dart';
-import 'package:adsats_flutter/route/sms_route/send_notices/safety_notice.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/safety_Notice.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/send_a_notice.dart';
 
 class SendNotices extends StatefulWidget {
@@ -51,8 +51,8 @@ class _SendNoticesState extends State<SendNotices> {
       label: "Hazard Report",
     ),
     const NavigationDestination(
-      icon: Icon(Icons.report),
-      selectedIcon: Icon(Icons.report),
+      icon: Icon(Icons.document_scanner_outlined),
+      selectedIcon: Icon(Icons.document_scanner),
       label: "BCAA Aircraft Occurrence Reports",
     ),
   ];
@@ -90,23 +90,20 @@ class _SendNoticesState extends State<SendNotices> {
         return Row(
           children: [
             SafeArea(
-              child: SizedBox(
-                // width: 270,
-                child: NavigationRail(
-                  onDestinationSelected: (value) {
-                    setState(() {
-                      _selectedIndex = value;
-                    });
-                  },
-                  destinations: _navigationRailDestinations,
-                  selectedIndex: _selectedIndex,
-                  elevation: 10,
-                  extended: constraints.maxWidth >= 1440,
-                  minExtendedWidth: 144,
-                  minWidth: 50,
-                  labelType: NavigationRailLabelType.none,
-                  useIndicator: true,
-                ),
+              child: NavigationRail(
+                onDestinationSelected: (value) {
+                  setState(() {
+                    _selectedIndex = value;
+                  });
+                },
+                destinations: _navigationRailDestinations,
+                selectedIndex: _selectedIndex,
+                elevation: 10,
+                extended: constraints.maxWidth >= 1440,
+                minExtendedWidth: 144,
+                minWidth: 72,
+                labelType: NavigationRailLabelType.none,
+                useIndicator: true,
               ),
             ),
             const VerticalDivider(thickness: 1, width: 1),
@@ -115,7 +112,7 @@ class _SendNoticesState extends State<SendNotices> {
                   child: Container(
                 constraints: const BoxConstraints(maxWidth: 1500),
                 child: buildPages(_selectedIndex),
-              )),
+              ),),
             ),
           ],
         );

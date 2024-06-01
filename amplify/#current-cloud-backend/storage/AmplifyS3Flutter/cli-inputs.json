@@ -1,0 +1,26 @@
+{
+  "resourceName": "AmplifyS3Flutter",
+  "policyUUID": "998f2c1d",
+  "bucketName": "amplify-s3-flutter",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "READ"
+  ],
+  "groupAccess": {
+    "dev": [
+      "CREATE_AND_UPDATE",
+      "READ",
+      "DELETE"
+    ],
+    "admin": [
+      "CREATE_AND_UPDATE",
+      "READ",
+      "DELETE"
+    ],
+    "crew": [
+      "CREATE_AND_UPDATE",
+      "READ"
+    ]
+  }
+}
