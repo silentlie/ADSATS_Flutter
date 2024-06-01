@@ -93,10 +93,15 @@ class CrewsApi extends DataTableSourceAsync {
       const Spacer(),
       // TODO: implement search function
       SearchWidget(),
-    const SizedBox(width: 10,),
-    ElevatedButton(onPressed: () {
-      // TODO: implement filter function
-    }, child: const Text("Filter By"),),
+      const SizedBox(
+        width: 10,
+      ),
+      ElevatedButton(
+        onPressed: () {
+          // TODO: implement filter function
+        },
+        child: const Text("Filter By"),
+      ),
     ],
   );
   @override
