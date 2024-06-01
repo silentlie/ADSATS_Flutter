@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/hazard_report_form.dart';
-import 'package:adsats_flutter/route/sms_route/send_notices/safety_notice.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/safety.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/send_a_notice.dart';
 
 class SendNotices extends StatefulWidget {
@@ -109,10 +109,11 @@ class _SendNoticesState extends State<SendNotices> {
             const VerticalDivider(thickness: 1, width: 1),
             Expanded(
               child: Center(
-                  child: Container(
-                constraints: const BoxConstraints(maxWidth: 1500),
-                child: buildPages(_selectedIndex),
-              ),),
+                child: Container(
+                  constraints: const BoxConstraints(maxWidth: 1500),
+                  child: buildPages(_selectedIndex),
+                ),
+              ),
             ),
           ],
         );
