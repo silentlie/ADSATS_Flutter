@@ -3,7 +3,6 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:go_router/go_router.dart';
-import 'filter_by_sms.dart';
 
 import 'package:adsats_flutter/abstract_data_table_async.dart';
 import 'mock_data.dart';
