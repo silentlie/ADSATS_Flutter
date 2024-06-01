@@ -6,17 +6,13 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import 'package:adsats_flutter/abstract_data_table_async.dart';
 
-class FilterBy extends StatefulWidget {
+class FilterBy extends StatelessWidget {
   const FilterBy(
       {super.key, required this.filter, required this.refreshDatasource});
   final CustomTableFilter filter;
   final Function refreshDatasource;
-  @override
-  State<FilterBy> createState() => _FilterByState();
-}
-
-class _FilterByState extends State<FilterBy> {
-  Future<List<List<MultiSelectItem>>> fetchFilter() async {
+  Future<List<List<MultiSelectItem>>> fetchFilter(
+      Map<String, String> filterEndpoints) async {
     try {
       // Function to make API requests and return the parsed response
       Future<List<String>> fetchData(String endpoint) async {
@@ -29,13 +25,8 @@ class _FilterByState extends State<FilterBy> {
       }
 
       // Perform all fetches concurrently
-      List<Future<List<String>>> futures = [
-        fetchData('/crews'),
-        fetchData('/roles'),
-        fetchData('/aircrafts'),
-        fetchData('/document-categories'),
-        fetchData('/document-sub-categories'),
-      ];
+      List<Future<List<String>>> futures =
+          filterEndpoints.values.map(fetchData).toList();
 
       List<List<String>> results = await Future.wait(futures);
       // Function to map List<String> to List<ValueItem>
@@ -55,10 +46,17 @@ class _FilterByState extends State<FilterBy> {
     }
   }
 
-  final MutableDateTimeRange _timeRange = MutableDateTimeRange();
-  List<List<String>> filterResult = [];
+  final Map<String, String> filterEndpoints = const {
+    'crews': '/crews',
+    'roles': '/roles',
+    'aircrafts': '/aircrafts',
+    'document-categories': '/document-categories',
+    'document-sub-categories': '/document-sub-categories',
+  };
   @override
   Widget build(BuildContext context) {
+    final MutableDateTimeRange timeRange = MutableDateTimeRange();
+    List<List<String>> filterResult = [];
     return ElevatedButton(
         onPressed: () {
           showDialog(
@@ -67,7 +65,7 @@ class _FilterByState extends State<FilterBy> {
               return AlertDialog(
                 title: const Text('Filter By:'),
                 content: FutureBuilder(
-                  future: fetchFilter(),
+                  future: fetchFilter(filterEndpoints),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const CircularProgressIndicator();
@@ -110,7 +108,7 @@ class _FilterByState extends State<FilterBy> {
                         },
                       );
                       filterContent.add(DateTimeRangePicker(
-                        mutableDateTimeRange: _timeRange,
+                        mutableDateTimeRange: timeRange,
                       ));
 
                       return Container(
@@ -131,7 +129,7 @@ class _FilterByState extends State<FilterBy> {
                       child: const Text('Cancel')),
                   TextButton(
                       onPressed: () {
-                        widget.refreshDatasource();
+                        refreshDatasource();
                         Navigator.pop(context, 'Apply');
                       },
                       child: const Text('Apply'))

@@ -100,6 +100,7 @@ class NoticeAPI extends DataTableSourceAsync {
     ).toList();
   }
 
+  final CustomTableFilter _filters = CustomTableFilter();
   Future<void> fetchData(int startIndex, int count,
       [CustomTableFilter? filter]) async {
     // TODO: implement getData one API finish
@@ -124,13 +125,24 @@ class NoticeAPI extends DataTableSourceAsync {
     }
   }
 
-  CustomTableFilter? _filters;
+  @override
+  Widget get header => Header(
+        filter: _filters,
+        refreshDatasource: refreshDatasource,
+      );
+}
 
-  Widget get _header {
+class Header extends StatelessWidget {
+  const Header(
+      {super.key, required this.filter, required this.refreshDatasource});
+  final CustomTableFilter filter;
+  final Function refreshDatasource;
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         const Text(
-          'My Notifications',
+          "Documents",
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -140,19 +152,21 @@ class NoticeAPI extends DataTableSourceAsync {
           width: 10,
         ),
         const SendANoticeButton(),
-        // TODO: implement search function
         const Spacer(),
-        SearchWidget(),
+        SearchBarWidget(
+          filter: filter,
+          refreshDatasource: refreshDatasource,
+        ),
         const SizedBox(
           width: 10,
         ),
-        const FilterBy(),
+        FilterBy(
+          filter: filter,
+          refreshDatasource: refreshDatasource,
+        ),
       ],
     );
   }
-
-  @override
-  Widget get header => _header;
 }
 
 class SendANoticeButton extends StatelessWidget {
@@ -187,23 +201,6 @@ class SendANoticeButton extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class SearchWidget extends StatelessWidget {
-  SearchWidget({super.key});
-
-  final TextEditingController _textEditingController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return SearchBar(
-      constraints: const BoxConstraints(
-        maxWidth: 360,
-      ),
-      leading: const Icon(Icons.search),
-      controller: _textEditingController,
     );
   }
 }

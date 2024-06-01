@@ -99,13 +99,15 @@ class DocumentAPI extends DataTableSourceAsync {
   get showCheckBox => false;
   final CustomTableFilter _filters = CustomTableFilter();
 
-  Future<void> fetchData(int startIndex, int count,
-      [CustomTableFilter? filter]) async {
+  Future<void> fetchData(
+      int startIndex, int count, CustomTableFilter filter) async {
     try {
       Map<String, String> queryParameters = {
         "offset": startIndex.toString(),
         "limit": count.toString()
       };
+      queryParameters.addAll(filter.toJSON());
+      debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/documents',
           apiName: 'AmplifyCrewAPI', queryParameters: queryParameters);
 
@@ -119,6 +121,7 @@ class DocumentAPI extends DataTableSourceAsync {
         tempList.add(Document.fromJSON(row));
       }
       _documents = tempList;
+
       debugPrint("finished fetch table data");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');

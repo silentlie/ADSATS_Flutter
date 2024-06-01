@@ -113,16 +113,16 @@ class CustomTableFilter {
     this.archived = false,
     this.createdTimeRange,
   });
-  Map<String, dynamic> toJSON() {
-    Map<String, dynamic> tempJson = {};
+  Map<String, String> toJSON() {
+    Map<String, String> tempJson = {};
     if (search != null) {
-      tempJson["search"] = "%25${search!}%25";
+      tempJson["search"] = "%${search!}%";
     }
     if (sortColumn != null) {
       tempJson["sort_column"] = sortColumn!;
-      tempJson["asc"] = sortAscending;
+      tempJson["asc"] = sortAscending.toString();
     }
-    tempJson["archived"] = archived;
+    tempJson["archived"] = archived.toString();
     return tempJson;
   }
 }
@@ -190,6 +190,7 @@ class SearchBarWidget extends StatefulWidget {
 }
 
 class _SearchBarWidgetState extends State<SearchBarWidget> {
+  final TextEditingController _textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SearchBar(
@@ -197,7 +198,9 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
         maxWidth: 360,
       ),
       leading: const Icon(Icons.search),
+      controller: _textEditingController,
       onSubmitted: (value) {
+        _textEditingController.text = value;
         widget.filter.search = value;
         widget.refreshDatasource();
       },
@@ -237,5 +240,3 @@ DataCell cellFor(Object? data) {
   }
   return DataCell(widget);
 }
-
-
