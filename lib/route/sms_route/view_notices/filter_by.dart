@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class FilterBy extends StatefulWidget {
