@@ -1,3 +1,4 @@
+import 'package:adsats_flutter/route/sms_route/view_notices/filter_by.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
@@ -145,12 +146,7 @@ class NoticeAPI extends DataTableSourceAsync {
         const SizedBox(
           width: 10,
         ),
-        ElevatedButton(
-          onPressed: () {
-            // TODO: implement filter function
-          },
-          child: const Text("Filter By"),
-        ),
+        const FilterBy(),
       ],
     );
   }

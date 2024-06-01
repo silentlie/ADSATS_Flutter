@@ -49,6 +49,7 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   multi_dropdown: ^2.1.4
   file_picker: ^8.0.3
+  multi_select_flutter: ^4.1.3
 
 dev_dependencies:
   flutter_test:
