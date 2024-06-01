@@ -2,19 +2,13 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 
 import 'package:adsats_flutter/abstract_data_table_async.dart';
+import 'search_widget.dart';
 
 class AircraftsAPI extends DataTableSourceAsync {
   AircraftsAPI();
   @override
   get showCheckBox => false;
   CustomTableFilter? _filters;
-  @override
-  CustomTableFilter? get filters => _filters;
-  @override
-  set filters(CustomTableFilter? newFilters) {
-    filters = newFilters;
-    refreshDatasource();
-  }
 
   @override
   List<DataColumn> get columns {
@@ -64,7 +58,7 @@ class AircraftsAPI extends DataTableSourceAsync {
   @override
   Future<AsyncRowsResponse> getRows(int startIndex, int count) async {
     // implement filtering
-    await fetchData(startIndex, count, filters);
+    await fetchData(startIndex, count, _filters);
     AsyncRowsResponse response = AsyncRowsResponse(totalRecords, rows);
     return response;
   }
@@ -84,16 +78,7 @@ class AircraftsAPI extends DataTableSourceAsync {
       const AddNewCrewButton(),
       const Spacer(),
       // TODO: implement search function
-      const SizedBox(
-        width: 250,
-        child: TextField(
-          decoration: InputDecoration(
-            hintText: 'Search',
-            suffixIcon: Icon(Icons.search),
-            border: OutlineInputBorder(),
-          ),
-        ),
-      ),
+      SearchWidget(),
       const SizedBox(
         width: 10,
       ),
@@ -171,3 +156,4 @@ List<Map<String, String>> planeData = [
   {'name': 'Plane 2', 'description': 'Description of Plane 2'},
   {'name': 'Plane 3', 'description': 'Description of Plane 3'},
 ];
+

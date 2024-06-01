@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
+import 'recepients.dart';
 
 class HazardReport extends StatelessWidget {
   const HazardReport({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  SingleChildScrollView(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: const Text(
-                  'Send a notice - Hazard report',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+    return SingleChildScrollView(
+      child: Column(children: [
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              child: const Text(
+                'Send a notice - Hazard report',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ],
-          ),
-          const HazardReportForm(),
-        ]
-      ),
+            ),
+          ],
+        ),
+        const HazardReportForm(),
+      ]),
     );
   }
 }
@@ -37,6 +36,12 @@ class HazardReportForm extends StatelessWidget {
     return const Form(
       child: Column(
         children: [
+          Row(children: [
+            RoleRecipientsMultiSelect(),
+            PlanesRecepientsMultiSelect(),
+            RecepientMultiSelect()
+          ]),
+          Divider(),
           Row(
             children: [
               AuthorTextField(),
@@ -44,12 +49,10 @@ class HazardReportForm extends StatelessWidget {
               ReportType(),
             ],
           ),
-          Row(
-            children: [
-              SubjectTextField(),
-              LocationTextField(),
-            ]
-          ),
+          Row(children: [
+            SubjectTextField(),
+            LocationTextField(),
+          ]),
           Row(
             children: [
               DescribeTextField(),
@@ -102,7 +105,8 @@ class ActionButtonsWidget extends StatelessWidget {
           child: const Row(
             children: [
               Icon(Icons.mail), // Replace 'some_icon' with the desired icon
-              SizedBox(width: 5), // Adjust the spacing between the icon and text
+              SizedBox(
+                  width: 5), // Adjust the spacing between the icon and text
               Text('Send Notification'),
             ],
           ),
@@ -121,7 +125,7 @@ class SeverityOfConsequenceWidget extends StatelessWidget {
       // width: MediaQuery.of(context).size.width * 0.4,
       width: 700,
       padding: const EdgeInsets.all(8),
-      child:  Column(
+      child: Column(
         children: [
           const Text(
             'What do you consider to be the worst possible consequence of this event happening? Click on the table below.',
@@ -130,11 +134,8 @@ class SeverityOfConsequenceWidget extends StatelessWidget {
             ),
           ),
           Container(
-            decoration: BoxDecoration(
-              border: Border.all()
-            ),
-            child: const SeverityOfConsequenceTable()
-          )
+              decoration: BoxDecoration(border: Border.all()),
+              child: const SeverityOfConsequenceTable())
         ],
       ),
     );
@@ -152,7 +153,7 @@ class LikelihoodofOccurrenceWidget extends StatelessWidget {
       // width: MediaQuery.of(context).size.width * 0.4,
       width: 650,
       padding: const EdgeInsets.all(8),
-      child:  Column(
+      child: Column(
         children: [
           const Text(
             'In your opinion, what is the likelihood of the occurrence happening again? Click on the table below.',
@@ -162,11 +163,8 @@ class LikelihoodofOccurrenceWidget extends StatelessWidget {
           ),
           const Text(''),
           Container(
-            decoration: BoxDecoration(
-              border: Border.all()
-            ),
-            child: const LikelihoodOfOccurrenceTable()
-            )
+              decoration: BoxDecoration(border: Border.all()),
+              child: const LikelihoodOfOccurrenceTable())
         ],
       ),
     );
@@ -204,19 +202,27 @@ class CommentsTextField extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: const TextField(
         decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          label: Text('Interim action/comments')
-        ),
+            border: OutlineInputBorder(),
+            label: Text('Interim action/comments')),
       ),
     );
   }
 }
 
-class RiskSeverityWidget extends StatelessWidget {
+class RiskSeverityWidget extends StatefulWidget {
   const RiskSeverityWidget({
     super.key,
   });
 
+  @override
+  State<RiskSeverityWidget> createState() => _RiskSeverityWidgetState();
+}
+
+List<String> riskTolerability = ['Unacceptable', 'Review', 'Acceptable'];
+List<int> likelihood = [1, 2, 3, 4, 5];
+List<int> severity = [1, 2, 3, 4, 5];
+
+class _RiskSeverityWidgetState extends State<RiskSeverityWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -233,13 +239,13 @@ class RiskSeverityWidget extends StatelessWidget {
             message: 'Risk Severity image',
             child: Icon(
               Icons.info_outline,
-              size: 20, 
+              size: 20,
             ),
           ),
           SizedBox(
             width: 200,
             child: TextField(
-              controller: TextEditingController(text: 'Unacceptable'),
+              controller: TextEditingController(text: riskTolerability[1]),
               enabled: false,
               readOnly: true,
               decoration: const InputDecoration(
@@ -264,9 +270,9 @@ class MitigationTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return const TextField(
       decoration: InputDecoration(
-        label: Text('In your opinion, how could the hazard or event be mitigated? (optional)'),
-        border: OutlineInputBorder()
-      ),
+          label: Text(
+              'In your opinion, how could the hazard or event be mitigated? (optional)'),
+          border: OutlineInputBorder()),
       maxLines: 3,
     );
   }
@@ -284,9 +290,8 @@ class DescribeTextField extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.4,
       child: const TextField(
         decoration: InputDecoration(
-          label: Text('Describe the Hazard or the Event'),
-          border: OutlineInputBorder()
-        ),
+            label: Text('Describe the Hazard or the Event'),
+            border: OutlineInputBorder()),
         maxLines: 5,
       ),
     );
@@ -305,9 +310,7 @@ class LocationTextField extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.4,
       child: const TextField(
         decoration: InputDecoration(
-          label: Text('Location'),
-          border: OutlineInputBorder()
-        ),
+            label: Text('Location'), border: OutlineInputBorder()),
       ),
     );
   }
@@ -325,9 +328,7 @@ class SubjectTextField extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.4,
       child: const TextField(
         decoration: InputDecoration(
-          label: Text('Subject'),
-          border: OutlineInputBorder()
-        ),
+            label: Text('Subject'), border: OutlineInputBorder()),
       ),
     );
   }
@@ -345,10 +346,9 @@ class AuthorTextField extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.3,
       child: const TextField(
         decoration: InputDecoration(
-          label: Text('Form completed by'),
-          border: OutlineInputBorder(),
-          suffixIcon: Icon(Icons.search)
-        ),
+            label: Text('Form completed by'),
+            border: OutlineInputBorder(),
+            suffixIcon: Icon(Icons.search)),
       ),
     );
   }
@@ -363,7 +363,7 @@ class DateFormField extends StatelessWidget {
       padding: const EdgeInsets.all(5),
       width: MediaQuery.of(context).size.width * 0.3,
       child: InputDatePickerFormField(
-        initialDate: DateTime.now(),
+        initialDate: DateTime.timestamp(),
         firstDate: DateTime(2020),
         lastDate: DateTime.now(),
       ),
@@ -379,7 +379,6 @@ class ReportType extends StatefulWidget {
 }
 
 class _ReportTypeState extends State<ReportType> {
-
   @override
   Widget build(BuildContext context) {
     return const SizedBox(
@@ -388,9 +387,7 @@ class _ReportTypeState extends State<ReportType> {
         children: [
           Text(
             'Type of report:',
-            style: TextStyle(
-              fontWeight: FontWeight.bold
-            ),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
           Radio(value: false, groupValue: ReportType(), onChanged: null),
           Text(
@@ -420,9 +417,7 @@ class _MitigationState extends State<Mitigation> {
       children: [
         Text(
           'Include mitigation comment?',
-          style: TextStyle(
-            fontWeight: FontWeight.bold
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         Radio(value: false, groupValue: ReportType(), onChanged: null),
         Text(
@@ -437,18 +432,19 @@ class _MitigationState extends State<Mitigation> {
   }
 }
 
-
 class SeverityOfConsequenceTable extends StatefulWidget {
   const SeverityOfConsequenceTable({super.key});
 
   @override
-  State<SeverityOfConsequenceTable> createState() => _SeverityOfConsequenceTableState();
+  State<SeverityOfConsequenceTable> createState() =>
+      _SeverityOfConsequenceTableState();
 }
 
-class _SeverityOfConsequenceTableState extends State<SeverityOfConsequenceTable> {
+class _SeverityOfConsequenceTableState
+    extends State<SeverityOfConsequenceTable> {
   late List<bool> _selected;
   late List<DataRow> _rows;
-  
+
   @override
   void initState() {
     super.initState();
@@ -466,11 +462,31 @@ class _SeverityOfConsequenceTableState extends State<SeverityOfConsequenceTable>
 
   List<DataRow> _createRows() {
     List<Map<String, dynamic>> data = [
-      {"definition": "Catastrophic", "meaning": "Results in an accident, death or equipment destroyed", "value": "5"},
-      {"definition": "Hazardous", "meaning": "Serious injury or major equipment damage", "value": "4"},
-      {"definition": "Major", "meaning": "Serious incident or injury", "value": "3"},
-      {"definition": "Minor", "meaning": "Results in a minor incident", "value": "2"},
-      {"definition": "Negligible", "meaning": "Nuisance of little consequences", "value": "1"},
+      {
+        "definition": "Catastrophic",
+        "meaning": "Results in an accident, death or equipment destroyed",
+        "value": "5"
+      },
+      {
+        "definition": "Hazardous",
+        "meaning": "Serious injury or major equipment damage",
+        "value": "4"
+      },
+      {
+        "definition": "Major",
+        "meaning": "Serious incident or injury",
+        "value": "3"
+      },
+      {
+        "definition": "Minor",
+        "meaning": "Results in a minor incident",
+        "value": "2"
+      },
+      {
+        "definition": "Negligible",
+        "meaning": "Nuisance of little consequences",
+        "value": "1"
+      },
     ];
 
     return data.asMap().entries.map<DataRow>((entry) {
@@ -486,7 +502,8 @@ class _SeverityOfConsequenceTableState extends State<SeverityOfConsequenceTable>
         onSelectChanged: (bool? selected) {
           _selectRow(index);
         },
-        color: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+        color:
+            WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
           if (_selected[index]) return Colors.lightBlue.withOpacity(0.5);
           return Colors.transparent; // Use default color when not selected
         }),
@@ -497,9 +514,7 @@ class _SeverityOfConsequenceTableState extends State<SeverityOfConsequenceTable>
   @override
   Widget build(BuildContext context) {
     return DataTable(
-      headingTextStyle: const TextStyle(
-        fontWeight: FontWeight.bold
-      ),
+      headingTextStyle: const TextStyle(fontWeight: FontWeight.bold),
       showCheckboxColumn: false,
       columns: const [
         DataColumn(label: Text('Aviation definition')),
@@ -515,13 +530,15 @@ class LikelihoodOfOccurrenceTable extends StatefulWidget {
   const LikelihoodOfOccurrenceTable({super.key});
 
   @override
-  State<LikelihoodOfOccurrenceTable> createState() => _LikelihoodOfOccurrenceTableState();
+  State<LikelihoodOfOccurrenceTable> createState() =>
+      _LikelihoodOfOccurrenceTableState();
 }
 
-class _LikelihoodOfOccurrenceTableState extends State<LikelihoodOfOccurrenceTable> {
+class _LikelihoodOfOccurrenceTableState
+    extends State<LikelihoodOfOccurrenceTable> {
   late List<bool> _selected;
   late List<DataRow> _rows;
-  
+
   @override
   void initState() {
     super.initState();
@@ -539,11 +556,31 @@ class _LikelihoodOfOccurrenceTableState extends State<LikelihoodOfOccurrenceTabl
 
   List<DataRow> _createRows() {
     List<Map<String, dynamic>> data = [
-      {"definition": "Frequent", "meaning": "Likely to occur many time", "value": "5"},
-      {"definition": "Occassional", "meaning": "Likely to occur sometimes", "value": "4"},
-      {"definition": "Remote", "meaning": "Unlikely to occur but possible", "value": "3"},
-      {"definition": "Improbable", "meaning": "Very unlikely to occur", "value": "2"},
-      {"definition": "Extremely improbable", "meaning": "Almost inconceivable that the event will occur", "value": "1"},
+      {
+        "definition": "Frequent",
+        "meaning": "Likely to occur many time",
+        "value": "5"
+      },
+      {
+        "definition": "Occassional",
+        "meaning": "Likely to occur sometimes",
+        "value": "4"
+      },
+      {
+        "definition": "Remote",
+        "meaning": "Unlikely to occur but possible",
+        "value": "3"
+      },
+      {
+        "definition": "Improbable",
+        "meaning": "Very unlikely to occur",
+        "value": "2"
+      },
+      {
+        "definition": "Extremely improbable",
+        "meaning": "Almost inconceivable that the event will occur",
+        "value": "1"
+      },
     ];
 
     return data.asMap().entries.map<DataRow>((entry) {
@@ -559,7 +596,8 @@ class _LikelihoodOfOccurrenceTableState extends State<LikelihoodOfOccurrenceTabl
         onSelectChanged: (bool? selected) {
           _selectRow(index);
         },
-        color: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+        color:
+            WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
           if (_selected[index]) return Colors.lightBlue.withOpacity(0.5);
           return Colors.transparent; // Use default color when not selected
         }),
@@ -570,9 +608,7 @@ class _LikelihoodOfOccurrenceTableState extends State<LikelihoodOfOccurrenceTabl
   @override
   Widget build(BuildContext context) {
     return DataTable(
-      headingTextStyle: const TextStyle(
-        fontWeight: FontWeight.bold
-      ),
+      headingTextStyle: const TextStyle(fontWeight: FontWeight.bold),
       showCheckboxColumn: false,
       columns: const [
         DataColumn(label: Text('Qualitative definition')),

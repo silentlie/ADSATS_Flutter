@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/hazard_report_form.dart';
-import 'package:adsats_flutter/route/sms_route/send_notices/safety_Notice.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/notice_safety.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/send_a_notice.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -20,8 +20,8 @@ class _SendNoticesState extends State<SendNotices> {
       label: Text("Notice to crew"),
     ),
     const NavigationRailDestination(
-      icon: Icon(FontAwesomeIcons.helmetSafety),
-      selectedIcon: Icon(FontAwesomeIcons.helmetSafety),
+      icon: Icon(Icons.gpp_maybe_outlined),
+      selectedIcon: Icon(Icons.gpp_maybe),
       label: Text("Safety notice"),
     ),
     const NavigationRailDestination(
@@ -52,8 +52,8 @@ class _SendNoticesState extends State<SendNotices> {
       label: "Hazard Report",
     ),
     const NavigationDestination(
-      icon: Icon(Icons.report),
-      selectedIcon: Icon(Icons.report),
+      icon: Icon(Icons.document_scanner_outlined),
+      selectedIcon: Icon(Icons.document_scanner),
       label: "BCAA Aircraft Occurrence Reports",
     ),
   ];
@@ -110,10 +110,11 @@ class _SendNoticesState extends State<SendNotices> {
             const VerticalDivider(thickness: 1, width: 1),
             Expanded(
               child: Center(
-                  child: Container(
-                constraints: const BoxConstraints(maxWidth: 1500),
-                child: buildPages(_selectedIndex),
-              )),
+                child: Container(
+                  constraints: const BoxConstraints(maxWidth: 1500),
+                  child: buildPages(_selectedIndex),
+                ),
+              ),
             ),
           ],
         );

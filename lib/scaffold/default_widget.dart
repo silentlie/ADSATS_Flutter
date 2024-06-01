@@ -5,10 +5,10 @@ import 'package:go_router/go_router.dart';
 class DefaultTextLogo extends StatelessWidget {
   const DefaultTextLogo({
     super.key,
-    this.appBarHeight,
+    // this.appBarHeight,
   });
 
-  final double? appBarHeight;
+  // final double? appBarHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +28,10 @@ class DefaultTextLogo extends StatelessWidget {
 }
 
 class DefaultLogoWidget extends StatelessWidget {
-  const DefaultLogoWidget({super.key, this.height});
-  final double? height;
+  const DefaultLogoWidget({super.key});
+
+  // const DefaultLogoWidget({super.key, this.height});
+  // final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class DefaultLogoWidget extends StatelessWidget {
         },
         child: SvgPicture.asset(
           'svg/ADSATS-Logo.svg',
-          height: height,
+          height: 40,
         ),
       ),
     );

@@ -1,12 +1,12 @@
+import 'dart:convert';
+
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
-import 'dart:convert';
 import 'package:go_router/go_router.dart';
-import 'package:multi_dropdown/multiselect_dropdown.dart';
 
-import 'package:adsats_flutter/route/documents_route/filter_by.dart';
 import 'package:adsats_flutter/abstract_data_table_async.dart';
+import 'package:adsats_flutter/route/documents_route/filter_by.dart';
 
 class Document {
   Document({
@@ -15,7 +15,6 @@ class Document {
     required bool archived,
     required String email,
     required DateTime dateCreated,
-    DateTime? lastModified,
     required String subcategory,
     required String category,
     String? aircraft,
@@ -24,7 +23,6 @@ class Document {
         _archived = archived,
         _email = email,
         _dateCreated = dateCreated,
-        _lastModified = lastModified,
         _subcategory = subcategory,
         _category = category,
         _aircraft = aircraft;
@@ -34,8 +32,7 @@ class Document {
         _archived = intToBool(json["archived"] as int),
         _email = json["email"] as String,
         _dateCreated = DateTime.parse(json["created_at"]),
-        _lastModified = DateTime.parse(json["modified_at"]),
-        _subcategory = json["subcategory"] as String,
+        _subcategory = json["sub_category"] as String,
         _category = json["category"] as String,
         _aircraft = json["aircrafts"] as String?;
   final int _id;
@@ -43,7 +40,6 @@ class Document {
   final bool? _archived;
   final String _email;
   final DateTime _dateCreated;
-  final DateTime? _lastModified;
   final String _category;
   final String _subcategory;
   final String? _aircraft;
@@ -53,7 +49,6 @@ class Document {
   bool? get archived => _archived;
   String get email => _email;
   DateTime get dateCreated => _dateCreated;
-  DateTime? get lastModified => _lastModified;
   String get subcategory => _subcategory;
   String get category => _category;
   String? get aircraft => _aircraft;
@@ -63,27 +58,39 @@ class Document {
   static bool intToBool(int value) {
     return value != 0;
   }
+
+  DataRow toDataRow() {
+    return DataRow(cells: <DataCell>[
+      cellFor(fileName),
+      cellFor(email),
+      cellFor(archived),
+      cellFor(dateCreated),
+      cellFor(subcategory),
+      cellFor(category),
+      cellFor(aircraft),
+      cellFor("actions"),
+    ]);
+  }
+
+  static List<String> columnNames = [
+    "File name",
+    "Author",
+    "Archived",
+    "Date",
+    "Sub category",
+    "Category",
+    "Aircrafts",
+    "Actions",
+  ];
 }
 
 class DocumentAPI extends DataTableSourceAsync {
   DocumentAPI();
 
-  List<String> get columnNames => [
-        "Name",
-        //"Author",
-        "Archived",
-        "Date",
-        //"Last Modified",
-        "Sub category",
-        "Category",
-        "Aircrafts",
-        "Actions",
-      ];
-
   @override
   List<DataColumn> get columns {
-    return List.generate(columnNames.length, (index) {
-      String columnName = columnNames[index];
+    return List.generate(Document.columnNames.length, (index) {
+      String columnName = Document.columnNames[index];
       return DataColumn(
           label: Text(
             columnName,
@@ -94,24 +101,20 @@ class DocumentAPI extends DataTableSourceAsync {
 
   @override
   get showCheckBox => false;
-  CustomTableFilter? _filters;
-  @override
-  CustomTableFilter? get filters => _filters;
-  @override
-  set filters(CustomTableFilter? newFilters) {
-    filters = newFilters;
-    refreshDatasource();
-  }
+  final CustomTableFilter _filters = CustomTableFilter();
 
-  Future<void> fetchData(int startIndex, int count,
-      [CustomTableFilter? filter]) async {
+  Future<void> fetchData(
+      int startIndex, int count, CustomTableFilter filter) async {
     try {
+      Map<String, String> queryParameters = {
+        "offset": startIndex.toString(),
+        "limit": count.toString()
+      };
+      queryParameters.addAll(filter.toJSON());
+      debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/documents',
-          apiName: 'AmplifyCrewAPI',
-          queryParameters: {
-            "offset": startIndex.toString(),
-            "limit": count.toString()
-          });
+          apiName: 'AmplifyCrewAPI', queryParameters: queryParameters);
+
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
       Map<String, dynamic> rawData = jsonDecode(jsonStr);
@@ -122,12 +125,14 @@ class DocumentAPI extends DataTableSourceAsync {
         tempList.add(Document.fromJSON(row));
       }
       _documents = tempList;
+
+      debugPrint("finished fetch table data");
     } on ApiException catch (e) {
-      safePrint('GET call failed: $e');
+      debugPrint('GET call failed: $e');
       _totalRecords = 0;
       _documents = [];
     } on Error catch (e) {
-      safePrint('Error: $e');
+      debugPrint('Error: $e');
       rethrow;
     }
   }
@@ -138,45 +143,8 @@ class DocumentAPI extends DataTableSourceAsync {
   int get totalRecords => _totalRecords;
 
   List<DataRow> get rows {
-    _documents;
-
     return _documents.map((document) {
-      return DataRow(cells: <DataCell>[
-        cellFor(document.fileName),
-        //cellFor(document.email),
-        //cellFor(document.archived),
-        DataCell(
-          Builder(
-            builder: (context) {
-              final theme = Theme.of(context);
-              return Container(
-                width: 75,
-                height: 20,
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(20),
-                  color: document.archived!
-                      ? Colors.grey
-                      : theme.colorScheme.primaryContainer,
-                ),
-                child: Center(
-                  child: Text(
-                    document.archived! ? "Archived" : "Active",
-                    style:
-                        TextStyle(color: theme.colorScheme.onPrimaryContainer),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        cellFor(document.dateCreated),
-        //cellFor(document.lastModified),
-        cellFor(document.subcategory),
-        cellFor(document.category),
-        cellFor(document.aircraft),
-        cellFor("actions"),
-      ]);
+      return document.toDataRow();
     }).toList();
   }
 
@@ -184,69 +152,55 @@ class DocumentAPI extends DataTableSourceAsync {
   Future<AsyncRowsResponse> getRows(int startIndex, int count) async {
     try {
       // implement filtering
-      await fetchData(startIndex, count, filters);
+      await fetchData(startIndex, count, _filters);
       AsyncRowsResponse response = AsyncRowsResponse(totalRecords, rows);
       return response;
     } on Error catch (e) {
-      safePrint('Error: $e');
+      debugPrint('Error: $e');
       rethrow;
     }
   }
 
-  final Widget _header = const Row(
-    children: [
-      Text(
-        "Documents",
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      SizedBox(
-        width: 10,
-      ),
-      AddADocumentButton(),
-      Spacer(),
-      SearchTextField(),
-      SizedBox(
-        width: 10,
-      ),
-      FilterBy(),
-    ],
-  );
   @override
-  Widget get header => _header;
+  Widget get header => Header(
+        filter: _filters,
+        refreshDatasource: refreshDatasource,
+      );
 }
 
-class FilterBy extends StatelessWidget {
-  const FilterBy({super.key});
-
+class Header extends StatelessWidget {
+  const Header(
+      {super.key, required this.filter, required this.refreshDatasource});
+  final CustomTableFilter filter;
+  final Function refreshDatasource;
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () => showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => const FilterByAlertDialog()),
-        child: const Text("Filter By"));
-  }
-}
-
-class SearchTextField extends StatelessWidget {
-  const SearchTextField({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox(
-      width: 250,
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: 'Search',
-          suffixIcon: Icon(Icons.search),
-          border: OutlineInputBorder(),
+    return Row(
+      children: [
+        const Text(
+          "Documents",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-      ),
+        const SizedBox(
+          width: 10,
+        ),
+        const AddADocumentButton(),
+        const Spacer(),
+        SearchBarWidget(
+          filter: filter,
+          refreshDatasource: refreshDatasource,
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        FilterBy(
+          filter: filter,
+          refreshDatasource: refreshDatasource,
+        ),
+      ],
     );
   }
 }
@@ -266,7 +220,7 @@ class AddADocumentButton extends StatelessWidget {
         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
-            side: const BorderSide(color: Colors.black),
+            side: const BorderSide(color: Color(0xFF05ABC4)),
           ),
         ),
       ),
