@@ -1,4 +1,3 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
 
@@ -22,7 +21,7 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
   @override
   void didChangeDependencies() {
     // need to check _dataSource has changed based on filter
-    safePrint("didChangeDependencies");
+    debugPrint("didChangeDependencies");
     setState(
       () {
         _initialRow = 0;
@@ -63,7 +62,7 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
         _rowsPerPage = value!;
       },
       onPageChanged: (rowIndex) {
-        safePrint(rowIndex / _rowsPerPage);
+        debugPrint((rowIndex / _rowsPerPage).toString());
       },
       // can add more widget if need
       header: dataSource.header,
@@ -97,42 +96,6 @@ abstract class DataTableSourceAsync extends AsyncDataTableSource {
   bool get showCheckBox;
   int get totalRecords;
   Widget get header;
-  DataCell cellFor(Object? data) {
-    Widget widget = const Text("");
-    if (data == null) {
-      widget = const Text("");
-    } else if (data is DateTime) {
-      widget = Text(
-          '${data.year}-${data.month.toString().padLeft(2, '0')}-${data.day.toString().padLeft(2, '0')}');
-    } else if (data is bool) {
-      widget = Container(
-        width: 60,
-        height: 20,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(20),
-          color: data ? Colors.green : Colors.red,
-        ),
-        child: Center(child: Text(data ? "Yes" : "No")),
-      );
-    }
-    // need to fix
-    else if (data is List<String>) {
-      widget = Row(
-          children: data.map(
-        (string) {
-          return Text(string);
-        },
-      ).toList());
-    } else {
-      widget = Text(data.toString());
-    }
-    return DataCell(widget);
-  }
-
-  bool intToBool(int value) {
-    return value != 0;
-  }
 }
 
 class CustomTableFilter {
@@ -140,28 +103,26 @@ class CustomTableFilter {
   bool sortAscending = true;
 
   String? search;
-  bool? status;
+  bool? archived = false;
 
   DateTimeRange? createdTimeRange;
   DateTimeRange? dueTimeRange;
-  CustomTableFilter.empty() : sortAscending = true;
   CustomTableFilter({
     this.sortColumn,
     this.sortAscending = true,
+    this.archived = false,
     this.createdTimeRange,
   });
-  Map<String, dynamic> toJSON() {
-    Map<String, dynamic> tempJson = {};
+  Map<String, String> toJSON() {
+    Map<String, String> tempJson = {};
     if (search != null) {
-      tempJson["search"] = "%25${search!}%25";
+      tempJson["search"] = "%${search!}%";
     }
     if (sortColumn != null) {
       tempJson["sort_column"] = sortColumn!;
-      tempJson["asc"] = sortAscending;
+      tempJson["asc"] = sortAscending.toString();
     }
-    if (status != null) {
-      tempJson["status"] = status;
-    }
+    tempJson["archived"] = archived.toString();
     return tempJson;
   }
 }
@@ -217,4 +178,65 @@ class _DateTimeRangePickerState extends State<DateTimeRangePicker> {
       ),
     );
   }
+}
+
+class SearchBarWidget extends StatefulWidget {
+  const SearchBarWidget(
+      {super.key, required this.filter, required this.refreshDatasource});
+  final CustomTableFilter filter;
+  final Function refreshDatasource;
+  @override
+  State<SearchBarWidget> createState() => _SearchBarWidgetState();
+}
+
+class _SearchBarWidgetState extends State<SearchBarWidget> {
+  final TextEditingController _textEditingController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    _textEditingController.text = widget.filter.search ?? '';
+    return SearchBar(
+      constraints: const BoxConstraints(
+        maxWidth: 360,
+      ),
+      leading: const Icon(Icons.search),
+      controller: _textEditingController,
+      onSubmitted: (value) {
+        widget.filter.search = value;
+        widget.refreshDatasource();
+      },
+    );
+  }
+}
+
+DataCell cellFor(Object? data) {
+  Widget widget = const Text("");
+  if (data == null) {
+    widget = const Text("");
+  } else if (data is DateTime) {
+    widget = Text(
+        '${data.year}-${data.month.toString().padLeft(2, '0')}-${data.day.toString().padLeft(2, '0')}');
+  } else if (data is bool) {
+    widget = Container(
+      width: 60,
+      height: 20,
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.circular(20),
+        color: data ? Colors.green : Colors.red,
+      ),
+      child: Center(child: Text(data ? "Yes" : "No")),
+    );
+  }
+  // need to fix
+  else if (data is List<String>) {
+    widget = Row(
+        children: data.map(
+      (string) {
+        return Text(string);
+      },
+    ).toList());
+  } else {
+    widget = Text(data.toString());
+  }
+  return DataCell(widget);
 }
