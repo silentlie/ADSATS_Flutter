@@ -225,35 +225,3 @@ class AddADocumentButton extends StatelessWidget {
   }
 }
 
-class SearchWidget extends StatelessWidget {
-  SearchWidget({super.key});
-
-  final TextEditingController _textEditingController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return SearchBar(
-      constraints: const BoxConstraints(
-        maxWidth: 360,
-      ),
-      leading: const Icon(Icons.search),
-      controller: _textEditingController,
-    );
-  }
-}
-
-class FilterByButton extends StatelessWidget {
-  const FilterByButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () => showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => const FilterByAlertDialog()),
-      child: const Text("Filter By"),
-    );
-  }
-}
