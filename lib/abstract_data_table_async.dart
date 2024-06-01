@@ -193,6 +193,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
   final TextEditingController _textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    _textEditingController.text = widget.filter.search ?? '';
     return SearchBar(
       constraints: const BoxConstraints(
         maxWidth: 360,
@@ -200,7 +201,6 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
       leading: const Icon(Icons.search),
       controller: _textEditingController,
       onSubmitted: (value) {
-        _textEditingController.text = value;
         widget.filter.search = value;
         widget.refreshDatasource();
       },
