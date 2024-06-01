@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/hazard_report_form.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/notice_safety.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/send_a_notice.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SendNotices extends StatefulWidget {
   const SendNotices({super.key});
