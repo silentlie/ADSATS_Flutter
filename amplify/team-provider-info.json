@@ -41,7 +41,9 @@
       },
       "api": {
         "AdminQueries": {},
-        "AmplifyAdminAPI": {}
+        "AmplifyAdminAPI": {},
+        "AmplifyFilterAPI": {},
+        "AmplifyAviationAPI": {}
       }
     }
   }
