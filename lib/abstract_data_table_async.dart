@@ -45,6 +45,7 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return AsyncPaginatedDataTable2(
       headingRowColor: WidgetStateColor.resolveWith(
           (states) => colorScheme.surfaceContainerHighest),

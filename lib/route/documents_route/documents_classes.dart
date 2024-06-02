@@ -41,6 +41,7 @@ class Document {
   final String _category;
   final String _subcategory;
   final String? _aircraft;
+
   int get id => _id;
   String get fileName => _fileName;
   bool get archived => _archived;
@@ -49,6 +50,9 @@ class Document {
   String get subcategory => _subcategory;
   String get category => _category;
   String? get aircraft => _aircraft;
+
+  String get archivedStatus => _archived == true ? 'Archived' : "Active";
+
   static bool? intToBool(int? value) {
     if (value == null) {
       return null;
