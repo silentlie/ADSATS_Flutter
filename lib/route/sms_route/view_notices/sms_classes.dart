@@ -155,7 +155,7 @@ class Header extends StatelessWidget {
         const SendANoticeButton(),
         const Spacer(),
         SearchBarWidget(
-          filter: filter,
+          filters: filter,
           refreshDatasource: refreshDatasource,
         ),
         const SizedBox(

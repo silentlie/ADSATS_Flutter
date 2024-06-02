@@ -116,12 +116,9 @@ class DocumentAPI extends DataTableSourceAsync {
       Map<String, dynamic> rawData = jsonDecode(jsonStr);
       _totalRecords = rawData["total_records"];
       final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
-      List<Document> tempList = [];
-      for (var row in rowsData) {
-        tempList.add(Document.fromJSON(row));
-      }
-      _documents = tempList;
 
+      _documents = [for (var row in rowsData) Document.fromJSON(row)];
+      debugPrint(_documents.length.toString());
       debugPrint("finished fetch table data");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
@@ -157,48 +154,44 @@ class DocumentAPI extends DataTableSourceAsync {
     }
   }
 
-  @override
-  Widget get header => Header(
-        filter: _filters,
-        refreshDatasource: refreshDatasource,
-      );
-}
+  Map<String, String> get filterEndpoints => {
+        'staff': '/crews',
+        // filter by roles could be more complex then it should
+        // 'roles': '/roles',
+        'aircrafts': '/aircrafts',
+        'categories': '/document-categories',
+        'sub-categories': '/document-sub-categories',
+      };
 
-class Header extends StatelessWidget {
-  const Header(
-      {super.key, required this.filter, required this.refreshDatasource});
-  final CustomTableFilter filter;
-  final Function refreshDatasource;
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Text(
-          "Documents",
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
+  Widget get header => Row(
+        children: [
+          const Text(
+            "Documents",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        const AddADocumentButton(),
-        const Spacer(),
-        SearchBarWidget(
-          filter: filter,
-          refreshDatasource: refreshDatasource,
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        FilterBy(
-          filter: filter,
-          refreshDatasource: refreshDatasource,
-        ),
-      ],
-    );
-  }
+          const SizedBox(
+            width: 10,
+          ),
+          const AddADocumentButton(),
+          const Spacer(),
+          SearchBarWidget(
+            filters: _filters,
+            refreshDatasource: refreshDatasource,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          FilterBy(
+            filters: _filters,
+            refreshDatasource: refreshDatasource,
+            filterEndpoints: filterEndpoints,
+          ),
+        ],
+      );
 }
 
 class AddADocumentButton extends StatelessWidget {
@@ -224,4 +217,3 @@ class AddADocumentButton extends StatelessWidget {
     );
   }
 }
-

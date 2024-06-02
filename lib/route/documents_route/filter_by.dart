@@ -8,10 +8,11 @@ import 'package:adsats_flutter/abstract_data_table_async.dart';
 
 class FilterBy extends StatelessWidget {
   const FilterBy(
-      {super.key, required this.filter, required this.refreshDatasource});
-  final CustomTableFilter filter;
+      {super.key, required this.filters, required this.refreshDatasource, required this.filterEndpoints});
+  final CustomTableFilter filters;
   final Function refreshDatasource;
-  Future<List<List<MultiSelectItem>>> fetchFilter(
+  final Map<String, String> filterEndpoints;
+  Future<Map<String, List<MultiSelectItem>>> fetchFilter(
       Map<String, String> filterEndpoints) async {
     try {
       // Function to make API requests and return the parsed response
@@ -34,9 +35,14 @@ class FilterBy extends StatelessWidget {
         return list.map((item) => MultiSelectItem(item, item)).toList();
       }
 
+      List<String> keys = filterEndpoints.keys.toList();
+      List<List<MultiSelectItem>> values =
+          results.map(mapToValueItemList).toList();
+      Map<String, List<MultiSelectItem>> mappedResults =
+          Map.fromIterables(keys, values);
       // Process the results
       safePrint("did fetch Filter");
-      return results.map(mapToValueItemList).toList();
+      return mappedResults;
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
       rethrow;
@@ -46,17 +52,16 @@ class FilterBy extends StatelessWidget {
     }
   }
 
-  final Map<String, String> filterEndpoints = const {
-    'crews': '/crews',
-    'roles': '/roles',
-    'aircrafts': '/aircrafts',
-    'document-categories': '/document-categories',
-    'document-sub-categories': '/document-sub-categories',
-  };
+  
   @override
   Widget build(BuildContext context) {
+    // time range for filter
     final MutableDateTimeRange timeRange = MutableDateTimeRange();
-    List<List<String>> filterResult = [];
+    // result of filter before click apply
+    Map<String, List<String>> filterResult = {};
+    // list of title of each filter
+    List<String> filterTitles = filterEndpoints.keys.toList();
+    // filter button, the visual can be customised
     return ElevatedButton(
         onPressed: () {
           showDialog(
@@ -68,50 +73,76 @@ class FilterBy extends StatelessWidget {
                   future: fetchFilter(filterEndpoints),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
+                      // loading widget can be customise
                       return const CircularProgressIndicator();
                     } else if (snapshot.hasError) {
+                      // can make it into a error widget for more visualise
                       return Text('Error: ${snapshot.error}');
                     } else if (snapshot.hasData) {
-                      List<List<MultiSelectItem>> filterData = snapshot.data!;
-                      filterResult =
-                          List.generate(filterData.length, (index) => []);
+                      // if data is fetch successfully
+                      Map<String, List<MultiSelectItem>> filterData =
+                          snapshot.data!;
+                      // generate MultiSelectDialogField based on how many filter in filterData
                       List<Widget> filterContent = List.generate(
                         filterData.length,
                         (index) {
-                          return MultiSelectDialogField(
-                            items: filterData[index],
-                            onConfirm: (selectedOptions) {
-                              filterResult[index] =
-                                  List<String>.from(selectedOptions);
-                            },
-                            searchable: true,
-                            dialogHeight: 200,
-                            dialogWidth: 400,
-                            itemsTextStyle:
-                                const TextStyle(color: Colors.amber),
-                            selectedItemsTextStyle:
-                                const TextStyle(color: Colors.blue),
-                            cancelText: const Text(
-                              "Cancel",
-                              style: TextStyle(color: Colors.amber),
-                            ),
-                            confirmText: const Text(
-                              "Confirm",
-                              style: TextStyle(color: Colors.blue),
-                            ),
-                            chipDisplay: MultiSelectChipDisplay(
-                              scroll: true,
-                              scrollBar:
-                                  HorizontalScrollBar(isAlwaysShown: true),
+                          // customise for visual, right now
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: MultiSelectDialogField(
+                              // get text based on index
+                              buttonText:
+                                  Text("Filter by ${filterTitles[index]}"),
+                              // get list of item from fetchData
+                              items: filterData[filterTitles[index]]!,
+                              // send selected item to filterResult
+                              onConfirm: (selectedOptions) {
+                                filterResult[filterTitles[index]] =
+                                    List<String>.from(selectedOptions);
+                              },
+                              searchable: true,
+                              // size of dialog after click each filter
+                              dialogHeight: 200,
+                              dialogWidth: 400,
+                              // can be specify based on ThemeData
+                              itemsTextStyle:
+                                  const TextStyle(color: Colors.amber),
+                              selectedItemsTextStyle:
+                                  const TextStyle(color: Colors.blue),
+                              cancelText: const Text(
+                                "Cancel",
+                                style: TextStyle(color: Colors.amber),
+                              ),
+                              confirmText: const Text(
+                                "Confirm",
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                              chipDisplay: MultiSelectChipDisplay(
+                                scroll: true,
+                                scrollBar:
+                                    HorizontalScrollBar(isAlwaysShown: true),
+                              ),
                             ),
                           );
                         },
                       );
-                      filterContent.add(DateTimeRangePicker(
-                        mutableDateTimeRange: timeRange,
-                      ));
-
+                      filterContent.addAll([
+                        // Title for choose time range can add style
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text("Choose a time range"),
+                        ),
+                        // Pick time range button
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DateTimeRangePicker(
+                            mutableDateTimeRange: timeRange,
+                          ),
+                        ),
+                      ]);
+                      // return column with filter content
                       return Container(
+                        // max width of filter column
                         constraints: const BoxConstraints(maxWidth: 500),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -124,15 +155,23 @@ class FilterBy extends StatelessWidget {
                   },
                 ),
                 actions: [
+                  // cancel
                   TextButton(
-                      onPressed: () => Navigator.pop(context, 'Cancel'),
-                      child: const Text('Cancel')),
+                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                    child: const Text('Cancel'),
+                  ),
+                  // apply
                   TextButton(
-                      onPressed: () {
-                        refreshDatasource();
-                        Navigator.pop(context, 'Apply');
-                      },
-                      child: const Text('Apply'))
+                    onPressed: () {
+                      filters.filterResult = filterResult;
+                      // apply time range to filter
+                      filters.createdTimeRange = timeRange.dateTimeRange;
+                      // refresh table based on filter
+                      refreshDatasource();
+                      Navigator.pop(context, 'Apply');
+                    },
+                    child: const Text('Apply'),
+                  )
                 ],
               );
             },

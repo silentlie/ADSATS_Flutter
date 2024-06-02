@@ -107,6 +107,9 @@ class CustomTableFilter {
 
   DateTimeRange? createdTimeRange;
   DateTimeRange? dueTimeRange;
+
+  Map<String, List<String>> filterResult = {};
+
   CustomTableFilter({
     this.sortColumn,
     this.sortAscending = true,
@@ -121,6 +124,22 @@ class CustomTableFilter {
     if (sortColumn != null) {
       tempJson["sort_column"] = sortColumn!;
       tempJson["asc"] = sortAscending.toString();
+    }
+    if (createdTimeRange != null) {
+      tempJson["create_at"] =
+          "${createdTimeRange!.start.toIso8601String()},${createdTimeRange!.end.toIso8601String()}";
+    }
+    if (filterResult.isNotEmpty) {
+      tempJson.addAll(
+        filterResult.map(
+          (key, value) {
+            return MapEntry(
+              key,
+              value.join(','),
+            );
+          },
+        ),
+      );
     }
     tempJson["archived"] = archived.toString();
     return tempJson;
@@ -158,7 +177,7 @@ class _DateTimeRangePickerState extends State<DateTimeRangePicker> {
               children: [
                 ConstrainedBox(
                   constraints:
-                      const BoxConstraints(maxWidth: 500, maxHeight: 800),
+                      const BoxConstraints(maxWidth: 800, maxHeight: 800),
                   child: child,
                 )
               ],
@@ -182,8 +201,8 @@ class _DateTimeRangePickerState extends State<DateTimeRangePicker> {
 
 class SearchBarWidget extends StatefulWidget {
   const SearchBarWidget(
-      {super.key, required this.filter, required this.refreshDatasource});
-  final CustomTableFilter filter;
+      {super.key, required this.filters, required this.refreshDatasource});
+  final CustomTableFilter filters;
   final Function refreshDatasource;
   @override
   State<SearchBarWidget> createState() => _SearchBarWidgetState();
@@ -193,7 +212,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
   final TextEditingController _textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    _textEditingController.text = widget.filter.search ?? '';
+    _textEditingController.text = widget.filters.search ?? '';
     return SearchBar(
       constraints: const BoxConstraints(
         maxWidth: 360,
@@ -201,7 +220,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
       leading: const Icon(Icons.search),
       controller: _textEditingController,
       onSubmitted: (value) {
-        widget.filter.search = value;
+        widget.filters.search = value;
         widget.refreshDatasource();
       },
     );
