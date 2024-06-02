@@ -284,12 +284,6 @@
               "Outputs.adminGroupRole"
             ]
           },
-          "authuserPoolGroupscrewGroupRole": {
-            "Fn::GetAtt": [
-              "authuserPoolGroups",
-              "Outputs.crewGroupRole"
-            ]
-          },
           "env": "dev"
         }
       }

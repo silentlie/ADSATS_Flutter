@@ -2,53 +2,49 @@ import 'dart:convert';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:adsats_flutter/abstract_data_table_async.dart';
 
-class Document {
-  Document({
+class Staff {
+  Staff({
     required int id,
-    required String fileName,
-    required bool archived,
+    required String firstName,
+    required String lastName,
     required String email,
+    required bool archived,
     required DateTime createdAt,
-    required String subcategory,
-    required String category,
-    String? aircraft,
+    String? roles,
   })  : _id = id,
-        _fileName = fileName,
-        _archived = archived,
+        _firstName = firstName,
+        _lastName = lastName,
         _email = email,
+        _archived = archived,
         _createdAt = createdAt,
-        _subcategory = subcategory,
-        _category = category,
-        _aircraft = aircraft;
-  Document.fromJSON(Map<String, dynamic> json)
-      : _id = json["document_id"] as int,
-        _fileName = json["file_name"] as String,
-        _archived = intToBool(json["archived"] as int)!,
-        _email = json["email"] as String,
-        _createdAt = DateTime.parse(json["created_at"]),
-        _subcategory = json["sub_category"] as String,
-        _category = json["category"] as String,
-        _aircraft = json["aircrafts"] as String?;
+        _roles = roles;
   final int _id;
-  final String _fileName;
-  final bool _archived;
+  final String _firstName;
+  final String _lastName;
   final String _email;
+  final bool _archived;
   final DateTime _createdAt;
-  final String _category;
-  final String _subcategory;
-  final String? _aircraft;
+  final String? _roles;
   int get id => _id;
-  String get fileName => _fileName;
+  String get firstName => _firstName;
+  String get lastName => _lastName;
+  String get email => _email;
   bool get archived => _archived;
-  String get author => _email;
   DateTime get createdAt => _createdAt;
-  String get subcategory => _subcategory;
-  String get category => _category;
-  String? get aircraft => _aircraft;
+  String? get roles => _roles;
+
+  Staff.fromJSON(Map<String, dynamic> json)
+      : _id = json["notice_id"] as int,
+        _firstName = json["f_name"] as String,
+        _lastName = json["l_name"] as String,
+        _email = json["email"] as String,
+        _archived = intToBool(json["archived"] as int)!,
+        _createdAt = DateTime.parse(json["created_at"]),
+        _roles = json["l_name"] as String;
+
   static bool? intToBool(int? value) {
     if (value == null) {
       return null;
@@ -59,52 +55,61 @@ class Document {
   // can rearrange collumn
   DataRow toDataRow() {
     return DataRow(cells: <DataCell>[
-      cellFor(fileName),
-      cellFor(author),
+      cellFor(firstName),
+      cellFor(lastName),
+      cellFor(email),
       cellFor(archived),
       cellFor(createdAt),
-      cellFor(subcategory),
-      cellFor(category),
-      cellFor(aircraft),
+      cellFor(roles),
       cellFor("actions"),
     ]);
   }
-
-  // can rearrange collumn
-  static List<String> columnNames = [
-    "File name",
-    "Author",
-    "Archived",
-    "Date",
-    "Sub category",
-    "Category",
-    "Aircrafts",
-    "Actions",
-  ];
 }
 
-class DocumentAPI extends DataTableSourceAsync {
-  DocumentAPI();
+class StaffApi extends DataTableSourceAsync {
+  StaffApi();
 
   @override
   get showCheckBox => false;
 
   @override
   List<DataColumn> get columns {
-    return List.generate(Document.columnNames.length, (index) {
-      String columnName = Document.columnNames[index];
-      return DataColumn(
-          label: Text(
-            columnName,
-          ),
-          tooltip: columnName);
-    });
+    return <DataColumn>[
+      const DataColumn(
+        label: Text("First Name"),
+        tooltip: "First Name",
+      ),
+      const DataColumn(
+        label: Text("Last Name"),
+        tooltip: "Last Name",
+      ),
+      const DataColumn(
+        label: Text("Email"),
+        tooltip: "Email",
+      ),
+      const DataColumn(
+        label: Text("Archived"),
+        tooltip: "Archived",
+      ),
+      const DataColumn(
+        label: Text("Created At"),
+        tooltip: "Created At",
+      ),
+      const DataColumn(
+        label: Text("Roles"),
+        tooltip: "Roles",
+      ),
+      const DataColumn(
+        label: Text("Actions"),
+        tooltip: "Actions",
+      ),
+    ];
   }
 
   final CustomTableFilter _filters = CustomTableFilter();
   @override
   CustomTableFilter get filters => _filters;
-  List<Document> _documents = [];
+  List<Staff> _staff = [];
   int _totalRecords = 0;
   @override
   int get totalRecords => _totalRecords;
@@ -119,8 +124,8 @@ class DocumentAPI extends DataTableSourceAsync {
       };
       queryParameters.addAll(filter.toJSON());
       debugPrint(queryParameters.toString());
-      final restOperation = Amplify.API.get('/documents',
-          apiName: 'AmplifyCrewAPI', queryParameters: queryParameters);
+      final restOperation = Amplify.API.get('/staff',
+          apiName: 'AmplifyAdminAPI', queryParameters: queryParameters);
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -128,8 +133,8 @@ class DocumentAPI extends DataTableSourceAsync {
       _totalRecords = rawData["total_records"];
       final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
 
-      _documents = [for (var row in rowsData) Document.fromJSON(row)];
-      debugPrint(_documents.length.toString());
+      _staff = [for (var row in rowsData) Staff.fromJSON(row)];
+      debugPrint(_staff.length.toString());
       debugPrint("finished fetch table data");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
@@ -141,19 +146,12 @@ class DocumentAPI extends DataTableSourceAsync {
 
   @override
   List<DataRow> get rows {
-    return _documents.map((document) {
-      return document.toDataRow();
+    return _staff.map((notice) {
+      return notice.toDataRow();
     }).toList();
   }
 
-  Map<String, String> get filterEndpoints => {
-        'author': '/crews',
-        // filter by roles could be more complex then it should
-        // 'roles': '/roles',
-        'aircrafts': '/aircrafts',
-        'categories': '/document-categories',
-        'sub-categories': '/document-sub-categories',
-      };
+  Map<String, String> get filterEndpoints => {};
 
   @override
   Widget get header => Row(
@@ -168,17 +166,17 @@ class DocumentAPI extends DataTableSourceAsync {
           const SizedBox(
             width: 10,
           ),
-          const AddADocumentButton(),
+          const AddNewStaff(),
           const Spacer(),
           SearchBarWidget(
-            filters: _filters,
+            filters: filters,
             refreshDatasource: refreshDatasource,
           ),
           const SizedBox(
             width: 10,
           ),
           FilterBy(
-            filters: _filters,
+            filters: filters,
             refreshDatasource: refreshDatasource,
             filterEndpoints: filterEndpoints,
           ),
@@ -186,26 +184,38 @@ class DocumentAPI extends DataTableSourceAsync {
       );
 }
 
-class AddADocumentButton extends StatelessWidget {
-  const AddADocumentButton({
-    super.key,
-  });
+class AddNewStaff extends StatelessWidget {
+  const AddNewStaff({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        context.go('/add-a-document');
+        // context.go('/');
       },
       style: ButtonStyle(
         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
-            side: const BorderSide(color: Color(0xFF05ABC4)),
+            side: const BorderSide(color: Colors.black),
           ),
         ),
       ),
-      child: const Text('+ Add a document'),
+      child: const Row(
+        children: [
+          Icon(
+            Icons.add,
+            size: 30,
+          ),
+          SizedBox(width: 5),
+          Text(
+            'Add new crew',
+            style: TextStyle(
+              fontSize: 16,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

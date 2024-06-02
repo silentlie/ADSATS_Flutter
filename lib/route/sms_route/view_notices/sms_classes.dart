@@ -1,58 +1,88 @@
-import 'package:adsats_flutter/route/sms_route/view_notices/filter_by.dart';
+import 'dart:convert';
+
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:data_table_2/data_table_2.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:adsats_flutter/abstract_data_table_async.dart';
-import 'mock_data.dart';
 
 class Notice {
   Notice(
       {required int id,
-      required bool read,
+      required bool archived,
       required String subject,
       required String category,
       required String author,
-      required DateTime createAt,
-      String? reportNumber,
+      required DateTime createdAt,
       DateTime? deadlineAt,
-      List<int>? documentsID,
+      String? documentsID,
       String? aircraft,
       bool? resolved})
       : _id = id,
-        _read = read,
+        _archived = archived,
         _subject = subject,
         _category = category,
         _author = author,
-        _createAt = createAt,
-        _documentsID = documentsID,
+        _createdAt = createdAt,
         _resolved = resolved,
-        _deadlineAt = deadlineAt,
-        _reportNumber = reportNumber,
-        _aircraft = aircraft;
+        _deadlineAt = deadlineAt;
   final int _id;
-  final bool _read;
+  final bool _archived;
   final String _subject;
   final String _category;
   final String _author;
-  final String? _aircraft;
-  final String? _reportNumber;
-  final DateTime _createAt;
+  final DateTime _createdAt;
   final DateTime? _deadlineAt;
   final bool? _resolved;
-  final List<int>? _documentsID;
   int get id => _id;
-  bool get read => _read;
+  bool get archived => _archived;
   String get subject => _subject;
   String get category => _category;
   String get author => _author;
-  String? get aircraft => _aircraft;
-  String? get reportNumber => _reportNumber;
-  DateTime get createAt => _createAt;
+  DateTime get createdAt => _createdAt;
   DateTime? get deadlineAt => _deadlineAt;
   bool? get resolved => _resolved;
-  List<int>? get documentsID => _documentsID;
+  Notice.fromJSON(Map<String, dynamic> json)
+      : _id = json["notice_id"] as int,
+        _subject = json["subject"] as String,
+        _category = json["category"] as String,
+        _author = json["email"] as String,
+        _archived = intToBool(json["archived"] as int)!,
+        _resolved = intToBool(json["resolved"] as int),
+        _createdAt = DateTime.parse(json["created_at"]),
+        _deadlineAt = DateTime.parse(json["deadline_at"]);
+  static bool? intToBool(int? value) {
+    if (value == null) {
+      return null;
+    }
+    return value != 0;
+  }
+
+  // can rearrange collumn
+  DataRow toDataRow() {
+    return DataRow(cells: <DataCell>[
+      cellFor(category),
+      cellFor(subject),
+      cellFor(author),
+      cellFor(archived),
+      cellFor(resolved),
+      cellFor(createdAt),
+      cellFor(deadlineAt),
+      cellFor("actions"),
+    ]);
+  }
+
+  // can rearrange collumn
+  static List<String> columnNames = [
+    "Category",
+    "Subject",
+    "Author",
+    "Archived",
+    "Resolved",
+    "Created At",
+    "Deadline At",
+    "Actions",
+  ];
 }
 
 class NoticeAPI extends DataTableSourceAsync {
@@ -61,20 +91,10 @@ class NoticeAPI extends DataTableSourceAsync {
   @override
   get showCheckBox => false;
 
-  List<String> get columnNames => [
-        "Subject",
-        "Read",
-        "Category",
-        "Author",
-        "Aircraft",
-        "Notice Date",
-        "Resolved",
-      ];
-
   @override
   List<DataColumn> get columns {
-    return List.generate(columnNames.length, (index) {
-      String columnName = columnNames[index];
+    return List.generate(Notice.columnNames.length, (index) {
+      String columnName = Notice.columnNames[index];
       return DataColumn(
           label: Text(
             columnName,
@@ -83,91 +103,89 @@ class NoticeAPI extends DataTableSourceAsync {
     });
   }
 
-  List<DataRow> get rows {
-    return notices.map(
-      (object) {
-        Notice notice = object;
-        return DataRow(cells: <DataCell>[
-          cellFor(notice.subject),
-          cellFor(notice.read),
-          cellFor(notice.category),
-          cellFor(notice.author),
-          cellFor(notice.aircraft),
-          cellFor(notice.createAt),
-          cellFor(notice.resolved),
-        ]);
-      },
-    ).toList();
-  }
-
   final CustomTableFilter _filters = CustomTableFilter();
-  Future<void> fetchData(int startIndex, int count,
-      [CustomTableFilter? filter]) async {
-    // TODO: implement getData one API finish
-    debugPrint("fetch Data");
-  }
+  @override
+  CustomTableFilter get filters => _filters;
+  List<Notice> _notices = [];
+  int _totalRecords = 0;
+  @override
+  int get totalRecords => _totalRecords;
 
   @override
-  int get totalRecords {
-    // TODO: implement get totalRecords once API finish
-    return notices.length;
-  }
-
-  @override
-  Future<AsyncRowsResponse> getRows(int startIndex, int count) async {
+  Future<void> fetchData(
+      int startIndex, int count, CustomTableFilter filter) async {
     try {
-      // implement filtering
-      await fetchData(startIndex, count, _filters);
-      AsyncRowsResponse response = AsyncRowsResponse(totalRecords, rows);
-      return response;
+      Map<String, String> queryParameters = {
+        "offset": startIndex.toString(),
+        "limit": count.toString()
+      };
+      queryParameters.addAll(filter.toJSON());
+      debugPrint(queryParameters.toString());
+      final restOperation = Amplify.API.get('/documents',
+          apiName: 'AmplifyCrewAPI', queryParameters: queryParameters);
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      Map<String, dynamic> rawData = jsonDecode(jsonStr);
+      _totalRecords = rawData["total_records"];
+      final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
+
+      _notices = [for (var row in rowsData) Notice.fromJSON(row)];
+      debugPrint(_notices.length.toString());
+      debugPrint("finished fetch table data");
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
     } on Error catch (e) {
-      safePrint('Error: $e');
+      debugPrint('Error: $e');
       rethrow;
     }
   }
 
   @override
-  Widget get header => Header(
-        filter: _filters,
-        refreshDatasource: refreshDatasource,
-      );
-}
-
-class Header extends StatelessWidget {
-  const Header(
-      {super.key, required this.filter, required this.refreshDatasource});
-  final CustomTableFilter filter;
-  final Function refreshDatasource;
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Text(
-          "Documents",
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        const SendANoticeButton(),
-        const Spacer(),
-        SearchBarWidget(
-          filters: filter,
-          refreshDatasource: refreshDatasource,
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        FilterBy(
-          filter: filter,
-          refreshDatasource: refreshDatasource,
-        ),
-      ],
-    );
+  List<DataRow> get rows {
+    return _notices.map((notice) {
+      return notice.toDataRow();
+    }).toList();
   }
+
+  Map<String, String> get filterEndpoints => {
+        'authors': '/crews',
+        // filter by roles could be more complex then it should
+        // 'roles': '/roles',
+        'aircrafts': '/aircrafts',
+        'categories': '/document-categories',
+        'sub-categories': '/document-sub-categories',
+      };
+
+  @override
+  Widget get header => Row(
+        children: [
+          const Text(
+            "Documents",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          const SendANoticeButton(),
+          const Spacer(),
+          SearchBarWidget(
+            filters: filters,
+            refreshDatasource: refreshDatasource,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          FilterBy(
+            filters: filters,
+            refreshDatasource: refreshDatasource,
+            filterEndpoints: filterEndpoints,
+          ),
+        ],
+      );
 }
 
 class SendANoticeButton extends StatelessWidget {

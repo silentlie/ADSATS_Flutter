@@ -1,14 +1,59 @@
-import 'package:data_table_2/data_table_2.dart';
+import 'dart:convert';
+
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
-import 'search_widget.dart';
 
 import 'package:adsats_flutter/abstract_data_table_async.dart';
 
+class Role {
+  Role(
+      {required int id,
+      required String name,
+      required bool archived,
+      required String description})
+      : _id = id,
+        _name = name,
+        _archived = archived,
+        _description = description;
+  final int _id;
+  final String _name;
+  final bool _archived;
+  final String _description;
+  int get id => _id;
+  String get name => _name;
+  bool get archived => _archived;
+  String get description => _description;
+
+  Role.fromJSON(Map<String, dynamic> json)
+      : _id = json["notice_id"] as int,
+        _name = json["name"] as String,
+        _archived = intToBool(json["archived"] as int)!,
+        _description = json["description"] as String;
+  
+  static bool? intToBool(int? value) {
+    if (value == null) {
+      return null;
+    }
+    return value != 0;
+  }
+
+  // can rearrange collumn
+  DataRow toDataRow() {
+    return DataRow(cells: <DataCell>[
+      cellFor(name),
+      cellFor(archived),
+      cellFor(description),
+      cellFor("actions"),
+    ]);
+  }
+}
+
 class RolesAPI extends DataTableSourceAsync {
   RolesAPI();
+
   @override
   get showCheckBox => false;
-  CustomTableFilter? _filters;
+  
   @override
   List<DataColumn> get columns {
     return <DataColumn>[
@@ -17,74 +62,96 @@ class RolesAPI extends DataTableSourceAsync {
         tooltip: "Name of the role",
       ),
       const DataColumn(
+        label: Text("Archived"),
+        tooltip: "Archived",
+      ),
+      const DataColumn(
         label: Text("Description"),
         tooltip: "Brief description about the role",
       ),
     ];
   }
 
+  final CustomTableFilter _filters = CustomTableFilter();
+  @override
+  CustomTableFilter get filters => _filters;
+  List<Role> _roles = [];
+  int _totalRecords = 0;
+  @override
+  int get totalRecords => _totalRecords;
+
+  @override
+  Future<void> fetchData(
+      int startIndex, int count, CustomTableFilter filter) async {
+    try {
+      Map<String, String> queryParameters = {
+        "offset": startIndex.toString(),
+        "limit": count.toString()
+      };
+      queryParameters.addAll(filter.toJSON());
+      debugPrint(queryParameters.toString());
+      final restOperation = Amplify.API.get('/roles',
+          apiName: 'AmplifyAdminAPI', queryParameters: queryParameters);
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      Map<String, dynamic> rawData = jsonDecode(jsonStr);
+      _totalRecords = rawData["total_records"];
+      final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
+
+      _roles = [for (var row in rowsData) Role.fromJSON(row)];
+      debugPrint(_roles.length.toString());
+      debugPrint("finished fetch table data");
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
+
+  @override
   List<DataRow> get rows {
-    return roles.map(
-      (row) {
-        return DataRow(cells: <DataCell>[
-          cellFor(row.name),
-          cellFor(row.description),
-        ]);
-      },
-    ).toList();
+    return _roles.map((notice) {
+      return notice.toDataRow();
+    }).toList();
   }
 
-  Future<void> fetchData(int startIndex, int count,
-      [CustomTableFilter? filter]) async {
-    // TODO: implement getData one API finish
-  }
-  @override
-  int get totalRecords {
-    // TODO: implement get totalRecords once API finish
-    return roles.length;
-  }
+  Map<String, String> get filterEndpoints => {};
 
   @override
-  Future<AsyncRowsResponse> getRows(int startIndex, int count) async {
-    // implement filtering
-    await fetchData(startIndex, count, _filters);
-    AsyncRowsResponse response = AsyncRowsResponse(totalRecords, rows);
-    return response;
-  }
-
-  final Widget _header = Row(
-    children: [
-      const Text(
-        'Roles',
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      const SizedBox(
-        width: 10,
-      ),
-      const AddNewCrewButton(),
-      const Spacer(),
-      // TODO: implement search function
-      SearchWidget(),
-      const SizedBox(
-        width: 10,
-      ),
-      ElevatedButton(
-        onPressed: () {
-          // TODO: implement filter function
-        },
-        child: const Text("Filter By"),
-      ),
-    ],
-  );
-  @override
-  Widget get header => _header;
+  Widget get header => Row(
+        children: [
+          const Text(
+            "Documents",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          const AddNewRole(),
+          const Spacer(),
+          SearchBarWidget(
+            filters: filters,
+            refreshDatasource: refreshDatasource,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          FilterBy(
+            filters: filters,
+            refreshDatasource: refreshDatasource,
+            filterEndpoints: filterEndpoints,
+          ),
+        ],
+      );
 }
 
-class AddNewCrewButton extends StatelessWidget {
-  const AddNewCrewButton({super.key});
+class AddNewRole extends StatelessWidget {
+  const AddNewRole({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -118,23 +185,3 @@ class AddNewCrewButton extends StatelessWidget {
     );
   }
 }
-
-class Role {
-  Role(
-    this._id,
-    this._name,
-    this._description,
-  );
-  final int _id;
-  final String _name;
-  final String _description;
-  int get id => _id;
-  String get name => _name;
-  String get description => _description;
-}
-
-List<Role> roles = [
-  Role(0, "Admin", "Administrator role"),
-  Role(1, "Crew", "Regular crew role"),
-  Role(2, "Manager", "Manager role"),
-];

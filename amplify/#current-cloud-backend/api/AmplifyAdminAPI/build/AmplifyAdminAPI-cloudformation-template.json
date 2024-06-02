@@ -2814,7 +2814,7 @@
         "Name": "AmplifyAdminAPI"
       }
     },
-    "AmplifyAdminAPIDefault4XXResponse5c867535": {
+    "AmplifyAdminAPIDefault4XXResponse55a8c35d": {
       "Type": "AWS::ApiGateway::GatewayResponse",
       "Properties": {
         "ResponseType": "DEFAULT_4XX",
@@ -2829,7 +2829,7 @@
         }
       }
     },
-    "AmplifyAdminAPIDefault5XXResponse5c867535": {
+    "AmplifyAdminAPIDefault5XXResponse55a8c35d": {
       "Type": "AWS::ApiGateway::GatewayResponse",
       "Properties": {
         "ResponseType": "DEFAULT_5XX",
@@ -2844,7 +2844,7 @@
         }
       }
     },
-    "DeploymentAPIGWAmplifyAdminAPI5bc7ecde": {
+    "DeploymentAPIGWAmplifyAdminAPIf7d01f9d": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -2862,8 +2862,8 @@
         }
       },
       "DependsOn": [
-        "AmplifyAdminAPIDefault4XXResponse5c867535",
-        "AmplifyAdminAPIDefault5XXResponse5c867535"
+        "AmplifyAdminAPIDefault4XXResponse55a8c35d",
+        "AmplifyAdminAPIDefault5XXResponse55a8c35d"
       ]
     }
   },

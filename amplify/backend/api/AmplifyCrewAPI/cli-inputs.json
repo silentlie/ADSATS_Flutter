@@ -1,122 +1,6 @@
 {
   "version": 1,
   "paths": {
-    "/documents": {
-      "name": "/documents",
-      "lambdaFunction": "placeHolder",
-      "permissions": {
-        "setting": "private",
-        "auth": [
-          "create",
-          "read"
-        ],
-        "groups": {
-          "dev": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ],
-          "admin": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ],
-          "crew": [
-            "create",
-            "read"
-          ]
-        }
-      }
-    },
-    "/notices": {
-      "name": "/notices",
-      "lambdaFunction": "placeHolder",
-      "permissions": {
-        "setting": "private",
-        "auth": [
-          "create",
-          "read"
-        ],
-        "groups": {
-          "dev": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ],
-          "admin": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ],
-          "crew": [
-            "create",
-            "read"
-          ]
-        }
-      }
-    },
-    "/notifications": {
-      "name": "/notifications",
-      "lambdaFunction": "placeHolder",
-      "permissions": {
-        "setting": "private",
-        "auth": [
-          "create",
-          "read",
-          "update"
-        ],
-        "groups": {
-          "dev": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ],
-          "admin": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ],
-          "crew": [
-            "create",
-            "read",
-            "update"
-          ]
-        }
-      }
-    },
-    "/document-categories": {
-      "name": "/document-categories",
-      "lambdaFunction": "placeHolder",
-      "permissions": {
-        "setting": "private",
-        "auth": [
-          "read"
-        ],
-        "groups": {
-          "dev": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ],
-          "admin": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ],
-          "crew": [
-            "read"
-          ]
-        }
-      }
-    },
     "/send-notices": {
       "name": "/send-notices",
       "lambdaFunction": "placeHolder",
@@ -182,24 +66,6 @@
         "setting": "private"
       }
     },
-    "/crews": {
-      "name": "/crews",
-      "lambdaFunction": "placeHolder",
-      "permissions": {
-        "groups": {
-          "dev": [
-            "read"
-          ],
-          "admin": [
-            "read"
-          ],
-          "crew": [
-            "read"
-          ]
-        },
-        "setting": "private"
-      }
-    },
     "/document-sub-categories": {
       "name": "/document-sub-categories",
       "lambdaFunction": "placeHolder",
@@ -218,6 +84,130 @@
             "delete"
           ],
           "crew": [
+            "read"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/staff": {
+      "name": "/staff",
+      "lambdaFunction": "placeHolder",
+      "permissions": {
+        "groups": {
+          "dev": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "crew": [
+            "read"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/documents": {
+      "name": "/documents",
+      "lambdaFunction": "placeHolder",
+      "permissions": {
+        "groups": {
+          "dev": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "crew": [
+            "create",
+            "read"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/notifications": {
+      "name": "/notifications",
+      "lambdaFunction": "placeHolder",
+      "permissions": {
+        "groups": {
+          "dev": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "crew": [
+            "create",
+            "read",
+            "update"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/document-categories": {
+      "name": "/document-categories",
+      "lambdaFunction": "placeHolder",
+      "permissions": {
+        "groups": {
+          "dev": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "crew": [
+            "read"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/notices": {
+      "name": "/notices",
+      "lambdaFunction": "placeHolder",
+      "permissions": {
+        "groups": {
+          "dev": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "crew": [
+            "create",
             "read"
           ]
         },

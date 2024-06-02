@@ -7614,7 +7614,7 @@
         "Name": "AmplifyCrewAPI"
       }
     },
-    "AmplifyCrewAPIDefault4XXResponsebe811579": {
+    "AmplifyCrewAPIDefault4XXResponse9d963932": {
       "Type": "AWS::ApiGateway::GatewayResponse",
       "Properties": {
         "ResponseType": "DEFAULT_4XX",
@@ -7629,7 +7629,7 @@
         }
       }
     },
-    "AmplifyCrewAPIDefault5XXResponsebe811579": {
+    "AmplifyCrewAPIDefault5XXResponse9d963932": {
       "Type": "AWS::ApiGateway::GatewayResponse",
       "Properties": {
         "ResponseType": "DEFAULT_5XX",
@@ -7644,7 +7644,7 @@
         }
       }
     },
-    "DeploymentAPIGWAmplifyCrewAPI23c07a5e": {
+    "DeploymentAPIGWAmplifyCrewAPI3e73d27e": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -7662,8 +7662,8 @@
         }
       },
       "DependsOn": [
-        "AmplifyCrewAPIDefault4XXResponsebe811579",
-        "AmplifyCrewAPIDefault5XXResponsebe811579"
+        "AmplifyCrewAPIDefault4XXResponse9d963932",
+        "AmplifyCrewAPIDefault5XXResponse9d963932"
       ]
     }
   },
