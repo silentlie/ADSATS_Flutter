@@ -46,10 +46,10 @@ class Notice {
       : _id = json["notice_id"] as int,
         _subject = json["subject"] as String,
         _category = json["category"] as String,
-        _author = json["email"] as String,
+        _author = json["author"] as String,
         _archived = intToBool(json["archived"] as int)!,
         _resolved = intToBool(json["resolved"] as int),
-        _createdAt = DateTime.parse(json["created_at"]),
+        _createdAt = DateTime.parse(json["notice_at"]),
         _deadlineAt = DateTime.parse(json["deadline_at"]);
   static bool? intToBool(int? value) {
     if (value == null) {
@@ -79,7 +79,7 @@ class Notice {
     "Author",
     "Archived",
     "Resolved",
-    "Created At",
+    "Notice Date",
     "Deadline At",
     "Actions",
   ];
@@ -121,8 +121,8 @@ class NoticeAPI extends DataTableSourceAsync {
       };
       queryParameters.addAll(filter.toJSON());
       debugPrint(queryParameters.toString());
-      final restOperation = Amplify.API.get('/documents',
-          apiName: 'AmplifyCrewAPI', queryParameters: queryParameters);
+      final restOperation = Amplify.API.get('/notices',
+          apiName: 'AmplifyAviationAPI', queryParameters: queryParameters);
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -149,7 +149,7 @@ class NoticeAPI extends DataTableSourceAsync {
   }
 
   Map<String, String> get filterEndpoints => {
-        'authors': '/crews',
+        'authors': '/staff',
         // filter by roles could be more complex then it should
         // 'roles': '/roles',
         'aircrafts': '/aircrafts',

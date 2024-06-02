@@ -25,11 +25,11 @@ class Role {
   String get description => _description;
 
   Role.fromJSON(Map<String, dynamic> json)
-      : _id = json["notice_id"] as int,
-        _name = json["name"] as String,
+      : _id = json["role_id"] as int,
+        _name = json["role"] as String,
         _archived = intToBool(json["archived"] as int)!,
         _description = json["description"] as String;
-  
+
   static bool? intToBool(int? value) {
     if (value == null) {
       return null;
@@ -53,7 +53,7 @@ class RolesAPI extends DataTableSourceAsync {
 
   @override
   get showCheckBox => false;
-  
+
   @override
   List<DataColumn> get columns {
     return <DataColumn>[
@@ -68,6 +68,10 @@ class RolesAPI extends DataTableSourceAsync {
       const DataColumn(
         label: Text("Description"),
         tooltip: "Brief description about the role",
+      ),
+      const DataColumn(
+        label: Text("Actions"),
+        tooltip: "Actions",
       ),
     ];
   }

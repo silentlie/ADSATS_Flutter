@@ -37,7 +37,7 @@ class Staff {
   String? get roles => _roles;
 
   Staff.fromJSON(Map<String, dynamic> json)
-      : _id = json["notice_id"] as int,
+      : _id = json["staff_id"] as int,
         _firstName = json["f_name"] as String,
         _lastName = json["l_name"] as String,
         _email = json["email"] as String,

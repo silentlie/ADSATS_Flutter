@@ -26,7 +26,7 @@ class Aircraft {
   DateTime get createdAt => _createdAt;
 
   Aircraft.fromJSON(Map<String, dynamic> json)
-      : _id = json["notice_id"] as int,
+      : _id = json["aircraft_id"] as int,
         _name = json["name"] as String,
         _archived = intToBool(json["archived"] as int)!,
         _createdAt = DateTime.parse(json["created_at"]);

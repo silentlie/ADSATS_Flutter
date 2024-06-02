@@ -28,7 +28,7 @@ class Document {
       : _id = json["document_id"] as int,
         _fileName = json["file_name"] as String,
         _archived = intToBool(json["archived"] as int)!,
-        _email = json["email"] as String,
+        _email = json["author"] as String,
         _createdAt = DateTime.parse(json["created_at"]),
         _subcategory = json["sub_category"] as String,
         _category = json["category"] as String,
@@ -120,7 +120,7 @@ class DocumentAPI extends DataTableSourceAsync {
       queryParameters.addAll(filter.toJSON());
       debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/documents',
-          apiName: 'AmplifyCrewAPI', queryParameters: queryParameters);
+          apiName: 'AmplifyAviationAPI', queryParameters: queryParameters);
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -147,12 +147,12 @@ class DocumentAPI extends DataTableSourceAsync {
   }
 
   Map<String, String> get filterEndpoints => {
-        'author': '/crews',
+        'author': '/staff',
         // filter by roles could be more complex then it should
         // 'roles': '/roles',
         'aircrafts': '/aircrafts',
-        'categories': '/document-categories',
-        'sub-categories': '/document-sub-categories',
+        'categories': '/categories',
+        'sub-categories': '/sub-categories',
       };
 
   @override
