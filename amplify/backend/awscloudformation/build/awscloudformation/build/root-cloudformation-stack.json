@@ -170,9 +170,15 @@
               "Outputs.ApiId"
             ]
           },
-          "AmplifyCrewAPI": {
+          "AmplifyFilterAPI": {
             "Fn::GetAtt": [
-              "apiAmplifyCrewAPI",
+              "apiAmplifyFilterAPI",
+              "Outputs.ApiId"
+            ]
+          },
+          "AmplifyAviationAPI": {
+            "Fn::GetAtt": [
+              "apiAmplifyAviationAPI",
               "Outputs.ApiId"
             ]
           }
@@ -222,21 +228,48 @@
         "functionadsatsFlutterAuthPostConfirmation"
       ]
     },
-    "authuserPoolGroups": {
+    "apiAdminQueries": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/api/AdminQueries-cloudformation-template.json",
         "Parameters": {
-          "AuthRoleArn": {
+          "authadsatsFlutterAuthUserPoolId": {
             "Fn::GetAtt": [
-              "AuthRole",
-              "Arn"
+              "authadsatsFlutterAuth",
+              "Outputs.UserPoolId"
             ]
           },
-          "UnauthRoleArn": {
+          "functionAdminQueries93b1e66aArn": {
             "Fn::GetAtt": [
-              "UnauthRole",
-              "Arn"
+              "functionAdminQueries93b1e66a",
+              "Outputs.Arn"
+            ]
+          },
+          "functionAdminQueries93b1e66aName": {
+            "Fn::GetAtt": [
+              "functionAdminQueries93b1e66a",
+              "Outputs.Name"
+            ]
+          },
+          "env": "dev"
+        }
+      }
+    },
+    "apiAmplifyAdminAPI": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/api/AmplifyAdminAPI-cloudformation-template.json",
+        "Parameters": {
+          "functionplaceHolderName": {
+            "Fn::GetAtt": [
+              "functionplaceHolder",
+              "Outputs.Name"
+            ]
+          },
+          "functionplaceHolderArn": {
+            "Fn::GetAtt": [
+              "functionplaceHolder",
+              "Outputs.Arn"
             ]
           },
           "authadsatsFlutterAuthUserPoolId": {
@@ -245,22 +278,82 @@
               "Outputs.UserPoolId"
             ]
           },
-          "authadsatsFlutterAuthAppClientIDWeb": {
+          "authuserPoolGroupsdevGroupRole": {
             "Fn::GetAtt": [
-              "authadsatsFlutterAuth",
-              "Outputs.AppClientIDWeb"
+              "authuserPoolGroups",
+              "Outputs.devGroupRole"
             ]
           },
-          "authadsatsFlutterAuthAppClientID": {
+          "authuserPoolGroupsadminGroupRole": {
             "Fn::GetAtt": [
-              "authadsatsFlutterAuth",
-              "Outputs.AppClientID"
+              "authuserPoolGroups",
+              "Outputs.adminGroupRole"
             ]
           },
-          "authadsatsFlutterAuthIdentityPoolId": {
+          "env": "dev"
+        }
+      }
+    },
+    "apiAmplifyFilterAPI": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/api/AmplifyFilterAPI-cloudformation-template.json",
+        "Parameters": {
+          "functionplaceHolderName": {
+            "Fn::GetAtt": [
+              "functionplaceHolder",
+              "Outputs.Name"
+            ]
+          },
+          "functionplaceHolderArn": {
+            "Fn::GetAtt": [
+              "functionplaceHolder",
+              "Outputs.Arn"
+            ]
+          },
+          "env": "dev"
+        }
+      }
+    },
+    "apiAmplifyAviationAPI": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/api/AmplifyAviationAPI-cloudformation-template.json",
+        "Parameters": {
+          "functionplaceHolderName": {
+            "Fn::GetAtt": [
+              "functionplaceHolder",
+              "Outputs.Name"
+            ]
+          },
+          "functionplaceHolderArn": {
+            "Fn::GetAtt": [
+              "functionplaceHolder",
+              "Outputs.Arn"
+            ]
+          },
+          "authadsatsFlutterAuthUserPoolId": {
             "Fn::GetAtt": [
               "authadsatsFlutterAuth",
-              "Outputs.IdentityPoolId"
+              "Outputs.UserPoolId"
+            ]
+          },
+          "authuserPoolGroupsdevGroupRole": {
+            "Fn::GetAtt": [
+              "authuserPoolGroups",
+              "Outputs.devGroupRole"
+            ]
+          },
+          "authuserPoolGroupsadminGroupRole": {
+            "Fn::GetAtt": [
+              "authuserPoolGroups",
+              "Outputs.adminGroupRole"
+            ]
+          },
+          "authuserPoolGroupscrewGroupRole": {
+            "Fn::GetAtt": [
+              "authuserPoolGroups",
+              "Outputs.crewGroupRole"
             ]
           },
           "env": "dev"
@@ -328,16 +421,47 @@
         }
       }
     },
-    "functionadsatsFlutterAuthPostConfirmation": {
+    "authuserPoolGroups": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/function/adsatsFlutterAuthPostConfirmation-cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
         "Parameters": {
-          "modules": "add-to-group",
-          "resourceName": "adsatsFlutterAuthPostConfirmation",
-          "GROUP": "crew",
-          "deploymentBucketName": "amplify-adsatsflutter-dev-438c7-deployment",
-          "s3Key": "amplify-builds/adsatsFlutterAuthPostConfirmation-54635052695955544d6a-build.zip",
+          "AuthRoleArn": {
+            "Fn::GetAtt": [
+              "AuthRole",
+              "Arn"
+            ]
+          },
+          "UnauthRoleArn": {
+            "Fn::GetAtt": [
+              "UnauthRole",
+              "Arn"
+            ]
+          },
+          "authadsatsFlutterAuthUserPoolId": {
+            "Fn::GetAtt": [
+              "authadsatsFlutterAuth",
+              "Outputs.UserPoolId"
+            ]
+          },
+          "authadsatsFlutterAuthAppClientIDWeb": {
+            "Fn::GetAtt": [
+              "authadsatsFlutterAuth",
+              "Outputs.AppClientIDWeb"
+            ]
+          },
+          "authadsatsFlutterAuthAppClientID": {
+            "Fn::GetAtt": [
+              "authadsatsFlutterAuth",
+              "Outputs.AppClientID"
+            ]
+          },
+          "authadsatsFlutterAuthIdentityPoolId": {
+            "Fn::GetAtt": [
+              "authadsatsFlutterAuth",
+              "Outputs.IdentityPoolId"
+            ]
+          },
           "env": "dev"
         }
       }
@@ -359,130 +483,27 @@
         }
       }
     },
+    "functionadsatsFlutterAuthPostConfirmation": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/function/adsatsFlutterAuthPostConfirmation-cloudformation-template.json",
+        "Parameters": {
+          "modules": "add-to-group",
+          "resourceName": "adsatsFlutterAuthPostConfirmation",
+          "GROUP": "crew",
+          "deploymentBucketName": "amplify-adsatsflutter-dev-438c7-deployment",
+          "s3Key": "amplify-builds/adsatsFlutterAuthPostConfirmation-54635052695955544d6a-build.zip",
+          "env": "dev"
+        }
+      }
+    },
     "functionplaceHolder": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
         "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/function/placeHolder-cloudformation-template.json",
         "Parameters": {
           "deploymentBucketName": "amplify-adsatsflutter-dev-438c7-deployment",
-          "s3Key": "amplify-builds/placeHolder-78753076306352307342-build.zip",
-          "env": "dev"
-        }
-      }
-    },
-    "apiAdminQueries": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/api/AdminQueries-cloudformation-template.json",
-        "Parameters": {
-          "authadsatsFlutterAuthUserPoolId": {
-            "Fn::GetAtt": [
-              "authadsatsFlutterAuth",
-              "Outputs.UserPoolId"
-            ]
-          },
-          "functionAdminQueries93b1e66aArn": {
-            "Fn::GetAtt": [
-              "functionAdminQueries93b1e66a",
-              "Outputs.Arn"
-            ]
-          },
-          "functionAdminQueries93b1e66aName": {
-            "Fn::GetAtt": [
-              "functionAdminQueries93b1e66a",
-              "Outputs.Name"
-            ]
-          },
-          "env": "dev"
-        }
-      }
-    },
-    "apiAmplifyAdminAPI": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/api/AmplifyAdminAPI-cloudformation-template.json",
-        "Parameters": {
-          "functionplaceHolderName": {
-            "Fn::GetAtt": [
-              "functionplaceHolder",
-              "Outputs.Name"
-            ]
-          },
-          "functionplaceHolderArn": {
-            "Fn::GetAtt": [
-              "functionplaceHolder",
-              "Outputs.Arn"
-            ]
-          },
-          "authadsatsFlutterAuthUserPoolId": {
-            "Fn::GetAtt": [
-              "authadsatsFlutterAuth",
-              "Outputs.UserPoolId"
-            ]
-          },
-          "authuserPoolGroupsdevGroupRole": {
-            "Fn::GetAtt": [
-              "authuserPoolGroups",
-              "Outputs.devGroupRole"
-            ]
-          },
-          "authuserPoolGroupsadminGroupRole": {
-            "Fn::GetAtt": [
-              "authuserPoolGroups",
-              "Outputs.adminGroupRole"
-            ]
-          },
-          "authuserPoolGroupscrewGroupRole": {
-            "Fn::GetAtt": [
-              "authuserPoolGroups",
-              "Outputs.crewGroupRole"
-            ]
-          },
-          "env": "dev"
-        }
-      }
-    },
-    "apiAmplifyCrewAPI": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/api/AmplifyCrewAPI-cloudformation-template.json",
-        "Parameters": {
-          "functionplaceHolderName": {
-            "Fn::GetAtt": [
-              "functionplaceHolder",
-              "Outputs.Name"
-            ]
-          },
-          "functionplaceHolderArn": {
-            "Fn::GetAtt": [
-              "functionplaceHolder",
-              "Outputs.Arn"
-            ]
-          },
-          "authadsatsFlutterAuthUserPoolId": {
-            "Fn::GetAtt": [
-              "authadsatsFlutterAuth",
-              "Outputs.UserPoolId"
-            ]
-          },
-          "authuserPoolGroupsdevGroupRole": {
-            "Fn::GetAtt": [
-              "authuserPoolGroups",
-              "Outputs.devGroupRole"
-            ]
-          },
-          "authuserPoolGroupsadminGroupRole": {
-            "Fn::GetAtt": [
-              "authuserPoolGroups",
-              "Outputs.adminGroupRole"
-            ]
-          },
-          "authuserPoolGroupscrewGroupRole": {
-            "Fn::GetAtt": [
-              "authuserPoolGroups",
-              "Outputs.crewGroupRole"
-            ]
-          },
+          "s3Key": "amplify-builds/placeHolder-756d4941306a58537464-build.zip",
           "env": "dev"
         }
       }

@@ -1,8 +1,8 @@
 {
   "version": 1,
   "paths": {
-    "/staff": {
-      "name": "/staff",
+    "/documents": {
+      "name": "/documents",
       "lambdaFunction": "placeHolder",
       "permissions": {
         "groups": {
@@ -17,13 +17,17 @@
             "read",
             "update",
             "delete"
+          ],
+          "crew": [
+            "create",
+            "read"
           ]
         },
         "setting": "private"
       }
     },
-    "/aircrafts": {
-      "name": "/aircrafts",
+    "/notices": {
+      "name": "/notices",
       "lambdaFunction": "placeHolder",
       "permissions": {
         "groups": {
@@ -38,13 +42,17 @@
             "read",
             "update",
             "delete"
+          ],
+          "crew": [
+            "create",
+            "read"
           ]
         },
         "setting": "private"
       }
     },
-    "/roles": {
-      "name": "/roles",
+    "/notifications": {
+      "name": "/notifications",
       "lambdaFunction": "placeHolder",
       "permissions": {
         "groups": {
@@ -59,48 +67,11 @@
             "read",
             "update",
             "delete"
-          ]
-        },
-        "setting": "private"
-      }
-    },
-    "/categories": {
-      "name": "/categories",
-      "lambdaFunction": "placeHolder",
-      "permissions": {
-        "groups": {
-          "dev": [
-            "create",
-            "read",
-            "update",
-            "delete"
           ],
-          "admin": [
+          "crew": [
             "create",
             "read",
-            "update",
-            "delete"
-          ]
-        },
-        "setting": "private"
-      }
-    },
-    "/sub-categories": {
-      "name": "/sub-categories",
-      "lambdaFunction": "placeHolder",
-      "permissions": {
-        "groups": {
-          "dev": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ],
-          "admin": [
-            "create",
-            "read",
-            "update",
-            "delete"
+            "update"
           ]
         },
         "setting": "private"

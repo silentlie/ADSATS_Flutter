@@ -1,5 +1,5 @@
 {
-  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.12.1\",\"stackType\":\"api-API Gateway\",\"metadata\":{}}",
+  "Description": "API Gateway Resource for AWS Amplify CLI",
   "AWSTemplateFormatVersion": "2010-09-09",
   "Parameters": {
     "authadsatsFlutterAuthUserPoolId": {
@@ -291,7 +291,7 @@
         "Name": "AdminQueries"
       }
     },
-    "DeploymentAPIGWAdminQueries13590f2c": {
+    "DeploymentAPIGWAdminQueriesa9c1b9ba": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {

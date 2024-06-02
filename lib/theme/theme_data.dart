@@ -12,12 +12,14 @@ class GlobalThemeData {
 
   static ThemeData themeData(ColorScheme colorScheme, Color focusColor) {
     return ThemeData(
-      colorScheme: colorScheme,
-      canvasColor: colorScheme.surface,
-      scaffoldBackgroundColor: colorScheme.surface,
-      highlightColor: Colors.transparent,
-      focusColor: focusColor,
-    );
+        colorScheme: colorScheme,
+        canvasColor: colorScheme.surface,
+        scaffoldBackgroundColor: colorScheme.surface,
+        highlightColor: Colors.transparent,
+        focusColor: focusColor,
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+            backgroundColor: lightColorScheme.primary,
+            foregroundColor: lightColorScheme.onPrimary));
   }
   // https://coolors.co/visualizer/05abc4-89c2af-047889-0490ae-f5eae0-01579b
 
@@ -50,4 +52,8 @@ class GlobalThemeData {
     // onSurface: Colors.white,
     brightness: Brightness.dark,
   );
+
+  // Button Theme
+
+  // Font theme
 }

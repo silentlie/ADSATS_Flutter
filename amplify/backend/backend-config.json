@@ -52,19 +52,12 @@
           ],
           "category": "auth",
           "resourceName": "userPoolGroups"
-        },
-        {
-          "attributes": [
-            "crewGroupRole"
-          ],
-          "category": "auth",
-          "resourceName": "userPoolGroups"
         }
       ],
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
     },
-    "AmplifyCrewAPI": {
+    "AmplifyAviationAPI": {
       "dependsOn": [
         {
           "attributes": [
@@ -101,6 +94,20 @@
           ],
           "category": "auth",
           "resourceName": "userPoolGroups"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
+    "AmplifyFilterAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "placeHolder"
         }
       ],
       "providerPlugin": "awscloudformation",

@@ -1,20 +1,59 @@
-import 'package:data_table_2/data_table_2.dart';
+import 'dart:convert';
+
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'package:adsats_flutter/abstract_data_table_async.dart';
 
+class Aircraft {
+  Aircraft(
+      {required int id,
+      required String name,
+      required bool archived,
+      required DateTime createdAt,
+      DateTime? modifiedAt})
+      : _id = id,
+        _name = name,
+        _archived = archived,
+        _createdAt = createdAt;
+  final int _id;
+  final String _name;
+  final bool _archived;
+  final DateTime _createdAt;
+  int get id => _id;
+  String get name => _name;
+  bool get archived => _archived;
+  DateTime get createdAt => _createdAt;
+
+  Aircraft.fromJSON(Map<String, dynamic> json)
+      : _id = json["aircraft_id"] as int,
+        _name = json["name"] as String,
+        _archived = intToBool(json["archived"] as int)!,
+        _createdAt = DateTime.parse(json["created_at"]);
+
+  static bool? intToBool(int? value) {
+    if (value == null) {
+      return null;
+    }
+    return value != 0;
+  }
+
+  // can rearrange collumn
+  DataRow toDataRow() {
+    return DataRow(cells: <DataCell>[
+      cellFor(name),
+      cellFor(archived),
+      cellFor(createdAt),
+      cellFor("actions"),
+    ]);
+  }
+}
+
 class AircraftsAPI extends DataTableSourceAsync {
   AircraftsAPI();
+
   @override
   get showCheckBox => false;
-  CustomTableFilter? _filters;
-  @override
-  CustomTableFilter? get filters => _filters;
-  @override
-  set filters(CustomTableFilter? newFilters) {
-    filters = newFilters;
-    refreshDatasource();
-  }
 
   @override
   List<DataColumn> get columns {
@@ -24,93 +63,100 @@ class AircraftsAPI extends DataTableSourceAsync {
         tooltip: "Name of the Aircraft",
       ),
       const DataColumn(
-        label: Text("Active"),
-        tooltip: "Active",
+        label: Text("Archived"),
+        tooltip: "Archived",
       ),
       const DataColumn(
         label: Text("Created At"),
         tooltip: "Created At",
       ),
       const DataColumn(
-        label: Text("Modified At"),
-        tooltip: "Modified At",
+        label: Text("Actions"),
+        tooltip: "Actions",
       ),
     ];
   }
 
+  final CustomTableFilter _filters = CustomTableFilter();
+  @override
+  CustomTableFilter get filters => _filters;
+  List<Aircraft> _aircrafts = [];
+  int _totalRecords = 0;
+  @override
+  int get totalRecords => _totalRecords;
+
+  @override
+  Future<void> fetchData(
+      int startIndex, int count, CustomTableFilter filter) async {
+    try {
+      Map<String, String> queryParameters = {
+        "offset": startIndex.toString(),
+        "limit": count.toString()
+      };
+      queryParameters.addAll(filter.toJSON());
+      debugPrint(queryParameters.toString());
+      final restOperation = Amplify.API.get('/aircrafts',
+          apiName: 'AmplifyAdminAPI', queryParameters: queryParameters);
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      Map<String, dynamic> rawData = jsonDecode(jsonStr);
+      _totalRecords = rawData["total_records"];
+      final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
+
+      _aircrafts = [for (var row in rowsData) Aircraft.fromJSON(row)];
+      debugPrint(_aircrafts.length.toString());
+      debugPrint("finished fetch table data");
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
+
+  @override
   List<DataRow> get rows {
-    return aircrafts.map(
-      (row) {
-        return DataRow(cells: <DataCell>[
-          cellFor(row.name),
-          cellFor(row.status),
-          cellFor(row.createdAt),
-          cellFor(row.modifiedAt),
-        ]);
-      },
-    ).toList();
+    return _aircrafts.map((notice) {
+      return notice.toDataRow();
+    }).toList();
   }
 
-  Future<void> fetchData(int startIndex, int count,
-      [CustomTableFilter? filter]) async {
-    // TODO: implement getData one API finish
-  }
-  @override
-  int get totalRecords {
-    // TODO: implement get totalRecords once API finish
-    return aircrafts.length;
-  }
+  Map<String, String> get filterEndpoints => {};
 
   @override
-  Future<AsyncRowsResponse> getRows(int startIndex, int count) async {
-    // implement filtering
-    await fetchData(startIndex, count, filters);
-    AsyncRowsResponse response = AsyncRowsResponse(totalRecords, rows);
-    return response;
-  }
-
-  final Widget _header = Row(
-    children: [
-      const Text(
-        'Aircrafts',
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      const SizedBox(
-        width: 10,
-      ),
-      const AddNewCrewButton(),
-      const Spacer(),
-      // TODO: implement search function
-      const SizedBox(
-        width: 250,
-        child: TextField(
-          decoration: InputDecoration(
-            hintText: 'Search',
-            suffixIcon: Icon(Icons.search),
-            border: OutlineInputBorder(),
+  Widget get header => Row(
+        children: [
+          const Text(
+            "Documents",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-      ),
-      const SizedBox(
-        width: 10,
-      ),
-      ElevatedButton(
-        onPressed: () {
-          // TODO: implement filter function
-        },
-        child: const Text("Filter By"),
-      ),
-    ],
-  );
-  @override
-  Widget get header => _header;
+          const SizedBox(
+            width: 10,
+          ),
+          const AddNewAircraft(),
+          const Spacer(),
+          SearchBarWidget(
+            filters: filters,
+            refreshDatasource: refreshDatasource,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          FilterBy(
+            filters: filters,
+            refreshDatasource: refreshDatasource,
+            filterEndpoints: filterEndpoints,
+          ),
+        ],
+      );
 }
 
-class AddNewCrewButton extends StatelessWidget {
-  const AddNewCrewButton({super.key});
+class AddNewAircraft extends StatelessWidget {
+  const AddNewAircraft({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -144,30 +190,3 @@ class AddNewCrewButton extends StatelessWidget {
     );
   }
 }
-
-class Aircraft {
-  Aircraft(this._id, this._name, this._status, this._createdAt,
-      {DateTime? modifiedAt})
-      : _modifiedAt = modifiedAt;
-  final int _id;
-  final String _name;
-  final bool _status;
-  final DateTime _createdAt;
-  final DateTime? _modifiedAt;
-  int get id => _id;
-  String get name => _name;
-  bool get status => _status;
-  DateTime get createdAt => _createdAt;
-  DateTime? get modifiedAt => _modifiedAt;
-}
-
-List<Aircraft> aircrafts = [
-  Aircraft(0, "VQ-BOS", true, DateTime.now()),
-  Aircraft(0, "VP-BLU", false, DateTime.now(), modifiedAt: DateTime.now()),
-];
-
-List<Map<String, String>> planeData = [
-  {'name': 'Plane 1', 'description': 'Description of Plane 1'},
-  {'name': 'Plane 2', 'description': 'Description of Plane 2'},
-  {'name': 'Plane 3', 'description': 'Description of Plane 3'},
-];

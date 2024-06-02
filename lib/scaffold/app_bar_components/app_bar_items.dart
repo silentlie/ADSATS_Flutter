@@ -7,7 +7,11 @@ class MenuItem {
   final String route;
 
   // Constructor
-  const MenuItem({ required this.text, required this.icon, required this.route });
+  const MenuItem({required this.text, required this.icon, required this.route});
+
+  String get getRoute {
+    return route;
+  }
 }
 
 class AppBarItems {
@@ -31,28 +35,19 @@ class AppBarItems {
   ];
 
   static const itemDocuments = MenuItem(
-    text: 'Documents',
-    icon: Icons.insert_drive_file,
-    route: '/documents'
-  );
+      text: 'Documents', icon: Icons.insert_drive_file, route: '/documents');
   static const itemSMS = MenuItem(
-    text: 'S.M.S',
-    icon: FontAwesomeIcons.helmetSafety,
-    route: '/sms'
-  );
+      text: 'S.M.S', icon: FontAwesomeIcons.helmetSafety, route: '/sms');
   static const itemCompliance = MenuItem(
-    text: 'Compliance',
-    icon: Icons.assignment_turned_in,
-    route: '/compliance'
-  );
+      text: 'Compliance',
+      icon: Icons.assignment_turned_in,
+      route: '/compliance');
   static const itemTraining = MenuItem(
-    text: 'Training',
-    icon: FontAwesomeIcons.graduationCap,
-    route: '/training'
-  );
+      text: 'Training',
+      icon: FontAwesomeIcons.graduationCap,
+      route: '/training');
   static const itemPurchases = MenuItem(
-    text: 'Purchases',
-    icon: FontAwesomeIcons.fileInvoiceDollar,
-    route: '/purchases'
-  );
+      text: 'Purchases',
+      icon: FontAwesomeIcons.fileInvoiceDollar,
+      route: '/purchases');
 }

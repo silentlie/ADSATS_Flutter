@@ -1,3 +1,4 @@
+import 'package:adsats_flutter/scaffold/app_bar_components/app_bar_title.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +8,7 @@ import 'package:adsats_flutter/scaffold/default_widget.dart';
 
 // https://api.flutter.dev/flutter/material/SliverAppBar-class.html
 // adjust again for fine-grained detail
-const double _appBarHeight = 100.0;
+const double _appBarHeight = 50;
 
 class AppBarTextButtonList extends StatelessWidget
     implements PreferredSizeWidget {
@@ -56,10 +57,18 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return SafeArea(
       child: AppBar(
         backgroundColor: colorScheme.secondary.withOpacity(0.3),
-        leading: const DefaultLogoWidget(),
-        title: const DefaultTextLogo(),
-        bottom: AppBarTextButtonList(),
+        leading: const Row(
+          children: [
+            DefaultLogoWidget(),
+            // DefaultTextLogo(),
+          ],
+        ),
+        title: const AppBarTitle(),
+        // AppBarTextButtonList(),
+        centerTitle: true,
+        // bottom: AppBarTextButtonList(),
         actions: [
+          // AppBarTextButtonList(),
           const ThemeSwitch(),
           IconButton(
             // Add the bell icon here

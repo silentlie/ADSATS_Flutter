@@ -10,7 +10,12 @@ export type AmplifyDependentResourcesAttributes = {
       "ApiName": "string",
       "RootUrl": "string"
     },
-    "AmplifyCrewAPI": {
+    "AmplifyAviationAPI": {
+      "ApiId": "string",
+      "ApiName": "string",
+      "RootUrl": "string"
+    },
+    "AmplifyFilterAPI": {
       "ApiId": "string",
       "ApiName": "string",
       "RootUrl": "string"

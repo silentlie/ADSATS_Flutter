@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:adsats_flutter/abstract_data_table_async.dart';
 import 'package:adsats_flutter/route/settings_route/aircrafts_api.dart';
-import 'package:adsats_flutter/route/settings_route/crews_api.dart';
+import 'package:adsats_flutter/route/settings_route/staff_api.dart';
 import 'package:adsats_flutter/route/settings_route/roles_api.dart';
+
 class SettingsWidget extends StatefulWidget {
   const SettingsWidget({super.key});
 
@@ -55,16 +56,23 @@ class _SettingsWidgetState extends State<SettingsWidget> {
           // https://api.flutter.dev/flutter/material/NavigationBar-class.html
           return Column(
             children: [
-              Expanded(child: Center(child: Container(constraints: const BoxConstraints(maxWidth: 1500),child: buildPages(_selectedIndex),)),),
+              Expanded(
+                child: Center(
+                    child: Container(
+                  constraints: const BoxConstraints(maxWidth: 1500),
+                  child: buildPages(_selectedIndex),
+                )),
+              ),
               SafeArea(
-                child: NavigationBar(onDestinationSelected: (value) {
-                  setState(() {
-                    _selectedIndex = value;
-                  });
-                },destinations: _navigationDestinations,
-                selectedIndex: _selectedIndex,
-                elevation: 10,
-                
+                child: NavigationBar(
+                  onDestinationSelected: (value) {
+                    setState(() {
+                      _selectedIndex = value;
+                    });
+                  },
+                  destinations: _navigationDestinations,
+                  selectedIndex: _selectedIndex,
+                  elevation: 10,
                 ),
               ),
             ],
@@ -91,7 +99,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
               ),
             ),
             const VerticalDivider(thickness: 1, width: 1),
-            Expanded(child: Center(child: Container(constraints: const BoxConstraints(maxWidth: 1500),child: buildPages(_selectedIndex),)),),
+            Expanded(
+              child: Center(
+                  child: Container(
+                constraints: const BoxConstraints(maxWidth: 1500),
+                child: buildPages(_selectedIndex),
+              )),
+            ),
           ],
         );
       },
@@ -101,7 +115,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
   Widget buildPages(int index) {
     switch (index) {
       case 0:
-        return PaginatedDataTableAsync(CrewsApi());
+        return PaginatedDataTableAsync(StaffApi());
       case 1:
         return PaginatedDataTableAsync(AircraftsAPI());
       case 2:
