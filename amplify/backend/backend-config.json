@@ -56,48 +56,6 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
-    },
-    "AmplifyCrewAPI": {
-      "dependsOn": [
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
-          "resourceName": "placeHolder"
-        },
-        {
-          "attributes": [
-            "UserPoolId"
-          ],
-          "category": "auth",
-          "resourceName": "adsatsFlutterAuth"
-        },
-        {
-          "attributes": [
-            "devGroupRole"
-          ],
-          "category": "auth",
-          "resourceName": "userPoolGroups"
-        },
-        {
-          "attributes": [
-            "adminGroupRole"
-          ],
-          "category": "auth",
-          "resourceName": "userPoolGroups"
-        },
-        {
-          "attributes": [
-            "crewGroupRole"
-          ],
-          "category": "auth",
-          "resourceName": "userPoolGroups"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "API Gateway"
     }
   },
   "auth": {
@@ -184,6 +142,72 @@
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_AdminQueries93b1e66a_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AdminQueries93b1e66a"
+        }
+      ]
+    },
+    "AMPLIFY_function_AdminQueries93b1e66a_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AdminQueries93b1e66a"
+        }
+      ]
+    },
+    "AMPLIFY_function_adsatsFlutterAuthPostConfirmation_GROUP": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "adsatsFlutterAuthPostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_adsatsFlutterAuthPostConfirmation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "adsatsFlutterAuthPostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_adsatsFlutterAuthPostConfirmation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "adsatsFlutterAuthPostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_adsatsFlutterAuthVerifyAuthChallengeResponse_RECAPTCHASECRET": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "adsatsFlutterAuthVerifyAuthChallengeResponse"
+        }
+      ]
+    },
+    "AMPLIFY_function_placeHolder_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "placeHolder"
+        }
+      ]
+    },
+    "AMPLIFY_function_placeHolder_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "placeHolder"
+        }
+      ]
     }
   },
   "storage": {

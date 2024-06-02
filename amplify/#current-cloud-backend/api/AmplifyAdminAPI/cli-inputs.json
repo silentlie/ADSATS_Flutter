@@ -1,35 +1,8 @@
 {
   "version": 1,
   "paths": {
-    "/roles": {
-      "name": "/roles",
-      "lambdaFunction": "placeHolder",
-      "permissions": {
-        "setting": "private",
-        "auth": [
-          "read"
-        ],
-        "groups": {
-          "dev": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ],
-          "admin": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ],
-          "crew": [
-            "read"
-          ]
-        }
-      }
-    },
-    "/crews": {
-      "name": "/crews",
+    "/staff": {
+      "name": "/staff",
       "lambdaFunction": "placeHolder",
       "permissions": {
         "groups": {
@@ -51,6 +24,69 @@
     },
     "/aircrafts": {
       "name": "/aircrafts",
+      "lambdaFunction": "placeHolder",
+      "permissions": {
+        "groups": {
+          "dev": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/roles": {
+      "name": "/roles",
+      "lambdaFunction": "placeHolder",
+      "permissions": {
+        "groups": {
+          "dev": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/categories": {
+      "name": "/categories",
+      "lambdaFunction": "placeHolder",
+      "permissions": {
+        "groups": {
+          "dev": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/sub-categories": {
+      "name": "/sub-categories",
       "lambdaFunction": "placeHolder",
       "permissions": {
         "groups": {

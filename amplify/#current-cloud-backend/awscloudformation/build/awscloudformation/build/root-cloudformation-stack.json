@@ -152,33 +152,6 @@
         }
       }
     },
-    "APIGatewayAuthStack": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json",
-        "Parameters": {
-          "authRoleName": {
-            "Ref": "AuthRoleName"
-          },
-          "unauthRoleName": {
-            "Ref": "UnauthRoleName"
-          },
-          "env": "dev",
-          "AmplifyAdminAPI": {
-            "Fn::GetAtt": [
-              "apiAmplifyAdminAPI",
-              "Outputs.ApiId"
-            ]
-          },
-          "AmplifyCrewAPI": {
-            "Fn::GetAtt": [
-              "apiAmplifyCrewAPI",
-              "Outputs.ApiId"
-            ]
-          }
-        }
-      }
-    },
     "AuthTriggerCustomLambdaStack": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
@@ -282,57 +255,6 @@
             "Fn::GetAtt": [
               "authuserPoolGroups",
               "Outputs.adminGroupRole"
-            ]
-          },
-          "authuserPoolGroupscrewGroupRole": {
-            "Fn::GetAtt": [
-              "authuserPoolGroups",
-              "Outputs.crewGroupRole"
-            ]
-          },
-          "env": "dev"
-        }
-      }
-    },
-    "apiAmplifyCrewAPI": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/api/AmplifyCrewAPI-cloudformation-template.json",
-        "Parameters": {
-          "functionplaceHolderName": {
-            "Fn::GetAtt": [
-              "functionplaceHolder",
-              "Outputs.Name"
-            ]
-          },
-          "functionplaceHolderArn": {
-            "Fn::GetAtt": [
-              "functionplaceHolder",
-              "Outputs.Arn"
-            ]
-          },
-          "authadsatsFlutterAuthUserPoolId": {
-            "Fn::GetAtt": [
-              "authadsatsFlutterAuth",
-              "Outputs.UserPoolId"
-            ]
-          },
-          "authuserPoolGroupsdevGroupRole": {
-            "Fn::GetAtt": [
-              "authuserPoolGroups",
-              "Outputs.devGroupRole"
-            ]
-          },
-          "authuserPoolGroupsadminGroupRole": {
-            "Fn::GetAtt": [
-              "authuserPoolGroups",
-              "Outputs.adminGroupRole"
-            ]
-          },
-          "authuserPoolGroupscrewGroupRole": {
-            "Fn::GetAtt": [
-              "authuserPoolGroups",
-              "Outputs.crewGroupRole"
             ]
           },
           "env": "dev"

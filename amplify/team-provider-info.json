@@ -38,6 +38,10 @@
       },
       "storage": {
         "AmplifyS3Flutter": {}
+      },
+      "api": {
+        "AdminQueries": {},
+        "AmplifyAdminAPI": {}
       }
     }
   }
