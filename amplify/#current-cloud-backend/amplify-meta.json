@@ -41,7 +41,7 @@
         "RootUrl": "https://h0i0gqik9h.execute-api.ap-southeast-2.amazonaws.com/dev",
         "ApiId": "h0i0gqik9h"
       },
-      "lastPushTimeStamp": "2024-06-02T16:34:57.167Z",
+      "lastPushTimeStamp": "2024-06-02T17:23:47.537Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/api/AdminQueries-cloudformation-template.json",
         "logicalId": "apiAdminQueries"
@@ -49,128 +49,128 @@
       "lastPushDirHash": "CbMUdg7fJPF2FSHj/qCccfRhYE8="
     },
     "AmplifyAdminAPI": {
-      "service": "API Gateway",
-      "providerPlugin": "awscloudformation",
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "placeHolder",
           "attributes": [
             "Name",
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "placeHolder"
         },
         {
-          "category": "auth",
-          "resourceName": "adsatsFlutterAuth",
           "attributes": [
             "UserPoolId"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "adsatsFlutterAuth"
         },
         {
-          "category": "auth",
-          "resourceName": "userPoolGroups",
           "attributes": [
             "devGroupRole"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
         },
         {
-          "category": "auth",
-          "resourceName": "userPoolGroups",
           "attributes": [
             "adminGroupRole"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
         }
       ],
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/api/AmplifyAdminAPI-cloudformation-template.json",
-        "logicalId": "apiAmplifyAdminAPI"
-      },
-      "lastPushTimeStamp": "2024-06-02T16:34:57.184Z",
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway",
       "output": {
         "ApiName": "AmplifyAdminAPI",
         "RootUrl": "https://ohvuehspsh.execute-api.ap-southeast-2.amazonaws.com/dev",
         "ApiId": "ohvuehspsh"
       },
+      "lastPushTimeStamp": "2024-06-02T17:23:47.537Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/api/AmplifyAdminAPI-cloudformation-template.json",
+        "logicalId": "apiAmplifyAdminAPI"
+      },
       "lastPushDirHash": "8V2sbf1C9vclPeBbGdV/0dWjdao="
     },
-    "AmplifyFilterAPI": {
-      "service": "API Gateway",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "placeHolder",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        }
-      ],
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/api/AmplifyFilterAPI-cloudformation-template.json",
-        "logicalId": "apiAmplifyFilterAPI"
-      },
-      "lastPushTimeStamp": "2024-06-02T16:34:57.227Z",
-      "output": {
-        "ApiName": "AmplifyFilterAPI",
-        "RootUrl": "https://qdn928gkpj.execute-api.ap-southeast-2.amazonaws.com/dev",
-        "ApiId": "qdn928gkpj"
-      },
-      "lastPushDirHash": "poEhf1Qluxt7h2UVk3pJkEMjuPo="
-    },
     "AmplifyAviationAPI": {
-      "service": "API Gateway",
-      "providerPlugin": "awscloudformation",
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "placeHolder",
           "attributes": [
             "Name",
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "placeHolder"
         },
         {
-          "category": "auth",
-          "resourceName": "adsatsFlutterAuth",
           "attributes": [
             "UserPoolId"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "adsatsFlutterAuth"
         },
         {
-          "category": "auth",
-          "resourceName": "userPoolGroups",
           "attributes": [
             "devGroupRole"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
         },
         {
-          "category": "auth",
-          "resourceName": "userPoolGroups",
           "attributes": [
             "adminGroupRole"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
         },
         {
-          "category": "auth",
-          "resourceName": "userPoolGroups",
           "attributes": [
             "crewGroupRole"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
         }
       ],
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/api/AmplifyAviationAPI-cloudformation-template.json",
-        "logicalId": "apiAmplifyAviationAPI"
-      },
-      "lastPushTimeStamp": "2024-06-02T16:34:58.001Z",
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway",
       "output": {
         "ApiName": "AmplifyAviationAPI",
         "RootUrl": "https://ywi1rcndmh.execute-api.ap-southeast-2.amazonaws.com/dev",
         "ApiId": "ywi1rcndmh"
       },
+      "lastPushTimeStamp": "2024-06-02T17:23:47.537Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/api/AmplifyAviationAPI-cloudformation-template.json",
+        "logicalId": "apiAmplifyAviationAPI"
+      },
       "lastPushDirHash": "LsWUjlfYRA6B83R4rJNz0maBA+s="
+    },
+    "AmplifyFilterAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "placeHolder"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway",
+      "output": {
+        "ApiName": "AmplifyFilterAPI",
+        "RootUrl": "https://qdn928gkpj.execute-api.ap-southeast-2.amazonaws.com/dev",
+        "ApiId": "qdn928gkpj"
+      },
+      "lastPushTimeStamp": "2024-06-02T17:23:47.537Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/api/AmplifyFilterAPI-cloudformation-template.json",
+        "logicalId": "apiAmplifyFilterAPI"
+      },
+      "lastPushDirHash": "poEhf1Qluxt7h2UVk3pJkEMjuPo="
     }
   },
   "auth": {
@@ -193,13 +193,13 @@
           "SMS"
         ],
         "passwordProtectionSettings": {
-          "passwordPolicyMinLength": 8,
           "passwordPolicyCharacters": [
             "REQUIRES_LOWERCASE",
             "REQUIRES_UPPERCASE",
             "REQUIRES_NUMBERS",
             "REQUIRES_SYMBOLS"
-          ]
+          ],
+          "passwordPolicyMinLength": 8
         },
         "signupAttributes": [
           "EMAIL"
@@ -223,7 +223,7 @@
         "IdentityPoolName": "adsatsFlutterAuth_identitypool_cf7c6381__dev",
         "UserPoolName": "adsatsFlutterUserPool"
       },
-      "lastPushTimeStamp": "2024-06-02T16:34:57.261Z",
+      "lastPushTimeStamp": "2024-06-02T17:23:47.537Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/auth/adsatsFlutterAuth-cloudformation-template.json",
         "logicalId": "authadsatsFlutterAuth"
@@ -250,7 +250,7 @@
         "adminGroupRole": "arn:aws:iam::891377389351:role/ap-southeast-2_uVmMzhW0r-adminGroupRole",
         "crewGroupRole": "arn:aws:iam::891377389351:role/ap-southeast-2_uVmMzhW0r-crewGroupRole"
       },
-      "lastPushTimeStamp": "2024-06-02T16:34:57.277Z",
+      "lastPushTimeStamp": "2024-06-02T17:23:47.537Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
         "logicalId": "authuserPoolGroups"
@@ -279,7 +279,7 @@
         "Name": "AdminQueries93b1e66a-dev",
         "LambdaExecutionRole": "AdminQueries93b1e66aLambdaRole-dev"
       },
-      "lastPushTimeStamp": "2024-06-02T16:34:57.319Z",
+      "lastPushTimeStamp": "2024-06-02T17:23:47.537Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/function/AdminQueries93b1e66a-cloudformation-template.json",
         "logicalId": "functionAdminQueries93b1e66a"
@@ -288,9 +288,9 @@
         "deploymentBucketName": "amplify-adsatsflutter-dev-438c7-deployment",
         "s3Key": "amplify-builds/AdminQueries93b1e66a-47644162736d53334532-build.zip"
       },
-      "lastBuildTimeStamp": "2024-06-01T16:58:15.888Z",
+      "lastBuildTimeStamp": "2024-06-02T17:22:01.427Z",
       "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2024-06-01T16:58:16.454Z",
+      "lastPackageTimeStamp": "2024-06-02T17:22:01.974Z",
       "distZipFilename": "AdminQueries93b1e66a-47644162736d53334532-build.zip",
       "lastPushDirHash": "jBzuviNbv8SExBb9UjCmG7zk5Cg="
     },
@@ -305,7 +305,7 @@
         "Name": "adsatsFlutterAuthPostConfirmation-dev",
         "LambdaExecutionRole": "adsatsFlutterAuthPostConfirmation-dev"
       },
-      "lastPushTimeStamp": "2024-06-02T16:34:57.336Z",
+      "lastPushTimeStamp": "2024-06-02T17:23:47.537Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/function/adsatsFlutterAuthPostConfirmation-cloudformation-template.json",
         "logicalId": "functionadsatsFlutterAuthPostConfirmation"
@@ -314,9 +314,9 @@
         "deploymentBucketName": "amplify-adsatsflutter-dev-438c7-deployment",
         "s3Key": "amplify-builds/adsatsFlutterAuthPostConfirmation-54635052695955544d6a-build.zip"
       },
-      "lastBuildTimeStamp": "2024-06-01T16:58:17.349Z",
+      "lastBuildTimeStamp": "2024-06-02T17:22:02.864Z",
       "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2024-06-01T16:58:17.534Z",
+      "lastPackageTimeStamp": "2024-06-02T17:22:03.044Z",
       "distZipFilename": "adsatsFlutterAuthPostConfirmation-54635052695955544d6a-build.zip",
       "lastPushDirHash": "iBkSg5stcofBmSG5p4Dp+ppz04M="
     },
@@ -332,7 +332,7 @@
         "Name": "placeHolder-dev",
         "LambdaExecutionRole": "adsatsflutterLambdaRolefd58a6a6-dev"
       },
-      "lastPushTimeStamp": "2024-06-02T16:34:57.352Z",
+      "lastPushTimeStamp": "2024-06-02T17:23:47.537Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/function/placeHolder-cloudformation-template.json",
         "logicalId": "functionplaceHolder"
@@ -341,9 +341,9 @@
         "deploymentBucketName": "amplify-adsatsflutter-dev-438c7-deployment",
         "s3Key": "amplify-builds/placeHolder-756d4941306a58537464-build.zip"
       },
-      "lastBuildTimeStamp": "2024-06-01T16:58:28.154Z",
+      "lastBuildTimeStamp": "2024-06-02T17:22:13.294Z",
       "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2024-06-01T16:58:29.789Z",
+      "lastPackageTimeStamp": "2024-06-02T17:22:14.889Z",
       "distZipFilename": "placeHolder-756d4941306a58537464-build.zip",
       "lastPushDirHash": "umIA0jXStdccKjw8UHrmnuZOtg0="
     }
@@ -386,7 +386,7 @@
         "BucketName": "amplify-s3-flutter438c7-dev",
         "Region": "ap-southeast-2"
       },
-      "lastPushTimeStamp": "2024-06-02T16:34:57.368Z",
+      "lastPushTimeStamp": "2024-06-02T17:23:47.537Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
         "logicalId": "storageAmplifyS3Flutter"

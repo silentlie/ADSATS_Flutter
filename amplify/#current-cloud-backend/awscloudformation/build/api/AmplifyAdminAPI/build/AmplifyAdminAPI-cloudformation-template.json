@@ -1,5 +1,5 @@
 {
-  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.12.1\",\"stackType\":\"api-API Gateway\",\"metadata\":{}}",
+  "Description": "API Gateway Resource for AWS Amplify CLI",
   "AWSTemplateFormatVersion": "2010-09-09",
   "Parameters": {
     "authadsatsFlutterAuthUserPoolId": {
@@ -4440,7 +4440,7 @@
         "Name": "AmplifyAdminAPI"
       }
     },
-    "AmplifyAdminAPIDefault4XXResponse6ced011d": {
+    "AmplifyAdminAPIDefault4XXResponse991a20cc": {
       "Type": "AWS::ApiGateway::GatewayResponse",
       "Properties": {
         "ResponseType": "DEFAULT_4XX",
@@ -4455,7 +4455,7 @@
         }
       }
     },
-    "AmplifyAdminAPIDefault5XXResponse6ced011d": {
+    "AmplifyAdminAPIDefault5XXResponse991a20cc": {
       "Type": "AWS::ApiGateway::GatewayResponse",
       "Properties": {
         "ResponseType": "DEFAULT_5XX",
@@ -4470,7 +4470,7 @@
         }
       }
     },
-    "DeploymentAPIGWAmplifyAdminAPI00cecbad": {
+    "DeploymentAPIGWAmplifyAdminAPI890e7b67": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -4488,8 +4488,8 @@
         }
       },
       "DependsOn": [
-        "AmplifyAdminAPIDefault4XXResponse6ced011d",
-        "AmplifyAdminAPIDefault5XXResponse6ced011d"
+        "AmplifyAdminAPIDefault4XXResponse991a20cc",
+        "AmplifyAdminAPIDefault5XXResponse991a20cc"
       ]
     }
   },
