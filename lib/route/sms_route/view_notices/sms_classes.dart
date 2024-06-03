@@ -13,7 +13,7 @@ class Notice {
       required String subject,
       required String category,
       required String author,
-      required DateTime createdAt,
+      DateTime? createdAt,
       DateTime? deadlineAt,
       String? documentsID,
       String? aircraft,
@@ -31,7 +31,7 @@ class Notice {
   final String _subject;
   final String _category;
   final String _author;
-  final DateTime _createdAt;
+  final DateTime? _createdAt;
   final DateTime? _deadlineAt;
   final bool? _resolved;
   int get id => _id;
@@ -39,7 +39,7 @@ class Notice {
   String get subject => _subject;
   String get category => _category;
   String get author => _author;
-  DateTime get createdAt => _createdAt;
+  DateTime? get createdAt => _createdAt;
   DateTime? get deadlineAt => _deadlineAt;
   bool? get resolved => _resolved;
   Notice.fromJSON(Map<String, dynamic> json)
@@ -158,34 +158,52 @@ class NoticeAPI extends DataTableSourceAsync {
       };
 
   @override
-  Widget get header => Row(
-        children: [
-          const Text(
-            "Documents",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+  Widget get header {
+    return ListTile(
+      contentPadding: const EdgeInsets.only(bottom: 5),
+      leading: const Text(
+        "Notices",
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      title: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: 5),
+        scrollDirection: Axis.horizontal,
+        reverse: true,
+        child: Row(
+          children: [
+            const SendANoticeButton(),
+            const SizedBox(
+              width: 10,
             ),
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          const SendANoticeButton(),
-          const Spacer(),
-          SearchBarWidget(
-            filters: filters,
-            refreshDatasource: refreshDatasource,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          FilterBy(
-            filters: filters,
-            refreshDatasource: refreshDatasource,
-            filterEndpoints: filterEndpoints,
-          ),
-        ],
-      );
+            FilterBy(
+              filters: filters,
+              refreshDatasource: refreshDatasource,
+              filterEndpoints: filterEndpoints,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // TODO: Implement Sort By function
+              },
+              child: const Text("Sort By"),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            SearchBarWidget(
+              filters: filters,
+              refreshDatasource: refreshDatasource,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class SendANoticeButton extends StatelessWidget {
@@ -198,14 +216,15 @@ class SendANoticeButton extends StatelessWidget {
       onPressed: () {
         context.go('/send-notices');
       },
-      style: ButtonStyle(
-        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: const BorderSide(color: Colors.black),
-          ),
-        ),
-      ),
+      // testing visual
+      // style: ButtonStyle(
+      //   shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+      //     RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.circular(8),
+      //       side: const BorderSide(color: Colors.black),
+      //     ),
+      //   ),
+      // ),
       child: const Row(
         children: [
           Icon(
