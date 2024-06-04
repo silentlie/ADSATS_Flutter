@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_authenticator/amplify_authenticator.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
@@ -43,9 +45,6 @@ class CustomSignInForm extends StatefulWidget {
 class _CustomSignInFormState extends State<CustomSignInForm> {
   @override
   Widget build(BuildContext context) {
-    if (rememberDevice) {
-      rememberCurrentDevice();
-    }
     return AuthenticatorForm(
       child: Column(
         children: [
@@ -119,5 +118,28 @@ class CustomResetPasswordForm extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class AuthNotifier with ChangeNotifier {
+  late String email;
+  late String avatarUrl;
+  late String roles;
+  late String permission;
+  AuthNotifier() {
+    fetchCognitoAuthSession();
+  }
+  Future<void> fetchCognitoAuthSession() async {
+    try {
+      final cognitoPlugin =
+          Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
+      // ignore: unused_local_variable
+      final test = await cognitoPlugin.fetchAuthSession();
+      final result = await cognitoPlugin.fetchUserAttributes();
+      // maybe be buggy, if nothing changes this should the index of the email
+      email = result[0].value;
+    } on AuthException catch (e) {
+      safePrint('Error retrieving auth session: ${e.message}');
+    }
   }
 }

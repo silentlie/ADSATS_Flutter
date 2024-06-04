@@ -8,7 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'package:adsats_flutter/theme/theme_notifier.dart';
-import 'package:adsats_flutter/amplify/auth.dart';
+import 'package:adsats_flutter/Amplify/auth.dart';
 import 'package:adsats_flutter/amplifyconfiguration.dart';
 import 'package:adsats_flutter/route/route.dart';
 import 'package:adsats_flutter/scaffold/scaffold_widget.dart';
