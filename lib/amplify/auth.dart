@@ -86,6 +86,7 @@ class AuthNotifier with ChangeNotifier {
   String lName = "";
   String email = "";
   String avatarUrl = "";
+  String aircrafts = "";
   String roles = "";
   String permission = "";
 
@@ -125,6 +126,8 @@ class AuthNotifier with ChangeNotifier {
       Map<String, dynamic> rawData = jsonDecode(jsonStr)[0];
       fName = rawData["f_name"];
       lName = rawData["l_name"];
+      roles = rawData["roles"];
+      aircrafts = rawData["aircrafts"];
       debugPrint(rawData.toString());
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');

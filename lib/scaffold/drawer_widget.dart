@@ -74,7 +74,7 @@ class MyDrawerHeader extends StatelessWidget {
     final staff = Provider.of<AuthNotifier>(context);
     return SizedBox(
       // height of header
-      height: 200,
+      height: 250,
       child: DrawerHeader(
         decoration: const BoxDecoration(
           color: Colors.transparent,
@@ -84,16 +84,11 @@ class MyDrawerHeader extends StatelessWidget {
           children: [
             // Add some space between the top drawer and role text
             const SizedBox(height: 20),
-            const Center(
-              child: Text(
-                'Drawer Image',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-              ),
-            ),
+            Center(
+                child: staff.avatarUrl.isEmpty
+                    ? const DefaultLogoWidget()
+                    : Text(staff.avatarUrl)),
+
             // Add some space between the header text and additional text
             const SizedBox(height: 20),
             Center(
@@ -116,11 +111,21 @@ class MyDrawerHeader extends StatelessWidget {
                 ),
               ),
             ),
-            const Center(
+            Center(
               // Center the role text
               child: Text(
-                'Role',
-                style: TextStyle(
+                staff.roles,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+            Center(
+              // Center the role text
+              child: Text(
+                staff.aircrafts,
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,
                 ),
