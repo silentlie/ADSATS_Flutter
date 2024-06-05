@@ -17,23 +17,9 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
   DataTableSourceAsync get dataSource => widget._dataSource;
   // default is 10
   int _rowsPerPage = PaginatedDataTable.defaultRowsPerPage;
-  int _initialRow = 0;
   // can be customise controller
   final PaginatorController _controller = PaginatorController();
   List<DataColumn> get columns => dataSource.columns;
-
-  @override
-  void didChangeDependencies() {
-    // need to check _dataSource has changed based on filter
-    debugPrint("didChangeDependencies");
-    setState(
-      () {
-        _initialRow = 0;
-      },
-    );
-
-    super.didChangeDependencies();
-  }
 
   @override
   void dispose() {
@@ -46,6 +32,7 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return AsyncPaginatedDataTable2(
+      
       headingRowColor: WidgetStateColor.resolveWith(
           (states) => colorScheme.surfaceContainerHighest),
       columnSpacing: 0,
@@ -53,7 +40,7 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
       source: dataSource,
       empty: const Placeholder(),
       errorBuilder: (error) => const Placeholder(),
-      initialFirstRowIndex: _initialRow,
+      initialFirstRowIndex: 0,
       rowsPerPage: _rowsPerPage,
       availableRowsPerPage: [
         _rowsPerPage,
@@ -75,6 +62,7 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
       horizontalMargin: 20,
       checkboxHorizontalMargin: 12,
       checkboxAlignment: Alignment.center,
+      dataRowHeight: 62,
       showCheckboxColumn: false,
       // dynamic change rows per page based on height of screen
       autoRowsToHeight: false,

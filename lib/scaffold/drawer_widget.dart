@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'default_widget.dart';
 
 import 'package:adsats_flutter/Amplify/auth.dart';
@@ -12,7 +13,7 @@ class MyDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         // Important: Remove any padding from the ListView.
-        padding: EdgeInsets.zero,
+        padding: const EdgeInsets.all(8),
         children: [
           const MyDrawerHeader(),
           ListTile(
@@ -43,10 +44,11 @@ class MyDrawer extends StatelessWidget {
             title: const Text('More Info'),
             onTap: () {
               showAboutDialog(
-                  context: context,
-                  applicationIcon: const DefaultLogoWidget(),
-                  applicationName: "ADSATS Web App",
-                  applicationVersion: "1.0.0");
+                context: context,
+                applicationIcon: const DefaultLogoWidget(),
+                applicationName: "ADSATS Web App",
+                applicationVersion: "1.0.0",
+              );
             },
           ),
           ElevatedButton(
@@ -69,50 +71,63 @@ class MyDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-
-    return const DrawerHeader(
-      decoration: BoxDecoration(
-        color: Colors.grey,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Add some space between the top drawer and role text
-          SizedBox(height: 20),
-          Center(
-            child: Text(
-              'Drawer Image',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
+    final staff = Provider.of<AuthNotifier>(context);
+    return SizedBox(
+      // height of header
+      height: 200,
+      child: DrawerHeader(
+        decoration: const BoxDecoration(
+          color: Colors.transparent,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Add some space between the top drawer and role text
+            const SizedBox(height: 20),
+            const Center(
+              child: Text(
+                'Drawer Image',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
               ),
             ),
-          ),
-          // Add some space between the header text and additional text
-          SizedBox(height: 20),
-          Center(
-            // Center the name text
-            child: Text(
-              'Name',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
+            // Add some space between the header text and additional text
+            const SizedBox(height: 20),
+            Center(
+              // Center the name text
+              child: Text(
+                "${staff.fName} ${staff.lName}",
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
               ),
             ),
-          ),
-          Center(
-            // Center the role text
-            child: Text(
-              'Role',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
+            Center(
+              // Center the email text
+              child: Text(
+                staff.email,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
               ),
             ),
-          ),
-        ],
+            const Center(
+              // Center the role text
+              child: Text(
+                'Role',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
