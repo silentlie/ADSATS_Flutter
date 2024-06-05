@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'default_widget.dart';
 
-import 'package:adsats_flutter/amplify/auth.dart';
+import 'package:adsats_flutter/Amplify/auth.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -53,7 +53,6 @@ class MyDrawer extends StatelessWidget {
             onPressed: () {
               // confirm before logout?
               signOutCurrentUser();
-              forgetCurrentDevice();
             },
             child: const Text('Log out'),
           ),

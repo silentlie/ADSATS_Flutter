@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:adsats_flutter/amplify/s3_storage.dart';
-import 'package:adsats_flutter/amplify/rest_api_gateway.dart';
+import 'package:adsats_flutter/Amplify/s3_storage.dart';
 
 class ComplianceWidget extends StatelessWidget {
   const ComplianceWidget({super.key});
@@ -73,15 +72,6 @@ class ComplianceWidget extends StatelessWidget {
             },
             child: const Text("Get File Props"),
           ),
-          ElevatedButton(
-              onPressed: () async {
-                Map<String, String> queryParameters = {
-                  "email": "student@example.com",
-                  "filter": "Test 1,Test 2"
-                };
-                await getMethod(queryParameters);
-              },
-              child: const Text("Test Get Method"))
         ],
       ),
     );

@@ -1,10 +1,11 @@
+import 'dart:convert';
+
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_authenticator/amplify_authenticator.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:adsats_flutter/scaffold/default_widget.dart';
 
-bool rememberDevice = false;
+import 'package:adsats_flutter/scaffold/default_widget.dart';
 
 Future<void> signOutCurrentUser() async {
   final result = await Amplify.Auth.signOut();
@@ -33,48 +34,6 @@ Future<void> rememberCurrentDevice() async {
   }
 }
 
-class CustomSignInForm extends StatefulWidget {
-  const CustomSignInForm({super.key});
-
-  @override
-  State<CustomSignInForm> createState() => _CustomSignInFormState();
-}
-
-class _CustomSignInFormState extends State<CustomSignInForm> {
-  @override
-  Widget build(BuildContext context) {
-    if (rememberDevice) {
-      rememberCurrentDevice();
-    }
-    return AuthenticatorForm(
-      child: Column(
-        children: [
-          SignInFormField.username(),
-          SignInFormField.password(),
-          CheckboxListTile(
-            title: const Text("Remember this device"),
-            controlAffinity: ListTileControlAffinity.leading,
-            value: rememberDevice,
-            onChanged: (value) {
-              setState(() {
-                rememberDevice = value!;
-              });
-            },
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: SignInButton(),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: ForgotPasswordButton(),
-          )
-        ],
-      ),
-    );
-  }
-}
-
 class SignInScafold extends StatelessWidget {
   const SignInScafold({super.key});
 
@@ -92,7 +51,7 @@ class SignInScafold extends StatelessWidget {
               Container(
                 constraints:
                     const BoxConstraints(maxWidth: 500.0, minWidth: 100),
-                child: const CustomSignInForm(),
+                child: SignInForm(),
               ),
             ],
           ),
@@ -119,5 +78,46 @@ class CustomResetPasswordForm extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class AuthNotifier with ChangeNotifier {
+  late String email;
+  late String avatarUrl;
+  late String roles;
+  late String permission;
+  AuthNotifier() {
+    fetchCognitoAuthSession();
+  }
+  Future<void> fetchCognitoAuthSession() async {
+    try {
+      final cognitoPlugin =
+          Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
+      // ignore: unused_local_variable
+      final test = await cognitoPlugin.fetchAuthSession();
+      final result = await cognitoPlugin.fetchUserAttributes();
+      // maybe be buggy, if nothing changes this should the index of the email
+      email = result[0].value;
+    } on AuthException catch (e) {
+      safePrint('Error retrieving auth session: ${e.message}');
+    }
+  }
+  Future<void> fetchStaffDetails(String email) async {
+    try {
+      Map<String, String> queryParameters = {
+        "email": email,
+      };
+      final restOperation = Amplify.API.get('/staff', apiName: 'AmplifyAviationApi', queryParameters: queryParameters);
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      Map<String, dynamic> rawData = jsonDecode(jsonStr);
+
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+
   }
 }
