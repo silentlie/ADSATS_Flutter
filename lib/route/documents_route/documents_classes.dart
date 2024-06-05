@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path/path.dart' as p;
 
-import 'package:adsats_flutter/abstract_data_table_async.dart';
+import 'package:adsats_flutter/data_table/abstract_data_table_async.dart';
 
 class Document {
   Document({
@@ -159,7 +159,6 @@ class Document {
       debugPrint(e.message);
     }
   }
-
 }
 
 class DocumentAPI extends DataTableSourceAsync {
@@ -234,6 +233,16 @@ class DocumentAPI extends DataTableSourceAsync {
         'sub-categories': '/sub-categories',
       };
 
+  Map<String, String> get sqlColumns => {
+        'File Name': 'file_name',
+        'Author': 'email',
+        'Archived': "archived",
+        'Category': 'category',
+        'Sub-category': 'sub_category',
+        'Aircrafts': 'aircrafts',
+        'Date': 'created_at',
+      };
+
   @override
   Widget get header {
     return ListTile(
@@ -263,11 +272,10 @@ class DocumentAPI extends DataTableSourceAsync {
             const SizedBox(
               width: 10,
             ),
-            ElevatedButton(
-              onPressed: () {
-                // TODO: Implement Sort By function
-              },
-              child: const Text("Sort By"),
+            SortBy(
+              filters: _filters,
+              refreshDatasource: refreshDatasource,
+              sqlColumns: sqlColumns,
             ),
             const SizedBox(
               width: 10,
