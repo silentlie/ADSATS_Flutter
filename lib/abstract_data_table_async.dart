@@ -234,15 +234,17 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
   Widget build(BuildContext context) {
     _textEditingController.text = widget.filters.search ?? '';
     return SearchBar(
+      elevation: const WidgetStatePropertyAll(1),
       constraints: const BoxConstraints(
-        maxWidth: 360,
+        minHeight: 32,
+        maxWidth: 200,
       ),
-      leading: const Icon(Icons.search),
       controller: _textEditingController,
       onSubmitted: (value) {
         widget.filters.search = value;
         widget.refreshDatasource();
       },
+      trailing: const [Icon(Icons.search)],
     );
   }
 }

@@ -160,34 +160,52 @@ class DocumentAPI extends DataTableSourceAsync {
       };
 
   @override
-  Widget get header => Row(
-        children: [
-          const Text(
-            "Documents",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+  Widget get header {
+    return ListTile(
+      contentPadding: const EdgeInsets.only(),
+      leading: const Text(
+        "Documents",
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      title: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: 5),
+        scrollDirection: Axis.horizontal,
+        reverse: true,
+        child: Row(
+          children: [
+            const AddADocumentButton(),
+            const SizedBox(
+              width: 10,
             ),
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          const AddADocumentButton(),
-          const Spacer(),
-          SearchBarWidget(
-            filters: _filters,
-            refreshDatasource: refreshDatasource,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          FilterBy(
-            filters: _filters,
-            refreshDatasource: refreshDatasource,
-            filterEndpoints: filterEndpoints,
-          ),
-        ],
-      );
+            FilterBy(
+              filters: _filters,
+              refreshDatasource: refreshDatasource,
+              filterEndpoints: filterEndpoints,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // TODO: Implement Sort By function
+              },
+              child: const Text("Sort By"),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            SearchBarWidget(
+              filters: _filters,
+              refreshDatasource: refreshDatasource,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class AddADocumentButton extends StatelessWidget {
@@ -201,14 +219,15 @@ class AddADocumentButton extends StatelessWidget {
       onPressed: () {
         context.go('/add-a-document');
       },
-      style: ButtonStyle(
-        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: const BorderSide(color: Color(0xFF05ABC4)),
-          ),
-        ),
-      ),
+      // testing visual
+      // style: ButtonStyle(
+      //   shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+      //     RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.circular(8),
+      //       side: const BorderSide(color: Color(0xFF05ABC4)),
+      //     ),
+      //   ),
+      // ),
       child: const Text('+ Add a document'),
     );
   }

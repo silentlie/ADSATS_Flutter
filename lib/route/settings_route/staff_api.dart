@@ -154,33 +154,49 @@ class StaffApi extends DataTableSourceAsync {
   Map<String, String> get filterEndpoints => {};
 
   @override
-  Widget get header => Row(
-        children: [
-          const Text(
-            "Documents",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+  Widget get header => ListTile(
+        contentPadding: const EdgeInsets.only(),
+        leading: const Text(
+          "Staff",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
           ),
-          const SizedBox(
-            width: 10,
+        ),
+        title: SingleChildScrollView(
+          padding: const EdgeInsets.only(bottom: 5),
+          scrollDirection: Axis.horizontal,
+          reverse: true,
+          child: Row(
+            children: [
+              const AddNewStaff(),
+              const SizedBox(
+                width: 10,
+              ),
+              FilterBy(
+                filters: filters,
+                refreshDatasource: refreshDatasource,
+                filterEndpoints: filterEndpoints,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // TODO: Implement Sort By function
+                },
+                child: const Text("Sort By"),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              SearchBarWidget(
+                filters: filters,
+                refreshDatasource: refreshDatasource,
+              ),
+            ],
           ),
-          const AddNewStaff(),
-          const Spacer(),
-          SearchBarWidget(
-            filters: filters,
-            refreshDatasource: refreshDatasource,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          FilterBy(
-            filters: filters,
-            refreshDatasource: refreshDatasource,
-            filterEndpoints: filterEndpoints,
-          ),
-        ],
+        ),
       );
 }
 
@@ -193,14 +209,15 @@ class AddNewStaff extends StatelessWidget {
       onPressed: () {
         // context.go('/');
       },
-      style: ButtonStyle(
-        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: const BorderSide(color: Colors.black),
-          ),
-        ),
-      ),
+      // testing visual
+      // style: ButtonStyle(
+      //   shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+      //     RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.circular(8),
+      //       side: const BorderSide(color: Colors.black),
+      //     ),
+      //   ),
+      // ),
       child: const Row(
         children: [
           Icon(

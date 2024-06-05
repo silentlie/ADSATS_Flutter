@@ -1,6 +1,6 @@
-import 'package:adsats_flutter/scaffold/app_bar_components/app_bar_title.dart';
+import 'package:adsats_flutter/scaffold/app_bar_components/app_bar_items.dart';
+import 'package:adsats_flutter/scaffold/app_bar_components/menu_item_row.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'package:adsats_flutter/theme/theme_notifier.dart';
@@ -9,38 +9,6 @@ import 'package:adsats_flutter/scaffold/default_widget.dart';
 // https://api.flutter.dev/flutter/material/SliverAppBar-class.html
 // adjust again for fine-grained detail
 const double _appBarHeight = 50;
-
-class AppBarTextButtonList extends StatelessWidget
-    implements PreferredSizeWidget {
-  AppBarTextButtonList({super.key});
-
-  final _listRoute = [
-    ['Documents', '/documents'],
-    ['S.M.S', '/sms'],
-    ['Compliance', '/compliance'],
-    ['Training', '/training'],
-    ['Purchases', '/purchases'],
-  ];
-
-  @override
-  Size get preferredSize => const Size.fromHeight(_appBarHeight);
-
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      children: [
-        for (var route in _listRoute)
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: CustomTextButton(
-              text: route[0],
-              route: route[1],
-            ),
-          ),
-      ],
-    );
-  }
-}
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({
@@ -60,15 +28,16 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         leading: const Row(
           children: [
             DefaultLogoWidget(),
-            // DefaultTextLogo(),
+            DefaultTextLogo(),
           ],
         ),
-        title: const AppBarTitle(),
-        // AppBarTextButtonList(),
+        leadingWidth: 105,
+        title: const SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: MenuItemRow(menuItems: AppBarItems.fullMenuItems),
+        ),
         centerTitle: true,
-        // bottom: AppBarTextButtonList(),
         actions: [
-          // AppBarTextButtonList(),
           const ThemeSwitch(),
           IconButton(
             // Add the bell icon here
@@ -86,35 +55,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class CustomTextButton extends StatelessWidget {
-  const CustomTextButton({super.key, required this.text, required this.route});
-
-  final String text;
-  final String route;
-
-  @override
-  Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    String currentUri = GoRouterState.of(context).uri.toString();
-    return TextButton(
-      onPressed: () {
-        currentUri != route ? context.go(route) : null;
-      },
-      style: ButtonStyle(
-        // todo: Need to check for cosmetic
-        backgroundColor: WidgetStateProperty.all(
-          currentUri == route
-              ? colorScheme.primaryContainer.withOpacity(0.25)
-              : Colors.transparent,
-        ),
-      ),
-      child: Text(
-        text,
       ),
     );
   }
