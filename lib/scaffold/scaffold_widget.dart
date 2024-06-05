@@ -1,4 +1,4 @@
-import 'package:adsats_flutter/Amplify/auth.dart';
+import 'package:adsats_flutter/amplify/auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:adsats_flutter/scaffold/appbar_widget.dart';

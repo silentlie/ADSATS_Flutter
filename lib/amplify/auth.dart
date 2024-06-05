@@ -82,13 +82,18 @@ class CustomResetPasswordForm extends StatelessWidget {
 }
 
 class AuthNotifier with ChangeNotifier {
-  late String email;
-  late String avatarUrl;
-  late String roles;
-  late String permission;
-  AuthNotifier() {
-    fetchCognitoAuthSession();
+  String fName = "";
+  String lName = "";
+  String email = "";
+  String avatarUrl = "";
+  String roles = "";
+  String permission = "";
+
+  Future<void> initialize() async {
+    await fetchCognitoAuthSession();
+    await fetchStaffDetails(email);
   }
+
   Future<void> fetchCognitoAuthSession() async {
     try {
       final cognitoPlugin =
@@ -98,26 +103,34 @@ class AuthNotifier with ChangeNotifier {
       final result = await cognitoPlugin.fetchUserAttributes();
       // maybe be buggy, if nothing changes this should the index of the email
       email = result[0].value;
+
+      debugPrint(email);
     } on AuthException catch (e) {
       safePrint('Error retrieving auth session: ${e.message}');
     }
   }
+
   Future<void> fetchStaffDetails(String email) async {
     try {
       Map<String, String> queryParameters = {
         "email": email,
       };
-      final restOperation = Amplify.API.get('/staff', apiName: 'AmplifyAviationApi', queryParameters: queryParameters);
+      final restOperation = Amplify.API.get(
+        '/staff',
+        apiName: 'AmplifyFilterAPI',
+        queryParameters: queryParameters,
+      );
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
-      Map<String, dynamic> rawData = jsonDecode(jsonStr);
-
+      Map<String, dynamic> rawData = jsonDecode(jsonStr)[0];
+      fName = rawData["f_name"];
+      lName = rawData["l_name"];
+      debugPrint(rawData.toString());
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
     } on Error catch (e) {
       debugPrint('Error: $e');
       rethrow;
     }
-
   }
 }

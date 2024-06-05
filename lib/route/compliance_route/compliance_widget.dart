@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:adsats_flutter/Amplify/s3_storage.dart';
+import 'package:adsats_flutter/amplify/s3_storage.dart';
 
 class ComplianceWidget extends StatelessWidget {
   const ComplianceWidget({super.key});

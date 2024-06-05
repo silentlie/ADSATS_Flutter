@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'default_widget.dart';
 
-import 'package:adsats_flutter/Amplify/auth.dart';
+import 'package:adsats_flutter/amplify/auth.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
