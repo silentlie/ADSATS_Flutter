@@ -147,7 +147,7 @@ class DocumentAPI extends DataTableSourceAsync {
   }
 
   Map<String, String> get filterEndpoints => {
-        'author': '/staff',
+        'authors': '/staff',
         // filter by roles could be more complex then it should
         // 'roles': '/roles',
         'aircrafts': '/aircrafts',

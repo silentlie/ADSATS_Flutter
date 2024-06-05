@@ -153,8 +153,8 @@ class NoticeAPI extends DataTableSourceAsync {
         // filter by roles could be more complex then it should
         // 'roles': '/roles',
         'aircrafts': '/aircrafts',
-        'categories': '/document-categories',
-        'sub-categories': '/document-sub-categories',
+        'categories': '/categories',
+        'sub-categories': '/sub-categories',
       };
 
   @override
