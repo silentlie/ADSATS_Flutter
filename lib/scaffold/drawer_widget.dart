@@ -71,7 +71,13 @@ class MyDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final staff = Provider.of<AuthNotifier>(context);
+    AuthNotifier staff = Provider.of<AuthNotifier>(context);
+    Widget? avatar;
+    if (staff.avatarUrl.isEmpty) {
+      avatar = const DefaultLogoWidget();
+    } else {
+      avatar = Text(staff.avatarUrl);
+    }
     return SizedBox(
       // height of header
       height: 250,
@@ -82,19 +88,13 @@ class MyDrawerHeader extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Add some space between the top drawer and role text
-            const SizedBox(height: 20),
-            Center(
-                child: staff.avatarUrl.isEmpty
-                    ? const DefaultLogoWidget()
-                    : Text(staff.avatarUrl)),
-
+            Center(child: avatar),
             // Add some space between the header text and additional text
             const SizedBox(height: 20),
             Center(
               // Center the name text
               child: Text(
-                "${staff.fName} ${staff.lName}",
+                "Name: ${staff.fName} ${staff.lName}",
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,
@@ -104,7 +104,7 @@ class MyDrawerHeader extends StatelessWidget {
             Center(
               // Center the email text
               child: Text(
-                staff.email,
+                "Email: ${staff.email}",
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,
@@ -114,7 +114,7 @@ class MyDrawerHeader extends StatelessWidget {
             Center(
               // Center the role text
               child: Text(
-                staff.roles,
+                "Roles: ${staff.roles}",
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,
@@ -124,7 +124,7 @@ class MyDrawerHeader extends StatelessWidget {
             Center(
               // Center the role text
               child: Text(
-                staff.aircrafts,
+                "Aircrafts: ${staff.aircrafts}",
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,

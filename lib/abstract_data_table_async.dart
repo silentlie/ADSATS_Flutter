@@ -32,7 +32,6 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return AsyncPaginatedDataTable2(
-      
       headingRowColor: WidgetStateColor.resolveWith(
           (states) => colorScheme.surfaceContainerHighest),
       columnSpacing: 0,
@@ -392,6 +391,35 @@ class FilterBy extends StatelessWidget {
                         },
                       );
                       filterContent.addAll([
+                        MultiSelectDialogField(
+                          buttonText: const Text("Filter by archived"),
+                          items: [
+                            MultiSelectItem(true, "True"),
+                            MultiSelectItem(false, "False")
+                          ],
+                          onConfirm: (selectedOptions) {
+                            if (selectedOptions.length == 1) {
+                              filterResult["archived"] =
+                                  List<String>.from(selectedOptions);
+                            }
+                          },
+                          initialValue: [MultiSelectItem(false, "False")],
+                          // size of dialog after click each filter
+                          dialogHeight: 200,
+                          dialogWidth: 400,
+                          // can be specify based on ThemeData
+                          itemsTextStyle: const TextStyle(color: Colors.amber),
+                          selectedItemsTextStyle:
+                              const TextStyle(color: Colors.blue),
+                          cancelText: const Text(
+                            "Cancel",
+                            style: TextStyle(color: Colors.amber),
+                          ),
+                          confirmText: const Text(
+                            "Confirm",
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                        ),
                         // Title for choose time range can add style
                         const Padding(
                           padding: EdgeInsets.all(8.0),

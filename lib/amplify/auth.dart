@@ -91,8 +91,10 @@ class AuthNotifier with ChangeNotifier {
   String permission = "";
 
   Future<void> initialize() async {
-    await fetchCognitoAuthSession();
-    await fetchStaffDetails(email);
+    if (email.isEmpty) {
+      await fetchCognitoAuthSession();
+      await fetchStaffDetails(email);
+    }
   }
 
   Future<void> fetchCognitoAuthSession() async {

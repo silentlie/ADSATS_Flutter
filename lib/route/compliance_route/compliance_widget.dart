@@ -56,7 +56,7 @@ class ComplianceWidget extends StatelessWidget {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () async {
-              await downloadFileWeb("ADSATS-Logo.svg");
+              await downloadFileWeb("test/");
             },
             child: const Text("Download File"),
           ),
@@ -68,7 +68,7 @@ class ComplianceWidget extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () async {
-              await getFileProperties("ADSATS-Logo.svg");
+              await getFileProperties("test/");
             },
             child: const Text("Get File Props"),
           ),
