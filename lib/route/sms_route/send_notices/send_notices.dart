@@ -110,8 +110,13 @@ class _SendNoticesState extends State<SendNotices> {
             Expanded(
               child: Center(
                 child: Container(
-                  constraints: const BoxConstraints(maxWidth: 1500),
-                  child: buildPages(_selectedIndex),
+                  constraints: const BoxConstraints(maxWidth: 1536),
+                  child: SingleChildScrollView(
+                    child: Card(
+                      elevation: 20,
+                      child: buildPages(_selectedIndex),
+                    ),
+                  ),
                 ),
               ),
             ),

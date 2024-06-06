@@ -54,27 +54,14 @@ class RolesAPI extends DataTableSourceAsync {
   @override
   get showCheckBox => false;
 
+  // can rearrange collumn
   @override
-  List<DataColumn> get columns {
-    return <DataColumn>[
-      const DataColumn(
-        label: Text("Name"),
-        tooltip: "Name of the role",
-      ),
-      const DataColumn(
-        label: Text("Archived"),
-        tooltip: "Archived",
-      ),
-      const DataColumn(
-        label: Text("Description"),
-        tooltip: "Brief description about the role",
-      ),
-      const DataColumn(
-        label: Text("Actions"),
-        tooltip: "Actions",
-      ),
-    ];
-  }
+  List<String> get columnNames => [
+        "Name",
+        "Archived",
+        "Description",
+        "Actions",
+      ];
 
   final CustomTableFilter _filters = CustomTableFilter();
   @override

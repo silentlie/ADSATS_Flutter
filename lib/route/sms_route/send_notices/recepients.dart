@@ -35,3 +35,12 @@ class RecepientMultiSelect extends StatelessWidget {
         child: const Placeholder());
   }
 }
+
+class RecepientsWidget extends StatelessWidget {
+  const RecepientsWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}

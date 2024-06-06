@@ -6,35 +6,21 @@ class SendANotices extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SingleChildScrollView(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              TitleofTheNotice(),
-            ],
-          ),
-          Row(
-            children: [
-              RoleRecipientsMultiSelect(),
-              PlanesRecepientsMultiSelect(),
-              RecepientMultiSelect()
-            ],
-          ),
-          Divider(),
-          Row(
-            children: [
-              AuthorTextField(),
-              ReportNumberTextField(),
-            ],
-          ),
-          SubjectTextField(),
-          MessageTextField(),
-          UploadWidget(),
-          ActionButtonsWidget()
-        ],
-      ),
+    return const Column(
+      children: [
+        TitleofTheNotice(),
+        Divider(),
+        Row(
+          children: [
+            AuthorTextField(),
+            ReportNumberTextField(),
+          ],
+        ),
+        SubjectTextField(),
+        MessageTextField(),
+        UploadWidget(),
+        ActionButtonsWidget()
+      ],
     );
   }
 }

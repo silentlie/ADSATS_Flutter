@@ -72,39 +72,17 @@ class StaffApi extends DataTableSourceAsync {
   @override
   get showCheckBox => false;
 
+  // can rearrange collumn
   @override
-  List<DataColumn> get columns {
-    return <DataColumn>[
-      const DataColumn(
-        label: Text("First Name"),
-        tooltip: "First Name",
-      ),
-      const DataColumn(
-        label: Text("Last Name"),
-        tooltip: "Last Name",
-      ),
-      const DataColumn(
-        label: Text("Email"),
-        tooltip: "Email",
-      ),
-      const DataColumn(
-        label: Text("Archived"),
-        tooltip: "Archived",
-      ),
-      const DataColumn(
-        label: Text("Created At"),
-        tooltip: "Created At",
-      ),
-      const DataColumn(
-        label: Text("Roles"),
-        tooltip: "Roles",
-      ),
-      const DataColumn(
-        label: Text("Actions"),
-        tooltip: "Actions",
-      ),
-    ];
-  }
+  List<String> get columnNames => [
+        "First Name",
+        "Last Name",
+        "Email",
+        "Archived",
+        "Created At",
+        "Roles",
+        "Actions",
+      ];
 
   final CustomTableFilter _filters = CustomTableFilter();
   @override
@@ -186,7 +164,10 @@ class StaffApi extends DataTableSourceAsync {
               const SizedBox(
                 width: 10,
               ),
-              SortBy(filters: filters, refreshDatasource: refreshDatasource, sqlColumns: sqlColumns),
+              SortBy(
+                  filters: filters,
+                  refreshDatasource: refreshDatasource,
+                  sqlColumns: sqlColumns),
               const SizedBox(
                 width: 10,
               ),

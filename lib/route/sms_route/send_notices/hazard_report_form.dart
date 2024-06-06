@@ -6,26 +6,18 @@ class HazardReport extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: const Text(
-                  'Send a notice - Hazard report',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
+    return const Column(
+      children: [
+        Text(
+          'Send a notice - Hazard report',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
-          const HazardReportForm(),
-        ],
-      ),
+        ),
+        Divider(),
+        HazardReportForm(),
+      ],
     );
   }
 }
@@ -38,12 +30,6 @@ class HazardReportForm extends StatelessWidget {
     return const Form(
       child: Column(
         children: [
-          Row(children: [
-            RoleRecipientsMultiSelect(),
-            PlanesRecepientsMultiSelect(),
-            RecepientMultiSelect()
-          ]),
-          Divider(),
           Row(
             children: [
               AuthorTextField(),

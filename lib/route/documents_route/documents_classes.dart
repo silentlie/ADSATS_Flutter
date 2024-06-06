@@ -73,18 +73,6 @@ class Document {
     ]);
   }
 
-  // can rearrange collumn
-  static List<String> columnNames = [
-    "File name",
-    "Author",
-    "Sub category",
-    "Category",
-    "Aircrafts",
-    "Archived",
-    "Date",
-    "Actions",
-  ];
-
   Future<Uri> getFileUrl() async {
     try {
       String pathStr = "${id}_$fileName";
@@ -167,17 +155,18 @@ class DocumentAPI extends DataTableSourceAsync {
   @override
   get showCheckBox => false;
 
+  // can rearrange collumn
   @override
-  List<DataColumn> get columns {
-    return List.generate(Document.columnNames.length, (index) {
-      String columnName = Document.columnNames[index];
-      return DataColumn(
-          label: Text(
-            columnName,
-          ),
-          tooltip: columnName);
-    });
-  }
+  List<String> get columnNames => [
+        "File name",
+        "Author",
+        "Sub category",
+        "Category",
+        "Aircrafts",
+        "Archived",
+        "Date",
+        "Actions",
+      ];
 
   final CustomTableFilter _filters = CustomTableFilter();
   @override

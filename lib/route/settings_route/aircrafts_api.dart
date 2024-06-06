@@ -55,27 +55,14 @@ class AircraftsAPI extends DataTableSourceAsync {
   @override
   get showCheckBox => false;
 
+  // can rearrange collumn
   @override
-  List<DataColumn> get columns {
-    return <DataColumn>[
-      const DataColumn(
-        label: Text("Name"),
-        tooltip: "Name of the Aircraft",
-      ),
-      const DataColumn(
-        label: Text("Archived"),
-        tooltip: "Archived",
-      ),
-      const DataColumn(
-        label: Text("Created At"),
-        tooltip: "Created At",
-      ),
-      const DataColumn(
-        label: Text("Actions"),
-        tooltip: "Actions",
-      ),
-    ];
-  }
+  List<String> get columnNames => [
+        "Name",
+        "Archived",
+        "Created At",
+        "Actions",
+      ];
 
   final CustomTableFilter _filters = CustomTableFilter();
   @override

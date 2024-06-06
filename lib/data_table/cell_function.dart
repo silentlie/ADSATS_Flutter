@@ -28,7 +28,12 @@ DataCell cellFor(Object? data) {
       },
     ).toList());
   } else {
-    widget = Text(data.toString());
+    widget = Text(
+      data.toString(),
+      softWrap: false,
+      overflow: TextOverflow.ellipsis,
+      
+    );
   }
-  return DataCell(widget);
+  return DataCell(Center(child: widget));
 }
