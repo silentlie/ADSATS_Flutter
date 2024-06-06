@@ -9,6 +9,8 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme colorScheme =
+        Theme.of(context).colorScheme; // Access color scheme
     return Drawer(
       child: ListView(
         // Important: Remove any padding from the ListView.
@@ -55,7 +57,12 @@ class MyDrawer extends StatelessWidget {
               signOutCurrentUser();
               forgetCurrentDevice();
             },
-            child: const Text('Log out'),
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all<Color>(
+                  colorScheme.secondary), // Change button background color
+            ),
+            child: Text('Log out',
+                style: TextStyle(color: colorScheme.onSecondary)),
           ),
         ],
       ),
@@ -70,8 +77,6 @@ class MyDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-
     return const DrawerHeader(
       decoration: BoxDecoration(
         color: Colors.grey,

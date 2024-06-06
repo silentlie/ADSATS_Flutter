@@ -89,23 +89,39 @@ class DropdownRow extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.32,
               label: const Text('Sub-Category'),
               dropdownMenuEntries: const <DropdownMenuEntry>[
-                DropdownMenuEntry(value: 'Aircraft approvals, certificates and documents', label: 'Aircraft approvals, certificates and documents'),
-                DropdownMenuEntry(value: 'Aircraft manuals', label: 'Aircraft manuals'),
-                DropdownMenuEntry(value: 'Audit program', label: 'Audit program'),
-                DropdownMenuEntry(value: 'BCAA aircraft occurrence reports', label: 'BCAA aircraft occurrence reports'),
+                DropdownMenuEntry(
+                    value: 'Aircraft approvals, certificates and documents',
+                    label: 'Aircraft approvals, certificates and documents'),
+                DropdownMenuEntry(
+                    value: 'Aircraft manuals', label: 'Aircraft manuals'),
+                DropdownMenuEntry(
+                    value: 'Audit program', label: 'Audit program'),
+                DropdownMenuEntry(
+                    value: 'BCAA aircraft occurrence reports',
+                    label: 'BCAA aircraft occurrence reports'),
                 DropdownMenuEntry(value: 'BCAA audits', label: 'BCAA audits'),
-                DropdownMenuEntry(value: 'Change management', label: 'Change management'),
-                DropdownMenuEntry(value: 'Fatigue management', label: 'Fatigue management'),
-                DropdownMenuEntry(value: 'Ground training', label: 'Ground training'),
-                DropdownMenuEntry(value: 'Licence and approvals', label: 'Licence and approvals'),
-                DropdownMenuEntry(value: 'Safety review board', label: 'Safety review board'),
-                DropdownMenuEntry(value: 'Purchase orders', label: 'Purchase orders'),
-                DropdownMenuEntry(value: 'Safety notice', label: 'Safety notice'),
-                DropdownMenuEntry(value: 'Notice to crew', label: 'Notice to crew'),
-                DropdownMenuEntry(value: 'Hazard notice', label: 'Hazard notice'),
+                DropdownMenuEntry(
+                    value: 'Change management', label: 'Change management'),
+                DropdownMenuEntry(
+                    value: 'Fatigue management', label: 'Fatigue management'),
+                DropdownMenuEntry(
+                    value: 'Ground training', label: 'Ground training'),
+                DropdownMenuEntry(
+                    value: 'Licence and approvals',
+                    label: 'Licence and approvals'),
+                DropdownMenuEntry(
+                    value: 'Safety review board', label: 'Safety review board'),
+                DropdownMenuEntry(
+                    value: 'Purchase orders', label: 'Purchase orders'),
+                DropdownMenuEntry(
+                    value: 'Safety notice', label: 'Safety notice'),
+                DropdownMenuEntry(
+                    value: 'Notice to crew', label: 'Notice to crew'),
+                DropdownMenuEntry(
+                    value: 'Hazard notice', label: 'Hazard notice'),
                 DropdownMenuEntry(value: 'HR documents', label: 'HR documents'),
                 DropdownMenuEntry(
-                  value: '+ Add a sub-category', 
+                  value: '+ Add a sub-category',
                   label: '+ Add a sub-category',
                 ),
               ],
@@ -118,27 +134,22 @@ class DropdownRow extends StatelessWidget {
               label: const Text('Plane (optional)'),
               dropdownMenuEntries: const <DropdownMenuEntry>[
                 DropdownMenuEntry(value: 'All', label: 'All'),
-                DropdownMenuEntry(
-                    value: 'Aircraft 1', label: 'Aircraft 1'),
-                DropdownMenuEntry(
-                    value: 'Aircraft 2', label: 'Aircraft 2')
+                DropdownMenuEntry(value: 'Aircraft 1', label: 'Aircraft 1'),
+                DropdownMenuEntry(value: 'Aircraft 2', label: 'Aircraft 2')
               ],
             ),
           ),
           Flexible(
-            flex: 1,
-            child: TextField(
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                label: const Text('User'),
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.search), 
-                  onPressed: () {
-                  
-                },)
-              ),
-            )
-          ),
+              flex: 1,
+              child: TextField(
+                decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    label: const Text('User'),
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.search),
+                      onPressed: () {},
+                    )),
+              )),
         ],
       ),
     );
@@ -153,10 +164,19 @@ class UploadButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme colorScheme =
+        Theme.of(context).colorScheme; // Access color scheme
     return Padding(
       padding: const EdgeInsets.all(20),
       child: ElevatedButton(
-          onPressed: () {}, child: const Text('Upload document')),
+        onPressed: () {},
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.all<Color>(
+              colorScheme.secondary), // Change button background color
+        ),
+        child: Text('Upload document',
+            style: TextStyle(color: colorScheme.onSecondary)),
+      ),
     );
   }
 }
