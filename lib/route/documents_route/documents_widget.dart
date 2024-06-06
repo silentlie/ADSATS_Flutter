@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:adsats_flutter/abstract_data_table_async.dart';
+import 'package:adsats_flutter/data_table/abstract_data_table_async.dart';
 import 'documents_classes.dart';
 
 class DocumentsWidget extends StatelessWidget {

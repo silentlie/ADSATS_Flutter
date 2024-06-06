@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 
-import 'package:adsats_flutter/abstract_data_table_async.dart';
+import 'package:adsats_flutter/data_table/abstract_data_table_async.dart';
 
 class Staff {
   Staff({
@@ -151,7 +151,13 @@ class StaffApi extends DataTableSourceAsync {
     }).toList();
   }
 
-  Map<String, String> get filterEndpoints => {};
+  Map<String, String> get sqlColumns => {
+        'First Name': 'f_name',
+        'Last Name': 'l_name',
+        'Email': 'email',
+        'Archived': "archived",
+        'Date': 'created_at',
+      };
 
   @override
   Widget get header => ListTile(
@@ -176,17 +182,11 @@ class StaffApi extends DataTableSourceAsync {
               FilterBy(
                 filters: filters,
                 refreshDatasource: refreshDatasource,
-                filterEndpoints: filterEndpoints,
               ),
               const SizedBox(
                 width: 10,
               ),
-              ElevatedButton(
-                onPressed: () {
-                  // TODO: Implement Sort By function
-                },
-                child: const Text("Sort By"),
-              ),
+              SortBy(filters: filters, refreshDatasource: refreshDatasource, sqlColumns: sqlColumns),
               const SizedBox(
                 width: 10,
               ),

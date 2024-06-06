@@ -4,7 +4,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:adsats_flutter/abstract_data_table_async.dart';
+import 'package:adsats_flutter/data_table/abstract_data_table_async.dart';
 
 class Notice {
   Notice(
@@ -153,10 +153,18 @@ class NoticeAPI extends DataTableSourceAsync {
         // filter by roles could be more complex then it should
         // 'roles': '/roles',
         'aircrafts': '/aircrafts',
-        'categories': '/document-categories',
-        'sub-categories': '/document-sub-categories',
+        'categories': '/categories',
+        'sub-categories': '/sub-categories',
       };
-
+  Map<String, String> get sqlColumns => {
+        'Subject': 'subject',
+        'Category': 'category',
+        'Author': 'email',
+        'Date': 'notice_at',
+        'Deadline': 'deadline_at',
+        'Archived': 'archived',
+        'Resolved': 'resolved',
+      };
   @override
   Widget get header {
     return ListTile(
@@ -186,12 +194,10 @@ class NoticeAPI extends DataTableSourceAsync {
             const SizedBox(
               width: 10,
             ),
-            ElevatedButton(
-              onPressed: () {
-                // TODO: Implement Sort By function
-              },
-              child: const Text("Sort By"),
-            ),
+            SortBy(
+                filters: filters,
+                refreshDatasource: refreshDatasource,
+                sqlColumns: sqlColumns),
             const SizedBox(
               width: 10,
             ),
