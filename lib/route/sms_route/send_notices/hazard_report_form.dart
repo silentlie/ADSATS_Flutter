@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'recepients.dart';
 
 class HazardReport extends StatelessWidget {
@@ -219,10 +221,27 @@ class RiskSeverityWidget extends StatefulWidget {
 }
 
 List<String> riskTolerability = ['Unacceptable', 'Review', 'Acceptable'];
-List<int> likelihood = [1, 2, 3, 4, 5];
-List<int> severity = [1, 2, 3, 4, 5];
 
 class _RiskSeverityWidgetState extends State<RiskSeverityWidget> {
+  Color textFieldColor = Colors.transparent;
+
+  void updateColor(int tableIndex) {
+    setState(() {
+      switch (tableIndex) {
+        case 0:
+          textFieldColor = Colors.red.shade200;
+          break;
+
+        case 1:
+          textFieldColor = Colors.green.shade200;
+          break;
+
+        case 2:
+          textFieldColor = Colors.yellow.shade200;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -248,9 +267,9 @@ class _RiskSeverityWidgetState extends State<RiskSeverityWidget> {
               controller: TextEditingController(text: riskTolerability[1]),
               enabled: false,
               readOnly: true,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                fillColor: Color.fromARGB(255, 224, 106, 98),
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                fillColor: textFieldColor,
                 filled: true,
               ),
             ),
@@ -442,20 +461,20 @@ class SeverityOfConsequenceTable extends StatefulWidget {
 
 class _SeverityOfConsequenceTableState
     extends State<SeverityOfConsequenceTable> {
-  late List<bool> _selected;
+  late List<bool> _selectedSeverity;
   late List<DataRow> _rows;
 
   @override
   void initState() {
     super.initState();
-    _selected = List<bool>.generate(5, (int index) => false);
+    _selectedSeverity = List<bool>.generate(5, (int index) => false);
     _rows = _createRows();
   }
 
-  void _selectRow(int index) {
+  void _selectSeverityRow(int index) {
     setState(() {
-      for (int i = 0; i < _selected.length; i++) {
-        _selected[i] = i == index;
+      for (int i = 0; i < _selectedSeverity.length; i++) {
+        _selectedSeverity[i] = i == index;
       }
     });
   }
@@ -498,13 +517,16 @@ class _SeverityOfConsequenceTableState
           DataCell(Text(item["meaning"])),
           DataCell(Text(item["value"])),
         ],
-        selected: _selected[index],
+        selected: _selectedSeverity[index],
         onSelectChanged: (bool? selected) {
-          _selectRow(index);
+          _selectSeverityRow(index);
+          ValueNotifier(_selectSeverityRow(index));
         },
         color:
             WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
-          if (_selected[index]) return Colors.lightBlue.withOpacity(0.5);
+          if (_selectedSeverity[index]) {
+            return Colors.lightBlue.withOpacity(0.5);
+          }
           return Colors.transparent; // Use default color when not selected
         }),
       );
@@ -536,20 +558,20 @@ class LikelihoodOfOccurrenceTable extends StatefulWidget {
 
 class _LikelihoodOfOccurrenceTableState
     extends State<LikelihoodOfOccurrenceTable> {
-  late List<bool> _selected;
+  late List<bool> _selectedLikelihood;
   late List<DataRow> _rows;
 
   @override
   void initState() {
     super.initState();
-    _selected = List<bool>.generate(5, (int index) => false);
+    _selectedLikelihood = List<bool>.generate(5, (int index) => false);
     _rows = _createRows();
   }
 
-  void _selectRow(int index) {
+  void _selectLikelihoodRow(int index) {
     setState(() {
-      for (int i = 0; i < _selected.length; i++) {
-        _selected[i] = i == index;
+      for (int i = 0; i < _selectedLikelihood.length; i++) {
+        _selectedLikelihood[i] = i == index;
       }
     });
   }
@@ -592,13 +614,16 @@ class _LikelihoodOfOccurrenceTableState
           DataCell(Text(item["meaning"])),
           DataCell(Text(item["value"])),
         ],
-        selected: _selected[index],
+        selected: _selectedLikelihood[index],
         onSelectChanged: (bool? selected) {
-          _selectRow(index);
+          _selectLikelihoodRow(index);
+          ValueNotifier(_selectLikelihoodRow(index));
         },
         color:
             WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
-          if (_selected[index]) return Colors.lightBlue.withOpacity(0.5);
+          if (_selectedLikelihood[index]) {
+            return Colors.lightBlue.withOpacity(0.5);
+          }
           return Colors.transparent; // Use default color when not selected
         }),
       );

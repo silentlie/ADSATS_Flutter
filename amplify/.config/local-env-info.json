@@ -1,5 +1,6 @@
 {
-  "projectPath": "G:\\TAFE\\Flutter\\adsats_flutter",
+  "projectPath": "C:\\Users\\jahaz\\OneDrive\\Desktop\\ADSATS_Flutter",
   "envName": "dev",
-  "defaultEditor": "vscode"
+  "defaultEditor": "vscode",
+  "noUpdateBackend": true
 }
