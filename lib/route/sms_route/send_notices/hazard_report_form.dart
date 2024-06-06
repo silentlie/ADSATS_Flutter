@@ -7,23 +7,25 @@ class HazardReport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(children: [
-        Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              child: const Text(
-                'Send a notice - Hazard report',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                child: const Text(
+                  'Send a notice - Hazard report',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-        const HazardReportForm(),
-      ]),
+            ],
+          ),
+          const HazardReportForm(),
+        ],
+      ),
     );
   }
 }
@@ -170,8 +172,9 @@ class LikelihoodofOccurrenceWidget extends StatelessWidget {
           ),
           const Text(''),
           Container(
-              decoration: BoxDecoration(border: Border.all()),
-              child: const LikelihoodOfOccurrenceTable())
+            decoration: BoxDecoration(border: Border.all()),
+            child: const LikelihoodOfOccurrenceTable(),
+          )
         ],
       ),
     );
@@ -209,8 +212,9 @@ class CommentsTextField extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: const TextField(
         decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            label: Text('Interim action/comments')),
+          border: OutlineInputBorder(),
+          label: Text('Interim action/comments'),
+        ),
       ),
     );
   }
@@ -294,9 +298,10 @@ class MitigationTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return const TextField(
       decoration: InputDecoration(
-          label: Text(
-              'In your opinion, how could the hazard or event be mitigated? (optional)'),
-          border: OutlineInputBorder()),
+        label: Text(
+            'In your opinion, how could the hazard or event be mitigated? (optional)'),
+        border: OutlineInputBorder(),
+      ),
       maxLines: 3,
     );
   }
@@ -314,8 +319,9 @@ class DescribeTextField extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.4,
       child: const TextField(
         decoration: InputDecoration(
-            label: Text('Describe the Hazard or the Event'),
-            border: OutlineInputBorder()),
+          label: Text('Describe the Hazard or the Event'),
+          border: OutlineInputBorder(),
+        ),
         maxLines: 5,
       ),
     );
@@ -334,7 +340,9 @@ class LocationTextField extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.4,
       child: const TextField(
         decoration: InputDecoration(
-            label: Text('Location'), border: OutlineInputBorder()),
+          label: Text('Location'),
+          border: OutlineInputBorder(),
+        ),
       ),
     );
   }
