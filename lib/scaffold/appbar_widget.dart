@@ -39,6 +39,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         centerTitle: true,
         actions: [
           const ThemeSwitch(),
+          const SampleMenuWidget(),
           IconButton(
             // Add the bell icon here
             icon: const Icon(Icons.notifications),
@@ -57,6 +58,54 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
     );
+  }
+}
+
+class SampleMenuWidget extends StatelessWidget {
+  const SampleMenuWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+
+        // offset: Offset.fromDirection(100),
+        position: PopupMenuPosition.under,
+        icon: const Icon(Icons.notifications),
+        itemBuilder: (context) => [
+              const PopupMenuItem(
+                  child: SizedBox(
+                width: 300,
+                // height: 100,
+                child: Row(
+                  children: [
+                    Column(
+                      children: [Icon(Icons.abc)],
+                    ),
+                    Column(
+                      children: [
+                        Row(
+                          children: [Text('Author'), Text('Date')],
+                        ),
+                        Row(
+                          children: [Text('Message')],
+                        )
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        // IconButton(
+                        //     onPressed: () {}, icon: const Icon(Icons.abc))
+                      ],
+                    )
+                  ],
+                ),
+              )),
+              const PopupMenuItem(child: Text('data')),
+              const PopupMenuItem(child: Text('data')),
+            ]);
   }
 }
 

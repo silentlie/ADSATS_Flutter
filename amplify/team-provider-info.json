@@ -11,33 +11,6 @@
       "StackId": "arn:aws:cloudformation:ap-southeast-2:891377389351:stack/amplify-adsatsflutter-dev-438c7/5b6bbd80-1d88-11ef-b24c-0a574cda44bf",
       "AmplifyAppId": "d319r8luc60wmg",
       "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutter-dev-438c7-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
-    },
-    "categories": {
-      "function": {
-        "adsatsFlutterAuthPostConfirmation": {
-          "GROUP": "crew",
-          "deploymentBucketName": "amplify-adsatsflutter-dev-438c7-deployment",
-          "s3Key": "amplify-builds/adsatsFlutterAuthPostConfirmation-54635052695955544d6a-build.zip"
-        },
-        "adsatsFlutterAuthVerifyAuthChallengeResponse": {
-          "RECAPTCHASECRET": ""
-        },
-        "AdminQueries93b1e66a": {
-          "deploymentBucketName": "amplify-adsatsflutter-dev-438c7-deployment",
-          "s3Key": "amplify-builds/AdminQueries93b1e66a-47644162736d53334532-build.zip"
-        },
-        "placeHolder": {
-          "deploymentBucketName": "amplify-adsatsflutter-dev-438c7-deployment",
-          "s3Key": "amplify-builds/placeHolder-756d4941306a58537464-build.zip"
-        }
-      },
-      "auth": {
-        "adsatsFlutterAuth": {},
-        "userPoolGroups": {}
-      },
-      "storage": {
-        "AmplifyS3Flutter": {}
-      }
     }
   }
 }

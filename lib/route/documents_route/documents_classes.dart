@@ -69,7 +69,7 @@ class Document {
       cellFor(aircraft),
       cellFor(archived),
       cellFor(createdAt),
-      cellFor("actions"),
+      const DataCell(ActionButtonsWidget())
     ]);
   }
 
@@ -159,7 +159,6 @@ class Document {
       debugPrint(e.message);
     }
   }
-
 }
 
 class DocumentAPI extends DataTableSourceAsync {
@@ -304,6 +303,23 @@ class AddADocumentButton extends StatelessWidget {
       //   ),
       // ),
       child: const Text('+ Add a document'),
+    );
+  }
+}
+
+class ActionButtonsWidget extends StatelessWidget {
+  const ActionButtonsWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        IconButton(
+            onPressed: () {}, icon: const Icon(Icons.remove_red_eye_outlined)),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.edit_outlined)),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.delete_outline)),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.archive_outlined)),
+      ],
     );
   }
 }
