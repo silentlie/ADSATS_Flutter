@@ -100,10 +100,22 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => ThemeNotifier(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeNotifier>(
+          create: (context) {
+            return ThemeNotifier();
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (context) {
+            return AuthNotifier();
+          },
+        )
+      ],
       builder: (context, child) => Authenticator(
         authenticatorBuilder: (context, state) {
+          
           switch (state.currentStep) {
             case AuthenticatorStep.signIn:
               return const SignInScafold();

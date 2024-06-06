@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 
-import 'package:adsats_flutter/abstract_data_table_async.dart';
+import 'package:adsats_flutter/data_table/abstract_data_table_async.dart';
 
 class Role {
   Role(
@@ -121,7 +121,11 @@ class RolesAPI extends DataTableSourceAsync {
     }).toList();
   }
 
-  Map<String, String> get filterEndpoints => {};
+  Map<String, String> get sqlColumns => {
+        'Role': 'role',
+        'Archived': "archived",
+        'Description': 'description',
+      };
 
   @override
   Widget get header => ListTile(
@@ -149,17 +153,14 @@ class RolesAPI extends DataTableSourceAsync {
               FilterBy(
                 filters: filters,
                 refreshDatasource: refreshDatasource,
-                filterEndpoints: filterEndpoints,
               ),
               const SizedBox(
                 width: 10,
               ),
-              ElevatedButton(
-                onPressed: () {
-                  // TODO: Implement Sort By function
-                },
-                child: const Text("Sort By"),
-              ),
+              SortBy(
+                  filters: filters,
+                  refreshDatasource: refreshDatasource,
+                  sqlColumns: sqlColumns),
               const SizedBox(
                 width: 10,
               ),

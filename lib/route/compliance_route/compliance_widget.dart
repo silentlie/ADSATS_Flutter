@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:adsats_flutter/amplify/s3_storage.dart';
-import 'package:adsats_flutter/amplify/rest_api_gateway.dart';
 
 class ComplianceWidget extends StatelessWidget {
   const ComplianceWidget({super.key});
@@ -57,7 +56,7 @@ class ComplianceWidget extends StatelessWidget {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () async {
-              await downloadFileWeb("ADSATS-Logo.svg");
+              await downloadFileWeb("test/");
             },
             child: const Text("Download File"),
           ),
@@ -69,19 +68,10 @@ class ComplianceWidget extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () async {
-              await getFileProperties("ADSATS-Logo.svg");
+              await getFileProperties("test/");
             },
             child: const Text("Get File Props"),
           ),
-          ElevatedButton(
-              onPressed: () async {
-                Map<String, String> queryParameters = {
-                  "email": "student@example.com",
-                  "filter": "Test 1,Test 2"
-                };
-                await getMethod(queryParameters);
-              },
-              child: const Text("Test Get Method"))
         ],
       ),
     );

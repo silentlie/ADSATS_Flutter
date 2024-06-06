@@ -31,6 +31,7 @@ class AppBarTitle extends StatelessWidget {
     );
   }
 
+  // ignore: unused_element
   List<PopupMenuEntry<MenuItem>> _buildPopupMenuItems(
       List<MenuItem> popupItems) {
     return popupItems.map((item) {
