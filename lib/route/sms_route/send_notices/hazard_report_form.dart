@@ -81,6 +81,8 @@ class ActionButtonsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme colorScheme =
+        Theme.of(context).colorScheme; // Access color scheme
     return Row(
       mainAxisAlignment: MainAxisAlignment.end, // Align buttons to the right
       children: [
@@ -95,19 +97,24 @@ class ActionButtonsWidget extends StatelessWidget {
           onPressed: () {
             // Functionality for the second button
           },
-          child: const Text('Save'),
+          child: const Text('Save'), // Change text color
         ),
         const SizedBox(width: 10),
         ElevatedButton(
           onPressed: () {
             // Functionality for the third button
           },
-          child: const Row(
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all<Color>(
+                colorScheme.secondary), // Change button background color
+          ),
+          child: Row(
             children: [
-              Icon(Icons.mail), // Replace 'some_icon' with the desired icon
-              SizedBox(
+              Icon(Icons.mail, color: colorScheme.onSecondary),
+              const SizedBox(
                   width: 5), // Adjust the spacing between the icon and text
-              Text('Send Notification'),
+              Text('Send Notification',
+                  style: TextStyle(color: colorScheme.onSecondary)),
             ],
           ),
         ),

@@ -240,9 +240,9 @@ class SendANoticeButton extends StatelessWidget {
           SizedBox(width: 5),
           Text(
             'Create a new notification',
-            style: TextStyle(
+            /*   style: TextStyle(
               fontSize: 16,
-            ),
+            ),*/
           ),
         ],
       ),

@@ -4,7 +4,7 @@ import 'recepients.dart';
 class SendANotices extends StatelessWidget {
   const SendANotices({super.key});
 
- @override
+  @override
   Widget build(BuildContext context) {
     return const SingleChildScrollView(
       child: Column(
@@ -50,10 +50,7 @@ class TitleofTheNotice extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: const Text(
         'Notice to Crew',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20
-        ),
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
       ),
     );
   }
@@ -69,10 +66,9 @@ class ReportNumberTextField extends StatelessWidget {
       padding: const EdgeInsets.all(5),
       child: const TextField(
         decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          label: Text('Report Number'),
-          enabled: false
-        ),
+            border: OutlineInputBorder(),
+            label: Text('Report Number'),
+            enabled: false),
       ),
     );
   }
@@ -87,9 +83,7 @@ class MessageTextField extends StatelessWidget {
       padding: const EdgeInsets.all(5),
       child: const TextField(
         decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          label: Text('Message')
-        ),
+            border: OutlineInputBorder(), label: Text('Message')),
         maxLines: 3,
       ),
     );
@@ -106,20 +100,17 @@ class AuthorTextField extends StatelessWidget {
       padding: const EdgeInsets.all(5),
       child: TextField(
         decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          label: const Text('Author'),
-          suffixIcon: IconButton(
-            onPressed: (){}, 
-            icon: const Icon(Icons.search)
-          )
-        ),
+            border: const OutlineInputBorder(),
+            label: const Text('Author'),
+            suffixIcon:
+                IconButton(onPressed: () {}, icon: const Icon(Icons.search))),
       ),
     );
   }
 }
 
 class SubjectTextField extends StatelessWidget {
-  const SubjectTextField ({super.key});
+  const SubjectTextField({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -142,6 +133,8 @@ class ActionButtonsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme colorScheme =
+        Theme.of(context).colorScheme; // Access color scheme
     return Row(
       mainAxisAlignment: MainAxisAlignment.end, // Align buttons to the right
       children: [
@@ -156,18 +149,24 @@ class ActionButtonsWidget extends StatelessWidget {
           onPressed: () {
             // Functionality for the second button
           },
-          child: const Text('Save'),
+          child: const Text('Save'), // Change text color
         ),
         const SizedBox(width: 10),
         ElevatedButton(
           onPressed: () {
             // Functionality for the third button
           },
-          child: const Row(
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all<Color>(
+                colorScheme.secondary), // Change button background color
+          ),
+          child: Row(
             children: [
-              Icon(Icons.mail), // Replace 'some_icon' with the desired icon
-              SizedBox(width: 5), // Adjust the spacing between the icon and text
-              Text('Send Notification'),
+              Icon(Icons.mail, color: colorScheme.onSecondary),
+              const SizedBox(
+                  width: 5), // Adjust the spacing between the icon and text
+              Text('Send Notification',
+                  style: TextStyle(color: colorScheme.onSecondary)),
             ],
           ),
         ),
