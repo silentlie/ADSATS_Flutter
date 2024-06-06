@@ -78,6 +78,7 @@ class FilterBy extends StatelessWidget {
                   buttonText: Text("Filter by ${filterTitles[index]}"),
                   // get list of item from fetchData
                   items: filterData[filterTitles[index]]!,
+                  initialValue: filters.filterResult[filterTitles[index]] ?? [],
                   // send selected item to filterResult
                   onConfirm: (selectedOptions) {
                     filterResult[filterTitles[index]] =
@@ -117,14 +118,27 @@ class FilterBy extends StatelessWidget {
                 ],
                 onConfirm: (selectedOptions) {
                   if (selectedOptions.length != 2) {
-                    filterResult["archived"] =
-                        List<String>.from(selectedOptions);
+                    filterResult["archived"] = selectedOptions
+                        .map((boolValue) => boolValue.toString())
+                        .toList();
                   } else {
                     filterResult["archived"] = [];
                   }
                 },
                 title: const Text("Filter by archived"),
-                initialValue: const [false],
+                initialValue: filters.filterResult["archived"]?.map(
+                      (str) {
+                        switch (str) {
+                          case 'true':
+                            return true;
+                          case 'false':
+                            return false;
+                          default:
+                            return null;
+                        }
+                      },
+                    ).toList() ??
+                    [false],
                 // size of dialog after click each filter
                 dialogHeight: 714,
                 dialogWidth: 400,
@@ -169,6 +183,13 @@ class FilterBy extends StatelessWidget {
         }
       },
     );
+  }
+
+  bool? strToBool(String? str) {
+    if (str == null) {
+      return null;
+    }
+    return str.toLowerCase() == 'true';
   }
 
   @override

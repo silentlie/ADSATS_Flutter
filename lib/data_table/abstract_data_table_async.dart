@@ -47,7 +47,7 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
       columns: columns,
       source: dataSource,
       empty: const Placeholder(),
-      errorBuilder: (error) => const Placeholder(),
+      // errorBuilder: (error) => const Placeholder(),
       initialFirstRowIndex: 0,
       rowsPerPage: _rowsPerPage,
       availableRowsPerPage: [
