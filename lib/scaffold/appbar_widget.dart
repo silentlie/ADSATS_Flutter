@@ -1,3 +1,4 @@
+import 'package:adsats_flutter/notifications/notification_widget.dart';
 import 'package:adsats_flutter/scaffold/app_bar_components/app_bar_items.dart';
 import 'package:adsats_flutter/scaffold/app_bar_components/menu_item_row.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             message: 'change color',
             child: ThemeSwitch(),
           ),
-          const SampleMenuAnchor(),
+          const NotificationWidget(),
           IconButton(
             // Add the bell icon here
             icon: const Icon(Icons.notifications),
@@ -88,71 +89,6 @@ class _ThemeSwitchState extends State<ThemeSwitch> {
           });
         },
       ),
-    );
-  }
-}
-
-class SampleMenuAnchor extends StatelessWidget {
-  const SampleMenuAnchor({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MenuAnchor(
-      menuChildren: [
-        ListTile(
-          visualDensity: VisualDensity.comfortable,
-          tileColor: Colors.blue.shade100,
-          titleTextStyle: const TextStyle(fontWeight: FontWeight.bold),
-          title: const Text('Author'),
-          subtitle: const Row(
-            children: [
-              Text(
-                'Subject: ',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text('Message')
-            ],
-          ),
-          trailing: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.more_vert,
-                size: 20,
-              )),
-          leading: const Icon(Icons.edit_document),
-          onTap: () {},
-        ),
-        ListTile(
-          dense: true,
-          title: const Text('Author'),
-          subtitle: const Text('Subject: Message'),
-          trailing: const Icon(Icons.more_vert),
-          leading: const Icon(Icons.edit_document),
-          onTap: () {},
-        ),
-        ListTile(
-          dense: true,
-          title: const Text('Author'),
-          subtitle: const Text('Subject: Message'),
-          trailing: const Icon(Icons.more_vert),
-          leading: const Icon(Icons.edit_document),
-          onTap: () {},
-        ),
-        const SizedBox(
-          width: 300,
-        )
-      ],
-      builder: (context, controller, child) {
-        return IconButton(
-            onPressed: () {
-              if (controller.isOpen) {
-                controller.close();
-              } else {
-                controller.open();
-              }
-            },
-            icon: const Icon(Icons.notifications_none));
-      },
     );
   }
 }
