@@ -4,7 +4,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:adsats_flutter/abstract_data_table_async.dart';
+import 'package:adsats_flutter/data_table/abstract_data_table_async.dart';
 
 class Notice {
   Notice(
@@ -71,18 +71,6 @@ class Notice {
       cellFor("actions"),
     ]);
   }
-
-  // can rearrange collumn
-  static List<String> columnNames = [
-    "Category",
-    "Subject",
-    "Author",
-    "Archived",
-    "Resolved",
-    "Notice Date",
-    "Deadline At",
-    "Actions",
-  ];
 }
 
 class NoticeAPI extends DataTableSourceAsync {
@@ -91,17 +79,18 @@ class NoticeAPI extends DataTableSourceAsync {
   @override
   get showCheckBox => false;
 
+  // can rearrange collumn
   @override
-  List<DataColumn> get columns {
-    return List.generate(Notice.columnNames.length, (index) {
-      String columnName = Notice.columnNames[index];
-      return DataColumn(
-          label: Text(
-            columnName,
-          ),
-          tooltip: columnName);
-    });
-  }
+  List<String> get columnNames => [
+        "Category",
+        "Subject",
+        "Author",
+        "Archived",
+        "Resolved",
+        "Notice Date",
+        "Deadline At",
+        "Actions",
+      ];
 
   final CustomTableFilter _filters = CustomTableFilter();
   @override
@@ -243,4 +232,3 @@ class SendANoticeButton extends StatelessWidget {
     );
   }
 }
-
