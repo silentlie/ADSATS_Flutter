@@ -1,4 +1,4 @@
-part of 'notice_to_crew.dart';
+part of 'notice_to_crew_widget.dart';
 
 class NoticeToCrew {
   Map<String, List<String>> recipientsResult = {};

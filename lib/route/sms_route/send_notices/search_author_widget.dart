@@ -98,7 +98,6 @@ class _SearchAuthorWidgetState extends State<SearchAuthorWidget> {
             padding: const WidgetStatePropertyAll(EdgeInsets.only(left: 20)),
           );
         },
-        viewConstraints: const BoxConstraints(maxHeight: 300),
         suggestionsBuilder: (context, controller) async {
           barController.text = controller.text;
 

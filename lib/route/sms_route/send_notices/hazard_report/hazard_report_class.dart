@@ -1,6 +1,6 @@
-part of 'safety_notice_widget.dart';
+part of 'hazard_report_form.dart';
 
-class SafetyNotice {
+class HazardReport {
   Map<String, List<String>> recipientsResult = {};
   List<String> fileNameResult = [];
   String author = "";
