@@ -80,7 +80,6 @@ class RecepientsWidget extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   child: MultiSelectDialogField(
-                    autovalidateMode: AutovalidateMode.always,
                     // get text based on index
                     buttonText: Text("Filter by ${filterTitles[index]}"),
                     // get list of item from fetchData

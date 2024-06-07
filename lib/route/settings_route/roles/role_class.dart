@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 
-import 'package:adsats_flutter/data_table/abstract_data_table_async.dart';
+import 'package:adsats_flutter/helper/table/abstract_data_table_async.dart';
 
 part 'roles_api.dart';
 

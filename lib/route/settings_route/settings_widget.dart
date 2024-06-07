@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:adsats_flutter/data_table/abstract_data_table_async.dart';
+import 'package:adsats_flutter/helper/table/abstract_data_table_async.dart';
 import 'package:adsats_flutter/route/settings_route/aircrafts/aircraft_class.dart';
 import 'package:adsats_flutter/route/settings_route/staff/staff_class.dart';
 import 'package:adsats_flutter/route/settings_route/roles/role_class.dart';

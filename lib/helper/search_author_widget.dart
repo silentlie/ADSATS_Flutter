@@ -1,10 +1,10 @@
 part of 'search_file_widget.dart';
 
 class SearchAuthorWidget extends StatefulWidget {
-  const SearchAuthorWidget({super.key, required this.author});
+  const SearchAuthorWidget(
+      {super.key, required this.author});
 
   final String author;
-
   @override
   State<SearchAuthorWidget> createState() => _SearchAuthorWidgetState();
 }
