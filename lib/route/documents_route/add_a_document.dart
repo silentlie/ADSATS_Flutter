@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:adsats_flutter/amplify/s3_storage.dart';
 import 'package:flutter/material.dart';
 

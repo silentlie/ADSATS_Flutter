@@ -1,6 +1,5 @@
 import 'package:adsats_flutter/scaffold/app_bar_components/app_bar_items.dart';
 import 'package:adsats_flutter/scaffold/app_bar_components/menu_item_row.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
