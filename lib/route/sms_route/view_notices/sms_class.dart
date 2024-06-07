@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:adsats_flutter/data_table/abstract_data_table_async.dart';
 
 part 'sms_api.dart';
+
 class Notice {
   Notice(
       {required int id,
@@ -74,14 +75,25 @@ class Notice {
           Row(
             children: [
               IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.remove_red_eye_outlined)),
+                onPressed: () {},
+                icon: const Icon(Icons.remove_red_eye_outlined),
+                tooltip: 'View',
+              ),
               IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.edit_outlined)),
+                onPressed: () {},
+                icon: const Icon(Icons.edit_outlined),
+                tooltip: 'Edit',
+              ),
               IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.archive_outlined)),
+                onPressed: () {},
+                icon: const Icon(Icons.archive_outlined),
+                tooltip: 'Archive',
+              ),
               IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.delete_outline)),
+                onPressed: () {},
+                icon: const Icon(Icons.delete_outline),
+                tooltip: 'Delete',
+              ),
             ],
           ),
         ),

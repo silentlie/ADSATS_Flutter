@@ -10,6 +10,7 @@ import 'package:path/path.dart' as p;
 import 'package:adsats_flutter/data_table/abstract_data_table_async.dart';
 
 part 'documents_api.dart';
+
 class Document {
   Document({
     required int id,
@@ -75,14 +76,25 @@ class Document {
           Row(
             children: [
               IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.remove_red_eye_outlined)),
+                onPressed: () {},
+                icon: const Icon(Icons.remove_red_eye_outlined),
+                tooltip: 'View',
+              ),
               IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.edit_outlined)),
+                onPressed: () {},
+                icon: const Icon(Icons.edit_outlined),
+                tooltip: 'Edit',
+              ),
               IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.archive_outlined)),
+                onPressed: () {},
+                icon: const Icon(Icons.archive_outlined),
+                tooltip: 'Archive',
+              ),
               IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.delete_outline)),
+                onPressed: () {},
+                icon: const Icon(Icons.delete_outline),
+                tooltip: 'Delete',
+              ),
             ],
           ),
         ),

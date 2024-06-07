@@ -33,8 +33,8 @@ class _SendNoticesState extends State<SendNotices> {
       label: Text("Hazard report"),
     ),
     const NavigationRailDestination(
-      icon: Icon(Icons.report_outlined),
-      selectedIcon: Icon(Icons.report),
+      icon: Icon(Icons.document_scanner_outlined),
+      selectedIcon: Icon(Icons.document_scanner),
       label: Text("BCAA reports"),
     ),
   ];
@@ -57,7 +57,7 @@ class _SendNoticesState extends State<SendNotices> {
     const NavigationDestination(
       icon: Icon(Icons.document_scanner_outlined),
       selectedIcon: Icon(Icons.document_scanner),
-      label: "BCAA Aircraft Occurrence Reports",
+      label: "BCAA Reports",
     ),
   ];
 
