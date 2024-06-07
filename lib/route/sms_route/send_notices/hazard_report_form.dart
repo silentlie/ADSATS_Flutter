@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'recepients.dart';
 
 class HazardReport extends StatelessWidget {
   const HazardReport({super.key});

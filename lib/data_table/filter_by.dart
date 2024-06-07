@@ -110,55 +110,61 @@ class FilterBy extends StatelessWidget {
           );
           filterContent.addAll(
             [
-              MultiSelectDialogField(
-                buttonText: const Text("Filter by archived"),
-                items: [
-                  MultiSelectItem(true, "True"),
-                  MultiSelectItem(false, "False")
-                ],
-                onConfirm: (selectedOptions) {
-                  if (selectedOptions.length != 2) {
-                    filterResult["archived"] = selectedOptions
-                        .map((boolValue) => boolValue.toString())
-                        .toList();
-                  } else {
-                    filterResult["archived"] = [];
-                  }
-                },
-                title: const Text("Filter by archived"),
-                initialValue: filters.filterResult["archived"]?.map(
-                      (str) {
-                        switch (str) {
-                          case 'true':
-                            return true;
-                          case 'false':
-                            return false;
-                          default:
-                            return null;
-                        }
-                      },
-                    ).toList() ??
-                    [false],
-                // size of dialog after click each filter
-                dialogHeight: 714,
-                dialogWidth: 400,
-                // can be specify based on ThemeData
-                itemsTextStyle: const TextStyle(color: Colors.amber),
-                selectedItemsTextStyle: const TextStyle(color: Colors.blue),
-                cancelText: const Text(
-                  "Cancel",
-                  style: TextStyle(color: Colors.amber),
-                ),
-                confirmText: const Text(
-                  "Confirm",
-                  style: TextStyle(color: Colors.blue),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: MultiSelectDialogField(
+                  buttonText: const Text("Filter by archived"),
+                  items: [
+                    MultiSelectItem(true, "True"),
+                    MultiSelectItem(false, "False")
+                  ],
+                  onConfirm: (selectedOptions) {
+                    if (selectedOptions.length != 2) {
+                      filterResult["archived"] = selectedOptions
+                          .map((boolValue) => boolValue.toString())
+                          .toList();
+                    } else {
+                      filterResult["archived"] = [];
+                    }
+                  },
+                  title: const Text("Filter by archived"),
+                  initialValue: filters.filterResult["archived"]?.map(
+                        (str) {
+                          switch (str) {
+                            case 'true':
+                              return true;
+                            case 'false':
+                              return false;
+                            default:
+                              return null;
+                          }
+                        },
+                      ).toList() ??
+                      [false],
+                  // size of dialog after click each filter
+                  dialogHeight: 714,
+                  dialogWidth: 400,
+                  // can be specify based on ThemeData
+                  itemsTextStyle: const TextStyle(color: Colors.amber),
+                  selectedItemsTextStyle: const TextStyle(color: Colors.blue),
+                  cancelText: const Text(
+                    "Cancel",
+                    style: TextStyle(color: Colors.amber),
+                  ),
+                  confirmText: const Text(
+                    "Confirm",
+                    style: TextStyle(color: Colors.blue),
+                  ),
                 ),
               ),
 
               // Title for choose time range can add style
               const Padding(
                 padding: EdgeInsets.all(8.0),
-                child: Text("Choose a time range"),
+                child: Text(
+                  "Choose a time range",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
               // Pick time range button
               Padding(

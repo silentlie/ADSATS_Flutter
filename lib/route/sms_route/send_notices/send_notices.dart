@@ -12,6 +12,8 @@ class SendNotices extends StatefulWidget {
 
 class _SendNoticesState extends State<SendNotices> {
   int _selectedIndex = 0;
+  late List<Widget> _pages;
+
   final List<NavigationRailDestination> _navigationRailDestinations = [
     const NavigationRailDestination(
       icon: Icon(Icons.notifications_outlined),
@@ -56,6 +58,19 @@ class _SendNoticesState extends State<SendNotices> {
       label: "BCAA Aircraft Occurrence Reports",
     ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    _pages = [
+      const SendANotices(),
+      const SafetyNotice(),
+      const HazardReport(),
+      const Placeholder(),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -68,7 +83,7 @@ class _SendNoticesState extends State<SendNotices> {
                 child: Center(
                     child: Container(
                   constraints: const BoxConstraints(maxWidth: 1500),
-                  child: buildPages(_selectedIndex),
+                  child: _pages[_selectedIndex],
                 )),
               ),
               SafeArea(
@@ -114,7 +129,7 @@ class _SendNoticesState extends State<SendNotices> {
                   child: SingleChildScrollView(
                     child: Card(
                       elevation: 20,
-                      child: buildPages(_selectedIndex),
+                      child: _pages[_selectedIndex],
                     ),
                   ),
                 ),
@@ -124,20 +139,5 @@ class _SendNoticesState extends State<SendNotices> {
         );
       },
     );
-  }
-
-  Widget buildPages(int index) {
-    switch (index) {
-      case 0:
-        return const SendANotices();
-      case 1:
-        return const SafetyNotice();
-      case 2:
-        return const HazardReport();
-      case 3:
-        return const Placeholder();
-      default:
-        return const Placeholder();
-    }
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:adsats_flutter/data_table/abstract_data_table_async.dart';
-import 'documents_classes.dart';
+import 'document_class.dart';
 
 class DocumentsWidget extends StatelessWidget {
   const DocumentsWidget({super.key});

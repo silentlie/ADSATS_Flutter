@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'recepients.dart';
 
 class SendANotices extends StatelessWidget {
   const SendANotices({super.key});

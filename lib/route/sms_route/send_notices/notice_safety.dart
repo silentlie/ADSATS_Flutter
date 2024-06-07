@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'recepients.dart';
 //import '/theme/theme_data.dart';
 
 class SafetyNotice extends StatelessWidget {
