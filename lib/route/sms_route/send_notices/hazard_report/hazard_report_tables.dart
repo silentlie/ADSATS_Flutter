@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of 'hazard_report_form.dart';
 
 class RiskSeverity extends StatefulWidget {
   const RiskSeverity({super.key});

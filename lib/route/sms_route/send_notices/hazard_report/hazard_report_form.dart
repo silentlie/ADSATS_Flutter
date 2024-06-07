@@ -1,6 +1,9 @@
 import 'package:adsats_flutter/route/sms_route/send_notices/recipients.dart';
 import 'package:flutter/material.dart';
 
+part 'hazard_report.dart';
+part 'hazard_report_tables.dart';
+
 class HazardReport extends StatelessWidget {
   const HazardReport({super.key, required this.recepients});
 

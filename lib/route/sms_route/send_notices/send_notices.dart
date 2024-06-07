@@ -1,8 +1,8 @@
 import 'package:adsats_flutter/route/sms_route/send_notices/recipients.dart';
 import 'package:flutter/material.dart';
-import 'package:adsats_flutter/route/sms_route/send_notices/hazard_report_form.dart';
-import 'package:adsats_flutter/route/sms_route/send_notices/notice_safety.dart';
-import 'package:adsats_flutter/route/sms_route/send_notices/send_a_notice.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/hazard_report/hazard_report_form.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/safety_notice/safety_notice.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/notice/notice_to_crew.dart';
 
 class SendNotices extends StatefulWidget {
   const SendNotices({super.key});
@@ -67,7 +67,7 @@ class _SendNoticesState extends State<SendNotices> {
     // result of filter before click apply
     late final Widget recipients = RecepientsWidget(key: recipientsKey);
     _pages = [
-      SendANotices(
+      NoticeWidget(
         recepients: recipients,
       ),
       SafetyNotice(
@@ -91,7 +91,7 @@ class _SendNoticesState extends State<SendNotices> {
               Expanded(
                 child: Center(
                     child: Container(
-                  constraints: const BoxConstraints(maxWidth: 1500),
+                  constraints: const BoxConstraints(maxWidth: 1536),
                   child: SingleChildScrollView(
                     child: Card(
                       elevation: 20,
