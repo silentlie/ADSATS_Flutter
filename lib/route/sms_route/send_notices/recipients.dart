@@ -13,8 +13,6 @@ class RecepientsWidget extends StatelessWidget {
     'recepients': '/staff',
     'roles': '/roles',
     'aircrafts': '/aircrafts',
-    'categories': '/categories',
-    'sub-categories': '/sub-categories',
   };
 
   Future<Map<String, List<MultiSelectItem>>> fetchFilter(

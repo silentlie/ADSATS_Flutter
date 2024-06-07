@@ -1,5 +1,6 @@
-import 'package:adsats_flutter/route/sms_route/send_notices/search_widget.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/search_file_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 part 'notice_to_crew_class.dart';
 
@@ -32,22 +33,7 @@ class NoticeWidget extends StatelessWidget {
         const Divider(),
         Wrap(
           children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              constraints: const BoxConstraints(maxWidth: 900),
-              child: TextField(
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  label: const Text('Author'),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      // TODO: implement search function for authors
-                    },
-                    icon: const Icon(Icons.search),
-                  ),
-                ),
-              ),
-            ),
+            SearchAuthorWidget(author: noticeToCrew.author),
             Container(
               padding: const EdgeInsets.all(8),
               constraints: const BoxConstraints(maxWidth: 400),
@@ -78,9 +64,8 @@ class NoticeWidget extends StatelessWidget {
             maxLines: 5,
           ),
         ),
-        SearchWidget(
+        SearchFileWidget(
           fileNameResult: noticeToCrew.fileNameResult,
-          endpoint: "/documents",
         ),
         Row(
           mainAxisAlignment:
@@ -88,7 +73,7 @@ class NoticeWidget extends StatelessWidget {
           children: [
             ElevatedButton.icon(
               onPressed: () {
-                // Functionality for the first button
+                context.go('/sms');
               },
               label: const Text('Cancel'),
               icon: Icon(
@@ -96,22 +81,23 @@ class NoticeWidget extends StatelessWidget {
                 color: colorScheme.onSecondary,
               ),
             ),
+            // No save function for now
+            // const SizedBox(width: 10),
+            // ElevatedButton.icon(
+            //   onPressed: () {
+            //     // Functionality for the second button
+            //   },
+            //   // Change text color
+            //   label: const Text('Save'),
+            //   icon: Icon(
+            //     Icons.mail,
+            //     color: colorScheme.onSecondary,
+            //   ),
+            // ),
             const SizedBox(width: 10),
             ElevatedButton.icon(
               onPressed: () {
-                // Functionality for the second button
-              },
-              // Change text color
-              label: const Text('Save'),
-              icon: Icon(
-                Icons.mail,
-                color: colorScheme.onSecondary,
-              ),
-            ),
-            const SizedBox(width: 10),
-            ElevatedButton.icon(
-              onPressed: () {
-                // Functionality for the third button
+                // TODO:Functionality for the sending button
               },
               style: ButtonStyle(
                 // Change button background color

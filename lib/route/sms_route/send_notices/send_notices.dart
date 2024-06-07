@@ -70,7 +70,7 @@ class _SendNoticesState extends State<SendNotices> {
       NoticeWidget(
         recepients: recipients,
       ),
-      SafetyNotice(
+      SafetyNoticeWidget(
         recipients: recipients,
       ),
       HazardReport(

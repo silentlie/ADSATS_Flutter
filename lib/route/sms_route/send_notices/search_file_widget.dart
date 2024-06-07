@@ -4,19 +4,20 @@ import 'dart:convert';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 
+part 'debounce_timer.dart';
+part 'search_author_widget.dart';
+
 // this widget is reference from search_anchor4.dart
 
-class SearchWidget extends StatefulWidget {
-  const SearchWidget(
-      {super.key, required this.fileNameResult, required this.endpoint});
+class SearchFileWidget extends StatefulWidget {
+  const SearchFileWidget({super.key, required this.fileNameResult});
   final List<String> fileNameResult;
-  final String endpoint;
 
   @override
-  State<SearchWidget> createState() => _SearchWidgetState();
+  State<SearchFileWidget> createState() => _SearchFileWidgetState();
 }
 
-class _SearchWidgetState extends State<SearchWidget> {
+class _SearchFileWidgetState extends State<SearchFileWidget> {
   // the API call
   Future<Iterable<String>> fetchData(String search) async {
     if (search.isEmpty) {
@@ -30,7 +31,7 @@ class _SearchWidgetState extends State<SearchWidget> {
         "archived": "false",
       };
       debugPrint(queryParameters.toString());
-      final restOperation = Amplify.API.get(widget.endpoint,
+      final restOperation = Amplify.API.get('/documents',
           apiName: 'AmplifyAviationAPI', queryParameters: queryParameters);
 
       final response = await restOperation.response;
@@ -40,7 +41,6 @@ class _SearchWidgetState extends State<SearchWidget> {
       final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
       debugPrint("finished fetch file name");
       return rowsData.map((row) {
-        debugPrint(row['file_name'] as String);
         return row['file_name'] as String;
       });
     } on ApiException catch (e) {
@@ -84,13 +84,10 @@ class _SearchWidgetState extends State<SearchWidget> {
     _debouncedSearch = _debounce<Iterable<String>?, String>(_search);
   }
 
+  TextEditingController barController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    TextEditingController barController = TextEditingController();
     return Wrap(
-      alignment: WrapAlignment.start,
-      runAlignment: WrapAlignment.start,
-      crossAxisAlignment: WrapCrossAlignment.start,
       children: [
         Container(
           padding: const EdgeInsets.all(8),
@@ -111,7 +108,6 @@ class _SearchWidgetState extends State<SearchWidget> {
                 elevation: const WidgetStatePropertyAll(2),
                 padding:
                     const WidgetStatePropertyAll(EdgeInsets.only(left: 20)),
-                    
               );
             },
             viewConstraints: const BoxConstraints(maxHeight: 300),
