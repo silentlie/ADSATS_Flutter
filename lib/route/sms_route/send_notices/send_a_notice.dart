@@ -27,7 +27,7 @@ class SendANotices extends StatelessWidget {
         const Divider(),
         recepients,
         const Divider(),
-        const Wrap(
+        const Row(
           children: [
             AuthorTextField(),
             ReportNumberTextField(),
@@ -47,14 +47,17 @@ class AuthorTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5),
-      child: TextField(
-        decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            label: const Text('Author'),
-            suffixIcon:
-                IconButton(onPressed: () {}, icon: const Icon(Icons.search))),
+    return Flexible(
+      flex: 2,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        child: TextField(
+          decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              label: const Text('Author'),
+              suffixIcon:
+                  IconButton(onPressed: () {}, icon: const Icon(Icons.search))),
+        ),
       ),
     );
   }
@@ -65,13 +68,16 @@ class ReportNumberTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5),
-      child: const TextField(
-        decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            label: Text('Report Number'),
-            enabled: false),
+    return Flexible(
+      flex: 2,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        child: const TextField(
+          decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              label: Text('Report Number'),
+              enabled: false),
+        ),
       ),
     );
   }

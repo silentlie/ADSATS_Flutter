@@ -16,7 +16,7 @@ class SafetyNotice extends StatelessWidget {
         const Divider(),
         recipients,
         const Divider(),
-        const Wrap(
+        const Row(
           children: [
             AuthorTextField(),
             ReportNumberTextField(),
@@ -25,7 +25,6 @@ class SafetyNotice extends StatelessWidget {
         const SubjectTextField(),
         const TitleTextField(),
         const MessageTextField(),
-        const UploadWidget(),
         const ActionButtonsWidget()
       ],
     );
@@ -57,14 +56,16 @@ class ReportNumberTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.2,
-      padding: const EdgeInsets.all(5),
-      child: const TextField(
-        decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            label: Text('Report Number'),
-            enabled: false),
+    return Flexible(
+      flex: 2,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        child: const TextField(
+          decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              label: Text('Report Number'),
+              enabled: false),
+        ),
       ),
     );
   }
@@ -108,15 +109,17 @@ class AuthorTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.5,
-      padding: const EdgeInsets.all(5),
-      child: TextField(
-        decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            label: const Text('Author'),
-            suffixIcon:
-                IconButton(onPressed: () {}, icon: const Icon(Icons.search))),
+    return Flexible(
+      flex: 2,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        child: TextField(
+          decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              label: const Text('Author'),
+              suffixIcon:
+                  IconButton(onPressed: () {}, icon: const Icon(Icons.search))),
+        ),
       ),
     );
   }

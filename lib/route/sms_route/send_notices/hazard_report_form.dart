@@ -41,7 +41,7 @@ class HazardReport extends StatelessWidget {
               MitigationColumn(),
             ],
           ),
-          const Wrap(
+          const Row(
             children: [
               LikelihoodofOccurrenceWidget(),
               SeverityOfConsequenceWidget()
@@ -110,22 +110,23 @@ class SeverityOfConsequenceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // width: MediaQuery.of(context).size.width * 0.4,
-      width: 700,
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        children: [
-          const Text(
-            'What do you consider to be the worst possible consequence of this event happening? Click on the table below.',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+    return Flexible(
+      flex: 2,
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          children: [
+            const Text(
+              'What do you consider to be the worst possible consequence of this event happening? Click on the table below.',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          Container(
-              decoration: BoxDecoration(border: Border.all()),
-              child: const SeverityOfConsequenceTable())
-        ],
+            Container(
+                decoration: BoxDecoration(border: Border.all()),
+                child: const SeverityOfConsequenceTable())
+          ],
+        ),
       ),
     );
   }
@@ -138,24 +139,25 @@ class LikelihoodofOccurrenceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // width: MediaQuery.of(context).size.width * 0.4,
-      width: 650,
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        children: [
-          const Text(
-            'In your opinion, what is the likelihood of the occurrence happening again? Click on the table below.',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+    return Flexible(
+      flex: 2,
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          children: [
+            const Text(
+              'In your opinion, what is the likelihood of the occurrence happening again? Click on the table below.',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          const Text(''),
-          Container(
-            decoration: BoxDecoration(border: Border.all()),
-            child: const LikelihoodOfOccurrenceTable(),
-          )
-        ],
+            const Text(''),
+            Container(
+              decoration: BoxDecoration(border: Border.all()),
+              child: const LikelihoodOfOccurrenceTable(),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -168,14 +170,16 @@ class MitigationColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5),
-      width: MediaQuery.of(context).size.width * 0.4,
-      child: const Column(
-        children: [
-          Mitigation(),
-          MitigationTextField(),
-        ],
+    return Flexible(
+      flex: 2,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        child: const Column(
+          children: [
+            Mitigation(),
+            MitigationTextField(),
+          ],
+        ),
       ),
     );
   }
@@ -298,15 +302,17 @@ class DescribeTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5),
-      width: MediaQuery.of(context).size.width * 0.4,
-      child: const TextField(
-        decoration: InputDecoration(
-          label: Text('Describe the Hazard or the Event'),
-          border: OutlineInputBorder(),
+    return Flexible(
+      flex: 2,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        child: const TextField(
+          decoration: InputDecoration(
+            label: Text('Describe the Hazard or the Event'),
+            border: OutlineInputBorder(),
+          ),
+          maxLines: 5,
         ),
-        maxLines: 5,
       ),
     );
   }
@@ -319,13 +325,15 @@ class LocationTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5),
-      width: MediaQuery.of(context).size.width * 0.4,
-      child: const TextField(
-        decoration: InputDecoration(
-          label: Text('Location'),
-          border: OutlineInputBorder(),
+    return Flexible(
+      flex: 2,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        child: const TextField(
+          decoration: InputDecoration(
+            label: Text('Location'),
+            border: OutlineInputBorder(),
+          ),
         ),
       ),
     );
@@ -339,12 +347,14 @@ class SubjectTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5),
-      width: MediaQuery.of(context).size.width * 0.4,
-      child: const TextField(
-        decoration: InputDecoration(
-            label: Text('Subject'), border: OutlineInputBorder()),
+    return Flexible(
+      flex: 2,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        child: const TextField(
+          decoration: InputDecoration(
+              label: Text('Subject'), border: OutlineInputBorder()),
+        ),
       ),
     );
   }
@@ -357,14 +367,16 @@ class AuthorTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5),
-      width: MediaQuery.of(context).size.width * 0.3,
-      child: const TextField(
-        decoration: InputDecoration(
-            label: Text('Form completed by'),
-            border: OutlineInputBorder(),
-            suffixIcon: Icon(Icons.search)),
+    return Flexible(
+      flex: 3,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        child: const TextField(
+          decoration: InputDecoration(
+              label: Text('Form completed by'),
+              border: OutlineInputBorder(),
+              suffixIcon: Icon(Icons.search)),
+        ),
       ),
     );
   }
@@ -375,13 +387,15 @@ class DateFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5),
-      width: MediaQuery.of(context).size.width * 0.3,
-      child: InputDatePickerFormField(
-        initialDate: DateTime.timestamp(),
-        firstDate: DateTime(2020),
-        lastDate: DateTime.now(),
+    return Flexible(
+      flex: 3,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        child: InputDatePickerFormField(
+          initialDate: DateTime.timestamp(),
+          firstDate: DateTime(2020),
+          lastDate: DateTime.now(),
+        ),
       ),
     );
   }

@@ -39,19 +39,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         centerTitle: true,
         actions: [
-          const Tooltip(
-            message: 'change color',
-            child: ThemeSwitch(),
-          ),
+          const ThemeSwitch(),
           const NotificationWidget(),
-          const SampleMenuAnchor(),
-          IconButton(
-            // Add the bell icon here
-            icon: const Icon(Icons.notifications),
-            onPressed: () {
-              // Handle bell icon press
-            },
-          ),
           Builder(
             builder: (context) => IconButton(
               icon: const Icon(Icons.menu),

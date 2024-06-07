@@ -13,8 +13,6 @@ class RecepientsWidget extends StatelessWidget {
     'recepients': '/staff',
     'roles': '/roles',
     'aircrafts': '/aircrafts',
-    'categories': '/categories',
-    'sub-categories': '/sub-categories',
   };
 
   Future<Map<String, List<MultiSelectItem>>> fetchFilter(
@@ -78,46 +76,47 @@ class RecepientsWidget extends StatelessWidget {
             filterData.length,
             (index) {
               // customise for visual, right now
-              return Container(
-                constraints: const BoxConstraints(maxWidth: 372),
-                padding: const EdgeInsets.all(8),
-                child: MultiSelectDialogField(
-                  autovalidateMode: AutovalidateMode.always,
-                  // get text based on index
-                  buttonText: Text("Filter by ${filterTitles[index]}"),
-                  // get list of item from fetchData
-                  items: filterData[filterTitles[index]]!,
-                  // send selected item to filterResult
-                  onConfirm: (selectedOptions) {
-                    recipientsResult[filterTitles[index]] =
-                        List<String>.from(selectedOptions);
-                  },
-                  title: Text("Filter by ${filterTitles[index]}"),
-                  searchable: true,
-                  // size of dialog after click each filter
-                  dialogHeight: 714,
-                  dialogWidth: 400,
-                  // can be specify based on ThemeData
-                  itemsTextStyle: const TextStyle(color: Colors.amber),
-                  selectedItemsTextStyle: const TextStyle(color: Colors.blue),
-                  cancelText: const Text(
-                    "Cancel",
-                    style: TextStyle(color: Colors.amber),
-                  ),
-                  confirmText: const Text(
-                    "Confirm",
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                  chipDisplay: MultiSelectChipDisplay(
-                    scroll: true,
-                    scrollBar: HorizontalScrollBar(isAlwaysShown: true),
+              return Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: MultiSelectDialogField(
+                    autovalidateMode: AutovalidateMode.always,
+                    // get text based on index
+                    buttonText: Text("Filter by ${filterTitles[index]}"),
+                    // get list of item from fetchData
+                    items: filterData[filterTitles[index]]!,
+                    // send selected item to filterResult
+                    onConfirm: (selectedOptions) {
+                      recipientsResult[filterTitles[index]] =
+                          List<String>.from(selectedOptions);
+                    },
+                    title: Text("Filter by ${filterTitles[index]}"),
+                    searchable: true,
+                    // size of dialog after click each filter
+                    dialogHeight: 714,
+                    dialogWidth: 400,
+                    // can be specify based on ThemeData
+                    itemsTextStyle: const TextStyle(color: Colors.amber),
+                    selectedItemsTextStyle: const TextStyle(color: Colors.blue),
+                    cancelText: const Text(
+                      "Cancel",
+                      style: TextStyle(color: Colors.amber),
+                    ),
+                    confirmText: const Text(
+                      "Confirm",
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                    chipDisplay: MultiSelectChipDisplay(
+                      scroll: true,
+                      scrollBar: HorizontalScrollBar(isAlwaysShown: true),
+                    ),
                   ),
                 ),
               );
             },
           );
           // return column with filter content
-          return Wrap(
+          return Row(
             children: filterContent,
           );
         } else {
