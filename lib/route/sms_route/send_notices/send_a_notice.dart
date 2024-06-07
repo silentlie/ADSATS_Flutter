@@ -10,8 +10,8 @@ class SendANotices extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, List<String>> filterResult =
-        RecepientsWidget.filterResult;
+    final Map<String, List<String>> recipientsResult =
+        RecepientsWidget.recipientsResult;
     return Column(
       children: [
         Container(

@@ -92,9 +92,14 @@ class _SendNoticesState extends State<SendNotices> {
                 child: Center(
                     child: Container(
                   constraints: const BoxConstraints(maxWidth: 1500),
-                  child: Card(
-                    elevation: 20,
-                    child: _pages[_selectedIndex],
+                  child: SingleChildScrollView(
+                    child: Card(
+                      elevation: 20,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: _pages[_selectedIndex],
+                      ),
+                    ),
                   ),
                 )),
               ),

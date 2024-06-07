@@ -7,7 +7,7 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 class RecepientsWidget extends StatelessWidget {
   const RecepientsWidget({super.key});
 
-  static Map<String, List<String>> filterResult = {};
+  static Map<String, List<String>> recipientsResult = {};
 
   static Map<String, String> filterEndpoints = {
     'recepients': '/staff',
@@ -89,7 +89,7 @@ class RecepientsWidget extends StatelessWidget {
                   items: filterData[filterTitles[index]]!,
                   // send selected item to filterResult
                   onConfirm: (selectedOptions) {
-                    filterResult[filterTitles[index]] =
+                    recipientsResult[filterTitles[index]] =
                         List<String>.from(selectedOptions);
                   },
                   title: Text("Filter by ${filterTitles[index]}"),
