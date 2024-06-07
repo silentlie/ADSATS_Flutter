@@ -1,3 +1,4 @@
+import 'package:adsats_flutter/route/sms_route/send_notices/recipients.dart';
 import 'package:flutter/material.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/hazard_report_form.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/notice_safety.dart';
@@ -14,6 +15,7 @@ class _SendNoticesState extends State<SendNotices> {
   int _selectedIndex = 0;
   late List<Widget> _pages;
 
+  GlobalKey recipientsKey = GlobalKey();
   final List<NavigationRailDestination> _navigationRailDestinations = [
     const NavigationRailDestination(
       icon: Icon(Icons.notifications_outlined),
@@ -62,11 +64,18 @@ class _SendNoticesState extends State<SendNotices> {
   @override
   void initState() {
     super.initState();
-
+    // result of filter before click apply
+    late final Widget recipients = RecepientsWidget(key: recipientsKey);
     _pages = [
-      const SendANotices(),
-      const SafetyNotice(),
-      const HazardReport(),
+      SendANotices(
+        recepients: recipients,
+      ),
+      SafetyNotice(
+        recipients: recipients,
+      ),
+      HazardReport(
+        recepients: recipients,
+      ),
       const Placeholder(),
     ];
   }
@@ -83,7 +92,10 @@ class _SendNoticesState extends State<SendNotices> {
                 child: Center(
                     child: Container(
                   constraints: const BoxConstraints(maxWidth: 1500),
-                  child: _pages[_selectedIndex],
+                  child: Card(
+                    elevation: 20,
+                    child: _pages[_selectedIndex],
+                  ),
                 )),
               ),
               SafeArea(
@@ -129,7 +141,10 @@ class _SendNoticesState extends State<SendNotices> {
                   child: SingleChildScrollView(
                     child: Card(
                       elevation: 20,
-                      child: _pages[_selectedIndex],
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: _pages[_selectedIndex],
+                      ),
                     ),
                   ),
                 ),

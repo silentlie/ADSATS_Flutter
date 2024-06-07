@@ -1,60 +1,55 @@
+import 'package:adsats_flutter/route/sms_route/send_notices/recipients.dart';
 import 'package:flutter/material.dart';
 
 class HazardReport extends StatelessWidget {
-  const HazardReport({super.key});
+  const HazardReport({super.key, required this.recepients});
+
+  final Widget recepients;
+  static Map<String, List<String>> formResult = {};
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        Text(
-          'Send a notice - Hazard report',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Divider(),
-        HazardReportForm(),
-      ],
-    );
-  }
-}
-
-class HazardReportForm extends StatelessWidget {
-  const HazardReportForm({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Form(
+    final Map<String, List<String>> filterResult =
+        RecepientsWidget.filterResult;
+    return Form(
       child: Column(
         children: [
-          Row(
+          const Text(
+            'Send a notice - Hazard report',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const Divider(),
+          recepients,
+          const Divider(),
+          const Row(
             children: [
               AuthorTextField(),
               DateFormField(),
               ReportType(),
             ],
           ),
-          Row(children: [
+          const Row(children: [
             SubjectTextField(),
             LocationTextField(),
           ]),
-          Row(
+          const Row(
             children: [
               DescribeTextField(),
               MitigationColumn(),
             ],
           ),
-          Wrap(
+          const Wrap(
             children: [
               LikelihoodofOccurrenceWidget(),
               SeverityOfConsequenceWidget()
             ],
           ),
-          RiskSeverityWidget(),
-          CommentsTextField(),
-          ActionButtonsWidget(),
+          const RiskSeverityWidget(),
+          const CommentsTextField(),
+          const ActionButtonsWidget(),
         ],
       ),
     );

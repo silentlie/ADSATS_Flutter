@@ -69,8 +69,8 @@ class NoticeAPI extends DataTableSourceAsync {
         // filter by roles could be more complex then it should
         // 'roles': '/roles',
         'aircrafts': '/aircrafts',
-        'categories': '/categories',
-        'sub-categories': '/sub-categories',
+        // need to create a api for categories
+        // 'categories': '/categories',
       };
   Map<String, String> get sqlColumns => {
         'Subject': 'subject',

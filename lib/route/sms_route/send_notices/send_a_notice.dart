@@ -1,41 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/recipients.dart';
 
 class SendANotices extends StatelessWidget {
-  const SendANotices({super.key});
+  const SendANotices({super.key, required this.recepients});
+
+  final Widget recepients;
+
+  static Map<String, List<String>> formResult = {};
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    final Map<String, List<String>> filterResult =
+        RecepientsWidget.filterResult;
+    return Column(
       children: [
-        TitleofTheNotice(),
-        Divider(),
-        Row(
+        Container(
+          padding: const EdgeInsets.all(8),
+          child: const Text(
+            'Notice to Crew',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+        ),
+        const Divider(),
+        recepients,
+        const Divider(),
+        const Wrap(
           children: [
             AuthorTextField(),
             ReportNumberTextField(),
           ],
         ),
-        SubjectTextField(),
-        MessageTextField(),
-        UploadWidget(),
-        ActionButtonsWidget()
+        const SubjectTextField(),
+        const MessageTextField(),
+        // const UploadWidget(),
+        const ActionButtonsWidget()
       ],
     );
   }
 }
 
-class TitleofTheNotice extends StatelessWidget {
-  const TitleofTheNotice({
-    super.key,
-  });
+class AuthorTextField extends StatelessWidget {
+  const AuthorTextField({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8),
-      child: const Text(
-        'Notice to Crew',
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+      padding: const EdgeInsets.all(5),
+      child: TextField(
+        decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            label: const Text('Author'),
+            suffixIcon:
+                IconButton(onPressed: () {}, icon: const Icon(Icons.search))),
       ),
     );
   }
@@ -47,7 +66,6 @@ class ReportNumberTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.2,
       padding: const EdgeInsets.all(5),
       child: const TextField(
         decoration: InputDecoration(
@@ -70,25 +88,6 @@ class MessageTextField extends StatelessWidget {
         decoration: InputDecoration(
             border: OutlineInputBorder(), label: Text('Message')),
         maxLines: 3,
-      ),
-    );
-  }
-}
-
-class AuthorTextField extends StatelessWidget {
-  const AuthorTextField({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.5,
-      padding: const EdgeInsets.all(5),
-      child: TextField(
-        decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            label: const Text('Author'),
-            suffixIcon:
-                IconButton(onPressed: () {}, icon: const Icon(Icons.search))),
       ),
     );
   }
@@ -156,24 +155,6 @@ class ActionButtonsWidget extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class UploadWidget extends StatelessWidget {
-  const UploadWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox(
-      height: 300,
-      width: 300,
-      child: Column(
-        children: [
-          Text('Upload a file'),
-          Icon(Icons.upload),
-        ],
-      ),
     );
   }
 }

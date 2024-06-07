@@ -1,26 +1,33 @@
+import 'package:adsats_flutter/route/sms_route/send_notices/recipients.dart';
 import 'package:flutter/material.dart';
-//import '/theme/theme_data.dart';
 
 class SafetyNotice extends StatelessWidget {
-  const SafetyNotice({super.key});
+  const SafetyNotice({super.key, required this.recipients});
+  final Widget recipients;
+  static Map<String, List<String>> formResult = {};
+
+  
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    final Map<String, List<String>> filterResult = RecepientsWidget.filterResult;
+    return Column(
       children: [
-        TitleofTheNotice(),
-        Divider(),
-        Row(
+        const TitleofTheNotice(),
+        const Divider(),
+        recipients,
+        const Divider(),
+        const Wrap(
           children: [
             AuthorTextField(),
             ReportNumberTextField(),
           ],
         ),
-        SubjectTextField(),
-        TitleTextField(),
-        MessageTextField(),
-        UploadWidget(),
-        ActionButtonsWidget()
+        const SubjectTextField(),
+        const TitleTextField(),
+        const MessageTextField(),
+        const UploadWidget(),
+        const ActionButtonsWidget()
       ],
     );
   }
