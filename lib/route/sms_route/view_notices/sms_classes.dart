@@ -161,73 +161,46 @@ class NoticeAPI extends DataTableSourceAsync {
         padding: const EdgeInsets.only(bottom: 5),
         scrollDirection: Axis.horizontal,
         reverse: true,
-        child: Row(
-          children: [
-            const SendANoticeButton(),
-            const SizedBox(
-              width: 10,
-            ),
-            FilterBy(
-              filters: filters,
-              refreshDatasource: refreshDatasource,
-              filterEndpoints: filterEndpoints,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // TODO: Implement Sort By function
-              },
-              child: const Text("Sort By"),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            SearchBarWidget(
-              filters: filters,
-              refreshDatasource: refreshDatasource,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class SendANoticeButton extends StatelessWidget {
-  const SendANoticeButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    // final buttonTheme = Theme.of(context).colorScheme;
-    return ElevatedButton(
-      onPressed: () {
-        context.go('/send-notices');
-      },
-      // testing visual
-      // style: ButtonStyle(
-      //   shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-      //     RoundedRectangleBorder(
-      //       borderRadius: BorderRadius.circular(8),
-      //       side: const BorderSide(color: Colors.black),
-      //     ),
-      //   ),
-      // ),
-      child: const Row(
-        children: [
-          // Icon(
-          //   Icons.add,
-          //   size: 30,
-          // ),
-          // SizedBox(width: 5),
-          Text(
-            '+ Create a new notification',
-            style: TextStyle(
-                // fontSize: 16,
+        child: Builder(builder: (context) {
+          return Row(
+            children: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  context.go('/send-notices');
+                },
+                label: const Text('Create a new notification'),
+                icon: const Icon(
+                  Icons.add,
+                  size: 25,
                 ),
-          ),
-        ],
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              FilterBy(
+                filters: filters,
+                refreshDatasource: refreshDatasource,
+                filterEndpoints: filterEndpoints,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // TODO: Implement Sort By function
+                },
+                child: const Text("Sort By"),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              SearchBarWidget(
+                filters: filters,
+                refreshDatasource: refreshDatasource,
+              ),
+            ],
+          );
+        }),
       ),
     );
   }

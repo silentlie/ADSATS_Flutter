@@ -6,11 +6,10 @@ class SafetyNotice extends StatelessWidget {
   final Widget recipients;
   static Map<String, List<String>> formResult = {};
 
-  
-
   @override
   Widget build(BuildContext context) {
-    final Map<String, List<String>> filterResult = RecepientsWidget.filterResult;
+    final Map<String, List<String>> filterResult =
+        RecepientsWidget.filterResult;
     return Column(
       children: [
         const TitleofTheNotice(),
