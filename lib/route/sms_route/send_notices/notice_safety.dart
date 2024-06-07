@@ -1,42 +1,34 @@
-import 'package:adsats_flutter/route/documents_route/add_a_document.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/recipients.dart';
 import 'package:flutter/material.dart';
-import 'recepients.dart';
 
 class SafetyNotice extends StatelessWidget {
-  const SafetyNotice({super.key});
+  const SafetyNotice({super.key, required this.recipients});
+  final Widget recipients;
+  static Map<String, List<String>> formResult = {};
+
+  
 
   @override
   Widget build(BuildContext context) {
-    return const SingleChildScrollView(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              TitleofTheNotice(),
-            ],
-          ),
-          Row(
-            children: [
-              RoleRecipientsMultiSelect(),
-              PlanesRecepientsMultiSelect(),
-              RecepientMultiSelect()
-            ],
-          ),
-          Divider(),
-          Row(
-            children: [
-              AuthorTextField(),
-              ReportNumberTextField(),
-            ],
-          ),
-          SubjectTextField(),
-          TitleTextField(),
-          MessageTextField(),
-          DropFileWidget(),
-          ActionButtonsWidget()
-        ],
-      ),
+    final Map<String, List<String>> filterResult = RecepientsWidget.filterResult;
+    return Column(
+      children: [
+        const TitleofTheNotice(),
+        const Divider(),
+        recipients,
+        const Divider(),
+        const Wrap(
+          children: [
+            AuthorTextField(),
+            ReportNumberTextField(),
+          ],
+        ),
+        const SubjectTextField(),
+        const TitleTextField(),
+        const MessageTextField(),
+        const UploadWidget(),
+        const ActionButtonsWidget()
+      ],
     );
   }
 }
@@ -52,7 +44,10 @@ class TitleofTheNotice extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: const Text(
         'Safety Notice',
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+        ),
       ),
     );
   }
@@ -152,6 +147,8 @@ class ActionButtonsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme colorScheme =
+        Theme.of(context).colorScheme; // Access color scheme
     return Row(
       mainAxisAlignment: MainAxisAlignment.end, // Align buttons to the right
       children: [
@@ -166,19 +163,24 @@ class ActionButtonsWidget extends StatelessWidget {
           onPressed: () {
             // Functionality for the second button
           },
-          child: const Text('Save'),
+          child: const Text('Save'), // Change text color
         ),
         const SizedBox(width: 10),
         ElevatedButton(
           onPressed: () {
             // Functionality for the third button
           },
-          child: const Row(
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all<Color>(
+                colorScheme.secondary), // Change button background color
+          ),
+          child: Row(
             children: [
-              Icon(Icons.mail), // Replace 'some_icon' with the desired icon
-              SizedBox(
+              Icon(Icons.mail, color: colorScheme.onSecondary),
+              const SizedBox(
                   width: 5), // Adjust the spacing between the icon and text
-              Text('Send Notification'),
+              Text('Send Notification',
+                  style: TextStyle(color: colorScheme.onSecondary)),
             ],
           ),
         ),

@@ -165,6 +165,8 @@ class UploadButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme colorScheme =
+        Theme.of(context).colorScheme; // Access color scheme
     return Padding(
       padding: const EdgeInsets.all(20),
       child: ElevatedButton(

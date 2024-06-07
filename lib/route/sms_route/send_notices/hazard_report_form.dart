@@ -1,75 +1,55 @@
-import 'package:adsats_flutter/route/documents_route/add_a_document.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/recipients.dart';
 import 'package:flutter/material.dart';
-import 'recepients.dart';
 
 class HazardReport extends StatelessWidget {
-  const HazardReport({super.key});
+  const HazardReport({super.key, required this.recepients});
+
+  final Widget recepients;
+  static Map<String, List<String>> formResult = {};
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(children: [
-        Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              child: const Text(
-                'Send a notice - Hazard report',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-        const HazardReportForm(),
-      ]),
-    );
-  }
-}
-
-class HazardReportForm extends StatelessWidget {
-  const HazardReportForm({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Form(
+    final Map<String, List<String>> filterResult =
+        RecepientsWidget.filterResult;
+    return Form(
       child: Column(
         children: [
-          Row(children: [
-            RoleRecipientsMultiSelect(),
-            PlanesRecepientsMultiSelect(),
-            RecepientMultiSelect()
-          ]),
-          Divider(),
-          Row(
+          const Text(
+            'Send a notice - Hazard report',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const Divider(),
+          recepients,
+          const Divider(),
+          const Row(
             children: [
               AuthorTextField(),
               DateFormField(),
               ReportType(),
             ],
           ),
-          Row(children: [
+          const Row(children: [
             SubjectTextField(),
             LocationTextField(),
           ]),
-          Row(
+          const Row(
             children: [
               DescribeTextField(),
               MitigationColumn(),
             ],
           ),
-          Wrap(
+          const Wrap(
             children: [
               LikelihoodofOccurrenceWidget(),
               SeverityOfConsequenceWidget()
             ],
           ),
-          RiskSeverityWidget(),
-          CommentsTextField(),
-          DropFileWidget(),
-          ActionButtonsWidget(),
+          const RiskSeverityWidget(),
+          const CommentsTextField(),
+          const ActionButtonsWidget(),
         ],
       ),
     );
@@ -83,6 +63,8 @@ class ActionButtonsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme colorScheme =
+        Theme.of(context).colorScheme; // Access color scheme
     return Row(
       mainAxisAlignment: MainAxisAlignment.end, // Align buttons to the right
       children: [
@@ -97,19 +79,24 @@ class ActionButtonsWidget extends StatelessWidget {
           onPressed: () {
             // Functionality for the second button
           },
-          child: const Text('Save'),
+          child: const Text('Save'), // Change text color
         ),
         const SizedBox(width: 10),
         ElevatedButton(
           onPressed: () {
             // Functionality for the third button
           },
-          child: const Row(
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all<Color>(
+                colorScheme.secondary), // Change button background color
+          ),
+          child: Row(
             children: [
-              Icon(Icons.mail), // Replace 'some_icon' with the desired icon
-              SizedBox(
+              Icon(Icons.mail, color: colorScheme.onSecondary),
+              const SizedBox(
                   width: 5), // Adjust the spacing between the icon and text
-              Text('Send Notification'),
+              Text('Send Notification',
+                  style: TextStyle(color: colorScheme.onSecondary)),
             ],
           ),
         ),
@@ -165,8 +152,9 @@ class LikelihoodofOccurrenceWidget extends StatelessWidget {
           ),
           const Text(''),
           Container(
-              decoration: BoxDecoration(border: Border.all()),
-              child: const LikelihoodOfOccurrenceTable())
+            decoration: BoxDecoration(border: Border.all()),
+            child: const LikelihoodOfOccurrenceTable(),
+          )
         ],
       ),
     );
@@ -204,8 +192,9 @@ class CommentsTextField extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: const TextField(
         decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            label: Text('Interim action/comments')),
+          border: OutlineInputBorder(),
+          label: Text('Interim action/comments'),
+        ),
       ),
     );
   }
@@ -293,9 +282,10 @@ class MitigationTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return const TextField(
       decoration: InputDecoration(
-          label: Text(
-              'In your opinion, how could the hazard or event be mitigated? (optional)'),
-          border: OutlineInputBorder()),
+        label: Text(
+            'In your opinion, how could the hazard or event be mitigated? (optional)'),
+        border: OutlineInputBorder(),
+      ),
       maxLines: 3,
     );
   }
@@ -313,8 +303,9 @@ class DescribeTextField extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.4,
       child: const TextField(
         decoration: InputDecoration(
-            label: Text('Describe the Hazard or the Event'),
-            border: OutlineInputBorder()),
+          label: Text('Describe the Hazard or the Event'),
+          border: OutlineInputBorder(),
+        ),
         maxLines: 5,
       ),
     );
@@ -333,7 +324,9 @@ class LocationTextField extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.4,
       child: const TextField(
         decoration: InputDecoration(
-            label: Text('Location'), border: OutlineInputBorder()),
+          label: Text('Location'),
+          border: OutlineInputBorder(),
+        ),
       ),
     );
   }

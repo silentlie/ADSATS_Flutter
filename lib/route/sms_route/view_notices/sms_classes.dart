@@ -243,3 +243,4 @@ class SendANoticeButton extends StatelessWidget {
     );
   }
 }
+

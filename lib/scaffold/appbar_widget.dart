@@ -1,3 +1,4 @@
+import 'package:adsats_flutter/notifications/notification_widget.dart';
 import 'package:adsats_flutter/scaffold/app_bar_components/app_bar_items.dart';
 import 'package:adsats_flutter/scaffold/app_bar_components/menu_item_row.dart';
 import 'package:flutter/material.dart';
@@ -38,8 +39,19 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         centerTitle: true,
         actions: [
-          const ThemeSwitch(),
+          const Tooltip(
+            message: 'change color',
+            child: ThemeSwitch(),
+          ),
+          const NotificationWidget(),
           const SampleMenuAnchor(),
+          IconButton(
+            // Add the bell icon here
+            icon: const Icon(Icons.notifications),
+            onPressed: () {
+              // Handle bell icon press
+            },
+          ),
           Builder(
             builder: (context) => IconButton(
               icon: const Icon(Icons.menu),

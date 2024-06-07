@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:adsats_flutter/abstract_data_table_async.dart';
-import 'documents_classes.dart';
+import 'package:adsats_flutter/data_table/abstract_data_table_async.dart';
+import 'document_class.dart';
 
 class DocumentsWidget extends StatelessWidget {
   const DocumentsWidget({super.key});
@@ -10,7 +10,7 @@ class DocumentsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        constraints: const BoxConstraints(maxWidth: 1500.0),
+        constraints: const BoxConstraints(maxWidth: 1536.0),
         child: PaginatedDataTableAsync(DocumentAPI())
       ),
     );

@@ -1,57 +1,61 @@
 import 'package:adsats_flutter/route/documents_route/add_a_document.dart';
 import 'package:flutter/material.dart';
-import 'recepients.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/recipients.dart';
 
 class SendANotices extends StatelessWidget {
-  const SendANotices({super.key});
+  const SendANotices({super.key, required this.recepients});
+
+  final Widget recepients;
+
+  static Map<String, List<String>> formResult = {};
 
   @override
   Widget build(BuildContext context) {
-    return const SingleChildScrollView(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              TitleofTheNotice(),
-            ],
+    final Map<String, List<String>> filterResult =
+        RecepientsWidget.filterResult;
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          child: const Text(
+            'Notice to Crew',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
           ),
-          Row(
-            children: [
-              RoleRecipientsMultiSelect(),
-              PlanesRecepientsMultiSelect(),
-              RecepientMultiSelect()
-            ],
-          ),
-          Divider(),
-          Row(
-            children: [
-              AuthorTextField(),
-              ReportNumberTextField(),
-            ],
-          ),
-          SubjectTextField(),
-          MessageTextField(),
-          DropFileWidget(),
-          ActionButtonsWidget()
-        ],
-      ),
+        ),
+        const Divider(),
+        recepients,
+        const Divider(),
+        const Wrap(
+          children: [
+            AuthorTextField(),
+            ReportNumberTextField(),
+          ],
+        ),
+        const SubjectTextField(),
+        const MessageTextField(),
+        // const UploadWidget(),
+        const ActionButtonsWidget()
+      ],
     );
   }
 }
 
-class TitleofTheNotice extends StatelessWidget {
-  const TitleofTheNotice({
-    super.key,
-  });
+class AuthorTextField extends StatelessWidget {
+  const AuthorTextField({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8),
-      child: const Text(
-        'Notice to Crew',
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+      padding: const EdgeInsets.all(5),
+      child: TextField(
+        decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            label: const Text('Author'),
+            suffixIcon:
+                IconButton(onPressed: () {}, icon: const Icon(Icons.search))),
       ),
     );
   }
@@ -63,7 +67,6 @@ class ReportNumberTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.2,
       padding: const EdgeInsets.all(5),
       child: const TextField(
         decoration: InputDecoration(
@@ -86,25 +89,6 @@ class MessageTextField extends StatelessWidget {
         decoration: InputDecoration(
             border: OutlineInputBorder(), label: Text('Message')),
         maxLines: 3,
-      ),
-    );
-  }
-}
-
-class AuthorTextField extends StatelessWidget {
-  const AuthorTextField({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.5,
-      padding: const EdgeInsets.all(5),
-      child: TextField(
-        decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            label: const Text('Author'),
-            suffixIcon:
-                IconButton(onPressed: () {}, icon: const Icon(Icons.search))),
       ),
     );
   }
@@ -134,6 +118,8 @@ class ActionButtonsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme colorScheme =
+        Theme.of(context).colorScheme; // Access color scheme
     return Row(
       mainAxisAlignment: MainAxisAlignment.end, // Align buttons to the right
       children: [
@@ -148,41 +134,28 @@ class ActionButtonsWidget extends StatelessWidget {
           onPressed: () {
             // Functionality for the second button
           },
-          child: const Text('Save'),
+          child: const Text('Save'), // Change text color
         ),
         const SizedBox(width: 10),
         ElevatedButton(
           onPressed: () {
             // Functionality for the third button
           },
-          child: const Row(
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all<Color>(
+                colorScheme.secondary), // Change button background color
+          ),
+          child: Row(
             children: [
-              Icon(Icons.mail), // Replace 'some_icon' with the desired icon
-              SizedBox(
+              Icon(Icons.mail, color: colorScheme.onSecondary),
+              const SizedBox(
                   width: 5), // Adjust the spacing between the icon and text
-              Text('Send Notification'),
+              Text('Send Notification',
+                  style: TextStyle(color: colorScheme.onSecondary)),
             ],
           ),
         ),
       ],
-    );
-  }
-}
-
-class UploadWidget extends StatelessWidget {
-  const UploadWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox(
-      height: 300,
-      width: 300,
-      child: Column(
-        children: [
-          Text('Upload a file'),
-          Icon(Icons.upload),
-        ],
-      ),
     );
   }
 }

@@ -12,14 +12,27 @@ class GlobalThemeData {
 
   static ThemeData themeData(ColorScheme colorScheme, Color focusColor) {
     return ThemeData(
-        colorScheme: colorScheme,
-        canvasColor: colorScheme.surface,
-        scaffoldBackgroundColor: colorScheme.surface,
-        highlightColor: Colors.transparent,
-        focusColor: focusColor,
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-            backgroundColor: lightColorScheme.primary,
-            foregroundColor: lightColorScheme.onPrimary));
+      colorScheme: colorScheme,
+      canvasColor: colorScheme.surface,
+      scaffoldBackgroundColor: colorScheme.surface,
+      highlightColor: Colors.transparent,
+      focusColor: focusColor,
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: lightColorScheme.primary,
+          foregroundColor: lightColorScheme.onPrimary),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor:
+              WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+            return colorScheme.onSecondary; // colour
+          }),
+          foregroundColor:
+              WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+            return colorScheme.secondary; // colour
+          }),
+        ),
+      ),
+    );
   }
   // https://coolors.co/visualizer/05abc4-89c2af-047889-0490ae-f5eae0-01579b
 
