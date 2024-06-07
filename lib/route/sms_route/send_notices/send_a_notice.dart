@@ -1,10 +1,11 @@
+import 'package:adsats_flutter/route/documents_route/add_a_document.dart';
 import 'package:flutter/material.dart';
 import 'recepients.dart';
 
 class SendANotices extends StatelessWidget {
   const SendANotices({super.key});
 
- @override
+  @override
   Widget build(BuildContext context) {
     return const SingleChildScrollView(
       child: Column(
@@ -31,7 +32,7 @@ class SendANotices extends StatelessWidget {
           ),
           SubjectTextField(),
           MessageTextField(),
-          UploadWidget(),
+          DropFileWidget(),
           ActionButtonsWidget()
         ],
       ),
@@ -50,10 +51,7 @@ class TitleofTheNotice extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: const Text(
         'Notice to Crew',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20
-        ),
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
       ),
     );
   }
@@ -69,10 +67,9 @@ class ReportNumberTextField extends StatelessWidget {
       padding: const EdgeInsets.all(5),
       child: const TextField(
         decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          label: Text('Report Number'),
-          enabled: false
-        ),
+            border: OutlineInputBorder(),
+            label: Text('Report Number'),
+            enabled: false),
       ),
     );
   }
@@ -87,9 +84,7 @@ class MessageTextField extends StatelessWidget {
       padding: const EdgeInsets.all(5),
       child: const TextField(
         decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          label: Text('Message')
-        ),
+            border: OutlineInputBorder(), label: Text('Message')),
         maxLines: 3,
       ),
     );
@@ -106,20 +101,17 @@ class AuthorTextField extends StatelessWidget {
       padding: const EdgeInsets.all(5),
       child: TextField(
         decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          label: const Text('Author'),
-          suffixIcon: IconButton(
-            onPressed: (){}, 
-            icon: const Icon(Icons.search)
-          )
-        ),
+            border: const OutlineInputBorder(),
+            label: const Text('Author'),
+            suffixIcon:
+                IconButton(onPressed: () {}, icon: const Icon(Icons.search))),
       ),
     );
   }
 }
 
 class SubjectTextField extends StatelessWidget {
-  const SubjectTextField ({super.key});
+  const SubjectTextField({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +158,8 @@ class ActionButtonsWidget extends StatelessWidget {
           child: const Row(
             children: [
               Icon(Icons.mail), // Replace 'some_icon' with the desired icon
-              SizedBox(width: 5), // Adjust the spacing between the icon and text
+              SizedBox(
+                  width: 5), // Adjust the spacing between the icon and text
               Text('Send Notification'),
             ],
           ),

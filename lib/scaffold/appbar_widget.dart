@@ -1,5 +1,6 @@
 import 'package:adsats_flutter/scaffold/app_bar_components/app_bar_items.dart';
 import 'package:adsats_flutter/scaffold/app_bar_components/menu_item_row.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,18 +39,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         centerTitle: true,
         actions: [
-          const Tooltip(
-            message: 'change color',
-            child: ThemeSwitch(),
-          ),
+          const ThemeSwitch(),
           const SampleMenuAnchor(),
-          IconButton(
-            // Add the bell icon here
-            icon: const Icon(Icons.notifications),
-            onPressed: () {
-              // Handle bell icon press
-            },
-          ),
           Builder(
             builder: (context) => IconButton(
               icon: const Icon(Icons.menu),
@@ -78,15 +69,18 @@ class _ThemeSwitchState extends State<ThemeSwitch> {
   Widget build(BuildContext context) {
     return Transform.scale(
       scale: 0.6,
-      child: Switch(
-        value: themeBool,
-        onChanged: (value) {
-          setState(() {
-            themeBool = value;
-            Provider.of<ThemeNotifier>(context, listen: false)
-                .switchThemeMode();
-          });
-        },
+      child: Tooltip(
+        message: 'Change theme',
+        child: Switch(
+          value: themeBool,
+          onChanged: (value) {
+            setState(() {
+              themeBool = value;
+              Provider.of<ThemeNotifier>(context, listen: false)
+                  .switchThemeMode();
+            });
+          },
+        ),
       ),
     );
   }
@@ -117,7 +111,6 @@ class SampleMenuAnchor extends StatelessWidget {
               onPressed: () {},
               icon: const Icon(
                 Icons.more_vert,
-                size: 20,
               )),
           leading: const Icon(Icons.edit_document),
           onTap: () {},
@@ -126,7 +119,11 @@ class SampleMenuAnchor extends StatelessWidget {
           dense: true,
           title: const Text('Author'),
           subtitle: const Text('Subject: Message'),
-          trailing: const Icon(Icons.more_vert),
+          trailing: IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.more_vert,
+              )),
           leading: const Icon(Icons.edit_document),
           onTap: () {},
         ),
@@ -134,7 +131,11 @@ class SampleMenuAnchor extends StatelessWidget {
           dense: true,
           title: const Text('Author'),
           subtitle: const Text('Subject: Message'),
-          trailing: const Icon(Icons.more_vert),
+          trailing: IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.more_vert,
+              )),
           leading: const Icon(Icons.edit_document),
           onTap: () {},
         ),

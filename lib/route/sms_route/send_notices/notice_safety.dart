@@ -1,3 +1,4 @@
+import 'package:adsats_flutter/route/documents_route/add_a_document.dart';
 import 'package:flutter/material.dart';
 import 'recepients.dart';
 
@@ -32,7 +33,7 @@ class SafetyNotice extends StatelessWidget {
           SubjectTextField(),
           TitleTextField(),
           MessageTextField(),
-          UploadWidget(),
+          DropFileWidget(),
           ActionButtonsWidget()
         ],
       ),

@@ -227,16 +227,16 @@ class SendANoticeButton extends StatelessWidget {
       // ),
       child: const Row(
         children: [
-          Icon(
-            Icons.add,
-            size: 30,
-          ),
-          SizedBox(width: 5),
+          // Icon(
+          //   Icons.add,
+          //   size: 30,
+          // ),
+          // SizedBox(width: 5),
           Text(
-            'Create a new notification',
+            '+ Create a new notification',
             style: TextStyle(
-              fontSize: 16,
-            ),
+                // fontSize: 16,
+                ),
           ),
         ],
       ),

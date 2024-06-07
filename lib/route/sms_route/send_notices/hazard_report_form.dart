@@ -1,6 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'package:adsats_flutter/route/documents_route/add_a_document.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'recepients.dart';
 
 class HazardReport extends StatelessWidget {
@@ -69,6 +68,7 @@ class HazardReportForm extends StatelessWidget {
           ),
           RiskSeverityWidget(),
           CommentsTextField(),
+          DropFileWidget(),
           ActionButtonsWidget(),
         ],
       ),
@@ -224,22 +224,20 @@ List<String> riskTolerability = ['Unacceptable', 'Review', 'Acceptable'];
 
 class _RiskSeverityWidgetState extends State<RiskSeverityWidget> {
   Color textFieldColor = Colors.transparent;
+  int tableIndex = 3;
+  int? _selectLikelihoodRow;
+  int? _selectedLikelihood;
 
-  void updateColor(int tableIndex) {
-    setState(() {
-      switch (tableIndex) {
-        case 0:
-          textFieldColor = Colors.red.shade200;
-          break;
-
-        case 1:
-          textFieldColor = Colors.green.shade200;
-          break;
-
-        case 2:
-          textFieldColor = Colors.yellow.shade200;
-      }
-    });
+  Color updateColor(tableIndex) {
+    if (tableIndex == 0) {
+      return Colors.red.shade200;
+    } else if (tableIndex == 1) {
+      return Colors.yellow.shade200;
+    } else if (tableIndex == 2) {
+      return Colors.green.shade200;
+    } else {
+      return Colors.transparent;
+    }
   }
 
   @override
@@ -254,22 +252,28 @@ class _RiskSeverityWidgetState extends State<RiskSeverityWidget> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const Tooltip(
-            message: 'Risk Severity image',
-            child: Icon(
+          IconButton(
+            icon: const Icon(
               Icons.info_outline,
               size: 20,
             ),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        content: Image.asset('risk-severity.png'),
+                      ));
+            },
           ),
           SizedBox(
             width: 200,
             child: TextField(
-              controller: TextEditingController(text: riskTolerability[1]),
+              controller: TextEditingController(text: "1"),
               enabled: false,
               readOnly: true,
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
-                fillColor: textFieldColor,
+                fillColor: updateColor(tableIndex),
                 filled: true,
               ),
             ),
