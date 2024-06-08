@@ -13,52 +13,57 @@ part 'documents_api.dart';
 
 class Document {
   Document({
-    required int id,
-    required String fileName,
-    required bool archived,
-    required String email,
-    required String subcategory,
-    required String category,
+    int? id,
+    String? fileName,
+    bool? archived,
+    String? email,
+    String? subcategory,
+    String? category,
     String? aircraft,
-    required DateTime createdAt,
-  })  : _id = id,
-        _fileName = fileName,
-        _archived = archived,
-        _email = email,
-        _subcategory = subcategory,
-        _category = category,
-        _aircraft = aircraft,
-        _createdAt = createdAt;
+    DateTime? createdAt,
+  });
   Document.fromJSON(Map<String, dynamic> json)
-      : _id = json["document_id"] as int,
-        _fileName = json["file_name"] as String,
-        _archived = intToBool(json["archived"] as int)!,
-        _email = json["author"] as String,
-        _subcategory = json["sub_category"] as String,
-        _category = json["category"] as String,
-        _aircraft = json["aircrafts"] as String?,
-        _createdAt = DateTime.parse(json["created_at"]);
-  final int _id;
-  String _fileName;
-  final bool _archived;
-  final String _email;
-  final String _category;
-  final String _subcategory;
-  final String? _aircraft;
-  final DateTime _createdAt;
-  int get id => _id;
-  String get fileName => _fileName;
-  bool get archived => _archived;
-  String get author => _email;
-  String get subcategory => _subcategory;
-  String get category => _category;
-  String? get aircraft => _aircraft;
-  DateTime get createdAt => _createdAt;
+      : id = json["document_id"] as int,
+        fileName = json["file_name"] as String,
+        archived = intToBool(json["archived"] as int)!,
+        author = json["author"] as String,
+        subcategory = json["sub_category"] as String,
+        category = json["category"] as String,
+        aircrafts = json["aircrafts"] as String?,
+        createdAt = DateTime.parse(json["created_at"]);
+  Document.copy(this.fileName, Document anotherDocument) {
+    author = anotherDocument.author;
+    subcategory = anotherDocument.subcategory;
+    aircrafts = anotherDocument.aircrafts;
+  }
+  int? id;
+  String? fileName;
+  bool? archived;
+  String? author;
+  String? subcategory;
+  String? category;
+  String? aircrafts;
+  DateTime? createdAt;
+
   static bool? intToBool(int? value) {
     if (value == null) {
       return null;
     }
     return value != 0;
+  }
+
+  Map<String, String> toJSON() {
+    Map<String, String> temp = {};
+    if (id != null) {
+      temp["id"] = id!.toString();
+    }
+    temp["file_name"] = fileName!;
+    temp["email"] = author!;
+    temp["subcategory"] = subcategory!;
+    if (aircrafts != null) {
+      temp["aircrafts"] = aircrafts.toString();
+    }
+    return temp;
   }
 
   // can rearrange collumn
@@ -69,7 +74,7 @@ class Document {
         cellFor(author),
         cellFor(subcategory),
         cellFor(category),
-        cellFor(aircraft),
+        cellFor(aircrafts),
         cellFor(archived),
         cellFor(createdAt),
         DataCell(
@@ -124,8 +129,9 @@ class Document {
   }
 
   Future<void> replaceFile() async {
+    assert(fileName != null);
     String pathStr = "${id}_$fileName";
-    String extention = p.extension(fileName);
+    String extention = p.extension(fileName!);
     // Select a file from the device
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -171,7 +177,7 @@ class Document {
         path: StoragePath.fromString(newPathStr),
       ).result;
       debugPrint('Removed file: ${removeResult.removedItem.path}');
-      _fileName = newFileName;
+      fileName = newFileName;
     } on StorageException catch (e) {
       debugPrint(e.message);
     }

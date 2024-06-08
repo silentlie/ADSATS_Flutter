@@ -32,7 +32,7 @@ class SafetyNoticeWidget extends StatelessWidget {
         Wrap(
           children: [
             SearchAuthorWidget(
-              author: safetyNotice.author,
+              customClass: safetyNotice,
             ),
             Container(
               padding: const EdgeInsets.all(5),

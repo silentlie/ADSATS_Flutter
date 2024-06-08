@@ -34,7 +34,7 @@ class NoticeWidget extends StatelessWidget {
         Wrap(
           children: [
             SearchAuthorWidget(
-              author: noticeToCrew.author,
+              customClass: noticeToCrew,
             ),
             Container(
               padding: const EdgeInsets.all(8),
