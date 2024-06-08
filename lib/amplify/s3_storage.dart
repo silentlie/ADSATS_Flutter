@@ -13,7 +13,7 @@ Future<void> uploadImage() async {
     withData: false,
     // Ensure to get file stream for better performance
     withReadStream: true,
-    allowedExtensions: ['svg'],
+    allowedExtensions: ['svg', 'pdf'],
   );
 
   if (result == null) {
@@ -35,7 +35,6 @@ Future<void> uploadImage() async {
         onProgress: (progress) {
           safePrint('Fraction completed: ${progress.fractionCompleted}');
         },
-        
       ).result;
       safePrint('Successfully uploaded file: ${result.uploadedItem.path}');
       safePrint('Successfully uploaded file: ${result.uploadedItem.eTag}');
