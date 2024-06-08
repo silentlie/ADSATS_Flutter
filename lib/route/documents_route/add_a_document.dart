@@ -3,25 +3,31 @@ import 'dart:convert';
 import 'package:adsats_flutter/helper/search_file_widget.dart';
 import 'package:adsats_flutter/route/documents_route/document_class.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-
-import 'package:adsats_flutter/amplify/s3_storage.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:provider/provider.dart';
 
 class AddADocument extends StatelessWidget {
   const AddADocument({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 1536),
-        child: const SingleChildScrollView(
-          child: Card(
-            elevation: 20,
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: AddADocumentBody(),
+    return ChangeNotifierProvider(
+      create: (context) {
+        return NewDocument();
+      },
+      child: Center(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 1536),
+          child: const SingleChildScrollView(
+            child: Card(
+              elevation: 20,
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: AddADocumentBody(),
+              ),
             ),
           ),
         ),
@@ -37,7 +43,8 @@ class AddADocumentBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Document newDocument = Document();
+    NewDocument newDocument = Provider.of<NewDocument>(context);
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -61,122 +68,142 @@ class AddADocumentBody extends StatelessWidget {
             SearchAuthorWidget(
               customClass: newDocument,
             ),
-            CategoriesWidget(
-              newDocument: newDocument,
-            ),
+            const CategoriesWidget(),
           ],
         ),
         const Divider(),
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            'Upload File',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
         const DropFileWidget(),
-        const UploadButton(),
+        const Divider(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            ElevatedButton.icon(
+              onPressed: () {
+                context.go('/documents');
+              },
+              label: const Text('Cancel'),
+              icon: Icon(
+                Icons.mail,
+                color: colorScheme.onSecondary,
+              ),
+            ),
+            const SizedBox(width: 10),
+            ElevatedButton.icon(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      actions: [
+                        // cancel
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        // apply
+                        TextButton(
+                          onPressed: () {
+                            newDocument.filePickerResult?.files.forEach(
+                              (element) {
+                                debugPrint(element.name);
+                              },
+                            );
+                            Navigator.pop(context, 'Apply');
+                            context.go('/documents');
+                          },
+                          child: const Text('Apply'),
+                        )
+                      ],
+                    );
+                  },
+                );
+              },
+              style: ButtonStyle(
+                // Change button background color
+                backgroundColor:
+                    WidgetStateProperty.all<Color>(colorScheme.secondary),
+              ),
+              label: Text(
+                'Upload Files',
+                style: TextStyle(color: colorScheme.onSecondary),
+              ),
+              icon: Icon(
+                Icons.mail,
+                color: colorScheme.onSecondary,
+              ),
+            ),
+          ],
+        )
       ],
     );
   }
 }
 
-// TODO: change to multiple documents, pick files button and upload button are seprate
-
-class UploadButton extends StatelessWidget {
-  const UploadButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    // Access color scheme
-    ColorScheme colorScheme = Theme.of(context).colorScheme;
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: ElevatedButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                actions: [
-                  // cancel
-                  TextButton(
-                    onPressed: () => Navigator.pop(context, 'Okay'),
-                    child: Text(
-                      'Okay',
-                      style: TextStyle(color: colorScheme.onSecondary),
-                    ),
-                  ),
-                ],
-                content: const Text(
-                  'Upload successful',
-                ),
-              ),
-            );
-          },
-          child: const Text('Upload document')),
-    );
-  }
-}
-
-class DropFileWidget extends StatelessWidget {
+class DropFileWidget extends StatefulWidget {
   const DropFileWidget({super.key});
 
   @override
+  State<DropFileWidget> createState() => _DropFileWidgetState();
+}
+
+class _DropFileWidgetState extends State<DropFileWidget> {
+  @override
   Widget build(BuildContext context) {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
-    return GestureDetector(
-      onTap: () async {
-        await uploadImage();
-      },
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: Container(
-          width: 600,
-          height: 300,
-          color: colorScheme.inversePrimary,
-          padding: const EdgeInsets.all(20),
-          child: const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.cloud_upload,
-                  size: 80,
+    NewDocument newDocument = Provider.of<NewDocument>(context);
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: () async {
+            newDocument.filePickerResult = await FilePicker.platform.pickFiles(
+              allowMultiple: true,
+              type: FileType.any,
+              withData: false,
+              // Ensure to get file stream for better performance
+              withReadStream: true,
+            );
+            setState(() {});
+          },
+          child: MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: Container(
+              width: 600,
+              height: 300,
+              color: colorScheme.inversePrimary,
+              padding: const EdgeInsets.all(20),
+              child: const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.cloud_upload,
+                      size: 80,
+                    ),
+                    Text(
+                      'Drop files here',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
-                Text(
-                  'Drop files here',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class FileDetails extends StatelessWidget {
-  const FileDetails({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    String author = "";
-    return Wrap(
-      children: [
-        SearchAuthorWidget(
-          customClass: author,
-        ),
+        Wrap(
+          children: newDocument.filePickerResult?.files.map(
+                (file) {
+                  return Chip(label: Text(file.name));
+                },
+              ).toList() ??
+              [],
+        )
       ],
     );
   }
 }
 
 class CategoriesWidget extends StatelessWidget {
-  const CategoriesWidget({super.key, required this.newDocument});
-  final Document newDocument;
+  const CategoriesWidget({super.key});
 
   static Map<String, String> filterEndpoints = {
     'sub_category': '/sub-categories',
@@ -219,6 +246,7 @@ class CategoriesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    NewDocument newDocument = Provider.of<NewDocument>(context);
     return FutureBuilder(
       future: fetchFilter(filterEndpoints),
       builder: (context, snapshot) {
@@ -302,4 +330,12 @@ class CategoriesWidget extends StatelessWidget {
       },
     );
   }
+}
+
+class NewDocument extends ChangeNotifier {
+  String? fileName;
+  String? author;
+  String? subcategory;
+  String? aircrafts;
+  FilePickerResult? filePickerResult;
 }
