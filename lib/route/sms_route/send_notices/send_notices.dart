@@ -2,7 +2,7 @@ import 'package:adsats_flutter/helper/recipients.dart';
 import 'package:flutter/material.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/hazard_report/hazard_report_form.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/safety_notice/safety_notice_widget.dart';
-import 'package:adsats_flutter/route/sms_route/send_notices/notice/notice_to_crew_widget.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/notice_to_crew/notice_to_crew_widget.dart';
 
 class SendNotices extends StatefulWidget {
   const SendNotices({super.key});

@@ -33,8 +33,11 @@ class NoticeWidget extends StatelessWidget {
         const Divider(),
         Wrap(
           children: [
-            SearchAuthorWidget(
-              author: noticeToCrew.author,
+            Container(
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: SearchAuthorWidget(
+                customClass: noticeToCrew,
+              ),
             ),
             Container(
               padding: const EdgeInsets.all(8),
@@ -66,8 +69,12 @@ class NoticeWidget extends StatelessWidget {
             maxLines: 5,
           ),
         ),
-        SearchFileWidget(
-          fileNameResult: noticeToCrew.fileNameResult,
+        Container(
+          constraints: const BoxConstraints(maxWidth: 400),
+          padding: const EdgeInsets.all(8),
+          child: SearchFileWidget(
+            fileNameResult: noticeToCrew.fileNameResult,
+          ),
         ),
         Row(
           mainAxisAlignment:
