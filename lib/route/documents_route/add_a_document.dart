@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:adsats_flutter/helper/search_file_widget.dart';
-import 'package:adsats_flutter/route/documents_route/document_class.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -63,14 +62,7 @@ class AddADocumentBody extends StatelessWidget {
           ],
         ),
         const Divider(),
-        Row(
-          children: [
-            SearchAuthorWidget(
-              customClass: newDocument,
-            ),
-            const CategoriesWidget(),
-          ],
-        ),
+        const DetailsWidget(),
         const Divider(),
         const DropFileWidget(),
         const Divider(),
@@ -90,6 +82,12 @@ class AddADocumentBody extends StatelessWidget {
             const SizedBox(width: 10),
             ElevatedButton.icon(
               onPressed: () {
+                bool validate = newDocument.author != null &&
+                    newDocument.subcategory != null &&
+                    newDocument.filePickerResult != null;
+                if (!validate) {
+                  return;
+                }
                 showDialog(
                   context: context,
                   builder: (context) {
@@ -103,11 +101,7 @@ class AddADocumentBody extends StatelessWidget {
                         // apply
                         TextButton(
                           onPressed: () {
-                            newDocument.filePickerResult?.files.forEach(
-                              (element) {
-                                debugPrint(element.name);
-                              },
-                            );
+                            newDocument.uploadFiles();
                             Navigator.pop(context, 'Apply');
                             context.go('/documents');
                           },
@@ -152,6 +146,7 @@ class _DropFileWidgetState extends State<DropFileWidget> {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
     NewDocument newDocument = Provider.of<NewDocument>(context);
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         GestureDetector(
           onTap: () async {
@@ -167,7 +162,7 @@ class _DropFileWidgetState extends State<DropFileWidget> {
           child: MouseRegion(
             cursor: SystemMouseCursors.click,
             child: Container(
-              width: 600,
+              width: 400,
               height: 300,
               color: colorScheme.inversePrimary,
               padding: const EdgeInsets.all(20),
@@ -189,21 +184,27 @@ class _DropFileWidgetState extends State<DropFileWidget> {
             ),
           ),
         ),
-        Wrap(
-          children: newDocument.filePickerResult?.files.map(
-                (file) {
-                  return Chip(label: Text(file.name));
-                },
-              ).toList() ??
-              [],
+        Container(
+          constraints: const BoxConstraints(maxWidth: 400),
+          padding: const EdgeInsets.all(8),
+          child: Wrap(
+            runSpacing: 8,
+            spacing: 8,
+            children: newDocument.filePickerResult?.files.map(
+                  (file) {
+                    return Chip(label: Text(file.name));
+                  },
+                ).toList() ??
+                [],
+          ),
         )
       ],
     );
   }
 }
 
-class CategoriesWidget extends StatelessWidget {
-  const CategoriesWidget({super.key});
+class DetailsWidget extends StatelessWidget {
+  const DetailsWidget({super.key});
 
   static Map<String, String> filterEndpoints = {
     'sub_category': '/sub-categories',
@@ -259,7 +260,14 @@ class CategoriesWidget extends StatelessWidget {
         } else if (snapshot.hasData) {
           // if data is fetch successfully
           Map<String, List<String>> filterData = snapshot.data!;
-          List<Widget> children = [];
+          List<Widget> children = [
+            Container(
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: SearchAuthorWidget(
+                customClass: newDocument,
+              ),
+            ),
+          ];
           filterData.forEach(
             (key, value) {
               if (key == 'sub_category') {
@@ -286,6 +294,7 @@ class CategoriesWidget extends StatelessWidget {
                 children.add(Container(
                   // sized of multi select
                   constraints: const BoxConstraints(maxWidth: 250),
+                  padding: const EdgeInsets.all(8),
                   child: MultiSelectDialogField(
                     items: value.map(
                       (item) {
@@ -321,7 +330,7 @@ class CategoriesWidget extends StatelessWidget {
               }
             },
           );
-          return Row(
+          return Wrap(
             children: children,
           );
         } else {
@@ -333,9 +342,56 @@ class CategoriesWidget extends StatelessWidget {
 }
 
 class NewDocument extends ChangeNotifier {
-  String? fileName;
   String? author;
   String? subcategory;
   String? aircrafts;
   FilePickerResult? filePickerResult;
+
+  Future<void> uploadFile(PlatformFile file) async {
+    try {
+      String fileName = file.name;
+      Map<String, dynamic> body = {
+        'file_name': fileName,
+        'email': author,
+        'subcategory': subcategory,
+        'archived': false,
+      };
+      if (aircrafts?.isNotEmpty ?? false) {
+        body['aircrafts'] = aircrafts;
+      }
+      debugPrint(body.toString());
+      final restOperation = Amplify.API.post('/documents',
+          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int documentID = jsonDecode(jsonStr);
+      debugPrint("document_id: $documentID");
+      String pathStr = "${documentID}_$fileName";
+      final result = await Amplify.Storage.uploadFile(
+        localFile: AWSFile.fromStream(
+          file.readStream!,
+          size: file.size,
+        ),
+        path: StoragePath.fromString(pathStr),
+        onProgress: (progress) {
+          debugPrint('Fraction completed: ${progress.fractionCompleted}');
+        },
+      ).result;
+      debugPrint('Successfully uploaded file: ${result.uploadedItem.path}');
+    } on StorageException catch (e) {
+      debugPrint(e.message);
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
+
+  void uploadFiles() {
+    for (PlatformFile file in filePickerResult!.files) {
+      uploadFile(file);
+    }
+  }
 }
