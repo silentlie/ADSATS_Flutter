@@ -26,10 +26,13 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return SafeArea(
       child: AppBar(
         backgroundColor: colorScheme.secondary.withOpacity(0.3),
-        leading: const Row(
+        leading: Row(
           children: [
-            DefaultLogoWidget(),
-            DefaultTextLogo(),
+            Container(
+              padding: const EdgeInsets.all(5),
+              child: const DefaultLogoWidget(),
+            ),
+            // DefaultTextLogo(),
           ],
         ),
         leadingWidth: 105,

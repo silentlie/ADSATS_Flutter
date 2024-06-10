@@ -89,55 +89,50 @@ class _SearchFileWidgetState extends State<SearchFileWidget> {
   Widget build(BuildContext context) {
     return Wrap(
       children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          constraints: const BoxConstraints(maxWidth: 400),
-          child: SearchAnchor(
-            builder: (context, controller) {
-              return SearchBar(
-                onTap: () {
-                  controller.openView();
-                },
-                hintText: "Choose documents (Optional)",
-                onChanged: (value) {
-                  controller.openView();
-                  controller.text = value;
-                },
-                controller: barController,
-                leading: const Icon(Icons.search),
-                elevation: const WidgetStatePropertyAll(2),
-                padding:
-                    const WidgetStatePropertyAll(EdgeInsets.only(left: 20)),
-              );
-            },
-            viewConstraints: const BoxConstraints(maxHeight: 300),
-            suggestionsBuilder: (context, controller) async {
-              barController.text = controller.text;
+        SearchAnchor(
+          builder: (context, controller) {
+            return SearchBar(
+              onTap: () {
+                controller.openView();
+              },
+              hintText: "Choose documents (Optional)",
+              onChanged: (value) {
+                controller.openView();
+                controller.text = value;
+              },
+              controller: barController,
+              leading: const Icon(Icons.search),
+              elevation: const WidgetStatePropertyAll(2),
+              padding: const WidgetStatePropertyAll(EdgeInsets.only(left: 20)),
+            );
+          },
+          viewConstraints: const BoxConstraints(maxHeight: 300),
+          suggestionsBuilder: (context, controller) async {
+            barController.text = controller.text;
 
-              final List<String>? options =
-                  (await _debouncedSearch(controller.text))?.toList();
-              if (options == null) {
-                return _lastOptions;
-              }
-              _lastOptions = options.map(
-                (option) {
-                  return ListTile(
-                    title: Text(option),
-                    onTap: () {
-                      setState(() {
-                        if (widget.fileNameResult.contains(option)) {
-                          widget.fileNameResult.remove(option);
-                        } else {
-                          widget.fileNameResult.add(option);
-                        }
-                      });
-                    },
-                  );
-                },
-              );
+            final List<String>? options =
+                (await _debouncedSearch(controller.text))?.toList();
+            if (options == null) {
               return _lastOptions;
-            },
-          ),
+            }
+            _lastOptions = options.map(
+              (option) {
+                return ListTile(
+                  title: Text(option),
+                  onTap: () {
+                    setState(() {
+                      if (widget.fileNameResult.contains(option)) {
+                        widget.fileNameResult.remove(option);
+                      } else {
+                        widget.fileNameResult.add(option);
+                      }
+                    });
+                  },
+                );
+              },
+            );
+            return _lastOptions;
+          },
         ),
         Container(
           padding: const EdgeInsets.all(8),

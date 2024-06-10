@@ -10,11 +10,24 @@ class MyScaffold extends StatelessWidget {
   final Widget child;
   @override
   Widget build(BuildContext context) {
-    Provider.of<AuthNotifier>(context).initialize();
-    return Scaffold(
-      appBar: const MyAppBar(),
-      endDrawer: const MyDrawer(),
-      body: child,
+    return FutureBuilder(
+      future: Provider.of<AuthNotifier>(context).initialize(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // loading widget can be customise
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          // can make it into a error widget for more visualise
+          return Text('Error: ${snapshot.error}');
+        } else if (snapshot.hasData) {
+          return Scaffold(
+              appBar: const MyAppBar(),
+              endDrawer: const MyDrawer(),
+              body: child);
+        } else {
+          return const Placeholder();
+        }
+      },
     );
   }
 }

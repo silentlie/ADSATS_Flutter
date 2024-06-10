@@ -60,7 +60,6 @@ class LikelihoodofOccurrenceWidget extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const Text(''),
             Container(
               decoration: BoxDecoration(border: Border.all()),
               child: const LikelihoodOfOccurrenceTable(),

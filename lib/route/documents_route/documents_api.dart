@@ -44,6 +44,7 @@ class DocumentAPI extends DataTableSourceAsync {
       String jsonStr = response.decodeBody();
       Map<String, dynamic> rawData = jsonDecode(jsonStr);
       _totalRecords = rawData["total_records"];
+      debugPrint(_totalRecords.toString());
       final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
 
       _documents = [for (var row in rowsData) Document.fromJSON(row)];
@@ -63,15 +64,6 @@ class DocumentAPI extends DataTableSourceAsync {
       return document.toDataRow();
     }).toList();
   }
-
-  Map<String, String> get filterEndpoints => {
-        'authors': '/staff',
-        // filter by roles could be more complex then it should
-        // 'roles': '/roles',
-        'aircrafts': '/aircrafts',
-        'categories': '/categories',
-        'sub-categories': '/sub-categories',
-      };
 
   Map<String, String> get sqlColumns => {
         'File Name': 'file_name',
@@ -99,6 +91,14 @@ class DocumentAPI extends DataTableSourceAsync {
         scrollDirection: Axis.horizontal,
         reverse: true,
         child: Builder(builder: (context) {
+          AuthNotifier staff = Provider.of<AuthNotifier>(context);
+          _filters.filterResult.addAll({
+            // 'limit_aircrafts': staff.aircrafts,
+            // 'limit_subcategories': staff.subcategories,
+            // 'limit_roles': staff.roles,
+            'limit_categories': staff.categories,
+            'limit_author': [staff.email]
+          });
           return Row(
             children: [
               ElevatedButton.icon(
@@ -117,7 +117,13 @@ class DocumentAPI extends DataTableSourceAsync {
               FilterBy(
                 filters: _filters,
                 refreshDatasource: refreshDatasource,
-                filterEndpoints: filterEndpoints,
+                filterByAuthors: true,
+                filterByRoles: true,
+                filterByAircrafts: true,
+                filterByCategories: true,
+                filterBySubcategories: true,
+                filterByArchived: true,
+                filterByCreatedAt: true,
               ),
               const SizedBox(
                 width: 10,

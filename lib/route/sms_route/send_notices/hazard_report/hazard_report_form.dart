@@ -33,7 +33,7 @@ class HazardReportWidget extends StatelessWidget {
           Row(
             children: [
               SearchAuthorWidget(
-                author: hazardReport.author,
+                customClass: hazardReport,
               ),
               const DateFormField(),
               const ReportType(),

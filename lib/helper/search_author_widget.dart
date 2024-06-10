@@ -1,10 +1,9 @@
 part of 'search_file_widget.dart';
 
 class SearchAuthorWidget extends StatefulWidget {
-  const SearchAuthorWidget(
-      {super.key, required this.author});
+  const SearchAuthorWidget({super.key, required this.customClass});
 
-  final String author;
+  final dynamic customClass;
   @override
   State<SearchAuthorWidget> createState() => _SearchAuthorWidgetState();
 }
@@ -87,7 +86,7 @@ class _SearchAuthorWidgetState extends State<SearchAuthorWidget> {
             onTap: () {
               controller.openView();
             },
-            hintText: "Specify author of this notice",
+            hintText: "Specify author of this",
             onChanged: (value) {
               controller.openView();
               controller.text = value;
@@ -98,6 +97,7 @@ class _SearchAuthorWidgetState extends State<SearchAuthorWidget> {
             padding: const WidgetStatePropertyAll(EdgeInsets.only(left: 20)),
           );
         },
+        viewConstraints: const BoxConstraints(maxHeight: 300),
         suggestionsBuilder: (context, controller) async {
           barController.text = controller.text;
 
@@ -114,6 +114,7 @@ class _SearchAuthorWidgetState extends State<SearchAuthorWidget> {
                   setState(() {
                     controller.closeView(null);
                     barController.text = option;
+                    widget.customClass.author = option;
                   });
                 },
               );

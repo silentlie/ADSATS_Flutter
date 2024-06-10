@@ -87,7 +87,7 @@ class MyDrawerHeader extends StatelessWidget {
     }
     return SizedBox(
       // height of header
-      height: 250,
+      height: 350,
       child: DrawerHeader(
         decoration: const BoxDecoration(
           color: Colors.transparent,
@@ -132,6 +132,26 @@ class MyDrawerHeader extends StatelessWidget {
               // Center the role text
               child: Text(
                 "Aircrafts: ${staff.aircrafts}",
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+            Center(
+              // Center the role text
+              child: Text(
+                "Categories: ${staff.categories}",
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+            Center(
+              // Center the role text
+              child: Text(
+                "Subcategories: ${staff.subcategories}",
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,

@@ -88,21 +88,7 @@ class StaffApi extends DataTableSourceAsync {
           child: Builder(builder: (context) {
             return Row(
               children: [
-                ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO: add new staff
-                  },
-                  label: const Text(
-                    'Add new staff',
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                  icon: const Icon(
-                    Icons.add,
-                    size: 25,
-                  ),
-                ),
+                const AddStaff(),
                 const SizedBox(
                   width: 10,
                 ),
@@ -129,4 +115,262 @@ class StaffApi extends DataTableSourceAsync {
           }),
         ),
       );
+}
+
+class AddStaff extends StatelessWidget {
+  const AddStaff({super.key});
+
+  static Map<String, String> filterEndpoints = {
+    'roles': '/roles',
+    'aircrafts': '/aircrafts',
+    'categories': '/categories'
+  };
+
+  Future<Map<String, List<MultiSelectItem>>> fetchFilter(
+      Map<String, String>? filterEndpoints) async {
+    try {
+      // Function to make API requests and return the parsed response
+      Future<List<String>> fetchData(String endpoint) async {
+        RestOperation restOperation =
+            Amplify.API.get(endpoint, apiName: 'AmplifyFilterAPI');
+        AWSHttpResponse response = await restOperation.response;
+        String jsonStr = response.decodeBody();
+        // Map<String, dynamic> rawData = jsonDecode(jsonStr);
+        return List<String>.from(jsonDecode(jsonStr));
+      }
+
+      // Perform all fetches concurrently
+      List<Future<List<String>>> futures =
+          filterEndpoints?.values.map(fetchData).toList() ?? [];
+
+      List<List<String>> results = await Future.wait(futures);
+      // Function to map List<String> to List<ValueItem>
+      List<MultiSelectItem> mapToValueItemList(List<String> list) {
+        return list.map((item) => MultiSelectItem(item, item)).toList();
+      }
+
+      List<String> keys = filterEndpoints?.keys.toList() ?? [];
+      List<List<MultiSelectItem>> values =
+          results.map(mapToValueItemList).toList();
+      Map<String, List<MultiSelectItem>> mappedResults =
+          Map.fromIterables(keys, values);
+      // Process the results
+      safePrint("did fetch Filter");
+      return mappedResults;
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+      rethrow;
+    } catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
+    // based on html standard
+    final RegExp emailRegExp = RegExp(
+      r"^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
+    );
+    // list of title of each filter
+    List<String> filterTitles = filterEndpoints.keys.toList();
+    return ElevatedButton.icon(
+      onPressed: () {
+        final formKey = GlobalKey<FormState>();
+        String firstName = '';
+        String lastName = '';
+        String email = '';
+        Map<String, String> result = {};
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'First Name',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your first name';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          firstName = value!;
+                        },
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Last Name',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your last name';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          lastName = value!;
+                        },
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Email',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          } else if (!emailRegExp.hasMatch(value)) {
+                            return 'Please enter a valid email address';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          email = value!;
+                        },
+                      ),
+                    ),
+                    FutureBuilder(
+                      future: fetchFilter(filterEndpoints),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          // loading widget can be customise
+                          return const CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          // can make it into a error widget for more visualise
+                          return Text('Error: ${snapshot.error}');
+                        } else if (snapshot.hasData) {
+                          // if data is fetch successfully
+                          Map<String, List<MultiSelectItem>> filterData =
+                              snapshot.data!;
+                          // generate MultiSelectDialogField based on how many filter in filterData
+                          List<Widget> filterContent = List.generate(
+                            filterData.length,
+                            (index) {
+                              // customise for visual, right now
+                              return Container(
+                                padding: const EdgeInsets.all(8),
+                                constraints:
+                                    const BoxConstraints(maxWidth: 300),
+                                child: MultiSelectDialogField(
+                                  // get text based on index
+                                  buttonText:
+                                      Text("Add ${filterTitles[index]}"),
+                                  // get list of item from fetchData
+                                  items: filterData[filterTitles[index]]!,
+                                  // send selected item to filterResult
+                                  onConfirm: (selectedOptions) {
+                                    result[filterTitles[index]] =
+                                        List<String>.from(selectedOptions)
+                                            .join(',');
+                                  },
+                                  title: Text("Add ${filterTitles[index]}"),
+                                  searchable: true,
+                                  // size of dialog after click each filter
+                                  dialogHeight: 714,
+                                  dialogWidth: 400,
+                                  // can be specify based on ThemeData
+                                  itemsTextStyle:
+                                      const TextStyle(color: Colors.amber),
+                                  selectedItemsTextStyle:
+                                      const TextStyle(color: Colors.blue),
+                                  cancelText: const Text(
+                                    "Cancel",
+                                    style: TextStyle(color: Colors.amber),
+                                  ),
+                                  confirmText: const Text(
+                                    "Confirm",
+                                    style: TextStyle(color: Colors.blue),
+                                  ),
+                                  chipDisplay: MultiSelectChipDisplay(
+                                    scroll: true,
+                                    scrollBar: HorizontalScrollBar(
+                                        isAlwaysShown: true),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                          // return column with filter content
+                          return Column(
+                            children: filterContent,
+                          );
+                        } else {
+                          return const Placeholder();
+                        }
+                      },
+                    )
+                  ],
+                ),
+              ),
+              actions: [
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pop(context, 'Cancel');
+                  },
+                  label: const Text('Cancel'),
+                  icon: Icon(
+                    Icons.cancel,
+                    color: colorScheme.onSecondary,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      // TODO:Functionality for the sending button
+                      formKey.currentState!.save();
+                      debugPrint(firstName);
+                      debugPrint(lastName);
+                      debugPrint(email);
+                      debugPrint(result.toString());
+                      Navigator.pop(context, 'Submit');
+                    }
+                  },
+                  style: ButtonStyle(
+                    // Change button background color
+                    backgroundColor:
+                        WidgetStateProperty.all<Color>(colorScheme.secondary),
+                  ),
+                  label: Text(
+                    'Add this user',
+                    style: TextStyle(color: colorScheme.onSecondary),
+                  ),
+                  icon: Icon(
+                    Icons.mail,
+                    color: colorScheme.onSecondary,
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+      label: const Text(
+        'Add new staff',
+        style: TextStyle(
+          fontSize: 16,
+        ),
+      ),
+      icon: const Icon(
+        Icons.add,
+        size: 25,
+      ),
+    );
+  }
 }
