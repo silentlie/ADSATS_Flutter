@@ -92,7 +92,8 @@ class RolesAPI extends DataTableSourceAsync {
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
-                      // TODO: add new role
+                      // missing add staff after create roles
+                      addNew(context);
                     },
                     label: const Text(
                       'Add new role',
@@ -260,7 +261,7 @@ class RolesAPI extends DataTableSourceAsync {
                         return;
                       }
                       formKey.currentState!.save();
-                      addNewRole(roleName, description , createAt!, archived);
+                      addNewRole(roleName, description, createAt!, archived);
                       Navigator.pop(context, 'Submit');
                     }
                   },
@@ -286,8 +287,8 @@ class RolesAPI extends DataTableSourceAsync {
     );
   }
 
-  Future<void> addNewRole(
-      String name, String description, DateTime createdAt, bool archived) async {
+  Future<void> addNewRole(String name, String description, DateTime createdAt,
+      bool archived) async {
     try {
       Map<String, dynamic> body = {
         "role": name,

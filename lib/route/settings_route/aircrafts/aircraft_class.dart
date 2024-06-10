@@ -130,7 +130,7 @@ class Aircraft {
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
-                      addNewAircraft(aircraftName);
+                      changeAircraftDetails(aircraftName);
                       Navigator.pop(context, 'Submit');
                     }
                   },
@@ -156,7 +156,7 @@ class Aircraft {
     );
   }
 
-  Future<void> addNewAircraft(String name) async {
+  Future<void> changeAircraftDetails(String name) async {
     try {
       Map<String, dynamic> body = {
         "aircraft_id": _id,

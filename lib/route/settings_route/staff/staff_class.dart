@@ -28,7 +28,7 @@ class Staff {
   final String _firstName;
   final String _lastName;
   final String _email;
-  final bool _archived;
+  bool _archived;
   final DateTime _createdAt;
   final String? _roles;
   int get id => _id;
@@ -68,19 +68,96 @@ class Staff {
         DataCell(
           Row(
             children: [
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.remove_red_eye_outlined)),
+              // IconButton(
+              //     onPressed: () {},
+              //     icon: const Icon(Icons.remove_red_eye_outlined)),
               IconButton(
                   onPressed: () {}, icon: const Icon(Icons.edit_outlined)),
               IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.archive_outlined)),
+                  onPressed: () {
+                    archive();
+                  },
+                  icon: const Icon(Icons.archive_outlined)),
               IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.delete_outline)),
+                  onPressed: () {
+                    delete();
+                  },
+                  icon: const Icon(Icons.delete_outline)),
             ],
           ),
         ),
       ],
     );
+  }
+
+  Future<void> changeStaffDetails(String firstName, String lastName, String email, List<String> aircrafts, List<String> roles, List<String> categories, ) async {
+    try {
+      Map<String, dynamic> body = {
+        "staff_id": _id,
+        "fName": firstName,
+        "lName": lastName,
+        "email": email,
+        "aircrafts": aircrafts,
+        "roles": roles,
+        "categories": categories
+      };
+      debugPrint(body.toString());
+      final restOperation = Amplify.API.patch('/roles',
+          apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int rawData = jsonDecode(jsonStr);
+      debugPrint(rawData.toString());
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> archive() async {
+    try {
+      Map<String, dynamic> body = {
+        'archived': !_archived,
+        'staff_id': id,
+      };
+      debugPrint(body.toString());
+      final restOperation = Amplify.API.patch('/staff',
+          apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int rawData = jsonDecode(jsonStr);
+      _archived = !_archived;
+      debugPrint("archive: $rawData");
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> delete() async {
+    try {
+      Map<String, dynamic> body = {
+        'staff_id': id,
+      };
+      debugPrint(body.toString());
+      final restOperation = Amplify.API.delete('/staff',
+          apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int rawData = jsonDecode(jsonStr);
+      debugPrint("delete: $rawData");
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
   }
 }

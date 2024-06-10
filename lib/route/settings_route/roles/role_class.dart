@@ -154,7 +154,7 @@ class Role {
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
-                      addNewAircraft(aircraftName, description);
+                      changeRoleDetails(aircraftName, description);
                       Navigator.pop(context, 'Submit');
                     }
                   },
@@ -180,7 +180,7 @@ class Role {
     );
   }
 
-  Future<void> addNewAircraft(String name, String description) async {
+  Future<void> changeRoleDetails(String name, String description) async {
     try {
       Map<String, dynamic> body = {
         "role_id": _id,
