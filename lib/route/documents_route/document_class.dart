@@ -30,7 +30,7 @@ class Document {
         fileName = json["file_name"] as String,
         archived = intToBool(json["archived"] as int)!,
         author = json["author"] as String,
-        subcategory = json["sub_category"] as String,
+        subcategory = json["subcategory"] as String,
         category = json["category"] as String,
         aircrafts = json["aircrafts"] as String?,
         createdAt = DateTime.parse(json["created_at"]);
@@ -83,13 +83,6 @@ class Document {
         DataCell(
           Builder(builder: (context) {
             AuthNotifier staff = Provider.of<AuthNotifier>(context);
-
-            bool isAdmin = staff.roles.split(',').map(
-              (e) {
-                return e.trim();
-              },
-            ).contains("administrator");
-
             List<Widget> children = [
               IconButton(
                 onPressed: () async {
@@ -100,7 +93,7 @@ class Document {
                 tooltip: 'View',
               ),
             ];
-            if (isAdmin) {
+            if (staff.isAdmin) {
               children.addAll([
                 IconButton(
                   onPressed: () {

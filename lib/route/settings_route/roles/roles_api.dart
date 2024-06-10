@@ -12,6 +12,7 @@ class RolesAPI extends DataTableSourceAsync {
         "Name",
         "Archived",
         "Description",
+        "Created At",
         "Actions",
       ];
 

@@ -14,10 +14,13 @@ class CustomTableFilter {
       tempJson.addAll(
         filterResult.map(
           (key, value) {
-            return MapEntry(
-              key,
-              value.join(','),
-            );
+            if (value.isNotEmpty) {
+              return MapEntry(
+                key,
+                value.join(','),
+              );
+            }
+            return const MapEntry('', '');
           },
         ),
       );

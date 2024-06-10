@@ -64,14 +64,6 @@ class NoticeAPI extends DataTableSourceAsync {
     }).toList();
   }
 
-  Map<String, String> get filterEndpoints => {
-        'authors': '/staff',
-        // filter by roles could be more complex then it should
-        // 'roles': '/roles',
-        'aircrafts': '/aircrafts',
-        // need to create a api for categories
-        // 'categories': '/categories',
-      };
   Map<String, String> get sqlColumns => {
         'Subject': 'subject',
         'Category': 'category',
@@ -115,7 +107,12 @@ class NoticeAPI extends DataTableSourceAsync {
               FilterBy(
                 filters: filters,
                 refreshDatasource: refreshDatasource,
-                filterEndpoints: filterEndpoints,
+                filterByNoticeTypes: true,
+                filterByCreatedAt: true,
+                filterByDeadlineAt: true,
+                filterByRoles: true,
+                filterByAuthors: true,
+                filterByArchived: true,
               ),
               const SizedBox(
                 width: 10,

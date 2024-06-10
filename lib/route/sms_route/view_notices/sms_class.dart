@@ -51,8 +51,12 @@ class Notice {
         _author = json["author"] as String,
         _archived = intToBool(json["archived"] as int)!,
         _resolved = intToBool(json["resolved"] as int),
-        _createdAt = DateTime.parse(json["notice_at"]),
-        _deadlineAt = DateTime.parse(json["deadline_at"]);
+        _createdAt = json["notice_at"] != null
+            ? DateTime.parse(json["notice_at"])
+            : null,
+        _deadlineAt = json["deadline_at"] != null
+            ? DateTime.parse(json["deadline_at"])
+            : null;
   static bool? intToBool(int? value) {
     if (value == null) {
       return null;

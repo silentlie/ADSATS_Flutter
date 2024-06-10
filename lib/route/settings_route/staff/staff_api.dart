@@ -123,7 +123,7 @@ class AddStaff extends StatelessWidget {
   static Map<String, String> filterEndpoints = {
     'roles': '/roles',
     'aircrafts': '/aircrafts',
-    'subcategories': '/sub-categories'
+    'categories': '/categories'
   };
 
   Future<Map<String, List<MultiSelectItem>>> fetchFilter(
