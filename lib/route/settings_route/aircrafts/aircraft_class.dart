@@ -20,7 +20,7 @@ class Aircraft {
         _createdAt = createdAt;
   final int _id;
   final String _name;
-  final bool _archived;
+  bool _archived;
   final DateTime _createdAt;
   int get id => _id;
   String get name => _name;
@@ -48,21 +48,177 @@ class Aircraft {
         cellFor(archived),
         cellFor(createdAt),
         DataCell(
-          Row(
-            children: [
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.remove_red_eye_outlined)),
-              IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.edit_outlined)),
-              IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.archive_outlined)),
-              IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.delete_outline)),
-            ],
-          ),
+          Builder(builder: (context) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // IconButton(
+                //     onPressed: () {},
+                //     icon: const Icon(Icons.remove_red_eye_outlined)),
+                IconButton(
+                    onPressed: () {
+                      changeDetails(context);
+                    },
+                    icon: const Icon(Icons.edit_outlined)),
+                IconButton(
+                    onPressed: () {
+                      archive();
+                    },
+                    icon: const Icon(Icons.archive_outlined)),
+                IconButton(
+                    onPressed: () {
+                      delete();
+                    },
+                    icon: const Icon(Icons.delete_outline)),
+              ],
+            );
+          }),
         ),
       ],
     );
+  }
+
+  void changeDetails(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
+    String aircraftName = '';
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text("Change aircraft details"),
+              content: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Aircraft Name',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter aircraft name';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          aircraftName = value!;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pop(context, 'Cancel');
+                  },
+                  label: const Text('Cancel'),
+                  icon: Icon(
+                    Icons.cancel,
+                    color: colorScheme.onSecondary,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      formKey.currentState!.save();
+                      addNewAircraft(aircraftName);
+                      Navigator.pop(context, 'Submit');
+                    }
+                  },
+                  style: ButtonStyle(
+                    // Change button background color
+                    backgroundColor:
+                        WidgetStateProperty.all<Color>(colorScheme.secondary),
+                  ),
+                  label: Text(
+                    'Edit this aircraft',
+                    style: TextStyle(color: colorScheme.onSecondary),
+                  ),
+                  icon: Icon(
+                    Icons.mail,
+                    color: colorScheme.onSecondary,
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> addNewAircraft(String name) async {
+    try {
+      Map<String, dynamic> body = {
+        "aircraft_id": _id,
+        "name": name,
+      };
+      debugPrint(body.toString());
+      final restOperation = Amplify.API.patch('/aircrafts',
+          apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int rawData = jsonDecode(jsonStr);
+      debugPrint(rawData.toString());
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> archive() async {
+    try {
+      Map<String, dynamic> body = {
+        'archived': !_archived,
+        'aircraft_id': id,
+      };
+      debugPrint(body.toString());
+      final restOperation = Amplify.API.patch('/aircrafts',
+          apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int rawData = jsonDecode(jsonStr);
+      _archived = !_archived;
+      debugPrint("archive: $rawData");
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> delete() async {
+    try {
+      Map<String, dynamic> body = {
+        'aircraft_id': id,
+      };
+      debugPrint(body.toString());
+      final restOperation = Amplify.API.delete('/aircrafts',
+          apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int rawData = jsonDecode(jsonStr);
+      debugPrint("delete: $rawData");
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
   }
 }

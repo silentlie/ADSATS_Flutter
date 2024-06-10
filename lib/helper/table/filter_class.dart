@@ -25,7 +25,7 @@ class CustomTableFilter {
         ),
       );
     }
-    if (tempJson["archived"] == null) {
+    if (filterResult["archived"] == null) {
       tempJson["archived"] = false.toString();
     }
 

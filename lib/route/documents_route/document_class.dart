@@ -262,7 +262,7 @@ class Document {
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
       int rawData = jsonDecode(jsonStr);
-      debugPrint("archive: $rawData");
+      debugPrint("delete: $rawData");
       final removeResult = await Amplify.Storage.remove(
         path: StoragePath.fromString(pathStr),
       ).result;
