@@ -1,5 +1,7 @@
 library data_table;
 
+import 'dart:convert';
+
 import 'package:adsats_flutter/amplify/auth.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,7 @@ part 'cell_function.dart';
 part 'search_bar.dart';
 part 'time_picker.dart';
 part 'sort_by.dart';
+part 'multi_select.dart';
 
 class PaginatedDataTableAsync extends StatefulWidget {
   const PaginatedDataTableAsync(this._dataSource, {super.key});

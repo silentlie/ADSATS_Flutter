@@ -54,18 +54,20 @@ class FilterBy extends StatelessWidget {
 
   List<Widget> getFilterContent(
       BuildContext context, Map<String, List<String>> filterResult) {
-    AuthNotifier staff = Provider.of<AuthNotifier>(context);
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
     List<Widget> filterContent = [];
 
     if (filterByAuthors) {
       filterContent.add(
         MultiSelect(
           buttonText:
-              const Text("Filter by authors(not working at the moment)"),
-          title: const Text("Filter by authors(not working at the moment)"),
-          items: const [
-            // need fetch data from api
-          ],
+              const Text("Filter by authors"),
+          title: const Text("Filter by authors"),
+          items: authNotifier.staff.map(
+            (staff) {
+              return MultiSelectItem(staff, staff);
+            },
+          ).toList(),
           onConfirm: (selectedOptions) {
             filterResult["authors"] = List<String>.from(selectedOptions);
           },
@@ -79,7 +81,7 @@ class FilterBy extends StatelessWidget {
         MultiSelect(
           buttonText: const Text("Filter by aircrafts"),
           title: const Text("Filter by aircrafts"),
-          items: staff.aircrafts.map(
+          items: authNotifier.aircrafts.map(
             (aircraft) {
               return MultiSelectItem(aircraft, aircraft);
             },
@@ -97,7 +99,7 @@ class FilterBy extends StatelessWidget {
         MultiSelect(
           buttonText: const Text("Filter by roles"),
           title: const Text("Filter by roles"),
-          items: staff.roles.map(
+          items: authNotifier.roles.map(
             (role) {
               return MultiSelectItem(role, role);
             },
@@ -115,7 +117,7 @@ class FilterBy extends StatelessWidget {
         MultiSelect(
           buttonText: const Text("Filter by categories"),
           title: const Text("Filter by categories"),
-          items: staff.categories.map(
+          items: authNotifier.categories.map(
             (category) {
               return MultiSelectItem(category, category);
             },
@@ -133,7 +135,7 @@ class FilterBy extends StatelessWidget {
         MultiSelect(
           buttonText: const Text("Filter by subcategories"),
           title: const Text("Filter by subcategories"),
-          items: staff.subcategories.map(
+          items: authNotifier.subcategories.map(
             (subcategory) {
               return MultiSelectItem(subcategory, subcategory);
             },
@@ -253,55 +255,6 @@ class FilterBy extends StatelessWidget {
         );
       },
       child: const Text("Filter By"),
-    );
-  }
-}
-
-class MultiSelect extends StatelessWidget {
-  const MultiSelect({
-    super.key,
-    this.buttonText,
-    this.initialValue = const [],
-    required this.onConfirm,
-    this.title,
-    required this.items,
-  });
-  final Text? buttonText;
-  final List<MultiSelectItem<dynamic>> items;
-  final List<dynamic> initialValue;
-  final void Function(List<dynamic>) onConfirm;
-  final Widget? title;
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: MultiSelectDialogField(
-        buttonText: buttonText,
-        items: items,
-        initialValue: initialValue,
-        // send selected item to filterResult
-        onConfirm: onConfirm,
-        title: title,
-        searchable: true,
-        // size of dialog after click each filter
-        dialogHeight: 714,
-        dialogWidth: 400,
-        // can be specify based on ThemeData
-        itemsTextStyle: const TextStyle(color: Colors.amber),
-        selectedItemsTextStyle: const TextStyle(color: Colors.blue),
-        cancelText: const Text(
-          "Cancel",
-          style: TextStyle(color: Colors.amber),
-        ),
-        confirmText: const Text(
-          "Confirm",
-          style: TextStyle(color: Colors.blue),
-        ),
-        chipDisplay: MultiSelectChipDisplay(
-          scroll: true,
-          scrollBar: HorizontalScrollBar(isAlwaysShown: true),
-        ),
-      ),
     );
   }
 }

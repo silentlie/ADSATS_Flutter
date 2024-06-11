@@ -92,12 +92,13 @@ class AuthNotifier with ChangeNotifier {
   List<String> categories = [];
   List<String> subcategories = [];
   bool isAdmin = false;
-
+  List<String> staff = [];
   Future<bool> initialize() async {
     if (email.isEmpty) {
       await fetchCognitoAuthSession();
       await fetchStaffDetails(email);
     }
+    fetchStaff();
     return true;
   }
 
@@ -158,5 +159,22 @@ class AuthNotifier with ChangeNotifier {
           },
         ).toList() ??
         [];
+  }
+
+  Future<void> fetchStaff() async {
+    try {
+      RestOperation restOperation =
+          Amplify.API.get('/staff', apiName: 'AmplifyFilterAPI');
+      AWSHttpResponse response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      safePrint("did fetch staff");
+      staff = List<String>.from(jsonDecode(jsonStr));
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+      rethrow;
+    } catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
   }
 }
