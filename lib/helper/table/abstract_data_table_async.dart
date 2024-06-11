@@ -1,7 +1,5 @@
 library data_table;
 
-import 'dart:convert';
-
 import 'package:adsats_flutter/amplify/auth.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';

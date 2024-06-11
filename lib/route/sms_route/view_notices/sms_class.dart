@@ -29,7 +29,7 @@ class Notice {
         _resolved = resolved,
         _deadlineAt = deadlineAt;
   final int _id;
-  final bool _archived;
+  bool _archived;
   final String _subject;
   final String _category;
   final String _author;
@@ -89,12 +89,16 @@ class Notice {
                 tooltip: 'Edit',
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  archive();
+                },
                 icon: const Icon(Icons.archive_outlined),
                 tooltip: 'Archive',
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  delete();
+                },
                 icon: const Icon(Icons.delete_outline),
                 tooltip: 'Delete',
               ),
@@ -103,5 +107,49 @@ class Notice {
         ),
       ],
     );
+  }
+
+  Future<void> archive() async {
+    try {
+      Map<String, dynamic> body = {
+        'archived': !_archived,
+        'notice_id': id,
+      };
+      debugPrint(body.toString());
+      final restOperation = Amplify.API.patch('/sms',
+          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int rawData = jsonDecode(jsonStr);
+      _archived = !_archived;
+      debugPrint("archive: $rawData");
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> delete() async {
+    try {
+      Map<String, dynamic> body = {
+        'notice_id': id,
+      };
+      debugPrint(body.toString());
+      final restOperation = Amplify.API.delete('/sms',
+          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int rawData = jsonDecode(jsonStr);
+      debugPrint("delete: $rawData");
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
   }
 }
