@@ -84,40 +84,44 @@ class StaffApi extends DataTableSourceAsync {
           padding: const EdgeInsets.only(bottom: 5),
           scrollDirection: Axis.horizontal,
           reverse: true,
-          child: Builder(builder: (context) {
-            return Row(
-              children: [
-                IconButton(
+          child: Builder(
+            builder: (context) {
+              return Row(
+                children: [
+                  IconButton(
                     onPressed: () {
                       refreshDatasource();
                     },
                     icon: const Icon(Icons.refresh),
                   ),
-                const AddStaff(),
-                const SizedBox(
-                  width: 10,
-                ),
-                FilterBy(
-                  filters: filters,
-                  refreshDatasource: refreshDatasource,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                SortBy(
+                  const AddStaff(),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  FilterBy(
                     filters: filters,
                     refreshDatasource: refreshDatasource,
-                    sqlColumns: sqlColumns),
-                const SizedBox(
-                  width: 10,
-                ),
-                SearchBarWidget(
-                  filters: filters,
-                  refreshDatasource: refreshDatasource,
-                ),
-              ],
-            );
-          },),
+                    filterByArchived: true,
+                    filterByCreatedAt: true,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  SortBy(
+                      filters: filters,
+                      refreshDatasource: refreshDatasource,
+                      sqlColumns: sqlColumns),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  SearchBarWidget(
+                    filters: filters,
+                    refreshDatasource: refreshDatasource,
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       );
 }
@@ -127,7 +131,7 @@ class AddStaff extends StatelessWidget {
 
   static Map<String, String> filterEndpoints = {
     'roles': '/roles',
-    'aircrafts': '/aircrafts',
+    'aircraft': '/aircrafts',
     'categories': '/categories'
   };
 
@@ -377,5 +381,40 @@ class AddStaff extends StatelessWidget {
         size: 25,
       ),
     );
+  }
+
+  Future<void> addNewStaff(String firstName, String lastName, String email, DateTime createdAt,
+      bool archived, List<String> roles, List<String> aircraft, List<String> categories) async {
+    try {
+      Map<String, dynamic> body = {
+        "f_name": firstName,
+        "l_name": lastName,
+        "email": email,
+        "created_at": createdAt.toIso8601String(),
+        "archived": archived
+      };
+      if (aircraft.isNotEmpty) {
+        body["aircraft"] = aircraft;
+      }
+      if (roles.isNotEmpty) {
+        body["roles"] = roles;
+      }
+      if (categories.isNotEmpty) {
+        body["categories"] = categories;
+      }
+      debugPrint(body.toString());
+      final restOperation = Amplify.API.post('/staff',
+          apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int rawData = jsonDecode(jsonStr);
+      debugPrint(rawData.toString());
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
   }
 }

@@ -133,6 +133,9 @@ class CategoriesApi extends DataTableSourceAsync {
     final formKey = GlobalKey<FormState>();
     String categoryName = '';
     bool archived = false;
+    List<String> emails = [];
+    AuthNotifier authNotifier =
+        Provider.of<AuthNotifier>(context, listen: false);
     ColorScheme colorScheme = Theme.of(context).colorScheme;
     showDialog(
       context: context,
@@ -176,6 +179,18 @@ class CategoriesApi extends DataTableSourceAsync {
                     },
                   ),
                 ),
+                MultiSelect(
+                  buttonText: const Text("Add staff"),
+                  title: const Text("Add staff"),
+                  onConfirm: (selectedOptions) {
+                    emails = List<String>.from(selectedOptions);
+                  },
+                  items: authNotifier.staff.map(
+                    (staff) {
+                      return MultiSelectItem(staff, staff);
+                    },
+                  ).toList(),
+                )
               ],
             ),
           ),
@@ -195,7 +210,7 @@ class CategoriesApi extends DataTableSourceAsync {
               onPressed: () {
                 if (formKey.currentState!.validate()) {
                   formKey.currentState!.save();
-                  addNewCategory(categoryName, archived);
+                  addNewCategory(categoryName, archived, emails);
                   Navigator.pop(context, 'Submit');
                 }
               },
@@ -219,9 +234,13 @@ class CategoriesApi extends DataTableSourceAsync {
     );
   }
 
-  Future<void> addNewCategory(String name, bool archived) async {
+  Future<void> addNewCategory(
+      String name, bool archived, List<String> emails) async {
     try {
       Map<String, dynamic> body = {"category_name": name, "archived": archived};
+      if (emails.isNotEmpty) {
+        body["staff"] = emails;
+      }
       debugPrint(body.toString());
       final restOperation = Amplify.API.post('/categories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));

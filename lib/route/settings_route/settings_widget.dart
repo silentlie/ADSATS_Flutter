@@ -3,7 +3,7 @@ import 'package:adsats_flutter/route/settings_route/subcategories/subcategory_cl
 import 'package:flutter/material.dart';
 
 import 'package:adsats_flutter/helper/table/abstract_data_table_async.dart';
-import 'package:adsats_flutter/route/settings_route/aircrafts/aircraft_class.dart';
+import 'package:adsats_flutter/route/settings_route/aircraft/aircraft_class.dart';
 import 'package:adsats_flutter/route/settings_route/staff/staff_class.dart';
 import 'package:adsats_flutter/route/settings_route/roles/role_class.dart';
 
@@ -27,7 +27,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
     const NavigationRailDestination(
       icon: Icon(Icons.airlines_outlined),
       selectedIcon: Icon(Icons.airlines),
-      label: Text("Aircrafts"),
+      label: Text("Aircraft"),
     ),
     const NavigationRailDestination(
       icon: Icon(Icons.groups_outlined),
@@ -54,7 +54,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
     const NavigationDestination(
       icon: Icon(Icons.airlines_outlined),
       selectedIcon: Icon(Icons.airlines),
-      label: "Aircrafts",
+      label: "Aircraft",
     ),
     const NavigationDestination(
       icon: Icon(Icons.groups_outlined),
@@ -78,7 +78,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
     super.initState();
     _pages = [
       PaginatedDataTableAsync(StaffApi()),
-      PaginatedDataTableAsync(AircraftsAPI()),
+      PaginatedDataTableAsync(AircraftAPI()),
       PaginatedDataTableAsync(RolesAPI()),
       PaginatedDataTableAsync(CategoriesApi()),
       PaginatedDataTableAsync(SubcategoriesApi()),

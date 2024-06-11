@@ -299,12 +299,12 @@ class SubcategoriesApi extends DataTableSourceAsync {
   Future<List<String>> getCategories() async {
     try {
       final restOperation =
-          Amplify.API.get('/roles', apiName: 'AmplifyAdminAPI');
+          Amplify.API.get('/categories', apiName: 'AmplifyAdminAPI');
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
       debugPrint("finished fetch categories str");
-      return jsonDecode(jsonStr);
+      return List<String>.from(jsonDecode(jsonStr));
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
       rethrow;

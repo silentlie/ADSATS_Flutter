@@ -6,7 +6,7 @@ class FilterBy extends StatelessWidget {
     required this.filters,
     required this.refreshDatasource,
     this.filterByAuthors = false,
-    this.filterByAircrafts = false,
+    this.filterByAircraft = false,
     this.filterByRoles = false,
     this.filterByCategories = false,
     this.filterBySubcategories = false,
@@ -29,7 +29,7 @@ class FilterBy extends StatelessWidget {
   final CustomTableFilter filters;
   final Function refreshDatasource;
   final bool filterByAuthors;
-  final bool filterByAircrafts;
+  final bool filterByAircraft;
   final bool filterByRoles;
   final bool filterByCategories;
   final bool filterBySubcategories;
@@ -60,8 +60,7 @@ class FilterBy extends StatelessWidget {
     if (filterByAuthors) {
       filterContent.add(
         MultiSelect(
-          buttonText:
-              const Text("Filter by authors"),
+          buttonText: const Text("Filter by authors"),
           title: const Text("Filter by authors"),
           items: authNotifier.staff.map(
             (staff) {
@@ -76,12 +75,12 @@ class FilterBy extends StatelessWidget {
       );
     }
 
-    if (filterByAircrafts) {
+    if (filterByAircraft) {
       filterContent.add(
         MultiSelect(
           buttonText: const Text("Filter by aircrafts"),
           title: const Text("Filter by aircrafts"),
-          items: authNotifier.aircrafts.map(
+          items: authNotifier.aircraft.map(
             (aircraft) {
               return MultiSelectItem(aircraft, aircraft);
             },

@@ -32,12 +32,12 @@ class Document {
         author = json["author"] as String,
         subcategory = json["subcategory"] as String,
         category = json["category"] as String,
-        aircrafts = json["aircrafts"] as String?,
+        aircraft = json["aircraft"] as String?,
         createdAt = DateTime.parse(json["created_at"]);
   Document.copy(this.fileName, Document anotherDocument) {
     author = anotherDocument.author;
     subcategory = anotherDocument.subcategory;
-    aircrafts = anotherDocument.aircrafts;
+    aircraft = anotherDocument.aircraft;
   }
   int? id;
   String? fileName;
@@ -45,7 +45,7 @@ class Document {
   String? author;
   String? subcategory;
   String? category;
-  String? aircrafts;
+  String? aircraft;
   DateTime? createdAt;
 
   static bool? intToBool(int? value) {
@@ -63,8 +63,8 @@ class Document {
     temp["file_name"] = fileName!;
     temp["email"] = author!;
     temp["subcategory"] = subcategory!;
-    if (aircrafts != null) {
-      temp["aircrafts"] = aircrafts.toString();
+    if (aircraft != null) {
+      temp["aircraft"] = aircraft.toString();
     }
     return temp;
   }
@@ -77,7 +77,7 @@ class Document {
         cellFor(author),
         cellFor(subcategory),
         cellFor(category),
-        cellFor(aircrafts),
+        cellFor(aircraft),
         cellFor(archived),
         cellFor(createdAt),
         DataCell(

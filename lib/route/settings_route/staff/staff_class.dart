@@ -95,7 +95,7 @@ class Staff {
     String firstName,
     String lastName,
     String email,
-    List<String> aircrafts,
+    List<String> aircraft,
     List<String> roles,
     List<String> categories,
   ) async {
@@ -105,12 +105,12 @@ class Staff {
         "fName": firstName,
         "lName": lastName,
         "email": email,
-        "aircrafts": aircrafts,
+        "aircraft": aircraft,
         "roles": roles,
         "categories": categories
       };
       debugPrint(body.toString());
-      final restOperation = Amplify.API.patch('/roles',
+      final restOperation = Amplify.API.patch('/staff',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;

@@ -176,9 +176,9 @@ class DetailsWidget extends StatelessWidget {
         constraints: const BoxConstraints(maxWidth: 400),
         child: MultiSelect(
           onConfirm: (selectedItem) {
-            newDocument.aircrafts = List<String>.from(selectedItem).join(',');
+            newDocument.aircraft = List<String>.from(selectedItem).join(',');
           },
-          items: authNotifier.aircrafts.map(
+          items: authNotifier.aircraft.map(
             (aircraft) {
               return MultiSelectItem(aircraft, aircraft);
             },
@@ -195,7 +195,7 @@ class DetailsWidget extends StatelessWidget {
 class NewDocument extends ChangeNotifier {
   String? author;
   String? subcategory;
-  String? aircrafts;
+  String? aircraft;
   FilePickerResult? filePickerResult;
 
   Future<void> uploadFile(PlatformFile file) async {
@@ -207,8 +207,8 @@ class NewDocument extends ChangeNotifier {
         'subcategory': subcategory,
         'archived': false,
       };
-      if (aircrafts?.isNotEmpty ?? false) {
-        body['aircrafts'] = aircrafts;
+      if (aircraft?.isNotEmpty ?? false) {
+        body['aircraft'] = aircraft;
       }
       debugPrint(body.toString());
       final restOperation = Amplify.API.post('/documents',

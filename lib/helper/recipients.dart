@@ -44,7 +44,7 @@ class RecepientsWidget extends StatelessWidget {
         onConfirm: (selectedOptions) {
           recipientsResult['aircrafts'] = List<String>.from(selectedOptions);
         },
-        items: authNotifier.aircrafts.map(
+        items: authNotifier.aircraft.map(
           (aircraft) {
             return MultiSelectItem(aircraft, aircraft);
           },
