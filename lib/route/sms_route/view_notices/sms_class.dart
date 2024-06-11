@@ -29,7 +29,7 @@ class Notice {
         _resolved = resolved,
         _deadlineAt = deadlineAt;
   final int _id;
-  final bool _archived;
+  bool _archived;
   final String _subject;
   final String _category;
   final String _author;
@@ -51,8 +51,12 @@ class Notice {
         _author = json["author"] as String,
         _archived = intToBool(json["archived"] as int)!,
         _resolved = intToBool(json["resolved"] as int),
-        _createdAt = DateTime.parse(json["notice_at"]),
-        _deadlineAt = DateTime.parse(json["deadline_at"]);
+        _createdAt = json["notice_at"] != null
+            ? DateTime.parse(json["notice_at"])
+            : null,
+        _deadlineAt = json["deadline_at"] != null
+            ? DateTime.parse(json["deadline_at"])
+            : null;
   static bool? intToBool(int? value) {
     if (value == null) {
       return null;
@@ -85,12 +89,16 @@ class Notice {
                 tooltip: 'Edit',
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  archive();
+                },
                 icon: const Icon(Icons.archive_outlined),
                 tooltip: 'Archive',
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  delete();
+                },
                 icon: const Icon(Icons.delete_outline),
                 tooltip: 'Delete',
               ),
@@ -99,5 +107,49 @@ class Notice {
         ),
       ],
     );
+  }
+
+  Future<void> archive() async {
+    try {
+      Map<String, dynamic> body = {
+        'archived': !_archived,
+        'notice_id': id,
+      };
+      debugPrint(body.toString());
+      final restOperation = Amplify.API.patch('/sms',
+          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int rawData = jsonDecode(jsonStr);
+      _archived = !_archived;
+      debugPrint("archive: $rawData");
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> delete() async {
+    try {
+      Map<String, dynamic> body = {
+        'notice_id': id,
+      };
+      debugPrint(body.toString());
+      final restOperation = Amplify.API.delete('/sms',
+          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int rawData = jsonDecode(jsonStr);
+      debugPrint("delete: $rawData");
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
   }
 }

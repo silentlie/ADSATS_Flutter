@@ -14,15 +14,18 @@ class CustomTableFilter {
       tempJson.addAll(
         filterResult.map(
           (key, value) {
-            return MapEntry(
-              key,
-              value.join(','),
-            );
+            if (value.isNotEmpty) {
+              return MapEntry(
+                key,
+                value.join(','),
+              );
+            }
+            return const MapEntry('', '');
           },
         ),
       );
     }
-    if (tempJson["archived"] == null) {
+    if (filterResult["archived"] == null) {
       tempJson["archived"] = false.toString();
     }
 
