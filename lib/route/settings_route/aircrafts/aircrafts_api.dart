@@ -44,7 +44,7 @@ class AircraftsAPI extends DataTableSourceAsync {
 
       _aircrafts = [for (var row in rowsData) Aircraft.fromJSON(row)];
       debugPrint(_aircrafts.length.toString());
-      debugPrint("finished fetch table data");
+      debugPrint("finished fetch table aircrafts");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
     } on Error catch (e) {

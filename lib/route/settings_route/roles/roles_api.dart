@@ -44,7 +44,7 @@ class RolesAPI extends DataTableSourceAsync {
       final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
       _roles = [for (var row in rowsData) Role.fromJSON(row)];
       debugPrint(_roles.length.toString());
-      debugPrint("finished fetch table data");
+      debugPrint("finished fetch table roles");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
     } on Error catch (e) {

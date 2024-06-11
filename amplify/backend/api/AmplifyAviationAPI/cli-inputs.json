@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "paths": {
+    "/documents": {
+      "name": "/documents",
+      "lambdaFunction": "placeHolder",
+      "permissions": {
+        "groups": {
+          "dev": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "crew": [
+            "create",
+            "read"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/notices": {
+      "name": "/notices",
+      "lambdaFunction": "placeHolder",
+      "permissions": {
+        "groups": {
+          "dev": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "crew": [
+            "create",
+            "read"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/notifications": {
+      "name": "/notifications",
+      "lambdaFunction": "placeHolder",
+      "permissions": {
+        "groups": {
+          "dev": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "crew": [
+            "create",
+            "read",
+            "update"
+          ]
+        },
+        "setting": "private"
+      }
+    }
+  }
+}

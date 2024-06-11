@@ -67,6 +67,7 @@ class Staff {
         cellFor(roles),
         DataCell(
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // IconButton(
               //     onPressed: () {},
@@ -90,7 +91,14 @@ class Staff {
     );
   }
 
-  Future<void> changeStaffDetails(String firstName, String lastName, String email, List<String> aircrafts, List<String> roles, List<String> categories, ) async {
+  Future<void> changeStaffDetails(
+    String firstName,
+    String lastName,
+    String email,
+    List<String> aircrafts,
+    List<String> roles,
+    List<String> categories,
+  ) async {
     try {
       Map<String, dynamic> body = {
         "staff_id": _id,

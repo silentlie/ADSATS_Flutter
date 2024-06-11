@@ -46,8 +46,7 @@ class StaffApi extends DataTableSourceAsync {
       final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
 
       _staff = [for (var row in rowsData) Staff.fromJSON(row)];
-      debugPrint(_staff.length.toString());
-      debugPrint("finished fetch table data");
+      debugPrint("finished fetch table staff");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
     } on Error catch (e) {
@@ -88,6 +87,12 @@ class StaffApi extends DataTableSourceAsync {
           child: Builder(builder: (context) {
             return Row(
               children: [
+                IconButton(
+                    onPressed: () {
+                      refreshDatasource();
+                    },
+                    icon: const Icon(Icons.refresh),
+                  ),
                 const AddStaff(),
                 const SizedBox(
                   width: 10,
@@ -112,7 +117,7 @@ class StaffApi extends DataTableSourceAsync {
                 ),
               ],
             );
-          }),
+          },),
         ),
       );
 }

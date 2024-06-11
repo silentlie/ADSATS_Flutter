@@ -1,3 +1,5 @@
+import 'package:adsats_flutter/route/settings_route/categories/category_class.dart';
+import 'package:adsats_flutter/route/settings_route/subcategories/subcategory_class.dart';
 import 'package:flutter/material.dart';
 
 import 'package:adsats_flutter/helper/table/abstract_data_table_async.dart';
@@ -32,6 +34,16 @@ class _SettingsWidgetState extends State<SettingsWidget> {
       selectedIcon: Icon(Icons.groups),
       label: Text("Roles"),
     ),
+    const NavigationRailDestination(
+      icon: Icon(Icons.groups_outlined),
+      selectedIcon: Icon(Icons.groups),
+      label: Text("Categories"),
+    ),
+    const NavigationRailDestination(
+      icon: Icon(Icons.groups_outlined),
+      selectedIcon: Icon(Icons.groups),
+      label: Text("Subcategories"),
+    ),
   ];
   final List<NavigationDestination> _navigationDestinations = [
     const NavigationDestination(
@@ -49,6 +61,16 @@ class _SettingsWidgetState extends State<SettingsWidget> {
       selectedIcon: Icon(Icons.groups),
       label: "Roles",
     ),
+    const NavigationDestination(
+      icon: Icon(Icons.groups_outlined),
+      selectedIcon: Icon(Icons.groups),
+      label: "Categories",
+    ),
+    const NavigationDestination(
+      icon: Icon(Icons.groups_outlined),
+      selectedIcon: Icon(Icons.groups),
+      label: "Subcategories",
+    ),
   ];
 
   @override
@@ -58,6 +80,8 @@ class _SettingsWidgetState extends State<SettingsWidget> {
       PaginatedDataTableAsync(StaffApi()),
       PaginatedDataTableAsync(AircraftsAPI()),
       PaginatedDataTableAsync(RolesAPI()),
+      PaginatedDataTableAsync(CategoriesApi()),
+      PaginatedDataTableAsync(SubcategoriesApi()),
     ];
   }
 
