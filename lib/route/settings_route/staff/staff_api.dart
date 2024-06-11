@@ -342,12 +342,10 @@ class AddStaff extends StatelessWidget {
                 ElevatedButton.icon(
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      // TODO:Functionality for the sending button
                       formKey.currentState!.save();
-                      debugPrint(firstName);
-                      debugPrint(lastName);
-                      debugPrint(email);
-                      debugPrint(result.toString());
+                      // may need add pick date and archived or not
+                      addNewStaff(firstName, lastName, email, DateTime.now(),
+                          false, result);
                       Navigator.pop(context, 'Submit');
                     }
                   },
@@ -383,8 +381,14 @@ class AddStaff extends StatelessWidget {
     );
   }
 
-  Future<void> addNewStaff(String firstName, String lastName, String email, DateTime createdAt,
-      bool archived, List<String> roles, List<String> aircraft, List<String> categories) async {
+  Future<void> addNewStaff(
+    String firstName,
+    String lastName,
+    String email,
+    DateTime createdAt,
+    bool archived,
+    Map<String, String> result,
+  ) async {
     try {
       Map<String, dynamic> body = {
         "f_name": firstName,
@@ -393,14 +397,8 @@ class AddStaff extends StatelessWidget {
         "created_at": createdAt.toIso8601String(),
         "archived": archived
       };
-      if (aircraft.isNotEmpty) {
-        body["aircraft"] = aircraft;
-      }
-      if (roles.isNotEmpty) {
-        body["roles"] = roles;
-      }
-      if (categories.isNotEmpty) {
-        body["categories"] = categories;
+      if (result.isNotEmpty) {
+        body.addAll(result);
       }
       debugPrint(body.toString());
       final restOperation = Amplify.API.post('/staff',
