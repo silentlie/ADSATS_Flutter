@@ -49,7 +49,7 @@ class HazardReportWidget extends StatelessWidget {
               MitigationColumn(),
             ],
           ),
-          const Row(
+          const Wrap(
             children: [
               LikelihoodofOccurrenceWidget(),
               SeverityOfConsequenceWidget()
@@ -213,6 +213,130 @@ class _MitigationState extends State<Mitigation> {
           'No',
         ),
       ],
+    );
+  }
+}
+
+class MitigationColumn extends StatelessWidget {
+  const MitigationColumn({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      flex: 2,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        child: const Column(
+          children: [
+            Mitigation(),
+            MitigationTextField(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MitigationTextField extends StatelessWidget {
+  const MitigationTextField({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const TextField(
+      decoration: InputDecoration(
+        label: Text(
+            'In your opinion, how could the hazard or event be mitigated? (optional)'),
+        border: OutlineInputBorder(),
+      ),
+      maxLines: 3,
+    );
+  }
+}
+
+class DescribeTextField extends StatelessWidget {
+  const DescribeTextField({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      flex: 2,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        child: const TextField(
+          decoration: InputDecoration(
+            label: Text('Describe the Hazard or the Event'),
+            border: OutlineInputBorder(),
+          ),
+          maxLines: 5,
+        ),
+      ),
+    );
+  }
+}
+
+class LocationTextField extends StatelessWidget {
+  const LocationTextField({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      flex: 2,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        child: const TextField(
+          decoration: InputDecoration(
+            label: Text('Location'),
+            border: OutlineInputBorder(),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SubjectTextField extends StatelessWidget {
+  const SubjectTextField({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      flex: 2,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        child: const TextField(
+          decoration: InputDecoration(
+              label: Text('Subject'), border: OutlineInputBorder()),
+        ),
+      ),
+    );
+  }
+}
+
+class DateFormField extends StatelessWidget {
+  const DateFormField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      flex: 3,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        child: InputDatePickerFormField(
+          initialDate: DateTime.timestamp(),
+          firstDate: DateTime(2020),
+          lastDate: DateTime.now(),
+        ),
+      ),
     );
   }
 }
