@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:adsats_flutter/amplify/s3_storage.dart';
 
 class ComplianceWidget extends StatelessWidget {
   const ComplianceWidget({super.key});
@@ -51,26 +50,6 @@ class ComplianceWidget extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-          // Add some space between the search bar and the existing content
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () async {
-              await downloadFileWeb("test/");
-            },
-            child: const Text("Download File"),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              await uploadImage();
-            },
-            child: const Text("Upload File"),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              await getFileProperties("test/");
-            },
-            child: const Text("Get File Props"),
           ),
         ],
       ),

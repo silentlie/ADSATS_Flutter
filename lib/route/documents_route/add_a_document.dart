@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:adsats_flutter/amplify/auth.dart';
 import 'package:adsats_flutter/helper/search_file_widget.dart';
+import 'package:adsats_flutter/helper/table/abstract_data_table_async.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -42,8 +44,6 @@ class AddADocumentBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    NewDocument newDocument = Provider.of<NewDocument>(context);
-    ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -66,68 +66,7 @@ class AddADocumentBody extends StatelessWidget {
         const Divider(),
         const DropFileWidget(),
         const Divider(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            ElevatedButton.icon(
-              onPressed: () {
-                context.go('/documents');
-              },
-              label: const Text('Cancel'),
-              icon: Icon(
-                Icons.mail,
-                color: colorScheme.onSecondary,
-              ),
-            ),
-            const SizedBox(width: 10),
-            ElevatedButton.icon(
-              onPressed: () {
-                bool validate = newDocument.author != null &&
-                    newDocument.subcategory != null &&
-                    newDocument.filePickerResult != null;
-                if (!validate) {
-                  return;
-                }
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      actions: [
-                        // cancel
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, 'Cancel'),
-                          child: const Text('Cancel'),
-                        ),
-                        // apply
-                        TextButton(
-                          onPressed: () {
-                            newDocument.uploadFiles();
-                            Navigator.pop(context, 'Apply');
-                            context.go('/documents');
-                          },
-                          child: const Text('Apply'),
-                        )
-                      ],
-                    );
-                  },
-                );
-              },
-              style: ButtonStyle(
-                // Change button background color
-                backgroundColor:
-                    WidgetStateProperty.all<Color>(colorScheme.secondary),
-              ),
-              label: Text(
-                'Upload Files',
-                style: TextStyle(color: colorScheme.onSecondary),
-              ),
-              icon: Icon(
-                Icons.mail,
-                color: colorScheme.onSecondary,
-              ),
-            ),
-          ],
-        )
+        const ButtonsRow(),
       ],
     );
   }
@@ -206,137 +145,49 @@ class _DropFileWidgetState extends State<DropFileWidget> {
 class DetailsWidget extends StatelessWidget {
   const DetailsWidget({super.key});
 
-  static Map<String, String> filterEndpoints = {
-    'sub_category': '/sub-categories',
-    'aircrafts': '/aircrafts',
-  };
-
-  Future<Map<String, List<String>>> fetchFilter(
-      Map<String, String>? filterEndpoints) async {
-    try {
-      // Function to make API requests and return the parsed response
-      Future<List<String>> fetchData(String endpoint) async {
-        RestOperation restOperation =
-            Amplify.API.get(endpoint, apiName: 'AmplifyFilterAPI');
-        AWSHttpResponse response = await restOperation.response;
-        String jsonStr = response.decodeBody();
-        // Map<String, dynamic> rawData = jsonDecode(jsonStr);
-        return List<String>.from(jsonDecode(jsonStr));
-      }
-
-      // Perform all fetches concurrently
-      List<Future<List<String>>> futures =
-          filterEndpoints?.values.map(fetchData).toList() ?? [];
-
-      List<List<String>> results = await Future.wait(futures);
-
-      List<String> keys = filterEndpoints?.keys.toList() ?? [];
-      Map<String, List<String>> mappedResults =
-          Map.fromIterables(keys, results);
-      // Process the results
-      safePrint("did fetch Filter");
-      return mappedResults;
-    } on ApiException catch (e) {
-      debugPrint('GET call failed: $e');
-      rethrow;
-    } catch (e) {
-      debugPrint('Error: $e');
-      rethrow;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     NewDocument newDocument = Provider.of<NewDocument>(context);
-    return FutureBuilder(
-      future: fetchFilter(filterEndpoints),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          // loading widget can be customise
-          return const CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          // can make it into a error widget for more visualise
-          return Text('Error: ${snapshot.error}');
-        } else if (snapshot.hasData) {
-          // if data is fetch successfully
-          Map<String, List<String>> filterData = snapshot.data!;
-          List<Widget> children = [
-            Container(
-              constraints: const BoxConstraints(maxWidth: 400),
-              child: SearchAuthorWidget(
-                customClass: newDocument,
-              ),
-            ),
-          ];
-          filterData.forEach(
-            (key, value) {
-              if (key == 'sub_category') {
-                children.add(
-                  DropdownMenu(
-                    dropdownMenuEntries: value.map(
-                      (item) {
-                        return DropdownMenuEntry(value: item, label: item);
-                      },
-                    ).toList(),
-                    enableSearch: true,
-                    enabled: true,
-                    hintText: "Choose a sub-category",
-                    menuHeight: 200,
-                    label: const Text("Choose a sub-category"),
-                    leadingIcon: const Icon(Icons.search),
-                    onSelected: (value) {
-                      newDocument.subcategory = value!;
-                    },
-                  ),
-                );
-              }
-              if (key == 'aircrafts') {
-                children.add(Container(
-                  // sized of multi select
-                  constraints: const BoxConstraints(maxWidth: 250),
-                  padding: const EdgeInsets.all(8),
-                  child: MultiSelectDialogField(
-                    items: value.map(
-                      (item) {
-                        return MultiSelectItem(item, item);
-                      },
-                    ).toList(),
-                    onConfirm: (selectedItem) {
-                      newDocument.aircrafts =
-                          List<String>.from(selectedItem).join(',');
-                    },
-                    buttonText: const Text("Choose aircrafts (Optional)"),
-                    searchable: true,
-                    // size of dialog after click each filter
-                    dialogHeight: 714,
-                    dialogWidth: 400,
-                    // can be specify based on ThemeData
-                    itemsTextStyle: const TextStyle(color: Colors.amber),
-                    selectedItemsTextStyle: const TextStyle(color: Colors.blue),
-                    cancelText: const Text(
-                      "Cancel",
-                      style: TextStyle(color: Colors.amber),
-                    ),
-                    confirmText: const Text(
-                      "Confirm",
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                    chipDisplay: MultiSelectChipDisplay(
-                      scroll: true,
-                      scrollBar: HorizontalScrollBar(isAlwaysShown: true),
-                    ),
-                  ),
-                ));
-              }
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
+    List<Widget> children = [
+      Container(
+        constraints: const BoxConstraints(maxWidth: 400),
+        child: SearchAuthorWidget(
+          customClass: newDocument,
+        ),
+      ),
+      DropdownMenu(
+        dropdownMenuEntries: authNotifier.subcategories.map(
+          (role) {
+            return DropdownMenuEntry(value: role, label: role);
+          },
+        ).toList(),
+        enableSearch: true,
+        enabled: true,
+        hintText: "Choose a sub-category",
+        menuHeight: 200,
+        label: const Text("Choose a sub-category"),
+        leadingIcon: const Icon(Icons.search),
+        onSelected: (value) {
+          newDocument.subcategory = value!;
+        },
+      ),
+      Container(
+        constraints: const BoxConstraints(maxWidth: 400),
+        child: MultiSelect(
+          onConfirm: (selectedItem) {
+            newDocument.aircrafts = List<String>.from(selectedItem).join(',');
+          },
+          items: authNotifier.aircrafts.map(
+            (aircraft) {
+              return MultiSelectItem(aircraft, aircraft);
             },
-          );
-          return Wrap(
-            children: children,
-          );
-        } else {
-          return const Placeholder();
-        }
-      },
+          ).toList(),
+        ),
+      )
+    ];
+    return Wrap(
+      children: children,
     );
   }
 }
@@ -393,5 +244,77 @@ class NewDocument extends ChangeNotifier {
     for (PlatformFile file in filePickerResult!.files) {
       uploadFile(file);
     }
+  }
+}
+
+class ButtonsRow extends StatelessWidget {
+  const ButtonsRow({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    NewDocument newDocument = Provider.of<NewDocument>(context);
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        ElevatedButton.icon(
+          onPressed: () {
+            context.go('/documents');
+          },
+          label: const Text('Cancel'),
+          icon: Icon(
+            Icons.mail,
+            color: colorScheme.onSecondary,
+          ),
+        ),
+        const SizedBox(width: 10),
+        ElevatedButton.icon(
+          onPressed: () {
+            bool validate = newDocument.author != null &&
+                newDocument.subcategory != null &&
+                newDocument.filePickerResult != null;
+            if (!validate) {
+              return;
+            }
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  actions: [
+                    // cancel
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Cancel'),
+                      child: const Text('Cancel'),
+                    ),
+                    // apply
+                    TextButton(
+                      onPressed: () {
+                        newDocument.uploadFiles();
+                        Navigator.pop(context, 'Apply');
+                        context.go('/documents');
+                      },
+                      child: const Text('Apply'),
+                    )
+                  ],
+                );
+              },
+            );
+          },
+          style: ButtonStyle(
+            // Change button background color
+            backgroundColor:
+                WidgetStateProperty.all<Color>(colorScheme.secondary),
+          ),
+          label: Text(
+            'Upload Files',
+            style: TextStyle(color: colorScheme.onSecondary),
+          ),
+          icon: Icon(
+            Icons.mail,
+            color: colorScheme.onSecondary,
+          ),
+        ),
+      ],
+    );
   }
 }

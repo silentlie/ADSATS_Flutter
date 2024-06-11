@@ -13,6 +13,7 @@ part 'cell_function.dart';
 part 'search_bar.dart';
 part 'time_picker.dart';
 part 'sort_by.dart';
+part 'multi_select.dart';
 
 class PaginatedDataTableAsync extends StatefulWidget {
   const PaginatedDataTableAsync(this._dataSource, {super.key});
