@@ -136,7 +136,7 @@ class AuthNotifier with ChangeNotifier {
       fName = rawData["f_name"];
       lName = rawData["l_name"];
       String? rolesStr = rawData["roles"] as String?;
-      String? aircraftStr = rawData["aircrafts"] as String?;
+      String? aircraftStr = rawData["aircraft"] as String?;
       String? categoriesStr = rawData["categories"] as String?;
       String? subcategoriesStr = rawData["subcategories"] as String?;
       roles = strToList(rolesStr);
