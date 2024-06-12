@@ -77,7 +77,7 @@ class Document {
     return DataRow(
       cells: <DataCell>[
         cellFor(fileName),
-        cellFor(author),
+        // cellFor(author),
         cellFor(subcategory),
         cellFor(category),
         cellFor(aircraft),
@@ -85,7 +85,7 @@ class Document {
         cellFor(createdAt),
         DataCell(
           Builder(builder: (context) {
-            AuthNotifier staff =
+            AuthNotifier authNotifier =
                 Provider.of<AuthNotifier>(context, listen: false);
             List<Widget> children = [
               IconButton(
@@ -97,7 +97,7 @@ class Document {
                 tooltip: 'View',
               ),
             ];
-            if (staff.isAdmin) {
+            if (authNotifier.isAdmin || authNotifier.isEditor) {
               children.addAll([
                 IconButton(
                   onPressed: () {
@@ -113,6 +113,10 @@ class Document {
                   icon: const Icon(Icons.archive_outlined),
                   tooltip: 'Archive',
                 ),
+              ]);
+            }
+            if (authNotifier.isAdmin) {
+              children.add(
                 IconButton(
                   onPressed: () {
                     delete();
@@ -120,7 +124,7 @@ class Document {
                   icon: const Icon(Icons.delete_outline),
                   tooltip: 'Delete',
                 ),
-              ]);
+              );
             }
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -160,17 +164,23 @@ class Document {
         Provider.of<AuthNotifier>(context, listen: false);
     final formKey = GlobalKey<FormState>();
     String newFileName = fileName!;
+    final RegExp fileNameRegExp =
+        RegExp(r"""^[^~)(!'*<>:;,?"*|/]+\.[A-Za-z]{2,4}$""");
     NewDocument newDocument = NewDocument();
+    newDocument.subcategory = subcategory;
     List<Widget> detailsWidgets = [
+
       Container(
         padding: const EdgeInsets.all(8),
         child: TextFormField(
           decoration: const InputDecoration(
-            labelText: 'Aircraft Name',
+            labelText: 'File Name',
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter aircraft name';
+              return 'Please enter file name';
+            } else if (!fileNameRegExp.hasMatch(value)) {
+              return 'Please enter a valid file name';
             }
             return null;
           },
@@ -179,9 +189,10 @@ class Document {
           },
         ),
       ),
-      if (!authNotifier.isAdmin)
+      if (authNotifier.isAdmin)
         Container(
           constraints: const BoxConstraints(maxWidth: 400),
+          padding: const EdgeInsets.only(bottom: 8),
           child: SearchAuthorWidget(
             customClass: newDocument,
           ),
@@ -226,8 +237,8 @@ class Document {
       builder: (context) {
         return AlertDialog(
           content: Form(
+            key: formKey,
             child: Column(
-              key: formKey,
               mainAxisSize: MainAxisSize.min,
               children: detailsWidgets,
             ),
@@ -249,8 +260,9 @@ class Document {
               onPressed: () {
                 if (newDocument.subcategory != null &&
                     formKey.currentState!.validate()) {
+                  formKey.currentState!.save();
                   newDocument.author ??= authNotifier.email;
-                  // changeDocumentDetails(newFileName, newDocument);
+                  changeDocumentDetails(newFileName, newDocument);
                   Navigator.pop(context, 'Apply');
                 }
               },

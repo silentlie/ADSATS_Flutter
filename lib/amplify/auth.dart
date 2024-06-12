@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:adsats_flutter/notifications/notification_widget.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_authenticator/amplify_authenticator.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
@@ -92,13 +93,23 @@ class AuthNotifier with ChangeNotifier {
   List<String> categories = [];
   List<String> subcategories = [];
   bool isAdmin = false;
+  bool isEditor = false;
   List<String> staff = [];
+  List<NotificationClass> notifications = [];
+  List<Widget> notificationWidgets = [];
+  int limit = 10;
+  int numOfUnread = 0;
+  int numOfOverdue = 0;
+
   Future<bool> initialize() async {
     if (email.isEmpty) {
-      await fetchCognitoAuthSession();
-      await fetchStaffDetails(email);
+      await Future.wait([
+        fetchCognitoAuthSession(),
+        fetchNotifications(limit),
+      ]);
     }
     fetchStaff();
+
     return true;
   }
 
@@ -111,7 +122,7 @@ class AuthNotifier with ChangeNotifier {
       final result = await cognitoPlugin.fetchUserAttributes();
       // maybe be buggy, if nothing changes this should the index of the email
       email = result[0].value;
-
+      await fetchStaffDetails(email);
       debugPrint(email);
     } on AuthException catch (e) {
       safePrint('Error retrieving auth session: ${e.message}');
@@ -123,6 +134,7 @@ class AuthNotifier with ChangeNotifier {
       Map<String, String> queryParameters = {
         "email": email,
       };
+      debugPrint(DateTime.now().toIso8601String());
       final restOperation = Amplify.API.get(
         '/staff',
         apiName: 'AmplifyFilterAPI',
@@ -130,6 +142,10 @@ class AuthNotifier with ChangeNotifier {
       );
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
+      dynamic raw = jsonDecode(jsonStr);
+      if (raw.isEmpty) {
+        return;
+      }
       Map<String, dynamic> rawData = jsonDecode(jsonStr)[0];
       debugPrint(rawData.toString());
       staffID = rawData["staff_id"];
@@ -144,6 +160,7 @@ class AuthNotifier with ChangeNotifier {
       categories = strToList(categoriesStr);
       subcategories = strToList(subcategoriesStr);
       isAdmin = roles.contains("administrator");
+      isEditor = roles.contains("editor");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
     } on Error catch (e) {
@@ -176,5 +193,67 @@ class AuthNotifier with ChangeNotifier {
       debugPrint('Error: $e');
       rethrow;
     }
+  }
+
+  Future<void> fetchNotifications(int limit) async {
+    try {
+      Map<String, String> queryParameters = {
+        // 'staff_id': staffID as String,
+        'staff_id': "2",
+        "offset": "0",
+        "limit": limit.toString(),
+      };
+      debugPrint(queryParameters.toString());
+      final restOperation = Amplify.API.get('/notifications',
+          apiName: 'AmplifyAviationAPI', queryParameters: queryParameters);
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      final rawData = Map<String, dynamic>.from(jsonDecode(jsonStr));
+      final rows = List<Map<String, dynamic>>.from(rawData["rows"]);
+      notifications = rows.map(
+        (notification) {
+          return NotificationClass.fromJSON(notification);
+        },
+      ).toList();
+      numOfUnread = rawData["count"]["unread"];
+      numOfOverdue = rawData["count"]["overdue"];
+      rebuildNotifications();
+      debugPrint("you have $numOfOverdue overdue");
+      debugPrint("finished fetch specific notice");
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+      rethrow;
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
+
+  void rebuildNotifications() {
+    notificationWidgets = [
+      Container(
+        padding: const EdgeInsets.all(8),
+        child: Text("You have $numOfUnread unread notifications"),
+      ),
+    ];
+    notificationWidgets.addAll(notifications.map(
+      (notification) {
+        return notification.toListTile();
+      },
+    ));
+    notificationWidgets.add(
+      Row(
+        children: [
+          TextButton.icon(
+            onPressed: () {
+              fetchNotifications(limit);
+            },
+            label: const Text("Refresh"),
+            icon: const Icon(Icons.refresh),
+          ),
+        ],
+      ),
+    );
   }
 }

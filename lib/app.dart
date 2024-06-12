@@ -1,3 +1,4 @@
+import 'package:adsats_flutter/route/sms_route/view_specific_notice/specific_notice_widget.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_authenticator/amplify_authenticator.dart';
 import 'package:amplify_api/amplify_api.dart';
@@ -66,6 +67,21 @@ final _router = GoRouter(
             path: '/send-notices',
             builder: (context, state) => const SendNotices(),
           ),
+          GoRoute(
+            path: '/:notice_id',
+            builder: (context, state) {
+              String? noticeID = state.pathParameters["notice_id"];
+              if (noticeID != null && noticeID.isNotEmpty) {
+                int? parsedID = int.tryParse(noticeID);
+                if (parsedID != null) {
+                  return SpecificNoticeWidget(
+                    documentID: parsedID,
+                  );
+                }
+              }
+              return const Placeholder();
+            },
+          ),
         ]),
   ],
 );
@@ -115,7 +131,6 @@ class _MyAppState extends State<MyApp> {
       ],
       builder: (context, child) => Authenticator(
         authenticatorBuilder: (context, state) {
-          
           switch (state.currentStep) {
             case AuthenticatorStep.signIn:
               return const SignInScafold();

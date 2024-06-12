@@ -1,4 +1,4 @@
-part of 'hazard_report_form.dart';
+part of 'hazard_report_widget.dart';
 
 class RiskSeverity extends StatefulWidget {
   const RiskSeverity({super.key});
@@ -19,23 +19,21 @@ class SeverityOfConsequenceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      flex: 2,
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          children: [
-            const Text(
-              'What do you consider to be the worst possible consequence of this event happening? Click on the table below.',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+    return Container(
+      width: 600,
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        children: [
+          const Text(
+            'What do you consider to be the worst possible consequence of this event happening? Click on the table below.',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
             ),
-            Container(
-                decoration: BoxDecoration(border: Border.all()),
-                child: const SeverityOfConsequenceTable())
-          ],
-        ),
+          ),
+          Container(
+              decoration: BoxDecoration(border: Border.all()),
+              child: const SeverityOfConsequenceTable())
+        ],
       ),
     );
   }
@@ -48,46 +46,22 @@ class LikelihoodofOccurrenceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      flex: 2,
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          children: [
-            const Text(
-              'In your opinion, what is the likelihood of the occurrence happening again? Click on the table below.',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+    return Container(
+      width: 600,
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        children: [
+          const Text(
+            'In your opinion, what is the likelihood of the occurrence happening again? Click on the table below.',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
             ),
-            Container(
-              decoration: BoxDecoration(border: Border.all()),
-              child: const LikelihoodOfOccurrenceTable(),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class MitigationColumn extends StatelessWidget {
-  const MitigationColumn({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Flexible(
-      flex: 2,
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        child: const Column(
-          children: [
-            Mitigation(),
-            MitigationTextField(),
-          ],
-        ),
+          ),
+          Container(
+            decoration: BoxDecoration(border: Border.all()),
+            child: const LikelihoodOfOccurrenceTable(),
+          )
+        ],
       ),
     );
   }
@@ -106,20 +80,18 @@ List<String> riskTolerability = ['Unacceptable', 'Review', 'Acceptable'];
 
 class _RiskSeverityWidgetState extends State<RiskSeverityWidget> {
   Color textFieldColor = Colors.transparent;
-  int tableIndex = 3;
-  int? _selectLikelihoodRow;
-  int? _selectedLikelihood;
 
-  Color updateColor(tableIndex) {
-    if (tableIndex == 0) {
-      return Colors.red.shade200;
-    } else if (tableIndex == 1) {
-      return Colors.yellow.shade200;
-    } else if (tableIndex == 2) {
-      return Colors.green.shade200;
-    } else {
-      return Colors.transparent;
-    }
+  Color updateColor() {
+    return Colors.transparent;
+    // if () {
+    //   return Colors.red.shade200;
+    // } else if () {
+    //   return Colors.yellow.shade200;
+    // } else if () {
+    //   return Colors.green.shade200;
+    // } else {
+    //   return Colors.transparent;
+    // }
   }
 
   @override
@@ -155,114 +127,12 @@ class _RiskSeverityWidgetState extends State<RiskSeverityWidget> {
               readOnly: true,
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
-                fillColor: updateColor(tableIndex),
+                fillColor: textFieldColor,
                 filled: true,
               ),
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-class MitigationTextField extends StatelessWidget {
-  const MitigationTextField({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const TextField(
-      decoration: InputDecoration(
-        label: Text(
-            'In your opinion, how could the hazard or event be mitigated? (optional)'),
-        border: OutlineInputBorder(),
-      ),
-      maxLines: 3,
-    );
-  }
-}
-
-class DescribeTextField extends StatelessWidget {
-  const DescribeTextField({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Flexible(
-      flex: 2,
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        child: const TextField(
-          decoration: InputDecoration(
-            label: Text('Describe the Hazard or the Event'),
-            border: OutlineInputBorder(),
-          ),
-          maxLines: 5,
-        ),
-      ),
-    );
-  }
-}
-
-class LocationTextField extends StatelessWidget {
-  const LocationTextField({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Flexible(
-      flex: 2,
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        child: const TextField(
-          decoration: InputDecoration(
-            label: Text('Location'),
-            border: OutlineInputBorder(),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class SubjectTextField extends StatelessWidget {
-  const SubjectTextField({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Flexible(
-      flex: 2,
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        child: const TextField(
-          decoration: InputDecoration(
-              label: Text('Subject'), border: OutlineInputBorder()),
-        ),
-      ),
-    );
-  }
-}
-
-class DateFormField extends StatelessWidget {
-  const DateFormField({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Flexible(
-      flex: 3,
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        child: InputDatePickerFormField(
-          initialDate: DateTime.timestamp(),
-          firstDate: DateTime(2020),
-          lastDate: DateTime.now(),
-        ),
       ),
     );
   }
@@ -276,16 +146,16 @@ class SeverityOfConsequenceTable extends StatefulWidget {
       _SeverityOfConsequenceTableState();
 }
 
+late List<bool> _selectedSeverity;
+late List<DataRow> _severityRows;
+
 class _SeverityOfConsequenceTableState
     extends State<SeverityOfConsequenceTable> {
-  late List<bool> _selectedSeverity;
-  late List<DataRow> _rows;
-
   @override
   void initState() {
     super.initState();
     _selectedSeverity = List<bool>.generate(5, (int index) => false);
-    _rows = _createRows();
+    _severityRows = _createRows();
   }
 
   void _selectSeverityRow(int index) {
@@ -356,11 +226,11 @@ class _SeverityOfConsequenceTableState
       headingTextStyle: const TextStyle(fontWeight: FontWeight.bold),
       showCheckboxColumn: false,
       columns: const [
-        DataColumn(label: Text('Aviation definition')),
+        DataColumn(label: Text('Definition')),
         DataColumn(label: Text('Meaning')),
         DataColumn(label: Text('Value'))
       ],
-      rows: _rows,
+      rows: _severityRows,
     );
   }
 }
@@ -453,11 +323,19 @@ class _LikelihoodOfOccurrenceTableState
       headingTextStyle: const TextStyle(fontWeight: FontWeight.bold),
       showCheckboxColumn: false,
       columns: const [
-        DataColumn(label: Text('Qualitative definition')),
+        DataColumn(label: Text('Definition')),
         DataColumn(label: Text('Meaning')),
         DataColumn(label: Text('Value'))
       ],
       rows: _rows,
     );
   }
+}
+
+class AviationTable {
+  String definition;
+  String meaning;
+  int value;
+
+  AviationTable(this.definition, this.meaning, this.value);
 }

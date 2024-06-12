@@ -110,6 +110,7 @@ class Subcategory {
                         onSaved: (value) {
                           subcategoryName = value!;
                         },
+                        initialValue: name,
                       ),
                     ),
                     Container(
@@ -127,6 +128,7 @@ class Subcategory {
                         onSaved: (value) {
                           description = value!;
                         },
+                        initialValue: this.description,
                       ),
                     ),
                     FutureBuilder(

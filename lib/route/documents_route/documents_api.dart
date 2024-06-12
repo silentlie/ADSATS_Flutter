@@ -10,7 +10,7 @@ class DocumentAPI extends DataTableSourceAsync {
   @override
   List<String> get columnNames => [
         "File name",
-        "Author",
+        // "Author",
         "Sub category",
         "Category",
         "Aircraft",
@@ -67,7 +67,7 @@ class DocumentAPI extends DataTableSourceAsync {
 
   Map<String, String> get sqlColumns => {
         'File Name': 'file_name',
-        'Author': 'email',
+        // 'Author': 'email',
         'Archived': "archived",
         'Category': 'category',
         'Sub-category': 'sub_category',
@@ -91,26 +91,33 @@ class DocumentAPI extends DataTableSourceAsync {
         scrollDirection: Axis.horizontal,
         reverse: true,
         child: Builder(builder: (context) {
-          AuthNotifier staff = Provider.of<AuthNotifier>(context);
+          AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
           _filters.filterResult.addAll({
             // 'limit_aircraft': staff.aircraft,
             // 'limit_subcategories': staff.subcategories,
             // 'limit_roles': staff.roles,
-            'limit_categories': staff.categories,
-            'limit_author': [staff.email]
+            'limit_categories': authNotifier.categories,
+            'limit_author': [authNotifier.email]
           });
           return Row(
             children: [
-              ElevatedButton.icon(
+              IconButton(
                 onPressed: () {
-                  context.go('/add-a-document');
+                  refreshDatasource();
                 },
-                label: const Text('Add a document'),
-                icon: const Icon(
-                  Icons.add,
-                  size: 25,
-                ),
+                icon: const Icon(Icons.refresh),
               ),
+              if (authNotifier.staffID > -1)
+                ElevatedButton.icon(
+                  onPressed: () {
+                    context.go('/add-a-document');
+                  },
+                  label: const Text('Add a document'),
+                  icon: const Icon(
+                    Icons.add,
+                    size: 25,
+                  ),
+                ),
               const SizedBox(
                 width: 10,
               ),

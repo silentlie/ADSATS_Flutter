@@ -78,17 +78,17 @@ class FilterBy extends StatelessWidget {
     if (filterByAircraft) {
       filterContent.add(
         MultiSelect(
-          buttonText: const Text("Filter by aircrafts"),
-          title: const Text("Filter by aircrafts"),
+          buttonText: const Text("Filter by aircraft"),
+          title: const Text("Filter by aircraft"),
           items: authNotifier.aircraft.map(
             (aircraft) {
               return MultiSelectItem(aircraft, aircraft);
             },
           ).toList(),
           onConfirm: (selectedOptions) {
-            filterResult["aircrafts"] = List<String>.from(selectedOptions);
+            filterResult["aircraft"] = List<String>.from(selectedOptions);
           },
-          initialValue: filters.filterResult["aircrafts"] ?? [],
+          initialValue: filters.filterResult["aircraft"] ?? [],
         ),
       );
     }
@@ -100,7 +100,7 @@ class FilterBy extends StatelessWidget {
           title: const Text("Filter by roles"),
           items: authNotifier.roles.map(
             (role) {
-              return MultiSelectItem(role, role);
+              return MultiSelectItem(role, role.capitalized);
             },
           ).toList(),
           onConfirm: (selectedOptions) {
@@ -201,8 +201,8 @@ class FilterBy extends StatelessWidget {
     }
     if (filterByCreatedAt) {
       filterContent.add(
-        Padding(
-          padding: const EdgeInsets.all(8.0),
+        Container(
+          padding: const EdgeInsets.all(8),
           child: DateTimeRangePicker(
             filterResult: filterResult,
           ),

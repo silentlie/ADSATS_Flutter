@@ -112,6 +112,7 @@ class Aircraft {
                         onSaved: (value) {
                           aircraftName = value!;
                         },
+                        initialValue: name,
                       ),
                     ),
                   ],

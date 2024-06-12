@@ -101,6 +101,7 @@ class Category {
                         onSaved: (value) {
                           categoryName = value!;
                         },
+                        initialValue: name,
                       ),
                     ),
                   ],

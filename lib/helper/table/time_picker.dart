@@ -31,7 +31,7 @@ class _DateTimeRangePickerState extends State<DateTimeRangePicker> {
               children: [
                 ConstrainedBox(
                   constraints:
-                      const BoxConstraints(maxWidth: 800, maxHeight: 800),
+                      const BoxConstraints(maxWidth: 500, maxHeight: 550),
                   child: child,
                 )
               ],

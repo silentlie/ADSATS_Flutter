@@ -34,14 +34,14 @@ class NoticeWidget extends StatelessWidget {
         Wrap(
           children: [
             Container(
-              constraints: const BoxConstraints(maxWidth: 400),
+              constraints: const BoxConstraints(minWidth: 400, maxWidth: 650),
               child: SearchAuthorWidget(
                 customClass: noticeToCrew,
               ),
             ),
             Container(
               padding: const EdgeInsets.all(8),
-              constraints: const BoxConstraints(maxWidth: 400),
+              constraints: const BoxConstraints(minWidth: 400, maxWidth: 650),
               child: const TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -85,10 +85,6 @@ class NoticeWidget extends StatelessWidget {
                 context.go('/sms');
               },
               label: const Text('Cancel'),
-              icon: Icon(
-                Icons.mail,
-                color: colorScheme.onSecondary,
-              ),
             ),
             // No save function for now
             // const SizedBox(width: 10),

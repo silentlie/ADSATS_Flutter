@@ -10,8 +10,9 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ColorScheme colorScheme =
-        Theme.of(context).colorScheme; // Access color scheme
+    // Access color scheme
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
     return Drawer(
       child: ListView(
         // Important: Remove any padding from the ListView.
@@ -30,12 +31,13 @@ class MyDrawer extends StatelessWidget {
               context.go('/resetPassword');
             },
           ),
-          ListTile(
-            title: const Text('Settings'),
-            onTap: () {
-              context.go('/settings');
-            },
-          ),
+          if (authNotifier.isAdmin)
+            ListTile(
+              title: const Text('Settings'),
+              onTap: () {
+                context.go('/settings');
+              },
+            ),
           ListTile(
             title: const Text('Help'),
             onTap: () {
@@ -103,7 +105,6 @@ class MyDrawerHeader extends StatelessWidget {
               child: Text(
                 "Name: ${staff.fName} ${staff.lName}",
                 style: const TextStyle(
-                  color: Colors.black,
                   fontSize: 16,
                 ),
               ),
@@ -113,7 +114,6 @@ class MyDrawerHeader extends StatelessWidget {
               child: Text(
                 "Email: ${staff.email}",
                 style: const TextStyle(
-                  color: Colors.black,
                   fontSize: 16,
                 ),
               ),
@@ -123,7 +123,6 @@ class MyDrawerHeader extends StatelessWidget {
               child: Text(
                 "Roles: ${staff.roles}",
                 style: const TextStyle(
-                  color: Colors.black,
                   fontSize: 16,
                 ),
               ),
@@ -131,9 +130,8 @@ class MyDrawerHeader extends StatelessWidget {
             Center(
               // Center the role text
               child: Text(
-                "Aircrafts: ${staff.aircraft}",
+                "Aircraft: ${staff.aircraft}",
                 style: const TextStyle(
-                  color: Colors.black,
                   fontSize: 16,
                 ),
               ),
@@ -143,7 +141,6 @@ class MyDrawerHeader extends StatelessWidget {
               child: Text(
                 "Categories: ${staff.categories}",
                 style: const TextStyle(
-                  color: Colors.black,
                   fontSize: 16,
                 ),
               ),
@@ -153,7 +150,6 @@ class MyDrawerHeader extends StatelessWidget {
               child: Text(
                 "Subcategories: ${staff.subcategories}",
                 style: const TextStyle(
-                  color: Colors.black,
                   fontSize: 16,
                 ),
               ),

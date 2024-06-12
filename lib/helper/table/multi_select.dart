@@ -30,11 +30,11 @@ class MultiSelect extends StatelessWidget {
         dialogHeight: 714,
         dialogWidth: 400,
         // can be specify based on ThemeData
-        itemsTextStyle: const TextStyle(color: Colors.amber),
+        // itemsTextStyle: const TextStyle(color: Colors.amber),
         selectedItemsTextStyle: const TextStyle(color: Colors.blue),
         cancelText: const Text(
           "Cancel",
-          style: TextStyle(color: Colors.amber),
+          // style: TextStyle(color: Colors.amber),
         ),
         confirmText: const Text(
           "Confirm",
