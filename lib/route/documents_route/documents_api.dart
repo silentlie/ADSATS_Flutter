@@ -10,7 +10,7 @@ class DocumentAPI extends DataTableSourceAsync {
   @override
   List<String> get columnNames => [
         "File name",
-        "Author",
+        // "Author",
         "Sub category",
         "Category",
         "Aircraft",
@@ -67,7 +67,7 @@ class DocumentAPI extends DataTableSourceAsync {
 
   Map<String, String> get sqlColumns => {
         'File Name': 'file_name',
-        'Author': 'email',
+        // 'Author': 'email',
         'Archived': "archived",
         'Category': 'category',
         'Sub-category': 'sub_category',

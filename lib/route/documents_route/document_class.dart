@@ -77,7 +77,7 @@ class Document {
     return DataRow(
       cells: <DataCell>[
         cellFor(fileName),
-        cellFor(author),
+        // cellFor(author),
         cellFor(subcategory),
         cellFor(category),
         cellFor(aircraft),

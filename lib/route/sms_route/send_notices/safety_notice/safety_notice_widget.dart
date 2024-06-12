@@ -31,16 +31,25 @@ class SafetyNoticeWidget extends StatelessWidget {
         const Divider(),
         Wrap(
           children: [
-            SearchAuthorWidget(
-              customClass: safetyNotice,
+            Expanded(
+              child: Container(
+                constraints: const BoxConstraints(minWidth: 400, maxWidth: 650),
+                child: SearchAuthorWidget(
+                  customClass: safetyNotice,
+                ),
+              ),
             ),
-            Container(
-              padding: const EdgeInsets.all(5),
-              child: const TextField(
-                decoration: InputDecoration(
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                constraints: const BoxConstraints(minWidth: 400, maxWidth: 650),
+                child: const TextField(
+                  decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     label: Text('Report Number'),
-                    enabled: false),
+                    enabled: false,
+                  ),
+                ),
               ),
             ),
           ],
@@ -71,8 +80,12 @@ class SafetyNoticeWidget extends StatelessWidget {
             maxLines: 5,
           ),
         ),
-        SearchFileWidget(
-          fileNameResult: safetyNotice.fileNameResult,
+        Container(
+          constraints: const BoxConstraints(maxWidth: 400),
+          padding: const EdgeInsets.all(8),
+          child: SearchFileWidget(
+            fileNameResult: safetyNotice.fileNameResult,
+          ),
         ),
         Row(
           mainAxisAlignment:
@@ -83,10 +96,6 @@ class SafetyNoticeWidget extends StatelessWidget {
                 context.go('/sms');
               },
               label: const Text('Cancel'),
-              icon: Icon(
-                Icons.mail,
-                color: colorScheme.onSecondary,
-              ),
             ),
             // No save function for now
             // const SizedBox(width: 10),
