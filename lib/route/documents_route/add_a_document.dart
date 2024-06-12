@@ -145,9 +145,10 @@ class _DropFileWidgetState extends State<DropFileWidget> {
 class DetailsWidget extends StatelessWidget {
   const DetailsWidget({super.key});
 
-  static List<Widget> getDocumentDetailsWidgets(AuthNotifier authNotifier, NewDocument newDocument) {
+  static List<Widget> getDocumentDetailsWidgets(
+      AuthNotifier authNotifier, NewDocument newDocument) {
     return [
-      if (!authNotifier.isAdmin)
+      if (authNotifier.isAdmin)
         Container(
           constraints: const BoxConstraints(maxWidth: 400),
           child: SearchAuthorWidget(

@@ -101,6 +101,12 @@ class DocumentAPI extends DataTableSourceAsync {
           });
           return Row(
             children: [
+              IconButton(
+                onPressed: () {
+                  refreshDatasource();
+                },
+                icon: const Icon(Icons.refresh),
+              ),
               ElevatedButton.icon(
                 onPressed: () {
                   context.go('/add-a-document');

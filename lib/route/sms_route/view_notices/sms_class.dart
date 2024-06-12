@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:adsats_flutter/amplify/auth.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:adsats_flutter/helper/table/abstract_data_table_async.dart';
+import 'package:provider/provider.dart';
 
 part 'sms_api.dart';
 
@@ -76,34 +78,52 @@ class Notice {
         cellFor(createdAt),
         cellFor(deadlineAt),
         DataCell(
-          Row(
-            children: [
+          Builder(builder: (context) {
+            AuthNotifier authNotifier =
+                Provider.of<AuthNotifier>(context, listen: false);
+            List<Widget> children = [
               IconButton(
-                onPressed: () {},
+                onPressed: () async {
+                  // TODO: view notice
+                },
                 icon: const Icon(Icons.remove_red_eye_outlined),
                 tooltip: 'View',
               ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.edit_outlined),
-                tooltip: 'Edit',
-              ),
-              IconButton(
-                onPressed: () {
-                  archive();
-                },
-                icon: const Icon(Icons.archive_outlined),
-                tooltip: 'Archive',
-              ),
-              IconButton(
-                onPressed: () {
-                  delete();
-                },
-                icon: const Icon(Icons.delete_outline),
-                tooltip: 'Delete',
-              ),
-            ],
-          ),
+            ];
+            if (authNotifier.isAdmin || authNotifier.isEditor) {
+              children.addAll([
+                IconButton(
+                  onPressed: () {
+                    // TODO: view notice and edit it
+                  },
+                  icon: const Icon(Icons.edit_outlined),
+                  tooltip: 'Edit',
+                ),
+                IconButton(
+                  onPressed: () {
+                    archive();
+                  },
+                  icon: const Icon(Icons.archive_outlined),
+                  tooltip: 'Archive',
+                ),
+              ]);
+            }
+            if (authNotifier.isAdmin) {
+              children.add(
+                IconButton(
+                  onPressed: () {
+                    delete();
+                  },
+                  icon: const Icon(Icons.delete_outline),
+                  tooltip: 'Delete',
+                ),
+              );
+            }
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: children,
+            );
+          }),
         ),
       ],
     );
