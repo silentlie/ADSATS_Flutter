@@ -250,7 +250,7 @@ class Document {
                 if (newDocument.subcategory != null &&
                     formKey.currentState!.validate()) {
                   newDocument.author ??= authNotifier.email;
-                  changeDocumentDetails(newFileName, newDocument);
+                  // changeDocumentDetails(newFileName, newDocument);
                   Navigator.pop(context, 'Apply');
                 }
               },
