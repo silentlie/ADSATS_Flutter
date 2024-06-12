@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:adsats_flutter/amplify/auth.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'package:adsats_flutter/helper/table/abstract_data_table_async.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:provider/provider.dart';
 
 part 'roles_api.dart';
 
@@ -57,6 +60,7 @@ class Role {
         DataCell(
           Builder(builder: (context) {
             return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // IconButton(
                 //     onPressed: () {},
@@ -86,7 +90,7 @@ class Role {
 
   void changeDetails(BuildContext context) {
     final formKey = GlobalKey<FormState>();
-    String aircraftName = '';
+    String roleName = '';
     String description = '';
     ColorScheme colorScheme = Theme.of(context).colorScheme;
     showDialog(
@@ -114,7 +118,7 @@ class Role {
                           return null;
                         },
                         onSaved: (value) {
-                          aircraftName = value!;
+                          roleName = value!;
                         },
                       ),
                     ),
@@ -154,7 +158,7 @@ class Role {
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
-                      changeRoleDetails(aircraftName, description);
+                      changeRoleDetails(roleName, description);
                       Navigator.pop(context, 'Submit');
                     }
                   },

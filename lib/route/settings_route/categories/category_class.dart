@@ -1,37 +1,27 @@
 import 'dart:convert';
 
+import 'package:adsats_flutter/amplify/auth.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'package:adsats_flutter/helper/table/abstract_data_table_async.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:provider/provider.dart';
 
-part 'aircrafts_api.dart';
+part 'categories_api.dart';
 
-class Aircraft {
-  Aircraft(
-      {required int id,
-      required String name,
-      required bool archived,
-      required DateTime createdAt,
-      DateTime? modifiedAt})
-      : _id = id,
-        _name = name,
-        _archived = archived,
-        _createdAt = createdAt;
+class Category {
   final int _id;
   final String _name;
   bool _archived;
-  final DateTime _createdAt;
   int get id => _id;
   String get name => _name;
   bool get archived => _archived;
-  DateTime get createdAt => _createdAt;
 
-  Aircraft.fromJSON(Map<String, dynamic> json)
-      : _id = json["aircraft_id"] as int,
+  Category.fromJSON(Map<String, dynamic> json)
+      : _id = json["category_id"] as int,
         _name = json["name"] as String,
-        _archived = intToBool(json["archived"] as int)!,
-        _createdAt = DateTime.parse(json["created_at"]);
+        _archived = intToBool(json["archived"] as int)!;
 
   static bool? intToBool(int? value) {
     if (value == null) {
@@ -46,7 +36,6 @@ class Aircraft {
       cells: <DataCell>[
         cellFor(name),
         cellFor(archived),
-        cellFor(createdAt),
         DataCell(
           Builder(builder: (context) {
             return Row(
@@ -56,20 +45,23 @@ class Aircraft {
                 //     onPressed: () {},
                 //     icon: const Icon(Icons.remove_red_eye_outlined)),
                 IconButton(
-                    onPressed: () {
-                      changeDetails(context);
-                    },
-                    icon: const Icon(Icons.edit_outlined)),
+                  onPressed: () {
+                    changeDetails(context);
+                  },
+                  icon: const Icon(Icons.edit_outlined),
+                ),
                 IconButton(
-                    onPressed: () {
-                      archive();
-                    },
-                    icon: const Icon(Icons.archive_outlined)),
+                  onPressed: () {
+                    archive();
+                  },
+                  icon: const Icon(Icons.archive_outlined),
+                ),
                 IconButton(
-                    onPressed: () {
-                      delete();
-                    },
-                    icon: const Icon(Icons.delete_outline)),
+                  onPressed: () {
+                    delete();
+                  },
+                  icon: const Icon(Icons.delete_outline),
+                ),
               ],
             );
           }),
@@ -80,7 +72,7 @@ class Aircraft {
 
   void changeDetails(BuildContext context) {
     final formKey = GlobalKey<FormState>();
-    String aircraftName = '';
+    String categoryName = '';
     ColorScheme colorScheme = Theme.of(context).colorScheme;
     showDialog(
       context: context,
@@ -88,7 +80,7 @@ class Aircraft {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text("Change aircraft details"),
+              title: const Text("Change category details"),
               content: Form(
                 key: formKey,
                 child: Column(
@@ -98,16 +90,16 @@ class Aircraft {
                       padding: const EdgeInsets.all(8),
                       child: TextFormField(
                         decoration: const InputDecoration(
-                          labelText: 'Aircraft Name',
+                          labelText: 'Category Name',
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter aircraft name';
+                            return 'Please enter category name';
                           }
                           return null;
                         },
                         onSaved: (value) {
-                          aircraftName = value!;
+                          categoryName = value!;
                         },
                       ),
                     ),
@@ -130,7 +122,7 @@ class Aircraft {
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
-                      changeAircraftDetails(aircraftName);
+                      changeCategoryDetails(categoryName);
                       Navigator.pop(context, 'Submit');
                     }
                   },
@@ -140,7 +132,7 @@ class Aircraft {
                         WidgetStateProperty.all<Color>(colorScheme.secondary),
                   ),
                   label: Text(
-                    'Edit this aircraft',
+                    'Edit this role',
                     style: TextStyle(color: colorScheme.onSecondary),
                   ),
                   icon: Icon(
@@ -156,14 +148,14 @@ class Aircraft {
     );
   }
 
-  Future<void> changeAircraftDetails(String name) async {
+  Future<void> changeCategoryDetails(String name) async {
     try {
       Map<String, dynamic> body = {
-        "aircraft_id": _id,
+        "category_id": _id,
         "name": name,
       };
       debugPrint(body.toString());
-      final restOperation = Amplify.API.patch('/aircrafts',
+      final restOperation = Amplify.API.patch('/categories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
@@ -182,10 +174,10 @@ class Aircraft {
     try {
       Map<String, dynamic> body = {
         'archived': !_archived,
-        'aircraft_id': id,
+        'category_id': id,
       };
       debugPrint(body.toString());
-      final restOperation = Amplify.API.patch('/aircrafts',
+      final restOperation = Amplify.API.patch('/categories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
@@ -204,10 +196,10 @@ class Aircraft {
   Future<void> delete() async {
     try {
       Map<String, dynamic> body = {
-        'aircraft_id': id,
+        'category_id': id,
       };
       debugPrint(body.toString());
-      final restOperation = Amplify.API.delete('/aircrafts',
+      final restOperation = Amplify.API.delete('/categories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;

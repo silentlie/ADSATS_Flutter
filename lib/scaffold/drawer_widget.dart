@@ -128,7 +128,7 @@ class MyDrawerHeader extends StatelessWidget {
             Center(
               // Center the role text
               child: Text(
-                "Aircrafts: ${staff.aircrafts}",
+                "Aircrafts: ${staff.aircraft}",
                 style: const TextStyle(
                   fontSize: 16,
                 ),

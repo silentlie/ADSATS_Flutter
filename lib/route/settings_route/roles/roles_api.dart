@@ -44,7 +44,7 @@ class RolesAPI extends DataTableSourceAsync {
       final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
       _roles = [for (var row in rowsData) Role.fromJSON(row)];
       debugPrint(_roles.length.toString());
-      debugPrint("finished fetch table data");
+      debugPrint("finished fetch table roles");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
     } on Error catch (e) {
@@ -115,6 +115,8 @@ class RolesAPI extends DataTableSourceAsync {
                   FilterBy(
                     filters: filters,
                     refreshDatasource: refreshDatasource,
+                    filterByArchived: true,
+                    filterByCreatedAt: true,
                   ),
                   const SizedBox(
                     width: 10,
@@ -144,6 +146,9 @@ class RolesAPI extends DataTableSourceAsync {
     DateTime? createAt;
     String? dateError;
     bool archived = false;
+    List<String> emails = [];
+    AuthNotifier authNotifier =
+        Provider.of<AuthNotifier>(context, listen: false);
     ColorScheme colorScheme = Theme.of(context).colorScheme;
     showDialog(
       context: context,
@@ -236,6 +241,18 @@ class RolesAPI extends DataTableSourceAsync {
                           // style: TextStyle(color: Theme.of(context).errorColor),
                         ),
                       ),
+                    MultiSelect(
+                      buttonText: const Text("Add staff"),
+                      title: const Text("Add staff"),
+                      onConfirm: (selectedOptions) {
+                        emails = List<String>.from(selectedOptions);
+                      },
+                      items: authNotifier.staff.map(
+                        (staff) {
+                          return MultiSelectItem(staff, staff);
+                        },
+                      ).toList(),
+                    )
                   ],
                 ),
               ),
@@ -257,7 +274,8 @@ class RolesAPI extends DataTableSourceAsync {
                         return;
                       }
                       formKey.currentState!.save();
-                      addNewRole(roleName, description, createAt!, archived);
+                      addNewRole(
+                          roleName, description, createAt!, archived, emails);
                       Navigator.pop(context, 'Submit');
                     }
                   },
@@ -284,7 +302,7 @@ class RolesAPI extends DataTableSourceAsync {
   }
 
   Future<void> addNewRole(String name, String description, DateTime createdAt,
-      bool archived) async {
+      bool archived, List<String> emails) async {
     try {
       Map<String, dynamic> body = {
         "role": name,
@@ -292,6 +310,9 @@ class RolesAPI extends DataTableSourceAsync {
         "created_at": createdAt.toIso8601String(),
         "archived": archived
       };
+      if (emails.isNotEmpty) {
+        body["staff"] = emails;
+      }
       debugPrint(body.toString());
       final restOperation = Amplify.API.post('/roles',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
