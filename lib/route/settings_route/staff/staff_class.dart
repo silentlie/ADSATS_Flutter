@@ -67,6 +67,7 @@ class Staff {
         cellFor(roles),
         DataCell(
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // IconButton(
               //     onPressed: () {},
@@ -90,19 +91,26 @@ class Staff {
     );
   }
 
-  Future<void> changeStaffDetails(String firstName, String lastName, String email, List<String> aircrafts, List<String> roles, List<String> categories, ) async {
+  Future<void> changeStaffDetails(
+    String firstName,
+    String lastName,
+    String email,
+    List<String> aircraft,
+    List<String> roles,
+    List<String> categories,
+  ) async {
     try {
       Map<String, dynamic> body = {
         "staff_id": _id,
         "fName": firstName,
         "lName": lastName,
         "email": email,
-        "aircrafts": aircrafts,
+        "aircraft": aircraft,
         "roles": roles,
         "categories": categories
       };
       debugPrint(body.toString());
-      final restOperation = Amplify.API.patch('/roles',
+      final restOperation = Amplify.API.patch('/staff',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;

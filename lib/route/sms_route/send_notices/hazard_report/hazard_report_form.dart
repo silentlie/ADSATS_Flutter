@@ -127,23 +127,41 @@ class ReportType extends StatefulWidget {
   State<ReportType> createState() => _ReportTypeState();
 }
 
+enum ReportTypeRadio { open, confidential }
+
 class _ReportTypeState extends State<ReportType> {
+  ReportTypeRadio? _reportTypeRadio = ReportTypeRadio.open;
+
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       width: 300,
       child: Row(
         children: [
-          Text(
+          const Text(
             'Type of report:',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          Radio(value: false, groupValue: ReportType(), onChanged: null),
-          Text(
+          Radio(
+              value: ReportTypeRadio.open,
+              groupValue: _reportTypeRadio,
+              onChanged: (ReportTypeRadio? value) {
+                setState(() {
+                  _reportTypeRadio = value;
+                });
+              }),
+          const Text(
             'Open',
           ),
-          Radio(value: false, groupValue: ReportType(), onChanged: null),
-          Text(
+          Radio(
+              value: ReportTypeRadio.confidential,
+              groupValue: _reportTypeRadio,
+              onChanged: (ReportTypeRadio? value) {
+                setState(() {
+                  _reportTypeRadio = value;
+                });
+              }),
+          const Text(
             'Confidential',
           ),
         ],
@@ -159,21 +177,39 @@ class Mitigation extends StatefulWidget {
   State<Mitigation> createState() => _MitigationState();
 }
 
+enum IncludeComment { yes, no }
+
 class _MitigationState extends State<Mitigation> {
+  IncludeComment? _includeComment = IncludeComment.no;
+
   @override
   Widget build(BuildContext context) {
-    return const Row(
+    return Row(
       children: [
-        Text(
+        const Text(
           'Include mitigation comment?',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        Radio(value: false, groupValue: ReportType(), onChanged: null),
-        Text(
+        Radio(
+            value: IncludeComment.yes,
+            groupValue: _includeComment,
+            onChanged: (IncludeComment? value) {
+              setState(() {
+                _includeComment = value;
+              });
+            }),
+        const Text(
           'Yes',
         ),
-        Radio(value: false, groupValue: ReportType(), onChanged: null),
-        Text(
+        Radio(
+            value: IncludeComment.no,
+            groupValue: _includeComment,
+            onChanged: (IncludeComment? value) {
+              setState(() {
+                _includeComment = value;
+              });
+            }),
+        const Text(
           'No',
         ),
       ],

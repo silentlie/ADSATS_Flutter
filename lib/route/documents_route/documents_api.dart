@@ -13,7 +13,7 @@ class DocumentAPI extends DataTableSourceAsync {
         "Author",
         "Sub category",
         "Category",
-        "Aircrafts",
+        "Aircraft",
         "Archived",
         "Date",
         "Actions",
@@ -71,7 +71,7 @@ class DocumentAPI extends DataTableSourceAsync {
         'Archived': "archived",
         'Category': 'category',
         'Sub-category': 'sub_category',
-        'Aircrafts': 'aircrafts',
+        'Aircraft': 'aircraft',
         'Date': 'created_at',
       };
 
@@ -93,7 +93,7 @@ class DocumentAPI extends DataTableSourceAsync {
         child: Builder(builder: (context) {
           AuthNotifier staff = Provider.of<AuthNotifier>(context);
           _filters.filterResult.addAll({
-            // 'limit_aircrafts': staff.aircrafts,
+            // 'limit_aircraft': staff.aircraft,
             // 'limit_subcategories': staff.subcategories,
             // 'limit_roles': staff.roles,
             'limit_categories': staff.categories,
@@ -119,7 +119,7 @@ class DocumentAPI extends DataTableSourceAsync {
                 refreshDatasource: refreshDatasource,
                 filterByAuthors: true,
                 filterByRoles: true,
-                filterByAircrafts: true,
+                filterByAircraft: true,
                 filterByCategories: true,
                 filterBySubcategories: true,
                 filterByArchived: true,

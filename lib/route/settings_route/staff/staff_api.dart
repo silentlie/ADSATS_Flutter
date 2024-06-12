@@ -46,8 +46,7 @@ class StaffApi extends DataTableSourceAsync {
       final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
 
       _staff = [for (var row in rowsData) Staff.fromJSON(row)];
-      debugPrint(_staff.length.toString());
-      debugPrint("finished fetch table data");
+      debugPrint("finished fetch table staff");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
     } on Error catch (e) {
@@ -85,34 +84,44 @@ class StaffApi extends DataTableSourceAsync {
           padding: const EdgeInsets.only(bottom: 5),
           scrollDirection: Axis.horizontal,
           reverse: true,
-          child: Builder(builder: (context) {
-            return Row(
-              children: [
-                const AddStaff(),
-                const SizedBox(
-                  width: 10,
-                ),
-                FilterBy(
-                  filters: filters,
-                  refreshDatasource: refreshDatasource,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                SortBy(
+          child: Builder(
+            builder: (context) {
+              return Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      refreshDatasource();
+                    },
+                    icon: const Icon(Icons.refresh),
+                  ),
+                  const AddStaff(),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  FilterBy(
                     filters: filters,
                     refreshDatasource: refreshDatasource,
-                    sqlColumns: sqlColumns),
-                const SizedBox(
-                  width: 10,
-                ),
-                SearchBarWidget(
-                  filters: filters,
-                  refreshDatasource: refreshDatasource,
-                ),
-              ],
-            );
-          }),
+                    filterByArchived: true,
+                    filterByCreatedAt: true,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  SortBy(
+                      filters: filters,
+                      refreshDatasource: refreshDatasource,
+                      sqlColumns: sqlColumns),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  SearchBarWidget(
+                    filters: filters,
+                    refreshDatasource: refreshDatasource,
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       );
 }
@@ -122,7 +131,7 @@ class AddStaff extends StatelessWidget {
 
   static Map<String, String> filterEndpoints = {
     'roles': '/roles',
-    'aircrafts': '/aircrafts',
+    'aircraft': '/aircrafts',
     'categories': '/categories'
   };
 
@@ -333,12 +342,10 @@ class AddStaff extends StatelessWidget {
                 ElevatedButton.icon(
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      // TODO:Functionality for the sending button
                       formKey.currentState!.save();
-                      debugPrint(firstName);
-                      debugPrint(lastName);
-                      debugPrint(email);
-                      debugPrint(result.toString());
+                      // may need add pick date and archived or not
+                      addNewStaff(firstName, lastName, email, DateTime.now(),
+                          false, result);
                       Navigator.pop(context, 'Submit');
                     }
                   },
@@ -372,5 +379,40 @@ class AddStaff extends StatelessWidget {
         size: 25,
       ),
     );
+  }
+
+  Future<void> addNewStaff(
+    String firstName,
+    String lastName,
+    String email,
+    DateTime createdAt,
+    bool archived,
+    Map<String, String> result,
+  ) async {
+    try {
+      Map<String, dynamic> body = {
+        "f_name": firstName,
+        "l_name": lastName,
+        "email": email,
+        "created_at": createdAt.toIso8601String(),
+        "archived": archived
+      };
+      if (result.isNotEmpty) {
+        body.addAll(result);
+      }
+      debugPrint(body.toString());
+      final restOperation = Amplify.API.post('/staff',
+          apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int rawData = jsonDecode(jsonStr);
+      debugPrint(rawData.toString());
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
   }
 }

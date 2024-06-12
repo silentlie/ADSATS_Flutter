@@ -1,7 +1,9 @@
+import 'package:adsats_flutter/route/settings_route/categories/category_class.dart';
+import 'package:adsats_flutter/route/settings_route/subcategories/subcategory_class.dart';
 import 'package:flutter/material.dart';
 
 import 'package:adsats_flutter/helper/table/abstract_data_table_async.dart';
-import 'package:adsats_flutter/route/settings_route/aircrafts/aircraft_class.dart';
+import 'package:adsats_flutter/route/settings_route/aircraft/aircraft_class.dart';
 import 'package:adsats_flutter/route/settings_route/staff/staff_class.dart';
 import 'package:adsats_flutter/route/settings_route/roles/role_class.dart';
 
@@ -25,12 +27,22 @@ class _SettingsWidgetState extends State<SettingsWidget> {
     const NavigationRailDestination(
       icon: Icon(Icons.airlines_outlined),
       selectedIcon: Icon(Icons.airlines),
-      label: Text("Aircrafts"),
+      label: Text("Aircraft"),
     ),
     const NavigationRailDestination(
       icon: Icon(Icons.groups_outlined),
       selectedIcon: Icon(Icons.groups),
       label: Text("Roles"),
+    ),
+    const NavigationRailDestination(
+      icon: Icon(Icons.groups_outlined),
+      selectedIcon: Icon(Icons.groups),
+      label: Text("Categories"),
+    ),
+    const NavigationRailDestination(
+      icon: Icon(Icons.groups_outlined),
+      selectedIcon: Icon(Icons.groups),
+      label: Text("Subcategories"),
     ),
   ];
   final List<NavigationDestination> _navigationDestinations = [
@@ -42,12 +54,22 @@ class _SettingsWidgetState extends State<SettingsWidget> {
     const NavigationDestination(
       icon: Icon(Icons.airlines_outlined),
       selectedIcon: Icon(Icons.airlines),
-      label: "Aircrafts",
+      label: "Aircraft",
     ),
     const NavigationDestination(
       icon: Icon(Icons.groups_outlined),
       selectedIcon: Icon(Icons.groups),
       label: "Roles",
+    ),
+    const NavigationDestination(
+      icon: Icon(Icons.groups_outlined),
+      selectedIcon: Icon(Icons.groups),
+      label: "Categories",
+    ),
+    const NavigationDestination(
+      icon: Icon(Icons.groups_outlined),
+      selectedIcon: Icon(Icons.groups),
+      label: "Subcategories",
     ),
   ];
 
@@ -56,8 +78,10 @@ class _SettingsWidgetState extends State<SettingsWidget> {
     super.initState();
     _pages = [
       PaginatedDataTableAsync(StaffApi()),
-      PaginatedDataTableAsync(AircraftsAPI()),
+      PaginatedDataTableAsync(AircraftAPI()),
       PaginatedDataTableAsync(RolesAPI()),
+      PaginatedDataTableAsync(CategoriesApi()),
+      PaginatedDataTableAsync(SubcategoriesApi()),
     ];
   }
 

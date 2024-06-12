@@ -87,7 +87,7 @@ class AuthNotifier with ChangeNotifier {
   String lName = "";
   String email = "";
   String avatarUrl = "";
-  List<String> aircrafts = [];
+  List<String> aircraft = [];
   List<String> roles = [];
   List<String> categories = [];
   List<String> subcategories = [];
@@ -136,11 +136,11 @@ class AuthNotifier with ChangeNotifier {
       fName = rawData["f_name"];
       lName = rawData["l_name"];
       String? rolesStr = rawData["roles"] as String?;
-      String? aircraftsStr = rawData["aircrafts"] as String?;
+      String? aircraftStr = rawData["aircraft"] as String?;
       String? categoriesStr = rawData["categories"] as String?;
       String? subcategoriesStr = rawData["subcategories"] as String?;
       roles = strToList(rolesStr);
-      aircrafts = strToList(aircraftsStr);
+      aircraft = strToList(aircraftStr);
       categories = strToList(categoriesStr);
       subcategories = strToList(subcategoriesStr);
       isAdmin = roles.contains("administrator");

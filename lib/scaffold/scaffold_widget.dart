@@ -15,7 +15,7 @@ class MyScaffold extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // loading widget can be customise
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           // can make it into a error widget for more visualise
           return Text('Error: ${snapshot.error}');

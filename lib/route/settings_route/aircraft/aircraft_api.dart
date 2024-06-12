@@ -1,7 +1,7 @@
 part of 'aircraft_class.dart';
 
-class AircraftsAPI extends DataTableSourceAsync {
-  AircraftsAPI();
+class AircraftAPI extends DataTableSourceAsync {
+  AircraftAPI();
 
   @override
   get showCheckBox => false;
@@ -18,7 +18,7 @@ class AircraftsAPI extends DataTableSourceAsync {
   final CustomTableFilter _filters = CustomTableFilter();
   @override
   CustomTableFilter get filters => _filters;
-  List<Aircraft> _aircrafts = [];
+  List<Aircraft> _aircraft = [];
   int _totalRecords = 0;
   @override
   int get totalRecords => _totalRecords;
@@ -42,9 +42,9 @@ class AircraftsAPI extends DataTableSourceAsync {
       _totalRecords = rawData["total_records"];
       final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
 
-      _aircrafts = [for (var row in rowsData) Aircraft.fromJSON(row)];
-      debugPrint(_aircrafts.length.toString());
-      debugPrint("finished fetch table data");
+      _aircraft = [for (var row in rowsData) Aircraft.fromJSON(row)];
+      debugPrint(_aircraft.length.toString());
+      debugPrint("finished fetch table aircraft");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
     } on Error catch (e) {
@@ -55,7 +55,7 @@ class AircraftsAPI extends DataTableSourceAsync {
 
   @override
   List<DataRow> get rows {
-    return _aircrafts.map((notice) {
+    return _aircraft.map((notice) {
       return notice.toDataRow();
     }).toList();
   }
@@ -72,7 +72,7 @@ class AircraftsAPI extends DataTableSourceAsync {
   Widget get header => ListTile(
         contentPadding: const EdgeInsets.only(),
         leading: const Text(
-          "Aircrafts",
+          "Aircraft",
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -94,7 +94,7 @@ class AircraftsAPI extends DataTableSourceAsync {
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
-                      // missing add staff after create aircrafts
+                      // missing add staff after create aircraft
                       addNew(context);
                     },
                     label: const Text(
@@ -115,6 +115,7 @@ class AircraftsAPI extends DataTableSourceAsync {
                     filters: filters,
                     refreshDatasource: refreshDatasource,
                     filterByArchived: true,
+                    filterByCreatedAt: true,
                   ),
                   const SizedBox(
                     width: 10,
@@ -143,7 +144,10 @@ class AircraftsAPI extends DataTableSourceAsync {
     DateTime? createAt;
     String? dateError;
     bool archived = false;
+    List<String> emails = [];
     ColorScheme colorScheme = Theme.of(context).colorScheme;
+    AuthNotifier authNotifier =
+        Provider.of<AuthNotifier>(context, listen: false);
     showDialog(
       context: context,
       builder: (context) {
@@ -207,7 +211,7 @@ class AircraftsAPI extends DataTableSourceAsync {
                         },
                         label: createAt == null
                             ? const Text("Pick start date")
-                            : Text(createAt!.toIso8601String()),
+                            : Text(createAt!.toIso8601String(),),
                       ),
                     ),
                     if (dateError != null)
@@ -218,6 +222,18 @@ class AircraftsAPI extends DataTableSourceAsync {
                           // style: TextStyle(color: Theme.of(context).errorColor),
                         ),
                       ),
+                    MultiSelect(
+                      buttonText: const Text("Add staff"),
+                      title: const Text("Add staff"),
+                      onConfirm: (selectedOptions) {
+                        emails = List<String>.from(selectedOptions);
+                      },
+                      items: authNotifier.staff.map(
+                        (staff) {
+                          return MultiSelectItem(staff, staff);
+                        },
+                      ).toList(),
+                    )
                   ],
                 ),
               ),
@@ -243,7 +259,7 @@ class AircraftsAPI extends DataTableSourceAsync {
                         return;
                       }
                       formKey.currentState!.save();
-                      addNewAircraft(aircraftName, createAt!, archived);
+                      addNewAircraft(aircraftName, createAt!, archived, emails);
                       Navigator.pop(context, 'Submit');
                     }
                   },
@@ -269,14 +285,17 @@ class AircraftsAPI extends DataTableSourceAsync {
     );
   }
 
-  Future<void> addNewAircraft(
-      String name, DateTime createdAt, bool archived) async {
+  Future<void> addNewAircraft(String name, DateTime createdAt, bool archived,
+      List<String> emails) async {
     try {
       Map<String, dynamic> body = {
         "aircraftName": name,
         "created_at": createdAt.toIso8601String(),
-        "archived": archived
+        "archived": archived,
       };
+      if (emails.isNotEmpty) {
+        body["staff"] = emails;
+      }
       debugPrint(body.toString());
       final restOperation = Amplify.API.post('/aircrafts',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
