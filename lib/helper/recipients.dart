@@ -48,17 +48,17 @@ class RecepientsWidget extends StatelessWidget {
       ),
       Flexible(
         child: MultiSelect(
-          buttonText: const Text("Add aircrafts"),
-          title: const Text("Add aircrafts"),
+          buttonText: const Text("Add aircraft"),
+          title: const Text("Add aircraft"),
           onConfirm: (selectedOptions) {
-            recipientsResult['aircrafts'] = List<String>.from(selectedOptions);
+            recipientsResult['aircraft'] = List<String>.from(selectedOptions);
           },
           items: authNotifier.aircraft.map(
             (aircraft) {
               return MultiSelectItem(aircraft, aircraft);
             },
           ).toList(),
-          initialValue: recipientsResult['aircrafts'] ?? [],
+          initialValue: recipientsResult['aircraft'] ?? [],
         ),
       )
     ];

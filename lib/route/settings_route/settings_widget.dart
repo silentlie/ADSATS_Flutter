@@ -22,7 +22,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
     const NavigationRailDestination(
       icon: Icon(Icons.group_outlined),
       selectedIcon: Icon(Icons.group),
-      label: Text("Crews"),
+      label: Text("Staff"),
     ),
     const NavigationRailDestination(
       icon: Icon(Icons.airlines_outlined),
@@ -49,7 +49,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
     const NavigationDestination(
       icon: Icon(Icons.group_outlined),
       selectedIcon: Icon(Icons.group),
-      label: "Crews",
+      label: "Staff",
     ),
     const NavigationDestination(
       icon: Icon(Icons.airlines_outlined),
