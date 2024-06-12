@@ -42,7 +42,7 @@ class DefaultLogoWidget extends StatelessWidget {
           context.go('/documents');
         },
         child: SvgPicture.asset(
-          'assets/svg/ADSATS_Logo.svg',
+          'ADSATS_Logo.svg',
           height: 40,
         ),
       ),
