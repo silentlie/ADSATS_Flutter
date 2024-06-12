@@ -134,6 +134,7 @@ class AuthNotifier with ChangeNotifier {
       Map<String, String> queryParameters = {
         "email": email,
       };
+      debugPrint(DateTime.now().toIso8601String());
       final restOperation = Amplify.API.get(
         '/staff',
         apiName: 'AmplifyFilterAPI',
@@ -141,6 +142,10 @@ class AuthNotifier with ChangeNotifier {
       );
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
+      dynamic raw = jsonDecode(jsonStr);
+      if (raw.isEmpty) {
+        return;
+      }
       Map<String, dynamic> rawData = jsonDecode(jsonStr)[0];
       debugPrint(rawData.toString());
       staffID = rawData["staff_id"];

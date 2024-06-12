@@ -120,6 +120,7 @@ class Role {
                         onSaved: (value) {
                           roleName = value!;
                         },
+                        initialValue: name,
                       ),
                     ),
                     Container(
@@ -137,6 +138,7 @@ class Role {
                         onSaved: (value) {
                           description = value!;
                         },
+                        initialValue: this.description,
                       ),
                     ),
                   ],

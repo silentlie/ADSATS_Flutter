@@ -11,7 +11,7 @@ part 'notification_class.dart';
 class NotificationWidget extends StatelessWidget {
   const NotificationWidget({super.key});
 
-  Future<List<ListTile>> fetchNotifications(
+  Future<List<Widget>> fetchNotifications(
       BuildContext context, int startIndex) async {
     // ignore: unused_local_variable
     AuthNotifier authNotifier =

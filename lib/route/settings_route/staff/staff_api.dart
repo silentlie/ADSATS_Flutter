@@ -276,7 +276,7 @@ class AddStaff extends StatelessWidget {
                                 padding: const EdgeInsets.all(8),
                                 constraints:
                                     const BoxConstraints(maxWidth: 300),
-                                child: MultiSelectDialogField(
+                                child: MultiSelect(
                                   // get text based on index
                                   buttonText:
                                       Text("Add ${filterTitles[index]}"),
@@ -289,28 +289,7 @@ class AddStaff extends StatelessWidget {
                                             .join(',');
                                   },
                                   title: Text("Add ${filterTitles[index]}"),
-                                  searchable: true,
-                                  // size of dialog after click each filter
-                                  dialogHeight: 714,
-                                  dialogWidth: 400,
-                                  // can be specify based on ThemeData
-                                  itemsTextStyle:
-                                      const TextStyle(color: Colors.amber),
-                                  selectedItemsTextStyle:
-                                      const TextStyle(color: Colors.blue),
-                                  cancelText: const Text(
-                                    "Cancel",
-                                    style: TextStyle(color: Colors.amber),
-                                  ),
-                                  confirmText: const Text(
-                                    "Confirm",
-                                    style: TextStyle(color: Colors.blue),
-                                  ),
-                                  chipDisplay: MultiSelectChipDisplay(
-                                    scroll: true,
-                                    scrollBar: HorizontalScrollBar(
-                                        isAlwaysShown: true),
-                                  ),
+                                  
                                 ),
                               );
                             },

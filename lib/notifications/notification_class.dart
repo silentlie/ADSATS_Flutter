@@ -23,51 +23,99 @@ class NotificationClass {
     return value != 0;
   }
 
-  ListTile toListTile() {
-    return ListTile(
-      visualDensity: VisualDensity.comfortable,
-      tileColor: read ? Colors.blue.shade100 : Colors.transparent,
-      titleTextStyle: const TextStyle(fontWeight: FontWeight.bold),
-      title: read
-          ? RichText(
-              text: TextSpan(
-                text: 'Author: ',
-                style: const TextStyle(fontWeight: FontWeight.bold),
-                children: <TextSpan>[
-                  TextSpan(text: email),
-                ],
+  Widget toListTile() {
+    return Builder(builder: (context) {
+      return ListTile(
+        visualDensity: VisualDensity.comfortable,
+        tileColor: read ? Colors.transparent : Colors.blue.shade100,
+        titleTextStyle: const TextStyle(fontWeight: FontWeight.bold),
+        title: read
+            ? RichText(
+                text: TextSpan(
+                  text: 'Author: ',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: email,
+                      style: const TextStyle(fontWeight: FontWeight.normal),
+                    ),
+                  ],
+                ),
+              )
+            : RichText(
+                text: TextSpan(
+                  text: 'Author: ',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: email,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
-            )
-          : Text(
-              "Author: $email",
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-      subtitle: read
-          ? RichText(
-              text: TextSpan(
-                text: 'Subject: ',
-                style: const TextStyle(fontWeight: FontWeight.bold),
-                children: <TextSpan>[
-                  TextSpan(text: subject),
-                ],
+        subtitle: read
+            ? RichText(
+                text: TextSpan(
+                  text: 'Subject: ',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: subject,
+                      style: const TextStyle(fontWeight: FontWeight.normal),
+                    ),
+                  ],
+                ),
+              )
+            : RichText(
+                text: TextSpan(
+                  text: 'Subject: ',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: subject,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
-            )
-          : Text(
-              "Subject: $subject",
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-      trailing: Builder(builder: (context) {
-        return IconButton(
-            onPressed: () {
-              context.go('/$noticeID');
-            },
-            icon: const Icon(
-              Icons.more_vert,
-              size: 20,
-            ));
-      }),
-      leading: const Icon(Icons.edit_document),
-      onTap: () {},
-    );
+        trailing: MenuAnchor(
+          menuChildren: [
+            read
+                ? ListTile(
+                    title: const Text("Mark as unread"),
+                    onTap: () {
+                      // handling mark as unread
+                    },
+                  )
+                : ListTile(
+                    title: const Text("Mark as read"),
+                    onTap: () {
+                      // handling mark as read
+                    },
+                  ),
+          ],
+          builder: (context, controller, child) {
+            return IconButton(
+              onPressed: () {
+                if (controller.isOpen) {
+                  controller.close();
+                } else {
+                  controller.open();
+                }
+              },
+              icon: const Icon(
+                Icons.more_vert,
+                size: 20,
+              ),
+            );
+          },
+        ),
+        leading: const Icon(Icons.edit_document),
+        onTap: () {
+          context.go('/$noticeID');
+        },
+      );
+    });
   }
 }

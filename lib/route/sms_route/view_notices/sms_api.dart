@@ -89,18 +89,26 @@ class NoticeAPI extends DataTableSourceAsync {
         scrollDirection: Axis.horizontal,
         reverse: true,
         child: Builder(builder: (context) {
+          AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
           return Row(
             children: [
-              ElevatedButton.icon(
+              IconButton(
                 onPressed: () {
-                  context.go('/send-notices');
+                  refreshDatasource();
                 },
-                label: const Text('Create a new notification'),
-                icon: const Icon(
-                  Icons.add,
-                  size: 25,
-                ),
+                icon: const Icon(Icons.refresh),
               ),
+              if (authNotifier.staffID > -1)
+                ElevatedButton.icon(
+                  onPressed: () {
+                    context.go('/send-notices');
+                  },
+                  label: const Text('Create a new notification'),
+                  icon: const Icon(
+                    Icons.add,
+                    size: 25,
+                  ),
+                ),
               const SizedBox(
                 width: 10,
               ),

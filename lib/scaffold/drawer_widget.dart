@@ -10,8 +10,9 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ColorScheme colorScheme =
-        Theme.of(context).colorScheme; // Access color scheme
+    // Access color scheme
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
     return Drawer(
       child: ListView(
         // Important: Remove any padding from the ListView.
@@ -30,12 +31,13 @@ class MyDrawer extends StatelessWidget {
               context.go('/resetPassword');
             },
           ),
-          ListTile(
-            title: const Text('Settings'),
-            onTap: () {
-              context.go('/settings');
-            },
-          ),
+          if (authNotifier.isAdmin)
+            ListTile(
+              title: const Text('Settings'),
+              onTap: () {
+                context.go('/settings');
+              },
+            ),
           ListTile(
             title: const Text('Help'),
             onTap: () {
