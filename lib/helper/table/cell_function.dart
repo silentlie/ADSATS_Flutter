@@ -32,7 +32,6 @@ DataCell cellFor(Object? data) {
       data.toString(),
       softWrap: false,
       overflow: TextOverflow.ellipsis,
-      
     );
   }
   return DataCell(Center(child: widget));

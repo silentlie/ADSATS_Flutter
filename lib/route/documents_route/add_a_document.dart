@@ -262,10 +262,6 @@ class ButtonsRow extends StatelessWidget {
             context.go('/documents');
           },
           label: const Text('Cancel'),
-          icon: Icon(
-            Icons.mail,
-            color: colorScheme.onSecondary,
-          ),
         ),
         const SizedBox(width: 10),
         ElevatedButton.icon(

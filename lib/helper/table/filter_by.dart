@@ -60,8 +60,7 @@ class FilterBy extends StatelessWidget {
     if (filterByAuthors) {
       filterContent.add(
         MultiSelect(
-          buttonText:
-              const Text("Filter by authors"),
+          buttonText: const Text("Filter by authors"),
           title: const Text("Filter by authors"),
           items: authNotifier.staff.map(
             (staff) {
@@ -101,7 +100,7 @@ class FilterBy extends StatelessWidget {
           title: const Text("Filter by roles"),
           items: authNotifier.roles.map(
             (role) {
-              return MultiSelectItem(role, role);
+              return MultiSelectItem(role, role.capitalized);
             },
           ).toList(),
           onConfirm: (selectedOptions) {
@@ -202,8 +201,8 @@ class FilterBy extends StatelessWidget {
     }
     if (filterByCreatedAt) {
       filterContent.add(
-        Padding(
-          padding: const EdgeInsets.all(8.0),
+        Container(
+          padding: const EdgeInsets.all(8),
           child: DateTimeRangePicker(
             filterResult: filterResult,
           ),

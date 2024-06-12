@@ -30,7 +30,7 @@ class HazardReportWidget extends StatelessWidget {
           const Divider(),
           recepients,
           const Divider(),
-          Row(
+          Wrap(
             children: [
               SearchAuthorWidget(
                 customClass: hazardReport,
@@ -75,10 +75,6 @@ class HazardReportWidget extends StatelessWidget {
                   context.go('/sms');
                 },
                 label: const Text('Cancel'),
-                icon: Icon(
-                  Icons.mail,
-                  color: colorScheme.onSecondary,
-                ),
               ),
               // No save function for now
               // const SizedBox(width: 10),
@@ -328,8 +324,9 @@ class DateFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-      flex: 3,
       child: Container(
+        constraints: const BoxConstraints(minWidth: 200, maxWidth: 325),
+        // constraints: const BoxConstraints(maxWidth: 200),
         padding: const EdgeInsets.all(5),
         child: InputDatePickerFormField(
           initialDate: DateTime.timestamp(),

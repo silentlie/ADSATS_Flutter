@@ -103,7 +103,6 @@ class MyDrawerHeader extends StatelessWidget {
               child: Text(
                 "Name: ${staff.fName} ${staff.lName}",
                 style: const TextStyle(
-                  color: Colors.black,
                   fontSize: 16,
                 ),
               ),
@@ -113,7 +112,6 @@ class MyDrawerHeader extends StatelessWidget {
               child: Text(
                 "Email: ${staff.email}",
                 style: const TextStyle(
-                  color: Colors.black,
                   fontSize: 16,
                 ),
               ),
@@ -123,7 +121,6 @@ class MyDrawerHeader extends StatelessWidget {
               child: Text(
                 "Roles: ${staff.roles}",
                 style: const TextStyle(
-                  color: Colors.black,
                   fontSize: 16,
                 ),
               ),
@@ -133,7 +130,6 @@ class MyDrawerHeader extends StatelessWidget {
               child: Text(
                 "Aircrafts: ${staff.aircrafts}",
                 style: const TextStyle(
-                  color: Colors.black,
                   fontSize: 16,
                 ),
               ),
@@ -143,7 +139,6 @@ class MyDrawerHeader extends StatelessWidget {
               child: Text(
                 "Categories: ${staff.categories}",
                 style: const TextStyle(
-                  color: Colors.black,
                   fontSize: 16,
                 ),
               ),
@@ -153,7 +148,6 @@ class MyDrawerHeader extends StatelessWidget {
               child: Text(
                 "Subcategories: ${staff.subcategories}",
                 style: const TextStyle(
-                  color: Colors.black,
                   fontSize: 16,
                 ),
               ),

@@ -227,10 +227,6 @@ class AircraftsAPI extends DataTableSourceAsync {
                     Navigator.pop(context, 'Cancel');
                   },
                   label: const Text('Cancel'),
-                  icon: Icon(
-                    Icons.cancel,
-                    color: colorScheme.onSecondary,
-                  ),
                 ),
                 const SizedBox(width: 10),
                 ElevatedButton.icon(
@@ -257,7 +253,7 @@ class AircraftsAPI extends DataTableSourceAsync {
                     style: TextStyle(color: colorScheme.onSecondary),
                   ),
                   icon: Icon(
-                    Icons.mail,
+                    Icons.add,
                     color: colorScheme.onSecondary,
                   ),
                 ),
