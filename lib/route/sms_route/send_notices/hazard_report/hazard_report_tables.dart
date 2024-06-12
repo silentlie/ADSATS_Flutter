@@ -1,4 +1,4 @@
-part of 'hazard_report_form.dart';
+part of 'hazard_report_widget.dart';
 
 class RiskSeverity extends StatefulWidget {
   const RiskSeverity({super.key});

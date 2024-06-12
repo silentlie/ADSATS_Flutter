@@ -323,16 +323,14 @@ class DateFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Container(
-        constraints: const BoxConstraints(minWidth: 200, maxWidth: 325),
-        // constraints: const BoxConstraints(maxWidth: 200),
-        padding: const EdgeInsets.all(5),
-        child: InputDatePickerFormField(
-          initialDate: DateTime.timestamp(),
-          firstDate: DateTime(2020),
-          lastDate: DateTime.now(),
-        ),
+    return Container(
+      constraints: const BoxConstraints(minWidth: 200, maxWidth: 325),
+      // constraints: const BoxConstraints(maxWidth: 200),
+      padding: const EdgeInsets.all(5),
+      child: InputDatePickerFormField(
+        initialDate: DateTime.timestamp(),
+        firstDate: DateTime(2020),
+        lastDate: DateTime.now(),
       ),
     );
   }

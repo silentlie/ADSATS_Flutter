@@ -31,24 +31,20 @@ class SafetyNoticeWidget extends StatelessWidget {
         const Divider(),
         Wrap(
           children: [
-            Expanded(
-              child: Container(
-                constraints: const BoxConstraints(minWidth: 400, maxWidth: 650),
-                child: SearchAuthorWidget(
-                  customClass: safetyNotice,
-                ),
+            Container(
+              constraints: const BoxConstraints(minWidth: 400, maxWidth: 650),
+              child: SearchAuthorWidget(
+                customClass: safetyNotice,
               ),
             ),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                constraints: const BoxConstraints(minWidth: 400, maxWidth: 650),
-                child: const TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text('Report Number'),
-                    enabled: false,
-                  ),
+            Container(
+              padding: const EdgeInsets.all(8),
+              constraints: const BoxConstraints(minWidth: 400, maxWidth: 650),
+              child: const TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  label: Text('Report Number'),
+                  enabled: false,
                 ),
               ),
             ),
