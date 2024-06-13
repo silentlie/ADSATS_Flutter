@@ -1,6 +1,9 @@
+import 'dart:js_interop';
+
 import 'package:adsats_flutter/helper/search_file_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 part 'hazard_report_class.dart';
 part 'hazard_report_tables.dart';
@@ -18,99 +21,96 @@ class HazardReportWidget extends StatelessWidget {
     // Access color scheme
     ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Form(
-      child: Column(
-        children: [
-          const Text(
-            'Send a notice - Hazard report',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const Divider(),
-          recepients,
-          const Divider(),
-          Wrap(
-            children: [
-              SearchAuthorWidget(
-                customClass: hazardReport,
-              ),
-              const DateFormField(),
-              const ReportType(),
-            ],
-          ),
-          const Row(children: [
-            SubjectTextField(),
-            LocationTextField(),
-          ]),
-          const Row(
-            children: [
-              DescribeTextField(),
-              MitigationColumn(),
-            ],
-          ),
-          const Wrap(
-            children: [
-              LikelihoodofOccurrenceWidget(),
-              SeverityOfConsequenceWidget()
-            ],
-          ),
-          const RiskSeverityWidget(),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                label: Text('Interim action/comments'),
+      child: ChangeNotifierProvider(
+        create: (context) => RiskSeverity(),
+        child: Column(
+          children: [
+            const Text(
+              'Send a notice - Hazard report',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ),
-          SearchFileWidget(fileNameResult: hazardReport.fileNameResult),
-          Row(
-            mainAxisAlignment:
-                MainAxisAlignment.end, // Align buttons to the right
-            children: [
-              ElevatedButton.icon(
-                onPressed: () {
-                  context.go('/sms');
-                },
-                label: const Text('Cancel'),
-              ),
-              // No save function for now
-              // const SizedBox(width: 10),
-              // ElevatedButton.icon(
-              //   onPressed: () {
-              //     // Functionality for the second button
-              //   },
-              //   // Change text color
-              //   label: const Text('Save'),
-              //   icon: Icon(
-              //     Icons.mail,
-              //     color: colorScheme.onSecondary,
-              //   ),
-              // ),
-              const SizedBox(width: 10),
-              ElevatedButton.icon(
-                onPressed: () {
-                  // TODO:Functionality for the sending button
-                },
-                style: ButtonStyle(
-                  // Change button background color
-                  backgroundColor:
-                      WidgetStateProperty.all<Color>(colorScheme.secondary),
+            const Divider(),
+            recepients,
+            const Divider(),
+            Wrap(
+              children: [
+                SearchAuthorWidget(
+                  customClass: hazardReport,
                 ),
-                label: Text(
-                  'Send Notification',
-                  style: TextStyle(color: colorScheme.onSecondary),
-                ),
-                icon: Icon(
-                  Icons.mail,
-                  color: colorScheme.onSecondary,
+                const DateFormField(),
+                const ReportType(),
+              ],
+            ),
+            const Row(children: [
+              SubjectTextField(),
+              LocationTextField(),
+            ]),
+            const Row(
+              children: [
+                DescribeTextField(),
+                MitigationColumn(),
+              ],
+            ),
+            const RiskSeverityWidget(),
+            Container(
+              padding: const EdgeInsets.all(8),
+              child: const TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  label: Text('Interim action/comments'),
                 ),
               ),
-            ],
-          ),
-        ],
+            ),
+            SearchFileWidget(fileNameResult: hazardReport.fileNameResult),
+            Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.end, // Align buttons to the right
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () {
+                    context.go('/sms');
+                  },
+                  label: const Text('Cancel'),
+                ),
+                // No save function for now
+                // const SizedBox(width: 10),
+                // ElevatedButton.icon(
+                //   onPressed: () {
+                //     // Functionality for the second button
+                //   },
+                //   // Change text color
+                //   label: const Text('Save'),
+                //   icon: Icon(
+                //     Icons.mail,
+                //     color: colorScheme.onSecondary,
+                //   ),
+                // ),
+                const SizedBox(width: 10),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    // TODO:Functionality for the sending button
+                  },
+                  style: ButtonStyle(
+                    // Change button background color
+                    backgroundColor:
+                        WidgetStateProperty.all<Color>(colorScheme.secondary),
+                  ),
+                  label: Text(
+                    'Send Notification',
+                    style: TextStyle(color: colorScheme.onSecondary),
+                  ),
+                  icon: Icon(
+                    Icons.mail,
+                    color: colorScheme.onSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

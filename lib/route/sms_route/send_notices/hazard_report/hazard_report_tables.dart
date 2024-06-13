@@ -1,38 +1,124 @@
 part of 'hazard_report_widget.dart';
 
-class RiskSeverity extends StatefulWidget {
-  const RiskSeverity({super.key});
+class RiskSeverityWidget extends StatefulWidget {
+  const RiskSeverityWidget({super.key});
 
   @override
-  State<RiskSeverity> createState() => _RiskSeverityState();
+  State<RiskSeverityWidget> createState() => _RiskSeverityWidgetState();
 }
 
-class _RiskSeverityState extends State<RiskSeverity> {
+class _RiskSeverityWidgetState extends State<RiskSeverityWidget> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Wrap(
+      children: [
+        SeverityOfConsequenceWidget(),
+        LikelihoodofOccurrenceWidget(),
+        RiskSeverityResult(),
+      ],
+    );
+  }
+}
+
+class RiskSeverityResult extends StatelessWidget {
+  const RiskSeverityResult({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    RiskSeverity riskSeverity = Provider.of<RiskSeverity>(context);
+    return Row(
+      children: [
+        const Text(
+          'Risk Severity:',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        IconButton(
+          icon: const Icon(
+            Icons.info_outline,
+            size: 20,
+          ),
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                      content: Image.asset('risk-severity.png'),
+                    ));
+          },
+        ),
+        Container(
+          padding: const EdgeInsets.all(8),
+          width: 200,
+          child: TextField(
+            controller: TextEditingController(text: riskSeverity.getText()),
+            enabled: false,
+            readOnly: true,
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              fillColor: riskSeverity.getColor(),
+              filled: true,
+            ),
+          ),
+        )
+      ],
+    );
   }
 }
 
 class SeverityOfConsequenceWidget extends StatelessWidget {
-  const SeverityOfConsequenceWidget({super.key});
-
+  const SeverityOfConsequenceWidget({
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
+    List<Map<String, dynamic>> data = [
+      {
+        "definition": "Negligible",
+        "meaning": "Nuisance of little consequences",
+        "value": "1"
+      },
+      {
+        "definition": "Minor",
+        "meaning": "Results in a minor incident",
+        "value": "2"
+      },
+      {
+        "definition": "Major",
+        "meaning": "Serious incident or injury",
+        "value": "3"
+      },
+      {
+        "definition": "Hazardous",
+        "meaning": "Serious injury or major equipment damage",
+        "value": "4"
+      },
+      {
+        "definition": "Catastrophic",
+        "meaning": "Results in an accident, death or equipment destroyed",
+        "value": "5"
+      },
+    ];
+    RiskSeverity riskSeverity = Provider.of<RiskSeverity>(context);
     return Container(
-      width: 600,
+      constraints: const BoxConstraints(minWidth: 650),
       padding: const EdgeInsets.all(8),
       child: Column(
         children: [
-          const Text(
-            'What do you consider to be the worst possible consequence of this event happening? Click on the table below.',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: const Text(
+              'What do you consider to be the worst possible consequence of this event happening? Click on the table below.',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-          Container(
-              decoration: BoxDecoration(border: Border.all()),
-              child: const SeverityOfConsequenceTable())
+          AbstractTable(
+            data: data,
+            getSelectedIndex: riskSeverity.getSelectedSeverity,
+            setSelectedIndex: riskSeverity.setSelectedSeverity,
+          ),
         ],
       ),
     );
@@ -43,242 +129,13 @@ class LikelihoodofOccurrenceWidget extends StatelessWidget {
   const LikelihoodofOccurrenceWidget({
     super.key,
   });
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 600,
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        children: [
-          const Text(
-            'In your opinion, what is the likelihood of the occurrence happening again? Click on the table below.',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(border: Border.all()),
-            child: const LikelihoodOfOccurrenceTable(),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class RiskSeverityWidget extends StatefulWidget {
-  const RiskSeverityWidget({
-    super.key,
-  });
-
-  @override
-  State<RiskSeverityWidget> createState() => _RiskSeverityWidgetState();
-}
-
-List<String> riskTolerability = ['Unacceptable', 'Review', 'Acceptable'];
-
-class _RiskSeverityWidgetState extends State<RiskSeverityWidget> {
-  Color textFieldColor = Colors.transparent;
-
-  Color updateColor() {
-    return Colors.transparent;
-    // if () {
-    //   return Colors.red.shade200;
-    // } else if () {
-    //   return Colors.yellow.shade200;
-    // } else if () {
-    //   return Colors.green.shade200;
-    // } else {
-    //   return Colors.transparent;
-    // }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      child: Row(
-        children: [
-          const Text(
-            'Risk Severity:',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          IconButton(
-            icon: const Icon(
-              Icons.info_outline,
-              size: 20,
-            ),
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                        content: Image.asset('risk-severity.png'),
-                      ));
-            },
-          ),
-          SizedBox(
-            width: 200,
-            child: TextField(
-              controller: TextEditingController(text: "1"),
-              enabled: false,
-              readOnly: true,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                fillColor: textFieldColor,
-                filled: true,
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class SeverityOfConsequenceTable extends StatefulWidget {
-  const SeverityOfConsequenceTable({super.key});
-
-  @override
-  State<SeverityOfConsequenceTable> createState() =>
-      _SeverityOfConsequenceTableState();
-}
-
-late List<bool> _selectedSeverity;
-late List<DataRow> _severityRows;
-
-class _SeverityOfConsequenceTableState
-    extends State<SeverityOfConsequenceTable> {
-  @override
-  void initState() {
-    super.initState();
-    _selectedSeverity = List<bool>.generate(5, (int index) => false);
-    _severityRows = _createRows();
-  }
-
-  void _selectSeverityRow(int index) {
-    setState(() {
-      for (int i = 0; i < _selectedSeverity.length; i++) {
-        _selectedSeverity[i] = i == index;
-      }
-    });
-  }
-
-  List<DataRow> _createRows() {
     List<Map<String, dynamic>> data = [
       {
-        "definition": "Catastrophic",
-        "meaning": "Results in an accident, death or equipment destroyed",
-        "value": "5"
-      },
-      {
-        "definition": "Hazardous",
-        "meaning": "Serious injury or major equipment damage",
-        "value": "4"
-      },
-      {
-        "definition": "Major",
-        "meaning": "Serious incident or injury",
-        "value": "3"
-      },
-      {
-        "definition": "Minor",
-        "meaning": "Results in a minor incident",
-        "value": "2"
-      },
-      {
-        "definition": "Negligible",
-        "meaning": "Nuisance of little consequences",
+        "definition": "Extremely improbable",
+        "meaning": "Almost inconceivable that the event will occur",
         "value": "1"
-      },
-    ];
-
-    return data.asMap().entries.map<DataRow>((entry) {
-      int index = entry.key;
-      Map<String, dynamic> item = entry.value;
-      return DataRow(
-        cells: [
-          DataCell(Text(item["definition"])),
-          DataCell(Text(item["meaning"])),
-          DataCell(Text(item["value"])),
-        ],
-        selected: _selectedSeverity[index],
-        onSelectChanged: (bool? selected) {
-          _selectSeverityRow(index);
-          ValueNotifier(_selectSeverityRow(index));
-        },
-        color:
-            WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
-          if (_selectedSeverity[index]) {
-            return Colors.lightBlue.withOpacity(0.5);
-          }
-          return Colors.transparent; // Use default color when not selected
-        }),
-      );
-    }).toList();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return DataTable(
-      headingTextStyle: const TextStyle(fontWeight: FontWeight.bold),
-      showCheckboxColumn: false,
-      columns: const [
-        DataColumn(label: Text('Definition')),
-        DataColumn(label: Text('Meaning')),
-        DataColumn(label: Text('Value'))
-      ],
-      rows: _severityRows,
-    );
-  }
-}
-
-class LikelihoodOfOccurrenceTable extends StatefulWidget {
-  const LikelihoodOfOccurrenceTable({super.key});
-
-  @override
-  State<LikelihoodOfOccurrenceTable> createState() =>
-      _LikelihoodOfOccurrenceTableState();
-}
-
-class _LikelihoodOfOccurrenceTableState
-    extends State<LikelihoodOfOccurrenceTable> {
-  late List<bool> _selectedLikelihood;
-  late List<DataRow> _rows;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedLikelihood = List<bool>.generate(5, (int index) => false);
-    _rows = _createRows();
-  }
-
-  void _selectLikelihoodRow(int index) {
-    setState(() {
-      for (int i = 0; i < _selectedLikelihood.length; i++) {
-        _selectedLikelihood[i] = i == index;
-      }
-    });
-  }
-
-  List<DataRow> _createRows() {
-    List<Map<String, dynamic>> data = [
-      {
-        "definition": "Frequent",
-        "meaning": "Likely to occur many time",
-        "value": "5"
-      },
-      {
-        "definition": "Occassional",
-        "meaning": "Likely to occur sometimes",
-        "value": "4"
-      },
-      {
-        "definition": "Remote",
-        "meaning": "Unlikely to occur but possible",
-        "value": "3"
       },
       {
         "definition": "Improbable",
@@ -286,35 +143,102 @@ class _LikelihoodOfOccurrenceTableState
         "value": "2"
       },
       {
-        "definition": "Extremely improbable",
-        "meaning": "Almost inconceivable that the event will occur",
-        "value": "1"
+        "definition": "Remote",
+        "meaning": "Unlikely to occur but possible",
+        "value": "3"
+      },
+      {
+        "definition": "Occassional",
+        "meaning": "Likely to occur sometimes",
+        "value": "4"
+      },
+      {
+        "definition": "Frequent",
+        "meaning": "Likely to occur many time",
+        "value": "5"
       },
     ];
-
-    return data.asMap().entries.map<DataRow>((entry) {
-      int index = entry.key;
-      Map<String, dynamic> item = entry.value;
-      return DataRow(
-        cells: [
-          DataCell(Text(item["definition"])),
-          DataCell(Text(item["meaning"])),
-          DataCell(Text(item["value"])),
+    RiskSeverity riskSeverity = Provider.of<RiskSeverity>(context);
+    return Container(
+      constraints: const BoxConstraints(minWidth: 650),
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: const Text(
+              'In your opinion, what is the likelihood of the occurrence happening again? Click on the table below.',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          AbstractTable(
+            data: data,
+            getSelectedIndex: riskSeverity.getSelectedLikelihood,
+            setSelectedIndex: riskSeverity.setSelectedLikelihood,
+          )
         ],
-        selected: _selectedLikelihood[index],
-        onSelectChanged: (bool? selected) {
-          _selectLikelihoodRow(index);
-          ValueNotifier(_selectLikelihoodRow(index));
-        },
-        color:
-            WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
-          if (_selectedLikelihood[index]) {
-            return Colors.lightBlue.withOpacity(0.5);
-          }
-          return Colors.transparent; // Use default color when not selected
-        }),
-      );
-    }).toList();
+      ),
+    );
+  }
+}
+
+class AbstractTable extends StatefulWidget {
+  const AbstractTable(
+      {super.key,
+      required this.data,
+      required this.setSelectedIndex,
+      required this.getSelectedIndex});
+  final List<Map<String, dynamic>> data;
+  final void Function(int) setSelectedIndex;
+  final int Function() getSelectedIndex;
+
+  @override
+  State<AbstractTable> createState() => _AbstractTableState();
+}
+
+class _AbstractTableState extends State<AbstractTable> {
+  List<DataColumn> get _columns {
+    if (widget.data.isEmpty) {
+      return [];
+    }
+    return widget.data.first.keys.map(
+      (column) {
+        return DataColumn(label: Text(column));
+      },
+    ).toList();
+  }
+
+  List<DataRow> get _rows {
+    List<Map<String, dynamic>> rows = widget.data;
+    return List.generate(
+      rows.length,
+      (index) {
+        Map<String, dynamic> row = rows[index];
+        return DataRow(
+            cells: row.values.map(
+              (column) {
+                return DataCell(Text(column));
+              },
+            ).toList(),
+            selected: index == widget.getSelectedIndex(),
+            onSelectChanged: (value) {
+              setState(() {
+                widget.setSelectedIndex(index);
+              });
+            },
+            color: WidgetStateColor.resolveWith(
+              (states) {
+                if (states.contains(WidgetState.selected)) {
+                  return Colors.lightBlue;
+                } else {
+                  return Colors.transparent;
+                }
+              },
+            ));
+      },
+    );
   }
 
   @override
@@ -322,20 +246,55 @@ class _LikelihoodOfOccurrenceTableState
     return DataTable(
       headingTextStyle: const TextStyle(fontWeight: FontWeight.bold),
       showCheckboxColumn: false,
-      columns: const [
-        DataColumn(label: Text('Definition')),
-        DataColumn(label: Text('Meaning')),
-        DataColumn(label: Text('Value'))
-      ],
+      border: const TableBorder(
+          horizontalInside: BorderSide(color: Colors.lightBlue)),
+      decoration: BoxDecoration(border: Border.all(color: Colors.lightBlue)),
+      columns: _columns,
       rows: _rows,
     );
   }
 }
 
-class AviationTable {
-  String definition;
-  String meaning;
-  int value;
+class RiskSeverity extends ChangeNotifier {
+  int _selectedLikelihood = -1;
+  int _selectedSeverity = -1;
+  int getSelectedLikelihood() => _selectedLikelihood;
+  int getSelectedSeverity() => _selectedSeverity;
+  void setSelectedLikelihood(int value) {
+    _selectedLikelihood = value;
+    notifyListeners();
+  }
 
-  AviationTable(this.definition, this.meaning, this.value);
+  void setSelectedSeverity(int value) {
+    _selectedSeverity = value;
+    notifyListeners();
+  }
+
+  int get risk {
+    return (_selectedLikelihood + 1) + (_selectedSeverity + 1);
+  }
+
+  Color? getColor() {
+    if (risk > 0 && risk < 4) {
+      return Colors.green;
+    } else if (risk > 3 && risk < 8) {
+      return Colors.amber;
+    } else if (risk > 7 && risk < 11) {
+      return Colors.red;
+    } else {
+      return Colors.transparent;
+    }
+  }
+
+  String getText() {
+    if (risk > 0 && risk < 4) {
+      return "Acceptable";
+    } else if (risk > 3 && risk < 8) {
+      return "Review";
+    } else if (risk > 7 && risk < 11) {
+      return "Unacceptable";
+    } else {
+      return "";
+    }
+  }
 }
