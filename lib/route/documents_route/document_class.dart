@@ -12,6 +12,7 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:adsats_flutter/theme/theme_data.dart';
 
 import 'package:adsats_flutter/helper/table/abstract_data_table_async.dart';
 
@@ -76,12 +77,43 @@ class Document {
   DataRow toDataRow() {
     return DataRow(
       cells: <DataCell>[
-        cellFor(fileName),
+        DataCell(Expanded(
+            // constraints: const BoxConstraints(minWidth: 400),
+            child: Text(
+          fileName.toString(),
+          maxLines: 1,
+        ))),
+        // cellFor(fileName),
+
         // cellFor(author),
-        cellFor(subcategory),
-        cellFor(category),
-        cellFor(aircraft),
-        cellFor(archived),
+
+        DataCell(Expanded(
+          child: Text(
+            subcategory.toString(),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        )),
+        // cellFor(subcategory),
+        DataCell(Container(
+            alignment: Alignment.center, child: Text(category.toString()))),
+        // cellFor(category),
+        DataCell(Center(child: Text(aircraft.toString()))),
+        // cellFor(aircraft),
+
+        // DataCell(Center(child: Text(archived.toString()))),
+        DataCell(archived == true
+            ? Container(
+                alignment: Alignment.center,
+                child: const Text('Archived'),
+              )
+            : Container(
+                alignment: Alignment.center,
+                child: const Text('Active'),
+              )),
+        // cellFor(archived),
+
+        // DataCell(Center(child: Text(createdAt.toString()))),
         cellFor(createdAt),
         DataCell(
           Builder(builder: (context) {

@@ -150,28 +150,35 @@ class DetailsWidget extends StatelessWidget {
     return [
       if (authNotifier.isAdmin)
         Container(
+          height: 60,
           constraints: const BoxConstraints(maxWidth: 400),
           child: SearchAuthorWidget(
             customClass: newDocument,
           ),
         ),
-      DropdownMenu(
-        dropdownMenuEntries: authNotifier.subcategories.map(
-          (role) {
-            return DropdownMenuEntry(value: role, label: role);
+      SizedBox(
+        height: 70,
+        child: DropdownMenu(
+          dropdownMenuEntries: authNotifier.subcategories.map(
+            (role) {
+              return DropdownMenuEntry(value: role, label: role);
+            },
+          ).toList(),
+          // enableSearch: true,
+          // enabled: true,
+          hintText: "Choose a sub-category",
+          // menuHeight: 100,
+          label: const Text("Choose a sub-category"),
+          // leadingIcon: const Icon(Icons.search),
+          onSelected: (value) {
+            newDocument.subcategory = value!;
           },
-        ).toList(),
-        enableSearch: true,
-        enabled: true,
-        hintText: "Choose a sub-category",
-        menuHeight: 200,
-        label: const Text("Choose a sub-category"),
-        leadingIcon: const Icon(Icons.search),
-        onSelected: (value) {
-          newDocument.subcategory = value!;
-        },
+          inputDecorationTheme:
+              const InputDecorationTheme(disabledBorder: OutlineInputBorder()),
+        ),
       ),
       Container(
+        height: 70,
         constraints: const BoxConstraints(maxWidth: 400),
         child: MultiSelect(
           buttonText: const Text("Add aircraft"),
