@@ -1,6 +1,7 @@
 import 'package:adsats_flutter/helper/search_file_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wrapfit/wrapfit.dart';
 
 part 'notice_to_crew_class.dart';
 
@@ -31,22 +32,28 @@ class NoticeWidget extends StatelessWidget {
         const Divider(),
         recepients,
         const Divider(),
-        Wrap(
+        Wrap2(
           children: [
-            Container(
-              constraints: const BoxConstraints(minWidth: 400, maxWidth: 650),
-              child: SearchAuthorWidget(
-                customClass: noticeToCrew,
+            Wrapped(
+              fit: WrapFit.runLoose,
+              child: Container(
+                constraints: const BoxConstraints(minWidth: 400),
+                child: SearchAuthorWidget(
+                  customClass: noticeToCrew,
+                ),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              constraints: const BoxConstraints(minWidth: 400, maxWidth: 650),
-              child: const TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  label: Text('Report Number'),
-                  enabled: false,
+            Wrapped(
+              fit: WrapFit.runLoose,
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                constraints: const BoxConstraints(minWidth: 400),
+                child: const TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    label: Text('Report Number'),
+                    enabled: false,
+                  ),
                 ),
               ),
             ),

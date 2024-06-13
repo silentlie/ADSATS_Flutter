@@ -1034,6 +1034,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.0"
+  wrapfit:
+    dependency: "direct main"
+    description:
+      name: wrapfit
+      sha256: "59132db2f42997a2463e548ce05201c909bb579cabc33ed7130812df1510f667"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   xdg_directories:
     dependency: transitive
     description:
