@@ -7,6 +7,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'package:adsats_flutter/scaffold/default_widget.dart';
+import 'package:flutter/widgets.dart';
 
 Future<void> signOutCurrentUser() async {
   final result = await Amplify.Auth.signOut();
@@ -41,14 +42,27 @@ class SignInScafold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('ADSATS')),
+      // appBar: AppBar(title: const Text('ADSATS')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
           child: Column(
             children: [
+              const Center(
+                child: Text(
+                  'Aviation Document Storage and Tracking System',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
               // flutter logo
-              const Center(child: DefaultLogoWidget()),
+              Center(
+                child: Container(
+                  width: 550,
+                  height: 150,
+                  margin: const EdgeInsets.all(30),
+                  child: const DefaultLogoWidget(),
+                ),
+              ),
               Container(
                 constraints:
                     const BoxConstraints(maxWidth: 500.0, minWidth: 100),

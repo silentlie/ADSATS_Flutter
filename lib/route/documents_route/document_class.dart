@@ -169,7 +169,6 @@ class Document {
     NewDocument newDocument = NewDocument();
     newDocument.subcategory = subcategory;
     List<Widget> detailsWidgets = [
-
       Container(
         padding: const EdgeInsets.all(8),
         child: TextFormField(
