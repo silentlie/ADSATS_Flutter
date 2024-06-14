@@ -46,7 +46,7 @@ class Staff {
         _email = json["email"] as String,
         _archived = intToBool(json["archived"] as int)!,
         _createdAt = DateTime.parse(json["created_at"]),
-        _roles = json["l_name"] as String;
+        _roles = json["l_name"] as String?;
 
   static bool? intToBool(int? value) {
     if (value == null) {
