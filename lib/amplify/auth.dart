@@ -102,12 +102,20 @@ class AuthNotifier with ChangeNotifier {
   int numOfOverdue = 0;
 
   Future<bool> initialize() async {
+    fetchStaff();
     if (email.isEmpty) {
       await Future.wait([
         fetchCognitoAuthSession(),
         fetchNotifications(limit),
       ]);
     }
+
+    return true;
+  }
+
+  Future<bool> reInitialize() async {
+    fetchCognitoAuthSession();
+    fetchNotifications(limit);
     fetchStaff();
 
     return true;

@@ -58,7 +58,7 @@ class StaffApi extends DataTableSourceAsync {
   @override
   List<DataRow> get rows {
     return _staff.map((notice) {
-      return notice.toDataRow();
+      return notice.toDataRow(refreshDatasource);
     }).toList();
   }
 

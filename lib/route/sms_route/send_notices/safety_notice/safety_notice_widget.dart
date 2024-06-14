@@ -14,6 +14,7 @@ class SafetyNoticeWidget extends StatelessWidget {
     SafetyNotice safetyNotice = SafetyNotice();
     // Access color scheme
     ColorScheme colorScheme = Theme.of(context).colorScheme;
+    Map<String, dynamic> results = {};
     return Column(
       children: [
         Container(
@@ -31,21 +32,14 @@ class SafetyNoticeWidget extends StatelessWidget {
         const Divider(),
         Wrap(
           children: [
-            Container(
-              constraints: const BoxConstraints(minWidth: 400, maxWidth: 650),
-              child: SearchAuthorWidget(
-                customClass: safetyNotice,
-              ),
+            SearchAuthorWidget(
+              result: results,
             ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              constraints: const BoxConstraints(minWidth: 400, maxWidth: 650),
-              child: const TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  label: Text('Report Number'),
-                  enabled: false,
-                ),
+            const TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                label: Text('Report Number'),
+                enabled: false,
               ),
             ),
           ],

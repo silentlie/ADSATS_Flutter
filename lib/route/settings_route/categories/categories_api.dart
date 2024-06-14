@@ -52,7 +52,7 @@ class CategoriesApi extends DataTableSourceAsync {
   @override
   List<DataRow> get rows {
     return _categories.map((notice) {
-      return notice.toDataRow();
+      return notice.toDataRow(refreshDatasource);
     }).toList();
   }
 

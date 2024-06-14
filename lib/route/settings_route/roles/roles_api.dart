@@ -56,7 +56,7 @@ class RolesAPI extends DataTableSourceAsync {
   @override
   List<DataRow> get rows {
     return _roles.map((notice) {
-      return notice.toDataRow();
+      return notice.toDataRow(refreshDatasource);
     }).toList();
   }
 

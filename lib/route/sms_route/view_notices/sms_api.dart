@@ -60,7 +60,7 @@ class NoticeAPI extends DataTableSourceAsync {
   @override
   List<DataRow> get rows {
     return _notices.map((notice) {
-      return notice.toDataRow();
+      return notice.toDataRow(refreshDatasource);
     }).toList();
   }
 

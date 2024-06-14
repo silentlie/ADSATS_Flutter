@@ -49,7 +49,7 @@ class SubcategoriesApi extends DataTableSourceAsync {
   @override
   List<DataRow> get rows {
     return _subcategories.map((notice) {
-      return notice.toDataRow();
+      return notice.toDataRow(refreshDatasource);
     }).toList();
   }
 

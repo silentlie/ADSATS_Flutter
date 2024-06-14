@@ -1,6 +1,6 @@
 export 'compliance_route/compliance_widget.dart';
 export 'documents_route/documents_widget.dart';
-export 'documents_route/add_a_document.dart';
+export 'documents_route/document_class.dart';
 export 'help_route/help_widget.dart';
 export 'profile_route/profile_widget.dart';
 export 'purchase_route/purchase_widget.dart';

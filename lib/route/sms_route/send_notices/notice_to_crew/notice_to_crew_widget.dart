@@ -1,6 +1,8 @@
+import 'package:adsats_flutter/amplify/auth.dart';
 import 'package:adsats_flutter/helper/search_file_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:wrapfit/wrapfit.dart';
 
 part 'notice_to_crew_class.dart';
@@ -17,117 +19,121 @@ class NoticeWidget extends StatelessWidget {
     NoticeToCrew noticeToCrew = NoticeToCrew();
     // Access color scheme
     ColorScheme colorScheme = Theme.of(context).colorScheme;
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          child: const Text(
-            'Notice to Crew',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
-        ),
-        const Divider(),
-        recepients,
-        const Divider(),
-        Wrap2(
-          children: [
-            Wrapped(
-              fit: WrapFit.runLoose,
-              child: Container(
-                constraints: const BoxConstraints(minWidth: 400),
-                child: SearchAuthorWidget(
-                  customClass: noticeToCrew,
-                ),
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
+    final formKey = GlobalKey<FormState>();
+    Map<String, dynamic> results = {};
+    bool editMode = true;
+    return Form(
+      key: formKey,
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: const Text(
+              'Notice to Crew',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
               ),
             ),
-            Wrapped(
-              fit: WrapFit.runLoose,
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                constraints: const BoxConstraints(minWidth: 400),
-                child: const TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text('Report Number'),
-                    enabled: false,
+          ),
+          const Divider(),
+          recepients,
+          const Divider(),
+          Wrap2(
+            children: [
+              if (authNotifier.isAdmin || authNotifier.isEditor)
+                Wrapped(
+                  fit: WrapFit.runLoose,
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    child: SearchAuthorWidget(
+                      result: results,
+                      enabled: editMode,
+                    ),
                   ),
                 ),
+              Wrapped(
+                fit: WrapFit.runLoose,
+                child: CustomTextFormField(
+                  labelText: 'Report Number',
+                  str: 'report_number',
+                  results: results,
+                  enabled: false,
+                ),
               ),
-            ),
-          ],
-        ),
-        Container(
-          padding: const EdgeInsets.all(5),
-          child: const TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              label: Text('Subject'),
+            ],
+          ),
+          CustomTextFormField(
+            labelText: 'Subject',
+            str: 'subject',
+            results: results,
+          ),
+          CustomTextFormField(
+            labelText: 'Message',
+            str: 'message',
+            results: results,
+            minLines: 5,
+            maxLines: 10,
+          ),
+          Container(
+            constraints: const BoxConstraints(maxWidth: 400),
+            padding: const EdgeInsets.all(8),
+            child: SearchFileWidget(
+              fileNameResult: noticeToCrew.fileNameResult,
             ),
           ),
-        ),
-        Container(
-          padding: const EdgeInsets.all(5),
-          child: const TextField(
-            decoration: InputDecoration(
-                border: OutlineInputBorder(), label: Text('Message')),
-            maxLines: 5,
+          Row(
+            // Align buttons to the right
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  context.go('/sms');
+                },
+                label: const Text('Cancel'),
+              ),
+              // No save function for now
+              // const SizedBox(width: 10),
+              // ElevatedButton.icon(
+              //   onPressed: () {
+              //     // Functionality for the second button
+              //   },
+              //   // Change text color
+              //   label: const Text('Save'),
+              //   icon: Icon(
+              //     Icons.mail,
+              //     color: colorScheme.onSecondary,
+              //   ),
+              // ),
+              const SizedBox(width: 10),
+              ElevatedButton.icon(
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    formKey.currentState!.save();
+                    // TODO:Functionality for the sending button
+                    noticeToCrew;
+                    context.go('/sms');
+                  }
+                },
+                style: ButtonStyle(
+                  // Change button background color
+                  backgroundColor:
+                      WidgetStateProperty.all<Color>(colorScheme.secondary),
+                ),
+                label: Text(
+                  'Send Notification',
+                  style: TextStyle(color: colorScheme.onSecondary),
+                ),
+                icon: Icon(
+                  Icons.mail,
+                  color: colorScheme.onSecondary,
+                ),
+              ),
+            ],
           ),
-        ),
-        Container(
-          constraints: const BoxConstraints(maxWidth: 400),
-          padding: const EdgeInsets.all(8),
-          child: SearchFileWidget(
-            fileNameResult: noticeToCrew.fileNameResult,
-          ),
-        ),
-        Row(
-          mainAxisAlignment:
-              MainAxisAlignment.end, // Align buttons to the right
-          children: [
-            ElevatedButton.icon(
-              onPressed: () {
-                context.go('/sms');
-              },
-              label: const Text('Cancel'),
-            ),
-            // No save function for now
-            // const SizedBox(width: 10),
-            // ElevatedButton.icon(
-            //   onPressed: () {
-            //     // Functionality for the second button
-            //   },
-            //   // Change text color
-            //   label: const Text('Save'),
-            //   icon: Icon(
-            //     Icons.mail,
-            //     color: colorScheme.onSecondary,
-            //   ),
-            // ),
-            const SizedBox(width: 10),
-            ElevatedButton.icon(
-              onPressed: () {
-                // TODO:Functionality for the sending button
-              },
-              style: ButtonStyle(
-                // Change button background color
-                backgroundColor:
-                    WidgetStateProperty.all<Color>(colorScheme.secondary),
-              ),
-              label: Text(
-                'Send Notification',
-                style: TextStyle(color: colorScheme.onSecondary),
-              ),
-              icon: Icon(
-                Icons.mail,
-                color: colorScheme.onSecondary,
-              ),
-            ),
-          ],
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

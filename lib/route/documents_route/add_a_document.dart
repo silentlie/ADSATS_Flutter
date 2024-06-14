@@ -1,14 +1,4 @@
-import 'dart:convert';
-
-import 'package:adsats_flutter/amplify/auth.dart';
-import 'package:adsats_flutter/helper/search_file_widget.dart';
-import 'package:adsats_flutter/helper/table/abstract_data_table_async.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
-import 'package:provider/provider.dart';
+part of 'document_class.dart';
 
 class AddADocument extends StatelessWidget {
   const AddADocument({super.key});
@@ -17,7 +7,7 @@ class AddADocument extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) {
-        return NewDocument();
+        return DocumentNotifier();
       },
       child: Center(
         child: Container(
@@ -44,6 +34,8 @@ class AddADocumentBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DocumentNotifier newDocument = Provider.of<DocumentNotifier>(context);
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -62,7 +54,27 @@ class AddADocumentBody extends StatelessWidget {
           ],
         ),
         const Divider(),
-        const DetailsWidget(),
+        Wrap(
+          children: [
+            if (authNotifier.isAdmin)
+              Container(
+                padding: const EdgeInsets.all(8),
+                child: SearchAuthorWidget(
+                  result: newDocument.results,
+                ),
+              ),
+            Container(
+              padding: const EdgeInsets.all(8),
+              child: const ChooseCategory(),
+            ),
+            Container(
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: const ChooseAircraft(
+                initialValue: [],
+              ),
+            )
+          ],
+        ),
         const Divider(),
         const DropFileWidget(),
         const Divider(),
@@ -83,7 +95,7 @@ class _DropFileWidgetState extends State<DropFileWidget> {
   @override
   Widget build(BuildContext context) {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
-    NewDocument newDocument = Provider.of<NewDocument>(context);
+    DocumentNotifier newDocument = Provider.of<DocumentNotifier>(context);
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -142,126 +154,13 @@ class _DropFileWidgetState extends State<DropFileWidget> {
   }
 }
 
-class DetailsWidget extends StatelessWidget {
-  const DetailsWidget({super.key});
-
-  static List<Widget> getDocumentDetailsWidgets(
-      AuthNotifier authNotifier, NewDocument newDocument) {
-    return [
-      if (authNotifier.isAdmin)
-        Container(
-          constraints: const BoxConstraints(maxWidth: 400),
-          child: SearchAuthorWidget(
-            customClass: newDocument,
-          ),
-        ),
-      DropdownMenu(
-        dropdownMenuEntries: authNotifier.subcategories.map(
-          (role) {
-            return DropdownMenuEntry(value: role, label: role);
-          },
-        ).toList(),
-        enableSearch: true,
-        enabled: true,
-        hintText: "Choose a sub-category",
-        menuHeight: 200,
-        label: const Text("Choose a sub-category"),
-        leadingIcon: const Icon(Icons.search),
-        onSelected: (value) {
-          newDocument.subcategory = value!;
-        },
-      ),
-      Container(
-        constraints: const BoxConstraints(maxWidth: 400),
-        child: MultiSelect(
-          buttonText: const Text("Add aircraft"),
-          title: const Text("Add aircraft"),
-          onConfirm: (selectedItem) {
-            newDocument.aircraft = List<String>.from(selectedItem).join(',');
-          },
-          items: authNotifier.aircraft.map(
-            (aircraft) {
-              return MultiSelectItem(aircraft, aircraft);
-            },
-          ).toList(),
-        ),
-      )
-    ];
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    NewDocument newDocument = Provider.of<NewDocument>(context);
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
-    return Wrap(
-      children: getDocumentDetailsWidgets(authNotifier, newDocument),
-    );
-  }
-}
-
-class NewDocument extends ChangeNotifier {
-  String? author;
-  String? subcategory;
-  String? aircraft;
-  FilePickerResult? filePickerResult;
-
-  Future<void> uploadFile(PlatformFile file) async {
-    try {
-      String fileName = file.name;
-      Map<String, dynamic> body = {
-        'file_name': fileName,
-        'email': author,
-        'subcategory': subcategory,
-        'archived': false,
-      };
-      if (aircraft?.isNotEmpty ?? false) {
-        body['aircraft'] = aircraft;
-      }
-      debugPrint(body.toString());
-      final restOperation = Amplify.API.post('/documents',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
-
-      final response = await restOperation.response;
-      String jsonStr = response.decodeBody();
-      int documentID = jsonDecode(jsonStr);
-      debugPrint("document_id: $documentID");
-      String pathStr = "${documentID}_$fileName";
-      final result = await Amplify.Storage.uploadFile(
-        localFile: AWSFile.fromStream(
-          file.readStream!,
-          size: file.size,
-        ),
-        path: StoragePath.fromString(pathStr),
-        onProgress: (progress) {
-          debugPrint('Fraction completed: ${progress.fractionCompleted}');
-        },
-      ).result;
-      debugPrint('Successfully uploaded file: ${result.uploadedItem.path}');
-    } on StorageException catch (e) {
-      debugPrint(e.message);
-    } on ApiException catch (e) {
-      debugPrint('GET call failed: $e');
-    } on Error catch (e) {
-      debugPrint('Error: $e');
-      rethrow;
-    }
-  }
-
-  void uploadFiles() {
-    for (PlatformFile file in filePickerResult!.files) {
-      uploadFile(file);
-    }
-  }
-}
-
 class ButtonsRow extends StatelessWidget {
   const ButtonsRow({super.key});
 
   @override
   Widget build(BuildContext context) {
-    NewDocument newDocument = Provider.of<NewDocument>(context);
+    DocumentNotifier newDocument = Provider.of<DocumentNotifier>(context);
     ColorScheme colorScheme = Theme.of(context).colorScheme;
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -274,12 +173,9 @@ class ButtonsRow extends StatelessWidget {
         const SizedBox(width: 10),
         ElevatedButton.icon(
           onPressed: () {
-            bool validate = newDocument.subcategory != null &&
-                newDocument.filePickerResult != null;
-            if (!validate) {
+            if (newDocument.filePickerResult == null) {
               return;
             }
-            newDocument.author ??= authNotifier.email;
             showDialog(
               context: context,
               builder: (context) {

@@ -44,7 +44,7 @@ class Aircraft {
   }
 
   // can rearrange collumn
-  DataRow toDataRow() {
+  DataRow toDataRow(void Function() refreshDatasource) {
     return DataRow(
       cells: <DataCell>[
         cellFor(name),
@@ -52,6 +52,7 @@ class Aircraft {
         cellFor(createdAt),
         DataCell(
           Builder(builder: (context) {
+            AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -61,16 +62,22 @@ class Aircraft {
                 IconButton(
                     onPressed: () {
                       changeDetails(context);
+                      authNotifier.reInitialize();
+                      refreshDatasource();
                     },
                     icon: const Icon(Icons.edit_outlined)),
                 IconButton(
                     onPressed: () {
                       archive();
+                      authNotifier.reInitialize();
+                      refreshDatasource();
                     },
                     icon: const Icon(Icons.archive_outlined)),
                 IconButton(
                     onPressed: () {
                       delete();
+                      authNotifier.reInitialize();
+                      refreshDatasource();
                     },
                     icon: const Icon(Icons.delete_outline)),
               ],

@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:adsats_flutter/amplify/auth.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'package:adsats_flutter/helper/table/abstract_data_table_async.dart';
+import 'package:provider/provider.dart';
 
 part 'subcategories_api.dart';
 
@@ -36,7 +38,7 @@ class Subcategory {
   }
 
   // can rearrange collumn
-  DataRow toDataRow() {
+  DataRow toDataRow(void Function() refreshDatasource) {
     return DataRow(
       cells: <DataCell>[
         cellFor(name),
@@ -45,6 +47,7 @@ class Subcategory {
         cellFor(category),
         DataCell(
           Builder(builder: (context) {
+            AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -54,18 +57,24 @@ class Subcategory {
                 IconButton(
                   onPressed: () {
                     changeDetails(context);
+                    authNotifier.reInitialize();
+                    refreshDatasource();
                   },
                   icon: const Icon(Icons.edit_outlined),
                 ),
                 IconButton(
                   onPressed: () {
                     archive();
+                    authNotifier.reInitialize();
+                    refreshDatasource();
                   },
                   icon: const Icon(Icons.archive_outlined),
                 ),
                 IconButton(
                   onPressed: () {
                     delete();
+                    authNotifier.reInitialize();
+                    refreshDatasource();
                   },
                   icon: const Icon(Icons.delete_outline),
                 ),

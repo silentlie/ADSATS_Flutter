@@ -18,6 +18,7 @@ class HazardReportWidget extends StatelessWidget {
 
     // Access color scheme
     ColorScheme colorScheme = Theme.of(context).colorScheme;
+    Map<String, dynamic> results = {};
     return Form(
       child: ChangeNotifierProvider(
         create: (context) => RiskSeverity(),
@@ -36,7 +37,7 @@ class HazardReportWidget extends StatelessWidget {
             Wrap(
               children: [
                 SearchAuthorWidget(
-                  customClass: hazardReport,
+                  result: results,
                 ),
                 const DateFormField(),
                 const ReportType(),

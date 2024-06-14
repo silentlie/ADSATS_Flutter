@@ -61,7 +61,7 @@ class DocumentAPI extends DataTableSourceAsync {
   @override
   List<DataRow> get rows {
     return _documents.map((document) {
-      return document.toDataRow();
+      return document.toDataRow(refreshDatasource);
     }).toList();
   }
 

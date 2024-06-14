@@ -67,7 +67,7 @@ class Notice {
   }
 
   // can rearrange collumn
-  DataRow toDataRow() {
+  DataRow toDataRow(void Function() refreshDatasource) {
     return DataRow(
       cells: <DataCell>[
         cellFor(category),
@@ -95,6 +95,7 @@ class Notice {
                 IconButton(
                   onPressed: () {
                     // TODO: view notice and edit it
+                    refreshDatasource();
                   },
                   icon: const Icon(Icons.edit_outlined),
                   tooltip: 'Edit',
@@ -102,6 +103,7 @@ class Notice {
                 IconButton(
                   onPressed: () {
                     archive();
+                    refreshDatasource();
                   },
                   icon: const Icon(Icons.archive_outlined),
                   tooltip: 'Archive',
@@ -113,6 +115,7 @@ class Notice {
                 IconButton(
                   onPressed: () {
                     delete();
+                    refreshDatasource();
                   },
                   icon: const Icon(Icons.delete_outline),
                   tooltip: 'Delete',

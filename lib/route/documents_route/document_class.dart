@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:adsats_flutter/amplify/auth.dart';
 import 'package:adsats_flutter/helper/search_file_widget.dart';
-import 'package:adsats_flutter/route/documents_route/add_a_document.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:file_picker/file_picker.dart';
@@ -16,18 +15,11 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:adsats_flutter/helper/table/abstract_data_table_async.dart';
 
 part 'documents_api.dart';
+part 'add_a_document.dart';
+part 'components.dart';
+part 'document_notifier.dart';
 
 class Document {
-  Document({
-    int? id,
-    String? fileName,
-    bool? archived,
-    String? email,
-    String? subcategory,
-    String? category,
-    String? aircraft,
-    DateTime? createdAt,
-  });
   Document.fromJSON(Map<String, dynamic> json)
       : id = json["document_id"] as int,
         fileName = json["file_name"] as String,
@@ -37,19 +29,14 @@ class Document {
         category = json["category"] as String,
         aircraft = json["aircraft"] as String?,
         createdAt = DateTime.parse(json["created_at"]);
-  Document.copy(this.fileName, Document anotherDocument) {
-    author = anotherDocument.author;
-    subcategory = anotherDocument.subcategory;
-    aircraft = anotherDocument.aircraft;
-  }
-  int? id;
-  String? fileName;
-  bool? archived;
-  String? author;
-  String? subcategory;
-  String? category;
+  int id;
+  String fileName;
+  bool archived;
+  String author;
+  String subcategory;
+  String category;
   String? aircraft;
-  DateTime? createdAt;
+  DateTime createdAt;
 
   static bool? intToBool(int? value) {
     if (value == null) {
@@ -60,12 +47,10 @@ class Document {
 
   Map<String, String> toJSON() {
     Map<String, String> temp = {};
-    if (id != null) {
-      temp["id"] = id!.toString();
-    }
-    temp["file_name"] = fileName!;
-    temp["email"] = author!;
-    temp["subcategory"] = subcategory!;
+    temp["id"] = id.toString();
+    temp["file_name"] = fileName;
+    temp["email"] = author;
+    temp["subcategory"] = subcategory;
     if (aircraft != null) {
       temp["aircraft"] = aircraft.toString();
     }
@@ -73,7 +58,7 @@ class Document {
   }
 
   // can rearrange collumn
-  DataRow toDataRow() {
+  DataRow toDataRow(void Function() refreshDatasource) {
     return DataRow(
       cells: <DataCell>[
         cellFor(fileName),
@@ -87,48 +72,50 @@ class Document {
           Builder(builder: (context) {
             AuthNotifier authNotifier =
                 Provider.of<AuthNotifier>(context, listen: false);
-            List<Widget> children = [
-              IconButton(
-                onPressed: () async {
-                  Uri genUrl = await getFileUrl();
-                  launchUrl(genUrl);
-                },
-                icon: const Icon(Icons.remove_red_eye_outlined),
-                tooltip: 'View',
-              ),
-            ];
-            if (authNotifier.isAdmin || authNotifier.isEditor) {
-              children.addAll([
-                IconButton(
-                  onPressed: () {
-                    showChangeDocumentDetails(context);
-                  },
-                  icon: const Icon(Icons.edit_outlined),
-                  tooltip: 'Edit',
-                ),
-                IconButton(
-                  onPressed: () {
-                    archive();
-                  },
-                  icon: const Icon(Icons.archive_outlined),
-                  tooltip: 'Archive',
-                ),
-              ]);
-            }
-            if (authNotifier.isAdmin) {
-              children.add(
-                IconButton(
-                  onPressed: () {
-                    delete();
-                  },
-                  icon: const Icon(Icons.delete_outline),
-                  tooltip: 'Delete',
-                ),
-              );
-            }
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: children,
+              children: [
+                IconButton(
+                  onPressed: () async {
+                    Uri genUrl = await getFileUrl();
+                    launchUrl(genUrl);
+                  },
+                  icon: const Icon(Icons.remove_red_eye_outlined),
+                  tooltip: 'View',
+                ),
+                if (authNotifier.isAdmin || authNotifier.isEditor)
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return changeDocumentDetailsWidget(context);
+                        },
+                      );
+                      refreshDatasource();
+                    },
+                    icon: const Icon(Icons.edit_outlined),
+                    tooltip: 'Edit',
+                  ),
+                if (authNotifier.isAdmin || authNotifier.isEditor)
+                  IconButton(
+                    onPressed: () {
+                      archive();
+                      refreshDatasource();
+                    },
+                    icon: const Icon(Icons.archive_outlined),
+                    tooltip: 'Archive',
+                  ),
+                if (authNotifier.isAdmin)
+                  IconButton(
+                    onPressed: () {
+                      delete();
+                      refreshDatasource();
+                    },
+                    icon: const Icon(Icons.delete_outline),
+                    tooltip: 'Delete',
+                  ),
+              ],
             );
           }),
         ),
@@ -136,111 +123,44 @@ class Document {
     );
   }
 
-  Future<Uri> getFileUrl() async {
-    try {
-      String pathStr = "${id}_$fileName";
-
-      final result = await Amplify.Storage.getUrl(
-        path: StoragePath.fromString(pathStr),
-        options: const StorageGetUrlOptions(
-          pluginOptions: S3GetUrlPluginOptions(
-            validateObjectExistence: true,
-            expiresIn: Duration(days: 1),
-          ),
-        ),
-      ).result;
-      debugPrint('url: ${result.url}');
-      return result.url;
-    } on StorageException catch (e) {
-      debugPrint(e.message);
-      return Uri();
-    }
-  }
-
-  void showChangeDocumentDetails(
-    BuildContext context,
-  ) {
-    AuthNotifier authNotifier =
-        Provider.of<AuthNotifier>(context, listen: false);
-    final formKey = GlobalKey<FormState>();
-    String newFileName = fileName!;
-    final RegExp fileNameRegExp =
-        RegExp(r"""^[^~)(!'*<>:;,?"*|/]+\.[A-Za-z]{2,4}$""");
-    NewDocument newDocument = NewDocument();
-    newDocument.subcategory = subcategory;
-    List<Widget> detailsWidgets = [
-
-      Container(
-        padding: const EdgeInsets.all(8),
-        child: TextFormField(
-          decoration: const InputDecoration(
-            labelText: 'File Name',
-          ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter file name';
-            } else if (!fileNameRegExp.hasMatch(value)) {
-              return 'Please enter a valid file name';
-            }
-            return null;
-          },
-          onSaved: (value) {
-            fileName = value!;
-          },
-        ),
-      ),
-      if (authNotifier.isAdmin)
-        Container(
-          constraints: const BoxConstraints(maxWidth: 400),
-          padding: const EdgeInsets.only(bottom: 8),
-          child: SearchAuthorWidget(
-            customClass: newDocument,
-          ),
-        ),
-      DropdownMenu(
-        dropdownMenuEntries: authNotifier.subcategories.map(
-          (subcategory) {
-            return DropdownMenuEntry(value: subcategory, label: subcategory);
-          },
-        ).toList(),
-        initialSelection: subcategory,
-        enableSearch: true,
-        enabled: true,
-        hintText: "Choose a sub-category",
-        menuHeight: 200,
-        label: const Text("Choose a sub-category"),
-        leadingIcon: const Icon(Icons.search),
-        onSelected: (value) {
-          newDocument.subcategory = value!;
-        },
-      ),
-      Container(
-        constraints: const BoxConstraints(maxWidth: 400),
-        child: MultiSelect(
-          buttonText: const Text("Add aircraft(not working at the moment)"),
-          title: const Text("Add aircraft(not working at the moment)"),
-          onConfirm: (selectedItem) {
-            newDocument.aircraft = List<String>.from(selectedItem).join(',');
-          },
-          items: authNotifier.aircraft.map(
-            (aircraft) {
-              return MultiSelectItem(aircraft, aircraft);
-            },
-          ).toList(),
-          initialValue:
-              aircraft?.split(',').map((item) => item.trim()).toList() ?? [],
-        ),
-      )
-    ];
-    showDialog(
-      context: context,
-      builder: (context) {
+  Widget changeDocumentDetailsWidget(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (context) => DocumentNotifier(),
+      builder: (context, child) {
+        AuthNotifier authNotifier =
+            Provider.of<AuthNotifier>(context, listen: false);
+        final formKey = GlobalKey<FormState>();
+        DocumentNotifier newDocument =
+            Provider.of<DocumentNotifier>(context, listen: false);
         return AlertDialog(
+          title: const Text("Change Document Details"),
           content: Form(
             key: formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: detailsWidgets,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: SearchAuthorWidget(
+                    result: newDocument.results,
+                    enabled: authNotifier.isAdmin || authNotifier.isEditor,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const ChooseCategory(),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: ChooseAircraft(
+                    initialValue: aircraft
+                            ?.split(',')
+                            .map((item) => item.trim())
+                            .toList() ??
+                        [],
+                  ),
+                )
+              ],
             ),
           ),
           actions: [
@@ -251,18 +171,20 @@ class Document {
             ),
             // cancel
             TextButton(
-              onPressed: () => replaceFile(),
+              onPressed: () {
+                // TODO: need to fix logic
+              },
               child: const Text('Replace File'),
             ),
             // apply
             TextButton(
               // apply edit
               onPressed: () {
-                if (newDocument.subcategory != null &&
+                if (newDocument.results['subcategory'] != null &&
                     formKey.currentState!.validate()) {
                   formKey.currentState!.save();
-                  newDocument.author ??= authNotifier.email;
-                  changeDocumentDetails(newFileName, newDocument);
+                  newDocument.results['author'] ??= authNotifier.email;
+                  changeDocumentDetails(newDocument);
                   Navigator.pop(context, 'Apply');
                 }
               },
@@ -274,18 +196,12 @@ class Document {
     );
   }
 
-  Future<void> changeDocumentDetails(
-      String fileName, NewDocument newDocument) async {
+  Future<void> changeDocumentDetails(DocumentNotifier newDocument) async {
     try {
       Map<String, dynamic> body = {
         'document_id': id,
-        'file_name': fileName,
-        'email': newDocument.author,
-        'subcategory': newDocument.subcategory,
       };
-      if (newDocument.aircraft?.isNotEmpty ?? false) {
-        body['aircraft'] = newDocument.aircraft;
-      }
+      body.addAll(newDocument.results);
       debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/documents',
           apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
@@ -293,7 +209,7 @@ class Document {
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
       int rawData = jsonDecode(jsonStr);
-      archived = !archived!;
+      archived = !archived;
       debugPrint("archive: $rawData");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
@@ -304,9 +220,9 @@ class Document {
   }
 
   Future<void> replaceFile() async {
-    assert(fileName != null);
+    // TODO: need to fix logic
     String pathStr = "${id}_$fileName";
-    String extention = p.extension(fileName!).substring(1);
+    String extention = p.extension(fileName).substring(1);
     // Select a file from the device
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -339,6 +255,27 @@ class Document {
     }
   }
 
+  Future<Uri> getFileUrl() async {
+    try {
+      String pathStr = "${id}_$fileName";
+
+      final result = await Amplify.Storage.getUrl(
+        path: StoragePath.fromString(pathStr),
+        options: const StorageGetUrlOptions(
+          pluginOptions: S3GetUrlPluginOptions(
+            validateObjectExistence: true,
+            expiresIn: Duration(days: 1),
+          ),
+        ),
+      ).result;
+      debugPrint('url: ${result.url}');
+      return result.url;
+    } on StorageException catch (e) {
+      debugPrint(e.message);
+      return Uri();
+    }
+  }
+
   Future<void> renameFile(String newFileName) async {
     try {
       String oldPathStr = "${id}_$fileName";
@@ -361,7 +298,7 @@ class Document {
   Future<void> archive() async {
     try {
       Map<String, dynamic> body = {
-        'archived': !archived!,
+        'archived': !archived,
         'document_id': id,
       };
       debugPrint(body.toString());
@@ -371,7 +308,7 @@ class Document {
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
       int rawData = jsonDecode(jsonStr);
-      archived = !archived!;
+      archived = !archived;
       debugPrint("archive: $rawData");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
