@@ -10,22 +10,26 @@ class SearchAuthorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
     debugPrint(authNotifier.staff.toString());
-    return DropdownMenu(
-      dropdownMenuEntries: authNotifier.staff.map(
-        (staff) {
-          return DropdownMenuEntry(label: staff, value: staff);
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      child: DropdownMenu(
+        dropdownMenuEntries: authNotifier.staff.map(
+          (staff) {
+            return DropdownMenuEntry(label: staff, value: staff);
+          },
+        ).toList(),
+        enableFilter: true,
+        enabled: enabled,
+        menuHeight: 200,
+        initialSelection: authNotifier.email,
+        label: const Text("Author"),
+        hintText: "Please enter the author",
+        leadingIcon: const Icon(Icons.search),
+        onSelected: (value) {
+          result['author'] = value!;
         },
-      ).toList(),
-      enableFilter: true,
-      enabled: enabled,
-      menuHeight: 200,
-      initialSelection: authNotifier.email,
-      label: const Text("Author"),
-      hintText: "Please enter the author",
-      leadingIcon: const Icon(Icons.search),
-      onSelected: (value) {
-        result['author'] = value!;
-      },
+        expandedInsets: EdgeInsets.zero,
+      ),
     );
   }
 }

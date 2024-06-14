@@ -31,9 +31,13 @@ class DocumentAPI extends DataTableSourceAsync {
   Future<void> fetchData(
       int startIndex, int count, CustomTableFilter filter) async {
     try {
+      if (!filter.filterResults.containsKey('sort_column')) {
+        filter.filterResults['sort_column'] = 'created_at';
+        filter.filterResults['asc'] = false;
+      }
       Map<String, String> queryParameters = {
-        "offset": startIndex.toString(),
-        "limit": count.toString()
+        'offset': startIndex.toString(),
+        'limit': count.toString()
       };
       queryParameters.addAll(filter.toJSON());
       debugPrint(queryParameters.toString());
@@ -92,12 +96,12 @@ class DocumentAPI extends DataTableSourceAsync {
         reverse: true,
         child: Builder(builder: (context) {
           AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
-          _filters.filterResult.addAll({
+          _filters.filterResults.addAll({
             // 'limit_aircraft': staff.aircraft,
             // 'limit_subcategories': staff.subcategories,
             // 'limit_roles': staff.roles,
             'limit_categories': authNotifier.categories,
-            'limit_author': [authNotifier.email]
+            'limit_author': authNotifier.email,
           });
           return Row(
             children: [

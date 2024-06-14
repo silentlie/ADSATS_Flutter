@@ -53,7 +53,7 @@ class FilterBy extends StatelessWidget {
   ];
 
   List<Widget> getFilterContent(
-      BuildContext context, Map<String, List<String>> filterResult) {
+      BuildContext context, Map<String, dynamic> filterResult) {
     AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
     List<Widget> filterContent = [];
 
@@ -70,7 +70,7 @@ class FilterBy extends StatelessWidget {
           onConfirm: (selectedOptions) {
             filterResult["authors"] = List<String>.from(selectedOptions);
           },
-          initialValue: filters.filterResult["authors"] ?? [],
+          initialValue: filters.filterResults["authors"] ?? [],
         ),
       );
     }
@@ -88,7 +88,7 @@ class FilterBy extends StatelessWidget {
           onConfirm: (selectedOptions) {
             filterResult["aircraft"] = List<String>.from(selectedOptions);
           },
-          initialValue: filters.filterResult["aircraft"] ?? [],
+          initialValue: filters.filterResults["aircraft"] ?? [],
         ),
       );
     }
@@ -106,7 +106,7 @@ class FilterBy extends StatelessWidget {
           onConfirm: (selectedOptions) {
             filterResult["roles"] = List<String>.from(selectedOptions);
           },
-          initialValue: filters.filterResult["roles"] ?? [],
+          initialValue: filters.filterResults["roles"] ?? [],
         ),
       );
     }
@@ -124,7 +124,7 @@ class FilterBy extends StatelessWidget {
           onConfirm: (selectedOptions) {
             filterResult["categories"] = List<String>.from(selectedOptions);
           },
-          initialValue: filters.filterResult["categories"] ?? [],
+          initialValue: filters.filterResults["categories"] ?? [],
         ),
       );
     }
@@ -142,7 +142,7 @@ class FilterBy extends StatelessWidget {
           onConfirm: (selectedOptions) {
             filterResult["subcategories"] = List<String>.from(selectedOptions);
           },
-          initialValue: filters.filterResult["subcategories"] ?? [],
+          initialValue: filters.filterResults["subcategories"] ?? [],
         ),
       );
     }
@@ -160,42 +160,28 @@ class FilterBy extends StatelessWidget {
           onConfirm: (selectedOptions) {
             filterResult["categories"] = List<String>.from(selectedOptions);
           },
-          initialValue: filters.filterResult["categories"] ?? [],
+          initialValue: filters.filterResults["categories"] ?? [],
         ),
       );
     }
 
     if (filterByArchived) {
       filterContent.add(
-        MultiSelect(
-          buttonText: const Text("Filter by archived"),
-          title: const Text("Filter by archived"),
-          items: [
-            MultiSelectItem(true, "True"),
-            MultiSelectItem(false, "False")
-          ],
-          onConfirm: (selectedOptions) {
-            if (selectedOptions.length != 2) {
-              filterResult["archived"] = selectedOptions
-                  .map((boolValue) => boolValue.toString())
-                  .toList();
-            } else {
-              filterResult["archived"] = [];
-            }
-          },
-          initialValue: filters.filterResult["archived"]?.map(
-                (str) {
-                  switch (str) {
-                    case 'true':
-                      return true;
-                    case 'false':
-                      return false;
-                    default:
-                      return null;
-                  }
-                },
-              ).toList() ??
-              [false],
+        Container(
+          padding: const EdgeInsets.all(8),
+          child: DropdownMenu(
+            dropdownMenuEntries: const [
+              DropdownMenuEntry(value: false, label: "False"),
+              DropdownMenuEntry(value: true, label: "True"),
+              DropdownMenuEntry(value: null, label: "All"),
+            ],
+            onSelected: (value) {
+              filterResult["archived"] = value;
+            },
+            initialSelection: filters.filterResults["archived"] as bool?,
+            expandedInsets: EdgeInsets.zero,
+            requestFocusOnTap: false,
+          ),
         ),
       );
     }
@@ -215,7 +201,7 @@ class FilterBy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // result of filter before click apply
-    Map<String, List<String>> filterResult = {};
+    Map<String, dynamic> filterResult = {};
     // filter button, the visual can be customised
     return ElevatedButton(
       onPressed: () {
@@ -241,7 +227,7 @@ class FilterBy extends StatelessWidget {
                 // apply
                 TextButton(
                   onPressed: () {
-                    filters.filterResult.addAll(filterResult);
+                    filters.filterResults.addAll(filterResult);
                     // refresh table based on filter
                     refreshDatasource();
                     Navigator.pop(context, 'Apply');

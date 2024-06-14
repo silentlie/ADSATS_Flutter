@@ -1,14 +1,8 @@
 part of 'abstract_data_table_async.dart';
 
-class MutableDateTimeRange {
-  // this class was created because DateTimeRange is immutable class
-  MutableDateTimeRange([this.dateTimeRange]);
-  DateTimeRange? dateTimeRange;
-}
-
 class DateTimeRangePicker extends StatefulWidget {
   const DateTimeRangePicker({super.key, required this.filterResult});
-  final Map<String, List<String>> filterResult;
+  final Map<String, dynamic> filterResult;
 
   @override
   State<DateTimeRangePicker> createState() => _DateTimeRangePickerState();
@@ -18,6 +12,9 @@ class _DateTimeRangePickerState extends State<DateTimeRangePicker> {
   DateTimeRange? _dateTimeRange;
   @override
   Widget build(BuildContext context) {
+    if (widget.filterResult['created_at'] is DateTimeRange?) {
+      _dateTimeRange = widget.filterResult['created_at'];
+    }
     return ElevatedButton(
       onPressed: () async {
         _dateTimeRange = await showDateRangePicker(
@@ -39,10 +36,7 @@ class _DateTimeRangePickerState extends State<DateTimeRangePicker> {
           },
         );
         if (_dateTimeRange != null) {
-          widget.filterResult["create_at"] = [
-            _dateTimeRange!.start.toIso8601String(),
-            _dateTimeRange!.end.toIso8601String()
-          ];
+          widget.filterResult["create_at"] = _dateTimeRange;
         }
         setState(() {});
       },

@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:adsats_flutter/helper/table/abstract_data_table_async.dart';
+import 'package:wrapfit/wrapfit.dart';
 
 part 'documents_api.dart';
 part 'add_a_document.dart';
@@ -139,26 +140,17 @@ class Document {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: SearchAuthorWidget(
-                    result: newDocument.results,
-                    enabled: authNotifier.isAdmin || authNotifier.isEditor,
-                  ),
+                SearchAuthorWidget(
+                  result: newDocument.results,
+                  enabled: authNotifier.isAdmin || authNotifier.isEditor,
                 ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: const ChooseCategory(),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: ChooseAircraft(
-                    initialValue: aircraft
-                            ?.split(',')
-                            .map((item) => item.trim())
-                            .toList() ??
-                        [],
-                  ),
+                const ChooseCategory(),
+                ChooseAircraft(
+                  initialValue: aircraft
+                          ?.split(',')
+                          .map((item) => item.trim())
+                          .toList() ??
+                      [],
                 )
               ],
             ),

@@ -54,23 +54,32 @@ class AddADocumentBody extends StatelessWidget {
           ],
         ),
         const Divider(),
-        Wrap(
+        Wrap2(
           children: [
-            if (authNotifier.isAdmin)
-              Container(
-                padding: const EdgeInsets.all(8),
+            Wrapped(
+              fit: WrapFit.runLoose,
+              child: Container(
+                constraints: const BoxConstraints(minWidth: 400),
                 child: SearchAuthorWidget(
                   result: newDocument.results,
+                  enabled: authNotifier.isAdmin || authNotifier.isEditor,
                 ),
               ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              child: const ChooseCategory(),
             ),
-            Container(
-              constraints: const BoxConstraints(maxWidth: 400),
-              child: const ChooseAircraft(
-                initialValue: [],
+            Wrapped(
+              fit: WrapFit.runLoose,
+              child: Container(
+                constraints: const BoxConstraints(minWidth: 400),
+                child: const ChooseCategory(),
+              ),
+            ),
+            Wrapped(
+              fit: WrapFit.runLoose,
+              child: Container(
+                constraints: const BoxConstraints(minWidth: 400),
+                child: const ChooseAircraft(
+                  initialValue: [],
+                ),
               ),
             )
           ],

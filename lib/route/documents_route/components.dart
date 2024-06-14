@@ -35,22 +35,28 @@ class ChooseCategory extends StatelessWidget {
     DocumentNotifier newDocument = Provider.of<DocumentNotifier>(context);
     AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
     newDocument.results['subcategory'] = authNotifier.subcategories[0];
-    return DropdownMenu(
-      dropdownMenuEntries: authNotifier.subcategories.map(
-        (role) {
-          return DropdownMenuEntry(value: role, label: role);
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: DropdownMenu(
+        inputDecorationTheme:
+            const InputDecorationTheme(border: OutlineInputBorder()),
+        dropdownMenuEntries: authNotifier.subcategories.map(
+          (role) {
+            return DropdownMenuEntry(value: role, label: role);
+          },
+        ).toList(),
+        enableSearch: true,
+        enabled: true,
+        hintText: "Choose a sub-category",
+        menuHeight: 200,
+        label: const Text("Choose a sub-category"),
+        leadingIcon: const Icon(Icons.search),
+        onSelected: (value) {
+          newDocument.results['subcategory'] = value!;
         },
-      ).toList(),
-      enableSearch: true,
-      enabled: true,
-      hintText: "Choose a sub-category",
-      menuHeight: 200,
-      label: const Text("Choose a sub-category"),
-      leadingIcon: const Icon(Icons.search),
-      onSelected: (value) {
-        newDocument.results['subcategory'] = value!;
-      },
-      initialSelection: authNotifier.subcategories[0],
+        initialSelection: authNotifier.subcategories[0],
+        expandedInsets: EdgeInsets.zero,
+      ),
     );
   }
 }
