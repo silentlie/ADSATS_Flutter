@@ -1,6 +1,8 @@
 import 'package:adsats_flutter/helper/search_file_widget.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/hazard_report/hazard_report_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wrapfit/wrapfit.dart';
 
 part 'safety_notice_class.dart';
 
@@ -27,29 +29,17 @@ class SafetyNoticeWidget extends StatelessWidget {
           ),
         ),
         const Divider(),
+        Container(
+          padding: const EdgeInsets.only(left: 8),
+          alignment: Alignment.centerLeft,
+          child: const Text(
+            'Add recipients by:',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
         recipients,
         const Divider(),
-        Wrap(
-          children: [
-            Container(
-              constraints: const BoxConstraints(minWidth: 400, maxWidth: 650),
-              child: SearchAuthorWidget(
-                customClass: safetyNotice,
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              constraints: const BoxConstraints(minWidth: 400, maxWidth: 650),
-              child: const TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  label: Text('Report Number'),
-                  enabled: false,
-                ),
-              ),
-            ),
-          ],
-        ),
+        AuthorAndDateFormWidget(safetyNotice: safetyNotice),
         Container(
           padding: const EdgeInsets.all(5),
           child: const TextField(
@@ -127,6 +117,47 @@ class SafetyNoticeWidget extends StatelessWidget {
             ),
           ],
         ),
+      ],
+    );
+  }
+}
+
+class AuthorAndDateFormWidget extends StatelessWidget {
+  const AuthorAndDateFormWidget({
+    super.key,
+    required this.safetyNotice,
+  });
+
+  final SafetyNotice safetyNotice;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap2(
+      children: [
+        Wrapped(
+          fit: WrapFit.runLoose,
+          child: Container(
+            constraints: const BoxConstraints(minWidth: 400, maxWidth: 700),
+            child: SearchAuthorWidget(
+              customClass: safetyNotice,
+            ),
+          ),
+        ),
+        Wrapped(
+          fit: WrapFit.runLoose,
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            constraints: const BoxConstraints(minWidth: 200, maxWidth: 325),
+            child: const TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                label: Text('Report Number'),
+                enabled: false,
+              ),
+            ),
+          ),
+        ),
+        const Wrapped(fit: WrapFit.runLoose, child: DateFormField())
       ],
     );
   }

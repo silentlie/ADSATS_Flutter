@@ -11,6 +11,7 @@ class _RiskSeverityWidgetState extends State<RiskSeverityWidget> {
   @override
   Widget build(BuildContext context) {
     return const Wrap(
+      alignment: WrapAlignment.center,
       children: [
         SeverityOfConsequenceWidget(),
         LikelihoodofOccurrenceWidget(),
@@ -26,42 +27,45 @@ class RiskSeverityResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     RiskSeverity riskSeverity = Provider.of<RiskSeverity>(context);
-    return Row(
-      children: [
-        const Text(
-          'Risk Severity:',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        IconButton(
-          icon: const Icon(
-            Icons.info_outline,
-            size: 20,
-          ),
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                      content: Image.asset('risk-severity.png'),
-                    ));
-          },
-        ),
-        Container(
-          padding: const EdgeInsets.all(8),
-          width: 200,
-          child: TextField(
-            controller: TextEditingController(text: riskSeverity.getText()),
-            enabled: false,
-            readOnly: true,
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              fillColor: riskSeverity.getColor(),
-              filled: true,
+    return Container(
+      padding: const EdgeInsets.all(8),
+      child: Row(
+        children: [
+          const Text(
+            'Risk Severity:',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
             ),
           ),
-        )
-      ],
+          IconButton(
+            icon: const Icon(
+              Icons.info_outline,
+              size: 20,
+            ),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        content: Image.asset('risk-severity.png'),
+                      ));
+            },
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            width: 200,
+            child: TextField(
+              controller: TextEditingController(text: riskSeverity.getText()),
+              enabled: false,
+              readOnly: true,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                fillColor: riskSeverity.getColor(),
+                filled: true,
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
@@ -101,7 +105,7 @@ class SeverityOfConsequenceWidget extends StatelessWidget {
     ];
     RiskSeverity riskSeverity = Provider.of<RiskSeverity>(context);
     return Container(
-      constraints: const BoxConstraints(minWidth: 650),
+      constraints: const BoxConstraints(minWidth: 500, maxWidth: 650),
       padding: const EdgeInsets.all(8),
       child: Column(
         children: [
@@ -160,7 +164,7 @@ class LikelihoodofOccurrenceWidget extends StatelessWidget {
     ];
     RiskSeverity riskSeverity = Provider.of<RiskSeverity>(context);
     return Container(
-      constraints: const BoxConstraints(minWidth: 650),
+      constraints: const BoxConstraints(minWidth: 500, maxWidth: 650),
       padding: const EdgeInsets.all(8),
       child: Column(
         children: [

@@ -79,7 +79,8 @@ class _SearchAuthorWidgetState extends State<SearchAuthorWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(minWidth: 400, maxWidth: 650),
+      height: 60,
+      constraints: const BoxConstraints(minWidth: 400, maxWidth: 700),
       padding: const EdgeInsets.all(8),
       child: SearchAnchor(
         builder: (context, controller) {

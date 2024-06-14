@@ -2,6 +2,7 @@ import 'package:adsats_flutter/helper/search_file_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:wrapfit/wrapfit.dart';
 
 part 'hazard_report_class.dart';
 part 'hazard_report_tables.dart';
@@ -24,29 +25,58 @@ class HazardReportWidget extends StatelessWidget {
         child: Column(
           children: [
             const Text(
-              'Send a notice - Hazard report',
+              'Hazard report',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const Divider(),
+            Container(
+              padding: const EdgeInsets.only(left: 8),
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                'Add recipients by:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
             recepients,
             const Divider(),
-            Wrap(
+            Wrap2(
               children: [
-                SearchAuthorWidget(
-                  customClass: hazardReport,
-                ),
-                const DateFormField(),
-                const ReportType(),
+                Wrapped(
+                    fit: WrapFit.runLoose,
+                    child: Container(
+                      constraints:
+                          const BoxConstraints(minWidth: 400, maxWidth: 700),
+                      child: SearchAuthorWidget(customClass: hazardReport),
+                    )),
+                Wrapped(
+                    fit: WrapFit.runLoose,
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      constraints:
+                          const BoxConstraints(minWidth: 200, maxWidth: 325),
+                      child: const TextField(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            label: Text('Report Number'),
+                            enabled: false),
+                      ),
+                    )),
+                const Wrapped(
+                  fit: WrapFit.runLoose,
+                  child: DateFormField(),
+                )
               ],
             ),
-            const Row(children: [
+            // const SubjectTextField(),
+            const Wrap2(children: [
               SubjectTextField(),
               LocationTextField(),
+              ReportType()
             ]),
-            const Row(
+            const Wrap2(
               children: [
                 DescribeTextField(),
                 MitigationColumn(),
@@ -128,8 +158,9 @@ class _ReportTypeState extends State<ReportType> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 300,
+    return Container(
+      height: 60,
+      constraints: const BoxConstraints(minWidth: 100, maxWidth: 310),
       child: Row(
         children: [
           const Text(
@@ -184,27 +215,35 @@ class _MitigationState extends State<Mitigation> {
           'Include mitigation comment?',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        Radio(
-            value: IncludeComment.yes,
-            groupValue: _includeComment,
-            onChanged: (IncludeComment? value) {
-              setState(() {
-                _includeComment = value;
-              });
-            }),
-        const Text(
-          'Yes',
+        Row(
+          children: [
+            Radio(
+                value: IncludeComment.yes,
+                groupValue: _includeComment,
+                onChanged: (IncludeComment? value) {
+                  setState(() {
+                    _includeComment = value;
+                  });
+                }),
+            const Text(
+              'Yes',
+            ),
+          ],
         ),
-        Radio(
-            value: IncludeComment.no,
-            groupValue: _includeComment,
-            onChanged: (IncludeComment? value) {
-              setState(() {
-                _includeComment = value;
-              });
-            }),
-        const Text(
-          'No',
+        Row(
+          children: [
+            Radio(
+                value: IncludeComment.no,
+                groupValue: _includeComment,
+                onChanged: (IncludeComment? value) {
+                  setState(() {
+                    _includeComment = value;
+                  });
+                }),
+            const Text(
+              'No',
+            ),
+          ],
         ),
       ],
     );
@@ -218,16 +257,14 @@ class MitigationColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      flex: 2,
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        child: const Column(
-          children: [
-            Mitigation(),
-            MitigationTextField(),
-          ],
-        ),
+    return Container(
+      constraints: const BoxConstraints(minWidth: 400, maxWidth: 650),
+      padding: const EdgeInsets.all(5),
+      child: const Column(
+        children: [
+          Mitigation(),
+          MitigationTextField(),
+        ],
       ),
     );
   }
@@ -258,9 +295,10 @@ class DescribeTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      flex: 2,
+    return Wrapped(
+      fit: WrapFit.runLoose,
       child: Container(
+        constraints: const BoxConstraints(minWidth: 400, maxWidth: 650),
         padding: const EdgeInsets.all(5),
         child: const TextField(
           decoration: InputDecoration(
@@ -281,15 +319,13 @@ class LocationTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      flex: 2,
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        child: const TextField(
-          decoration: InputDecoration(
-            label: Text('Location'),
-            border: OutlineInputBorder(),
-          ),
+    return Container(
+      constraints: const BoxConstraints(minWidth: 400, maxWidth: 500),
+      padding: const EdgeInsets.all(5),
+      child: const TextField(
+        decoration: InputDecoration(
+          label: Text('Location'),
+          border: OutlineInputBorder(),
         ),
       ),
     );
@@ -303,14 +339,12 @@ class SubjectTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      flex: 2,
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        child: const TextField(
-          decoration: InputDecoration(
-              label: Text('Subject'), border: OutlineInputBorder()),
-        ),
+    return Container(
+      constraints: const BoxConstraints(minWidth: 400, maxWidth: 500),
+      padding: const EdgeInsets.all(5),
+      child: const TextField(
+        decoration: InputDecoration(
+            label: Text('Subject'), border: OutlineInputBorder()),
       ),
     );
   }

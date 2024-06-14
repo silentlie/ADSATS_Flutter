@@ -1,4 +1,6 @@
 import 'package:adsats_flutter/helper/search_file_widget.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/hazard_report/hazard_report_widget.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/safety_notice/safety_notice_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wrapfit/wrapfit.dart';
@@ -30,6 +32,14 @@ class NoticeWidget extends StatelessWidget {
           ),
         ),
         const Divider(),
+        Container(
+          padding: const EdgeInsets.only(left: 8),
+          alignment: Alignment.centerLeft,
+          child: const Text(
+            'Add recipients by:',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
         recepients,
         const Divider(),
         Wrap2(
@@ -37,7 +47,7 @@ class NoticeWidget extends StatelessWidget {
             Wrapped(
               fit: WrapFit.runLoose,
               child: Container(
-                constraints: const BoxConstraints(minWidth: 400),
+                constraints: const BoxConstraints(minWidth: 400, maxWidth: 700),
                 child: SearchAuthorWidget(
                   customClass: noticeToCrew,
                 ),
@@ -47,7 +57,7 @@ class NoticeWidget extends StatelessWidget {
               fit: WrapFit.runLoose,
               child: Container(
                 padding: const EdgeInsets.all(8),
-                constraints: const BoxConstraints(minWidth: 400),
+                constraints: const BoxConstraints(minWidth: 200, maxWidth: 325),
                 child: const TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -57,6 +67,10 @@ class NoticeWidget extends StatelessWidget {
                 ),
               ),
             ),
+            const Wrapped(
+              fit: WrapFit.runLoose,
+              child: DateFormField(),
+            )
           ],
         ),
         Container(

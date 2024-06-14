@@ -17,13 +17,13 @@ class RecepientsWidget extends StatelessWidget {
         Wrapped(
           fit: WrapFit.runLoose,
           child: Container(
-            constraints: const BoxConstraints(minWidth: 400, maxWidth: 500),
+            constraints: const BoxConstraints(minWidth: 400, maxWidth: 450),
             child: MultiSelect(
               buttonText: const Text(
-                "Add recipient",
+                "Email",
               ),
               title: const Text(
-                "Add recipients",
+                "Email",
               ),
               onConfirm: (selectedOptions) {
                 recipientsResult['emails'] = List<String>.from(selectedOptions);
@@ -40,10 +40,10 @@ class RecepientsWidget extends StatelessWidget {
         Wrapped(
           fit: WrapFit.runLoose,
           child: Container(
-            constraints: const BoxConstraints(minWidth: 400, maxWidth: 500),
+            constraints: const BoxConstraints(minWidth: 400, maxWidth: 450),
             child: MultiSelect(
-              buttonText: const Text("Add roles"),
-              title: const Text("Add roles"),
+              buttonText: const Text("Role"),
+              title: const Text("Role"),
               onConfirm: (selectedOptions) {
                 recipientsResult['roles'] = List<String>.from(selectedOptions);
               },
@@ -59,10 +59,10 @@ class RecepientsWidget extends StatelessWidget {
         Wrapped(
           fit: WrapFit.runLoose,
           child: Container(
-            constraints: const BoxConstraints(minWidth: 400, maxWidth: 500),
+            constraints: const BoxConstraints(minWidth: 400, maxWidth: 450),
             child: MultiSelect(
-              buttonText: const Text("Add aircraft"),
-              title: const Text("Add aircraft"),
+              buttonText: const Text("Aircraft"),
+              title: const Text("Aircraft"),
               onConfirm: (selectedOptions) {
                 recipientsResult['aircraft'] =
                     List<String>.from(selectedOptions);
