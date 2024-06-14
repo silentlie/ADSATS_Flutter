@@ -173,7 +173,7 @@ class Aircraft {
         "aircraft_id": _id,
         "name": name,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/aircrafts',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
@@ -195,7 +195,7 @@ class Aircraft {
         'archived': !_archived,
         'aircraft_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/aircrafts',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
@@ -217,7 +217,7 @@ class Aircraft {
       Map<String, dynamic> body = {
         'aircraft_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.delete('/aircrafts',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 

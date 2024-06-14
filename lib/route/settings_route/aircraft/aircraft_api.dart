@@ -44,7 +44,7 @@ class AircraftAPI extends DataTableSourceAsync {
 
       _aircraft = [for (var row in rowsData) Aircraft.fromJSON(row)];
       debugPrint(_aircraft.length.toString());
-      debugPrint("finished fetch table aircraft");
+      // debugPrint("finished fetch table aircraft");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
     } on Error catch (e) {
@@ -211,7 +211,10 @@ class AircraftAPI extends DataTableSourceAsync {
                         },
                         label: createAt == null
                             ? const Text("Pick start date")
-                            : Text(createAt!.toIso8601String(),),
+                            : Text(
+                                createAt!.toIso8601String(),
+                              ),
+                        icon: const Icon(Icons.edit_calendar_outlined),
                       ),
                     ),
                     if (dateError != null)
@@ -247,13 +250,13 @@ class AircraftAPI extends DataTableSourceAsync {
                 const SizedBox(width: 10),
                 ElevatedButton.icon(
                   onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      if (createAt == null) {
-                        setState(() {
-                          dateError = 'Please pick a date';
-                        });
-                        return;
-                      }
+                    if (createAt == null) {
+                      setState(() {
+                        dateError = 'Please pick a date';
+                      });
+                      return;
+                    }
+                    if (formKey.currentState!.validate() && createAt != null) {
                       formKey.currentState!.save();
                       addNewAircraft(aircraftName, createAt!, archived, emails);
                       Navigator.pop(context, 'Submit');
@@ -292,7 +295,7 @@ class AircraftAPI extends DataTableSourceAsync {
       if (emails.isNotEmpty) {
         body["staff"] = emails;
       }
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.post('/aircrafts',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 

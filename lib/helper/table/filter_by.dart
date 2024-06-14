@@ -181,6 +181,10 @@ class FilterBy extends StatelessWidget {
             initialSelection: filters.filterResults["archived"] as bool?,
             expandedInsets: EdgeInsets.zero,
             requestFocusOnTap: false,
+            hintText: "Archived",
+            label: const Text(
+              "Archived",
+            ),
           ),
         ),
       );

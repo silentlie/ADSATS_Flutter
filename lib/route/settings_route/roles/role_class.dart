@@ -203,7 +203,7 @@ class Role {
         "role": name,
         "description": description
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/roles',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
@@ -225,7 +225,7 @@ class Role {
         'archived': !_archived,
         'role_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/roles',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
@@ -247,7 +247,7 @@ class Role {
       Map<String, dynamic> body = {
         'role_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.delete('/roles',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 

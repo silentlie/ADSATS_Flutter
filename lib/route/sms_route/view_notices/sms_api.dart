@@ -31,12 +31,16 @@ class NoticeAPI extends DataTableSourceAsync {
   Future<void> fetchData(
       int startIndex, int count, CustomTableFilter filter) async {
     try {
+      if (!filter.filterResults.containsKey('sort_column')) {
+        filter.filterResults['sort_column'] = 'notice_at';
+        filter.filterResults['asc'] = false;
+      }
       Map<String, String> queryParameters = {
         "offset": startIndex.toString(),
         "limit": count.toString()
       };
       queryParameters.addAll(filter.toJSON());
-      debugPrint(queryParameters.toString());
+      // debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/notices',
           apiName: 'AmplifyAviationAPI', queryParameters: queryParameters);
 
@@ -47,8 +51,7 @@ class NoticeAPI extends DataTableSourceAsync {
       final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
 
       _notices = [for (var row in rowsData) Notice.fromJSON(row)];
-      debugPrint(_notices.length.toString());
-      debugPrint("finished fetch table data");
+      // debugPrint("finished fetch table data");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
     } on Error catch (e) {
@@ -90,6 +93,7 @@ class NoticeAPI extends DataTableSourceAsync {
         reverse: true,
         child: Builder(builder: (context) {
           AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
+          _filters.filterResults['staff_id'] = 2;
           return Row(
             children: [
               IconButton(

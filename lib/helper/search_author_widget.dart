@@ -9,7 +9,6 @@ class SearchAuthorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
-    debugPrint(authNotifier.staff.toString());
     return Container(
       padding: const EdgeInsets.all(8.0),
       child: DropdownMenu(

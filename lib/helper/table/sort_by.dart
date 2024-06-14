@@ -33,7 +33,6 @@ class SortBy extends StatelessWidget {
                               value: e.value, label: e.key);
                         },
                       ).toList(),
-                      enableFilter: true,
                       hintText: "Select a column to sort",
                       label: const Text(
                         "Select a column to sort",

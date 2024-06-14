@@ -64,7 +64,7 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
           _rowsPerPage = value!;
         },
         onPageChanged: (rowIndex) {
-          debugPrint((rowIndex / _rowsPerPage).toString());
+          // debugPrint((rowIndex / _rowsPerPage).toString());
         },
         // can add more widget if need
         header: dataSource.header,
@@ -127,7 +127,7 @@ abstract class DataTableSourceAsync extends AsyncDataTableSource {
       AsyncRowsResponse response = AsyncRowsResponse(totalRecords, rows);
       return response;
     } on Error catch (e) {
-      safePrint('Error: $e');
+      debugPrint('Error: $e');
       rethrow;
     }
   }

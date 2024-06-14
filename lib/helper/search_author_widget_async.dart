@@ -22,7 +22,7 @@ class _SearchAuthorWidgetAsyncState extends State<SearchAuthorWidgetAsync> {
         "search": "%$search%",
         "archived": "false",
       };
-      debugPrint(queryParameters.toString());
+      // debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/staff',
           apiName: 'AmplifyFilterAPI', queryParameters: queryParameters);
 
@@ -31,7 +31,7 @@ class _SearchAuthorWidgetAsyncState extends State<SearchAuthorWidgetAsync> {
       String jsonStr = response.decodeBody();
       Map<String, dynamic> rawData = jsonDecode(jsonStr);
       final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
-      debugPrint("finished fetch file name");
+      // debugPrint("finished fetch file name");
       return rowsData.map((row) {
         return row['email'] as String;
       });

@@ -35,7 +35,7 @@ class StaffApi extends DataTableSourceAsync {
         "limit": count.toString()
       };
       queryParameters.addAll(filter.toJSON());
-      debugPrint(queryParameters.toString());
+      // debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/staff',
           apiName: 'AmplifyAdminAPI', queryParameters: queryParameters);
 
@@ -46,7 +46,7 @@ class StaffApi extends DataTableSourceAsync {
       final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
 
       _staff = [for (var row in rowsData) Staff.fromJSON(row)];
-      debugPrint("finished fetch table staff");
+      // debugPrint("finished fetch table staff");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
     } on Error catch (e) {
@@ -164,7 +164,7 @@ class AddStaff extends StatelessWidget {
       Map<String, List<MultiSelectItem>> mappedResults =
           Map.fromIterables(keys, values);
       // Process the results
-      safePrint("did fetch Filter");
+      debugPrint("did fetch Filter");
       return mappedResults;
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
@@ -375,7 +375,7 @@ class AddStaff extends StatelessWidget {
       if (result.isNotEmpty) {
         body.addAll(result);
       }
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.post('/staff',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 

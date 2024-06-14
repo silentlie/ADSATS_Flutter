@@ -26,7 +26,7 @@ class SubcategoriesApi extends DataTableSourceAsync {
         "limit": count.toString()
       };
       queryParameters.addAll(filter.toJSON());
-      debugPrint(queryParameters.toString());
+      // debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/sub-categories',
           apiName: 'AmplifyAdminAPI', queryParameters: queryParameters);
 
@@ -280,7 +280,7 @@ class SubcategoriesApi extends DataTableSourceAsync {
         "archived": archived,
         "category": category
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.post('/sub-categories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
@@ -303,7 +303,7 @@ class SubcategoriesApi extends DataTableSourceAsync {
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
-      debugPrint("finished fetch categories str");
+      // debugPrint("finished fetch categories str");
       return List<String>.from(jsonDecode(jsonStr));
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');

@@ -194,7 +194,7 @@ class Document {
         'document_id': id,
       };
       body.addAll(newDocument.results);
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/documents',
           apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
 
@@ -225,7 +225,7 @@ class Document {
     );
 
     if (result == null) {
-      debugPrint('No file selected');
+      // debugPrint('No file selected');
       return;
     }
 
@@ -238,7 +238,7 @@ class Document {
         ),
         path: StoragePath.fromString(pathStr),
         onProgress: (progress) {
-          debugPrint('Fraction completed: ${progress.fractionCompleted}');
+          // debugPrint('Fraction completed: ${progress.fractionCompleted}');
         },
       ).result;
       debugPrint('Successfully uploaded file: ${result.uploadedItem.path}');
@@ -260,7 +260,7 @@ class Document {
           ),
         ),
       ).result;
-      debugPrint('url: ${result.url}');
+      // debugPrint('url: ${result.url}');
       return result.url;
     } on StorageException catch (e) {
       debugPrint(e.message);
@@ -293,7 +293,7 @@ class Document {
         'archived': !archived,
         'document_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/documents',
           apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
 
@@ -316,7 +316,7 @@ class Document {
       Map<String, dynamic> body = {
         'document_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.delete('/documents',
           apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
 

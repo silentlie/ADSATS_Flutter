@@ -110,7 +110,6 @@ class Staff {
       Map<String, String> queryParameters = {
         "email": email,
       };
-      debugPrint(DateTime.now().toIso8601String());
       final restOperation = Amplify.API.get(
         '/staff',
         apiName: 'AmplifyFilterAPI',
@@ -167,7 +166,7 @@ class Staff {
       final mappedResults =
           Map<String, List<MultiSelectItem>>.fromIterables(keys, values);
 
-      safePrint("did fetch Filters");
+      debugPrint("did fetch Filters");
       Map<String, dynamic> staff = await fetchStaffDetails(email);
 
       return {
@@ -287,7 +286,7 @@ class Staff {
                                 },
                               ).toList() ??
                               [];
-                          debugPrint(initialData.toString());
+                          // debugPrint(initialData.toString());
                           // customise for visual, right now
 
                           return Container(
@@ -374,7 +373,7 @@ class Staff {
       if (result.isNotEmpty) {
         body.addAll(result);
       }
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/staff',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
@@ -396,7 +395,7 @@ class Staff {
         'archived': !_archived,
         'staff_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/staff',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
@@ -418,7 +417,7 @@ class Staff {
       Map<String, dynamic> body = {
         'staff_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.delete('/staff',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 

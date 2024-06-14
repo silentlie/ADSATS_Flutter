@@ -228,7 +228,7 @@ class Subcategory {
       if (description != null) {
         body["description"] = description;
       }
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/sub-categories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
@@ -251,7 +251,7 @@ class Subcategory {
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
-      debugPrint("finished fetch categories str");
+      // debugPrint("finished fetch categories str");
       categories = List<String>.from(jsonDecode(jsonStr));
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
@@ -271,7 +271,7 @@ class Subcategory {
         "description": description,
         "category": category
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/sub-categories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
@@ -293,7 +293,7 @@ class Subcategory {
         'archived': !_archived,
         'subcategory_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/sub-categories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
@@ -315,7 +315,7 @@ class Subcategory {
       Map<String, dynamic> body = {
         'subcategory_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.delete('/sub-categories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 

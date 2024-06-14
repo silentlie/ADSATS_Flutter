@@ -40,7 +40,7 @@ class DocumentAPI extends DataTableSourceAsync {
         'limit': count.toString()
       };
       queryParameters.addAll(filter.toJSON());
-      debugPrint(queryParameters.toString());
+      // debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/documents',
           apiName: 'AmplifyAviationAPI', queryParameters: queryParameters);
 
@@ -48,12 +48,9 @@ class DocumentAPI extends DataTableSourceAsync {
       String jsonStr = response.decodeBody();
       Map<String, dynamic> rawData = jsonDecode(jsonStr);
       _totalRecords = rawData["total_records"];
-      debugPrint(_totalRecords.toString());
       final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
 
       _documents = [for (var row in rowsData) Document.fromJSON(row)];
-      debugPrint(_documents.length.toString());
-      debugPrint("finished fetch table data");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
     } on Error catch (e) {

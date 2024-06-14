@@ -162,7 +162,7 @@ class Category {
         "category_id": _id,
         "name": name,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/categories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
@@ -184,7 +184,7 @@ class Category {
         'archived': !_archived,
         'category_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/categories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
@@ -206,7 +206,7 @@ class Category {
       Map<String, dynamic> body = {
         'category_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.delete('/categories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 

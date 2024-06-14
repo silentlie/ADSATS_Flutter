@@ -38,6 +38,7 @@ class AddADocumentBody extends StatelessWidget {
     AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Row(
           children: [
