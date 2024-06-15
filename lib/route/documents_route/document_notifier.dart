@@ -34,7 +34,7 @@ class DocumentNotifier extends ChangeNotifier {
     } on StorageException catch (e) {
       debugPrint(e.message);
     } on ApiException catch (e) {
-      debugPrint('GET call failed: $e');
+      debugPrint('POST request failed: $e');
     } on Error catch (e) {
       debugPrint('Error: $e');
       rethrow;

@@ -35,7 +35,8 @@ class AddADocumentBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DocumentNotifier newDocument = Provider.of<DocumentNotifier>(context);
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
+    AuthNotifier authNotifier =
+        Provider.of<AuthNotifier>(context, listen: false);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -136,7 +137,7 @@ class _DropFileWidgetState extends State<DropFileWidget> {
                       size: 80,
                     ),
                     Text(
-                      'Drop files here',
+                      'Click here to upload files',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -190,6 +191,8 @@ class ButtonsRow extends StatelessWidget {
               context: context,
               builder: (context) {
                 return AlertDialog(
+                  title: const Text("Confirm?"),
+                  content: const Text("Proceed with file upload?"),
                   actions: [
                     // cancel
                     TextButton(
@@ -203,7 +206,7 @@ class ButtonsRow extends StatelessWidget {
                         Navigator.pop(context, 'Apply');
                         context.go('/documents');
                       },
-                      child: const Text('Apply'),
+                      child: const Text('Confirm'),
                     )
                   ],
                 );
