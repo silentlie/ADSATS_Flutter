@@ -11,7 +11,7 @@ class SMSWidget extends StatelessWidget {
     return Center(
       child: Container(
         // specify max Width of document screen
-        constraints: const BoxConstraints(maxWidth: 1500),
+        constraints: const BoxConstraints(maxWidth: 1536.0),
         child: PaginatedDataTableAsync(NoticeAPI()),
       ),
     );

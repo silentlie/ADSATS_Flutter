@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:adsats_flutter/amplify/auth.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'package:adsats_flutter/helper/table/abstract_data_table_async.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:provider/provider.dart';
 
 part 'staff_api.dart';
 
@@ -56,7 +58,7 @@ class Staff {
   }
 
   // can rearrange collumn
-  DataRow toDataRow() {
+  DataRow toDataRow(void Function() refreshDatasource) {
     return DataRow(
       cells: <DataCell>[
         cellFor(firstName),
@@ -67,6 +69,7 @@ class Staff {
         cellFor(roles),
         DataCell(
           Builder(builder: (context) {
+            AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -76,16 +79,22 @@ class Staff {
                 IconButton(
                     onPressed: () {
                       changeDetails(context);
+                      authNotifier.reInitialize();
+                      refreshDatasource();
                     },
                     icon: const Icon(Icons.edit_outlined)),
                 IconButton(
                     onPressed: () {
                       archive();
+                      authNotifier.reInitialize();
+                      refreshDatasource();
                     },
                     icon: const Icon(Icons.archive_outlined)),
                 IconButton(
                     onPressed: () {
                       delete();
+                      authNotifier.reInitialize();
+                      refreshDatasource();
                     },
                     icon: const Icon(Icons.delete_outline)),
               ],
@@ -101,7 +110,6 @@ class Staff {
       Map<String, String> queryParameters = {
         "email": email,
       };
-      debugPrint(DateTime.now().toIso8601String());
       final restOperation = Amplify.API.get(
         '/staff',
         apiName: 'AmplifyFilterAPI',
@@ -158,7 +166,7 @@ class Staff {
       final mappedResults =
           Map<String, List<MultiSelectItem>>.fromIterables(keys, values);
 
-      safePrint("did fetch Filters");
+      debugPrint("did fetch Filters");
       Map<String, dynamic> staff = await fetchStaffDetails(email);
 
       return {
@@ -278,7 +286,7 @@ class Staff {
                                 },
                               ).toList() ??
                               [];
-                          debugPrint(initialData.toString());
+                          // debugPrint(initialData.toString());
                           // customise for visual, right now
 
                           return Container(
@@ -365,7 +373,7 @@ class Staff {
       if (result.isNotEmpty) {
         body.addAll(result);
       }
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/staff',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
@@ -387,7 +395,7 @@ class Staff {
         'archived': !_archived,
         'staff_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/staff',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
@@ -409,7 +417,7 @@ class Staff {
       Map<String, dynamic> body = {
         'staff_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.delete('/staff',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 

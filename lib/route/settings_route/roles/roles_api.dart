@@ -33,7 +33,7 @@ class RolesAPI extends DataTableSourceAsync {
         "limit": count.toString()
       };
       queryParameters.addAll(filter.toJSON());
-      debugPrint(queryParameters.toString());
+      // debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/roles',
           apiName: 'AmplifyAdminAPI', queryParameters: queryParameters);
 
@@ -43,8 +43,7 @@ class RolesAPI extends DataTableSourceAsync {
       _totalRecords = rawData["total_records"];
       final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
       _roles = [for (var row in rowsData) Role.fromJSON(row)];
-      debugPrint(_roles.length.toString());
-      debugPrint("finished fetch table roles");
+      // debugPrint("finished fetch table roles");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
     } on Error catch (e) {
@@ -56,7 +55,7 @@ class RolesAPI extends DataTableSourceAsync {
   @override
   List<DataRow> get rows {
     return _roles.map((notice) {
-      return notice.toDataRow();
+      return notice.toDataRow(refreshDatasource);
     }).toList();
   }
 
@@ -223,7 +222,7 @@ class RolesAPI extends DataTableSourceAsync {
                           if (picked != null && picked != createAt) {
                             setState(() {
                               createAt = picked;
-                              debugPrint(createAt!.toIso8601String());
+                              // debugPrint(createAt!.toIso8601String());
                               dateError = null;
                             });
                           }
@@ -231,6 +230,7 @@ class RolesAPI extends DataTableSourceAsync {
                         label: createAt == null
                             ? const Text("Pick start date")
                             : Text(createAt!.toIso8601String()),
+                        icon: const Icon(Icons.edit_calendar_outlined),
                       ),
                     ),
                     if (dateError != null)
@@ -313,7 +313,7 @@ class RolesAPI extends DataTableSourceAsync {
       if (emails.isNotEmpty) {
         body["staff"] = emails;
       }
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.post('/roles',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 

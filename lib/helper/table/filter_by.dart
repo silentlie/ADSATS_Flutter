@@ -53,13 +53,11 @@ class FilterBy extends StatelessWidget {
   ];
 
   List<Widget> getFilterContent(
-      BuildContext context, Map<String, List<String>> filterResult) {
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
-    List<Widget> filterContent = [];
-
-    if (filterByAuthors) {
-      filterContent.add(
-        MultiSelect(
+      BuildContext context, Map<String, dynamic> filterResult) {
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
+    return [
+      if (filterByAuthors)
+      MultiSelect(
           buttonText: const Text("Filter by authors"),
           title: const Text("Filter by authors"),
           items: authNotifier.staff.map(
@@ -70,14 +68,10 @@ class FilterBy extends StatelessWidget {
           onConfirm: (selectedOptions) {
             filterResult["authors"] = List<String>.from(selectedOptions);
           },
-          initialValue: filters.filterResult["authors"] ?? [],
+          initialValue: filters.filterResults["authors"] ?? [],
         ),
-      );
-    }
-
-    if (filterByAircraft) {
-      filterContent.add(
-        MultiSelect(
+      if (filterByAircraft)
+      MultiSelect(
           buttonText: const Text("Filter by aircraft"),
           title: const Text("Filter by aircraft"),
           items: authNotifier.aircraft.map(
@@ -88,14 +82,10 @@ class FilterBy extends StatelessWidget {
           onConfirm: (selectedOptions) {
             filterResult["aircraft"] = List<String>.from(selectedOptions);
           },
-          initialValue: filters.filterResult["aircraft"] ?? [],
+          initialValue: filters.filterResults["aircraft"] ?? [],
         ),
-      );
-    }
-
-    if (filterByRoles) {
-      filterContent.add(
-        MultiSelect(
+      if (filterByRoles)
+      MultiSelect(
           buttonText: const Text("Filter by roles"),
           title: const Text("Filter by roles"),
           items: authNotifier.roles.map(
@@ -106,14 +96,10 @@ class FilterBy extends StatelessWidget {
           onConfirm: (selectedOptions) {
             filterResult["roles"] = List<String>.from(selectedOptions);
           },
-          initialValue: filters.filterResult["roles"] ?? [],
+          initialValue: filters.filterResults["roles"] ?? [],
         ),
-      );
-    }
-
-    if (filterByCategories) {
-      filterContent.add(
-        MultiSelect(
+      if (filterByCategories)
+      MultiSelect(
           buttonText: const Text("Filter by categories"),
           title: const Text("Filter by categories"),
           items: authNotifier.categories.map(
@@ -124,13 +110,9 @@ class FilterBy extends StatelessWidget {
           onConfirm: (selectedOptions) {
             filterResult["categories"] = List<String>.from(selectedOptions);
           },
-          initialValue: filters.filterResult["categories"] ?? [],
+          initialValue: filters.filterResults["categories"] ?? [],
         ),
-      );
-    }
-
-    if (filterBySubcategories) {
-      filterContent.add(
+        if (filterBySubcategories)
         MultiSelect(
           buttonText: const Text("Filter by subcategories"),
           title: const Text("Filter by subcategories"),
@@ -142,13 +124,9 @@ class FilterBy extends StatelessWidget {
           onConfirm: (selectedOptions) {
             filterResult["subcategories"] = List<String>.from(selectedOptions);
           },
-          initialValue: filters.filterResult["subcategories"] ?? [],
+          initialValue: filters.filterResults["subcategories"] ?? [],
         ),
-      );
-    }
-
-    if (filterByNoticeTypes) {
-      filterContent.add(
+        if (filterByNoticeTypes)
         MultiSelect(
           buttonText: const Text("Filter by notice types"),
           title: const Text("Filter by notice types"),
@@ -160,62 +138,43 @@ class FilterBy extends StatelessWidget {
           onConfirm: (selectedOptions) {
             filterResult["categories"] = List<String>.from(selectedOptions);
           },
-          initialValue: filters.filterResult["categories"] ?? [],
+          initialValue: filters.filterResults["categories"] ?? [],
         ),
-      );
-    }
-
-    if (filterByArchived) {
-      filterContent.add(
-        MultiSelect(
-          buttonText: const Text("Filter by archived"),
-          title: const Text("Filter by archived"),
-          items: [
-            MultiSelectItem(true, "True"),
-            MultiSelectItem(false, "False")
-          ],
-          onConfirm: (selectedOptions) {
-            if (selectedOptions.length != 2) {
-              filterResult["archived"] = selectedOptions
-                  .map((boolValue) => boolValue.toString())
-                  .toList();
-            } else {
-              filterResult["archived"] = [];
-            }
-          },
-          initialValue: filters.filterResult["archived"]?.map(
-                (str) {
-                  switch (str) {
-                    case 'true':
-                      return true;
-                    case 'false':
-                      return false;
-                    default:
-                      return null;
-                  }
-                },
-              ).toList() ??
-              [false],
+        if (filterByArchived)
+        Container(
+          padding: const EdgeInsets.all(8),
+          child: DropdownMenu(
+            dropdownMenuEntries: const [
+              DropdownMenuEntry(value: false, label: "False"),
+              DropdownMenuEntry(value: true, label: "True"),
+              DropdownMenuEntry(value: null, label: "All"),
+            ],
+            onSelected: (value) {
+              filterResult["archived"] = value;
+            },
+            initialSelection: filters.filterResults["archived"] as bool?,
+            expandedInsets: EdgeInsets.zero,
+            requestFocusOnTap: false,
+            hintText: "Archived",
+            label: const Text(
+              "Archived",
+            ),
+          ),
         ),
-      );
-    }
-    if (filterByCreatedAt) {
-      filterContent.add(
+        if (filterByCreatedAt)
         Container(
           padding: const EdgeInsets.all(8),
           child: DateTimeRangePicker(
             filterResult: filterResult,
           ),
         ),
-      );
-    }
-    return filterContent;
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
     // result of filter before click apply
-    Map<String, List<String>> filterResult = {};
+    Map<String, dynamic> filterResult = {};
     // filter button, the visual can be customised
     return ElevatedButton(
       onPressed: () {
@@ -241,7 +200,7 @@ class FilterBy extends StatelessWidget {
                 // apply
                 TextButton(
                   onPressed: () {
-                    filters.filterResult.addAll(filterResult);
+                    filters.filterResults.addAll(filterResult);
                     // refresh table based on filter
                     refreshDatasource();
                     Navigator.pop(context, 'Apply');

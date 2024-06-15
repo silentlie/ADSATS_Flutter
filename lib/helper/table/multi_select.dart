@@ -19,6 +19,10 @@ class MultiSelect extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: MultiSelectDialogField(
+        decoration: BoxDecoration(
+          border: Border.all(),
+          borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+        ),
         buttonText: buttonText,
         items: items,
         initialValue: initialValue,

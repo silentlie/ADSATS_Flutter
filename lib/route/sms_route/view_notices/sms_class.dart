@@ -11,25 +11,6 @@ import 'package:provider/provider.dart';
 part 'sms_api.dart';
 
 class Notice {
-  Notice(
-      {required int id,
-      required bool archived,
-      required String subject,
-      required String category,
-      required String author,
-      DateTime? createdAt,
-      DateTime? deadlineAt,
-      String? documentsID,
-      String? aircraft,
-      bool? resolved})
-      : _id = id,
-        _archived = archived,
-        _subject = subject,
-        _category = category,
-        _author = author,
-        _createdAt = createdAt,
-        _resolved = resolved,
-        _deadlineAt = deadlineAt;
   final int _id;
   bool _archived;
   final String _subject;
@@ -67,7 +48,7 @@ class Notice {
   }
 
   // can rearrange collumn
-  DataRow toDataRow() {
+  DataRow toDataRow(void Function() refreshDatasource) {
     return DataRow(
       cells: <DataCell>[
         cellFor(category),
@@ -95,6 +76,7 @@ class Notice {
                 IconButton(
                   onPressed: () {
                     // TODO: view notice and edit it
+                    refreshDatasource();
                   },
                   icon: const Icon(Icons.edit_outlined),
                   tooltip: 'Edit',
@@ -102,6 +84,7 @@ class Notice {
                 IconButton(
                   onPressed: () {
                     archive();
+                    refreshDatasource();
                   },
                   icon: const Icon(Icons.archive_outlined),
                   tooltip: 'Archive',
@@ -113,6 +96,7 @@ class Notice {
                 IconButton(
                   onPressed: () {
                     delete();
+                    refreshDatasource();
                   },
                   icon: const Icon(Icons.delete_outline),
                   tooltip: 'Delete',
@@ -135,7 +119,7 @@ class Notice {
         'archived': !_archived,
         'notice_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/sms',
           apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
 
@@ -157,7 +141,7 @@ class Notice {
       Map<String, dynamic> body = {
         'notice_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.delete('/sms',
           apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
 

@@ -29,7 +29,7 @@ class CategoriesApi extends DataTableSourceAsync {
         "limit": count.toString()
       };
       queryParameters.addAll(filter.toJSON());
-      debugPrint(queryParameters.toString());
+      // debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/categories',
           apiName: 'AmplifyAdminAPI', queryParameters: queryParameters);
 
@@ -40,7 +40,7 @@ class CategoriesApi extends DataTableSourceAsync {
       final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
 
       _categories = [for (var row in rowsData) Category.fromJSON(row)];
-      debugPrint("finished fetch table categories");
+      // debugPrint("finished fetch table categories");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
     } on Error catch (e) {
@@ -52,7 +52,7 @@ class CategoriesApi extends DataTableSourceAsync {
   @override
   List<DataRow> get rows {
     return _categories.map((notice) {
-      return notice.toDataRow();
+      return notice.toDataRow(refreshDatasource);
     }).toList();
   }
 
@@ -241,7 +241,7 @@ class CategoriesApi extends DataTableSourceAsync {
       if (emails.isNotEmpty) {
         body["staff"] = emails;
       }
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.post('/categories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 

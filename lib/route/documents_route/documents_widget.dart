@@ -10,9 +10,8 @@ class DocumentsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        constraints: const BoxConstraints(maxWidth: 1536.0),
-        child: PaginatedDataTableAsync(DocumentAPI())
-      ),
+          constraints: const BoxConstraints(maxWidth: 1536.0),
+          child: PaginatedDataTableAsync(DocumentAPI())),
     );
   }
 }

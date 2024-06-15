@@ -19,70 +19,72 @@ final _router = GoRouter(
   debugLogDiagnostics: false,
   routes: [
     ShellRoute(
-        builder: (context, state, child) {
-          return MyScaffold(child: child);
-        },
-        routes: [
-          GoRoute(
-            path: '/documents',
-            builder: (context, state) => const DocumentsWidget(),
-          ),
-          GoRoute(
-            path: '/add-a-document',
-            builder: (context, state) => const AddADocument(),
-          ),
-          GoRoute(
-            path: '/profile',
-            builder: (context, state) => const ProfileWidget(),
-          ),
-          GoRoute(
-            path: '/help',
-            builder: (context, state) => const HelpWidget(),
-          ),
-          GoRoute(
-            path: '/settings',
-            builder: (context, state) => const SettingsWidget(),
-          ),
-          GoRoute(
-            path: '/resetPassword',
-            builder: (context, state) => const CustomResetPasswordForm(),
-          ),
-          GoRoute(
+      builder: (context, state, child) {
+        return MyScaffold(child: child);
+      },
+      routes: [
+        GoRoute(
+          path: '/documents',
+          builder: (context, state) => const DocumentsWidget(),
+        ),
+        GoRoute(
+          path: '/add-a-document',
+          builder: (context, state) => const AddADocument(),
+        ),
+        GoRoute(
+          path: '/profile',
+          builder: (context, state) => const ProfileWidget(),
+        ),
+        GoRoute(
+          path: '/help',
+          builder: (context, state) => const HelpWidget(),
+        ),
+        GoRoute(
+          path: '/settings',
+          builder: (context, state) => const SettingsWidget(),
+        ),
+        GoRoute(
+          path: '/resetPassword',
+          builder: (context, state) => const CustomResetPasswordForm(),
+        ),
+        GoRoute(
             path: '/sms',
             builder: (context, state) => const SMSWidget(),
-          ),
-          GoRoute(
-            path: '/compliance',
-            builder: (context, state) => const ComplianceWidget(),
-          ),
-          GoRoute(
-            path: '/training',
-            builder: (context, state) => const TrainingWidget(),
-          ),
-          GoRoute(
-            path: '/purchases',
-            builder: (context, state) => const PurchaseWidget(),
-          ),
-          GoRoute(
-            path: '/send-notices',
-            builder: (context, state) => const SendNotices(),
-          ),
-          GoRoute(
-            path: '/:notice_id',
-            builder: (context, state) {
-              String? noticeID = state.pathParameters["notice_id"];
-              if (noticeID != null && noticeID.isNotEmpty) {
-                int? parsedID = int.tryParse(noticeID);
-                if (parsedID != null) {
-                  return SpecificNoticeWidget(
-                    documentID: parsedID,
-                  );
-                }
-              }
-              return const Placeholder();
-            },
-          ),
-        ]),
+            routes: [
+              GoRoute(
+                path: ':notice_id',
+                builder: (context, state) {
+                  String? noticeID = state.pathParameters["notice_id"];
+                  if (noticeID != null && noticeID.isNotEmpty) {
+                    int? parsedID = int.tryParse(noticeID);
+                    if (parsedID != null) {
+                      return SpecificNoticeWidget(
+                        documentID: parsedID,
+                      );
+                    }
+                  }
+                  return const Placeholder();
+                },
+              ),
+            ],),
+        GoRoute(
+          path: '/compliance',
+          builder: (context, state) => const ComplianceWidget(),
+        ),
+        GoRoute(
+          path: '/training',
+          builder: (context, state) => const TrainingWidget(),
+        ),
+        GoRoute(
+          path: '/purchases',
+          builder: (context, state) => const PurchaseWidget(),
+        ),
+        GoRoute(
+          path: '/send-notices',
+          builder: (context, state) => const SendNotices(),
+        ),
+      ],
+    ),
   ],
 );
 
@@ -110,7 +112,7 @@ class _MyAppState extends State<MyApp> {
       // call Amplify.configure to use the initialized categories in your app
       await Amplify.configure(amplifyconfig);
     } on Exception catch (e) {
-      safePrint('An error occurred configuring Amplify: $e');
+      debugPrint('An error occurred configuring Amplify: $e');
     }
   }
 

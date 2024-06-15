@@ -31,13 +31,14 @@ class Category {
   }
 
   // can rearrange collumn
-  DataRow toDataRow() {
+  DataRow toDataRow(void Function() refreshDatasource) {
     return DataRow(
       cells: <DataCell>[
         cellFor(name),
         cellFor(archived),
         DataCell(
           Builder(builder: (context) {
+            AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -47,18 +48,24 @@ class Category {
                 IconButton(
                   onPressed: () {
                     changeDetails(context);
+                    authNotifier.reInitialize();
+                    refreshDatasource();
                   },
                   icon: const Icon(Icons.edit_outlined),
                 ),
                 IconButton(
                   onPressed: () {
                     archive();
+                    authNotifier.reInitialize();
+                    refreshDatasource();
                   },
                   icon: const Icon(Icons.archive_outlined),
                 ),
                 IconButton(
                   onPressed: () {
                     delete();
+                    authNotifier.reInitialize();
+                    refreshDatasource();
                   },
                   icon: const Icon(Icons.delete_outline),
                 ),
@@ -155,7 +162,7 @@ class Category {
         "category_id": _id,
         "name": name,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/categories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
@@ -177,7 +184,7 @@ class Category {
         'archived': !_archived,
         'category_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/categories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
@@ -199,7 +206,7 @@ class Category {
       Map<String, dynamic> body = {
         'category_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.delete('/categories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 

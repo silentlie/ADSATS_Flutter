@@ -12,7 +12,7 @@ class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     // Access color scheme
     ColorScheme colorScheme = Theme.of(context).colorScheme;
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
     return Drawer(
       child: ListView(
         // Important: Remove any padding from the ListView.
@@ -80,7 +80,7 @@ class MyDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthNotifier staff = Provider.of<AuthNotifier>(context);
+    AuthNotifier staff = Provider.of<AuthNotifier>(context, listen: false);
     Widget? avatar;
     if (staff.avatarUrl.isEmpty) {
       avatar = const DefaultLogoWidget();

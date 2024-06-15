@@ -31,12 +31,16 @@ class DocumentAPI extends DataTableSourceAsync {
   Future<void> fetchData(
       int startIndex, int count, CustomTableFilter filter) async {
     try {
+      if (!filter.filterResults.containsKey('sort_column')) {
+        filter.filterResults['sort_column'] = 'created_at';
+        filter.filterResults['asc'] = false;
+      }
       Map<String, String> queryParameters = {
-        "offset": startIndex.toString(),
-        "limit": count.toString()
+        'offset': startIndex.toString(),
+        'limit': count.toString()
       };
       queryParameters.addAll(filter.toJSON());
-      debugPrint(queryParameters.toString());
+      // debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/documents',
           apiName: 'AmplifyAviationAPI', queryParameters: queryParameters);
 
@@ -44,12 +48,9 @@ class DocumentAPI extends DataTableSourceAsync {
       String jsonStr = response.decodeBody();
       Map<String, dynamic> rawData = jsonDecode(jsonStr);
       _totalRecords = rawData["total_records"];
-      debugPrint(_totalRecords.toString());
       final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
 
       _documents = [for (var row in rowsData) Document.fromJSON(row)];
-      debugPrint(_documents.length.toString());
-      debugPrint("finished fetch table data");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
     } on Error catch (e) {
@@ -61,7 +62,7 @@ class DocumentAPI extends DataTableSourceAsync {
   @override
   List<DataRow> get rows {
     return _documents.map((document) {
-      return document.toDataRow();
+      return document.toDataRow(refreshDatasource);
     }).toList();
   }
 
@@ -91,13 +92,13 @@ class DocumentAPI extends DataTableSourceAsync {
         scrollDirection: Axis.horizontal,
         reverse: true,
         child: Builder(builder: (context) {
-          AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
-          _filters.filterResult.addAll({
+          AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
+          _filters.filterResults.addAll({
             // 'limit_aircraft': staff.aircraft,
             // 'limit_subcategories': staff.subcategories,
             // 'limit_roles': staff.roles,
             'limit_categories': authNotifier.categories,
-            'limit_author': [authNotifier.email]
+            'limit_author': authNotifier.email,
           });
           return Row(
             children: [

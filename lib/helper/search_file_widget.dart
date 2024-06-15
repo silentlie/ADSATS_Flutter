@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:adsats_flutter/amplify/auth.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 part 'debounce_timer.dart';
+part 'search_author_widget_async.dart';
 part 'search_author_widget.dart';
+part 'custom_text_form_field.dart';
 
 // this widget is reference from search_anchor4.dart
 

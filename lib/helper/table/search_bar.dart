@@ -13,7 +13,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
   final TextEditingController _textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    _textEditingController.text = widget.filters.search ?? '';
+    _textEditingController.text = widget.filters.filterResults['search'] ?? '';
     return SearchBar(
       elevation: const WidgetStatePropertyAll(1),
       constraints: const BoxConstraints(
@@ -22,7 +22,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
       ),
       controller: _textEditingController,
       onSubmitted: (value) {
-        widget.filters.search = value;
+        widget.filters.filterResults['search'] = value;
         widget.refreshDatasource();
       },
       trailing: const [Icon(Icons.search)],

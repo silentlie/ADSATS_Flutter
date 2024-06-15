@@ -20,6 +20,25 @@ class MyScaffold extends StatelessWidget {
           // can make it into a error widget for more visualise
           return Text('Error: ${snapshot.error}');
         } else if (snapshot.hasData) {
+          AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
+          if (authNotifier.numOfOverdue < 0) {
+            return Center(
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 1536),
+                child: SingleChildScrollView(
+                  child: Card(
+                    elevation: 20,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: authNotifier.notificationWidgets,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
           return Scaffold(
               appBar: const MyAppBar(),
               endDrawer: const MyDrawer(),

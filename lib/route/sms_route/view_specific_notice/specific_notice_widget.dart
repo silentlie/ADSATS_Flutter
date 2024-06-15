@@ -22,7 +22,7 @@ class _SpecificNoticeWidgetState extends State<SpecificNoticeWidget> {
         "notice_id": noticeID.toString(),
         "staff_id": staffID.toString(),
       };
-      debugPrint(queryParameters.toString());
+      // debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/sms',
           apiName: 'AmplifyAviationAPI', queryParameters: queryParameters);
 
@@ -30,7 +30,7 @@ class _SpecificNoticeWidgetState extends State<SpecificNoticeWidget> {
       String jsonStr = response.decodeBody();
       Map<String, dynamic> rawData = jsonDecode(jsonStr);
 
-      debugPrint("finished fetch specific notice");
+      // debugPrint("finished fetch specific notice");
       return rawData;
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
@@ -43,7 +43,7 @@ class _SpecificNoticeWidgetState extends State<SpecificNoticeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
     return FutureBuilder(
       future: fetchNotice(context, widget.documentID, authNotifier.staffID),
       builder: (context, snapshot) {

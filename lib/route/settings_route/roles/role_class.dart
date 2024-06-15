@@ -50,7 +50,7 @@ class Role {
   }
 
   // can rearrange collumn
-  DataRow toDataRow() {
+  DataRow toDataRow(void Function() refreshDatasource) {
     return DataRow(
       cells: <DataCell>[
         cellFor(name),
@@ -59,6 +59,8 @@ class Role {
         cellFor(createdAt),
         DataCell(
           Builder(builder: (context) {
+            AuthNotifier authNotifier =
+                Provider.of<AuthNotifier>(context, listen: false);
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -68,16 +70,22 @@ class Role {
                 IconButton(
                     onPressed: () {
                       changeDetails(context);
+                      authNotifier.reInitialize();
+                      refreshDatasource();
                     },
                     icon: const Icon(Icons.edit_outlined)),
                 IconButton(
                     onPressed: () {
                       archive();
+                      authNotifier.reInitialize();
+                      refreshDatasource();
                     },
                     icon: const Icon(Icons.archive_outlined)),
                 IconButton(
                     onPressed: () {
                       delete();
+                      authNotifier.reInitialize();
+                      refreshDatasource();
                     },
                     icon: const Icon(Icons.delete_outline)),
               ],
@@ -108,8 +116,10 @@ class Role {
                     Container(
                       padding: const EdgeInsets.all(8),
                       child: TextFormField(
+                        
                         decoration: const InputDecoration(
                           labelText: 'Role Name',
+                          
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -193,7 +203,7 @@ class Role {
         "role": name,
         "description": description
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/roles',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
@@ -215,7 +225,7 @@ class Role {
         'archived': !_archived,
         'role_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/roles',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
@@ -237,7 +247,7 @@ class Role {
       Map<String, dynamic> body = {
         'role_id': id,
       };
-      debugPrint(body.toString());
+      // debugPrint(body.toString());
       final restOperation = Amplify.API.delete('/roles',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 

@@ -11,27 +11,27 @@ import 'package:adsats_flutter/scaffold/default_widget.dart';
 Future<void> signOutCurrentUser() async {
   final result = await Amplify.Auth.signOut();
   if (result is CognitoCompleteSignOut) {
-    safePrint('Sign out completed successfully');
+    // debugPrint('Sign out completed successfully');
   } else if (result is CognitoFailedSignOut) {
-    safePrint('Error signing user out: ${result.exception.message}');
+    debugPrint('Error signing user out: ${result.exception.message}');
   }
 }
 
 Future<void> forgetCurrentDevice() async {
   try {
     await Amplify.Auth.forgetDevice();
-    safePrint('Forget device succeeded');
+    // debugPrint('Forget device succeeded');
   } on AuthException catch (e) {
-    safePrint('Forget device failed with error: $e');
+    debugPrint('Forget device failed with error: $e');
   }
 }
 
 Future<void> rememberCurrentDevice() async {
   try {
     await Amplify.Auth.rememberDevice();
-    safePrint('Remember device succeeded');
+    // debugPrint('Remember device succeeded');
   } on AuthException catch (e) {
-    safePrint('Remember device failed with error: $e');
+    debugPrint('Remember device failed with error: $e');
   }
 }
 
@@ -102,14 +102,20 @@ class AuthNotifier with ChangeNotifier {
   int numOfOverdue = 0;
 
   Future<bool> initialize() async {
+    fetchStaff();
     if (email.isEmpty) {
       await Future.wait([
         fetchCognitoAuthSession(),
         fetchNotifications(limit),
       ]);
     }
-    fetchStaff();
+    return true;
+  }
 
+  Future<bool> reInitialize() async {
+    fetchStaff();
+    fetchCognitoAuthSession();
+    fetchNotifications(limit);
     return true;
   }
 
@@ -123,9 +129,8 @@ class AuthNotifier with ChangeNotifier {
       // maybe be buggy, if nothing changes this should the index of the email
       email = result[0].value;
       await fetchStaffDetails(email);
-      debugPrint(email);
     } on AuthException catch (e) {
-      safePrint('Error retrieving auth session: ${e.message}');
+      debugPrint('Error retrieving auth session: ${e.message}');
     }
   }
 
@@ -134,7 +139,6 @@ class AuthNotifier with ChangeNotifier {
       Map<String, String> queryParameters = {
         "email": email,
       };
-      debugPrint(DateTime.now().toIso8601String());
       final restOperation = Amplify.API.get(
         '/staff',
         apiName: 'AmplifyFilterAPI',
@@ -147,7 +151,7 @@ class AuthNotifier with ChangeNotifier {
         return;
       }
       Map<String, dynamic> rawData = jsonDecode(jsonStr)[0];
-      debugPrint(rawData.toString());
+      // debugPrint(rawData.toString());
       staffID = rawData["staff_id"];
       fName = rawData["f_name"];
       lName = rawData["l_name"];
@@ -184,7 +188,7 @@ class AuthNotifier with ChangeNotifier {
           Amplify.API.get('/staff', apiName: 'AmplifyFilterAPI');
       AWSHttpResponse response = await restOperation.response;
       String jsonStr = response.decodeBody();
-      safePrint("did fetch staff");
+      // debugPrint("finished fetch staff");
       staff = List<String>.from(jsonDecode(jsonStr));
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
@@ -203,7 +207,7 @@ class AuthNotifier with ChangeNotifier {
         "offset": "0",
         "limit": limit.toString(),
       };
-      debugPrint(queryParameters.toString());
+      // debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/notifications',
           apiName: 'AmplifyAviationAPI', queryParameters: queryParameters);
 
@@ -219,8 +223,9 @@ class AuthNotifier with ChangeNotifier {
       numOfUnread = rawData["count"]["unread"];
       numOfOverdue = rawData["count"]["overdue"];
       rebuildNotifications();
+      notifyListeners();
       debugPrint("you have $numOfOverdue overdue");
-      debugPrint("finished fetch specific notice");
+      // debugPrint("finished fetch notification");
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
       rethrow;
