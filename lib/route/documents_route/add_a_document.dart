@@ -12,12 +12,12 @@ class AddADocument extends StatelessWidget {
       child: Center(
         child: Container(
           constraints: const BoxConstraints(maxWidth: 1536),
-          child: const SingleChildScrollView(
+          child: SingleChildScrollView(
             child: Card(
               elevation: 20,
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: AddADocumentBody(),
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                child: const AddADocumentBody(),
               ),
             ),
           ),
@@ -35,54 +35,36 @@ class AddADocumentBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DocumentNotifier newDocument = Provider.of<DocumentNotifier>(context);
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
+    AuthNotifier authNotifier =
+        Provider.of<AuthNotifier>(context, listen: false);
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              child: const Text(
-                'Add a Document',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+        Container(
+          padding: const EdgeInsets.all(8),
+          child: const Text(
+            'Add a Document',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
-          ],
+          ),
         ),
         const Divider(),
-        Wrap2(
+        Row(
           children: [
-            Wrapped(
-              fit: WrapFit.runLoose,
-              child: Container(
-                constraints: const BoxConstraints(minWidth: 400),
-                child: SearchAuthorWidget(
-                  result: newDocument.results,
-                  enabled: authNotifier.isAdmin || authNotifier.isEditor,
-                ),
+            Expanded(
+              child: SearchAuthorWidget(
+                result: newDocument.results,
+                enabled: authNotifier.isAdmin || authNotifier.isEditor,
               ),
             ),
-            Wrapped(
-              fit: WrapFit.runLoose,
-              child: Container(
-                constraints: const BoxConstraints(minWidth: 400),
-                child: const ChooseCategory(),
+            const Expanded(child: ChooseCategory()),
+            const Expanded(
+              child: ChooseAircraft(
+                initialValue: [],
               ),
             ),
-            Wrapped(
-              fit: WrapFit.runLoose,
-              child: Container(
-                constraints: const BoxConstraints(minWidth: 400),
-                child: const ChooseAircraft(
-                  initialValue: [],
-                ),
-              ),
-            )
           ],
         ),
         const Divider(),
@@ -173,6 +155,7 @@ class ButtonsRow extends StatelessWidget {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisSize: MainAxisSize.min,
       children: [
         ElevatedButton.icon(
           onPressed: () {

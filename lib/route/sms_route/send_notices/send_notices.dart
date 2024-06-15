@@ -1,4 +1,3 @@
-import 'package:adsats_flutter/helper/recipients.dart';
 import 'package:flutter/material.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/hazard_report/hazard_report_widget.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/safety_notice/safety_notice_widget.dart';
@@ -64,18 +63,10 @@ class _SendNoticesState extends State<SendNotices> {
   @override
   void initState() {
     super.initState();
-    // result of filter before click apply
-    late final Widget recipients = RecepientsWidget(key: recipientsKey);
     _pages = [
-      NoticeWidget(
-        recepients: recipients,
-      ),
-      SafetyNoticeWidget(
-        recipients: recipients,
-      ),
-      HazardReportWidget(
-        recepients: recipients,
-      ),
+      const NoticeWidget(),
+      const SafetyNoticeWidget(),
+      const HazardReportWidget(),
       const Placeholder(),
     ];
   }

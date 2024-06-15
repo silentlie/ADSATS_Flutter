@@ -237,10 +237,22 @@ class AuthNotifier with ChangeNotifier {
 
   void rebuildNotifications() {
     notificationWidgets = [
-      Container(
-        padding: const EdgeInsets.all(8),
-        child: Text("You have $numOfUnread unread notifications"),
-      ),
+      if (numOfUnread > 0)
+        Container(
+          padding: const EdgeInsets.all(8),
+          child: Text(
+            "You have $numOfUnread unread notifications",
+            style: const TextStyle(color: Colors.yellow),
+          ),
+        ),
+      if (numOfOverdue > 0)
+        Container(
+          padding: const EdgeInsets.all(8),
+          child: Text(
+            "You have $numOfOverdue overdue notifications",
+            style: const TextStyle(color: Colors.red),
+          ),
+        ),
     ];
     notificationWidgets.addAll(notifications.map(
       (notification) {

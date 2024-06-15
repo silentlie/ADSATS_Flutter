@@ -1,3 +1,4 @@
+import 'package:adsats_flutter/helper/recipients.dart';
 import 'package:adsats_flutter/helper/search_file_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -7,9 +8,10 @@ part 'hazard_report_class.dart';
 part 'hazard_report_tables.dart';
 
 class HazardReportWidget extends StatelessWidget {
-  const HazardReportWidget({super.key, required this.recepients});
+  const HazardReportWidget({
+    super.key,
+  });
 
-  final Widget recepients;
   static Map<String, List<String>> formResult = {};
 
   @override
@@ -32,7 +34,7 @@ class HazardReportWidget extends StatelessWidget {
               ),
             ),
             const Divider(),
-            recepients,
+            const RecepientsWidget(),
             const Divider(),
             Wrap(
               children: [
@@ -63,7 +65,7 @@ class HazardReportWidget extends StatelessWidget {
                 ),
               ),
             ),
-            SearchFileWidget(fileNameResult: hazardReport.fileNameResult),
+            SearchFileWidget(fileNames: hazardReport.fileNameResult),
             Row(
               mainAxisAlignment:
                   MainAxisAlignment.end, // Align buttons to the right

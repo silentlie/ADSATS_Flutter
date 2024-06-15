@@ -2,7 +2,7 @@ import 'package:adsats_flutter/amplify/auth.dart';
 import 'package:adsats_flutter/helper/table/abstract_data_table_async.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-import 'package:wrapfit/wrapfit.dart';
+import 'package:provider/provider.dart';
 
 class RecepientsWidget extends StatelessWidget {
   const RecepientsWidget({super.key});
@@ -11,69 +11,56 @@ class RecepientsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthNotifier authNotifier = AuthNotifier();
-    return Wrap2(
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
+    return Row(
       children: [
-        Wrapped(
-          fit: WrapFit.runLoose,
-          child: Container(
-            constraints: const BoxConstraints(minWidth: 400, maxWidth: 500),
-            child: MultiSelect(
-              buttonText: const Text(
-                "Add recipient",
-              ),
-              title: const Text(
-                "Add recipients",
-              ),
-              onConfirm: (selectedOptions) {
-                recipientsResult['emails'] = List<String>.from(selectedOptions);
-              },
-              items: authNotifier.staff.map(
-                (staff) {
-                  return MultiSelectItem(staff, staff);
-                },
-              ).toList(),
-              initialValue: recipientsResult['emails'] ?? [],
+        Expanded(
+          child: MultiSelect(
+            buttonText: const Text(
+              "Add recipient",
             ),
+            title: const Text(
+              "Add recipients",
+            ),
+            onConfirm: (selectedOptions) {
+              recipientsResult['emails'] = List<String>.from(selectedOptions);
+            },
+            items: authNotifier.staff.map(
+              (staff) {
+                return MultiSelectItem(staff, staff);
+              },
+            ).toList(),
+            initialValue: recipientsResult['emails'] ?? [],
           ),
         ),
-        Wrapped(
-          fit: WrapFit.runLoose,
-          child: Container(
-            constraints: const BoxConstraints(minWidth: 400, maxWidth: 500),
-            child: MultiSelect(
-              buttonText: const Text("Add roles"),
-              title: const Text("Add roles"),
-              onConfirm: (selectedOptions) {
-                recipientsResult['roles'] = List<String>.from(selectedOptions);
+        Expanded(
+          child: MultiSelect(
+            buttonText: const Text("Add roles"),
+            title: const Text("Add roles"),
+            onConfirm: (selectedOptions) {
+              recipientsResult['roles'] = List<String>.from(selectedOptions);
+            },
+            items: authNotifier.roles.map(
+              (role) {
+                return MultiSelectItem(role, role);
               },
-              items: authNotifier.roles.map(
-                (role) {
-                  return MultiSelectItem(role, role);
-                },
-              ).toList(),
-              initialValue: recipientsResult['roles'] ?? [],
-            ),
+            ).toList(),
+            initialValue: recipientsResult['roles'] ?? [],
           ),
         ),
-        Wrapped(
-          fit: WrapFit.runLoose,
-          child: Container(
-            constraints: const BoxConstraints(minWidth: 400, maxWidth: 500),
-            child: MultiSelect(
-              buttonText: const Text("Add aircraft"),
-              title: const Text("Add aircraft"),
-              onConfirm: (selectedOptions) {
-                recipientsResult['aircraft'] =
-                    List<String>.from(selectedOptions);
+        Expanded(
+          child: MultiSelect(
+            buttonText: const Text("Add aircraft"),
+            title: const Text("Add aircraft"),
+            onConfirm: (selectedOptions) {
+              recipientsResult['aircraft'] = List<String>.from(selectedOptions);
+            },
+            items: authNotifier.aircraft.map(
+              (aircraft) {
+                return MultiSelectItem(aircraft, aircraft);
               },
-              items: authNotifier.aircraft.map(
-                (aircraft) {
-                  return MultiSelectItem(aircraft, aircraft);
-                },
-              ).toList(),
-              initialValue: recipientsResult['aircraft'] ?? [],
-            ),
+            ).toList(),
+            initialValue: recipientsResult['aircraft'] ?? [],
           ),
         )
       ],

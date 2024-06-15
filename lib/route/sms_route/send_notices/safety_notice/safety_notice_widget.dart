@@ -1,12 +1,14 @@
+import 'package:adsats_flutter/amplify/auth.dart';
+import 'package:adsats_flutter/helper/recipients.dart';
 import 'package:adsats_flutter/helper/search_file_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 part 'safety_notice_class.dart';
 
 class SafetyNoticeWidget extends StatelessWidget {
-  const SafetyNoticeWidget({super.key, required this.recipients});
-  final Widget recipients;
+  const SafetyNoticeWidget({super.key});
   static Map<String, List<String>> formResult = {};
 
   @override
@@ -15,6 +17,9 @@ class SafetyNoticeWidget extends StatelessWidget {
     // Access color scheme
     ColorScheme colorScheme = Theme.of(context).colorScheme;
     Map<String, dynamic> results = {};
+    AuthNotifier authNotifier =
+        Provider.of<AuthNotifier>(context, listen: false);
+    bool editMode = authNotifier.isAdmin || authNotifier.isEditor;
     return Column(
       children: [
         Container(
@@ -28,17 +33,22 @@ class SafetyNoticeWidget extends StatelessWidget {
           ),
         ),
         const Divider(),
-        recipients,
+        const RecepientsWidget(),
         const Divider(),
-        Wrap(
+        Row(
           children: [
-            SearchAuthorWidget(
-              result: results,
-            ),
-            const TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                label: Text('Report Number'),
+            if (editMode)
+              Expanded(
+                child: SearchAuthorWidget(
+                  result: results,
+                  enabled: editMode,
+                ),
+              ),
+            Expanded(
+              child: CustomTextFormField(
+                labelText: 'Report Number',
+                str: 'report_number',
+                results: results,
                 enabled: false,
               ),
             ),
@@ -74,7 +84,7 @@ class SafetyNoticeWidget extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 400),
           padding: const EdgeInsets.all(8),
           child: SearchFileWidget(
-            fileNameResult: safetyNotice.fileNameResult,
+            fileNames: safetyNotice.fileNameResult,
           ),
         ),
         Row(

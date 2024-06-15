@@ -14,8 +14,8 @@ part 'custom_text_form_field.dart';
 // this widget is reference from search_anchor4.dart
 
 class SearchFileWidget extends StatefulWidget {
-  const SearchFileWidget({super.key, required this.fileNameResult});
-  final List<String> fileNameResult;
+  const SearchFileWidget({super.key, required this.fileNames});
+  final List<String> fileNames;
 
   @override
   State<SearchFileWidget> createState() => _SearchFileWidgetState();
@@ -125,10 +125,10 @@ class _SearchFileWidgetState extends State<SearchFileWidget> {
                   title: Text(option),
                   onTap: () {
                     setState(() {
-                      if (widget.fileNameResult.contains(option)) {
-                        widget.fileNameResult.remove(option);
+                      if (widget.fileNames.contains(option)) {
+                        widget.fileNames.remove(option);
                       } else {
-                        widget.fileNameResult.add(option);
+                        widget.fileNames.add(option);
                       }
                     });
                   },
@@ -146,13 +146,13 @@ class _SearchFileWidgetState extends State<SearchFileWidget> {
             runSpacing: 10,
             alignment: WrapAlignment.center,
             runAlignment: WrapAlignment.center,
-            children: widget.fileNameResult.map(
+            children: widget.fileNames.map(
               (fileName) {
                 return Chip(
                   label: Text(fileName),
                   onDeleted: () {
                     setState(() {
-                      widget.fileNameResult.remove(fileName);
+                      widget.fileNames.remove(fileName);
                     });
                   },
                 );

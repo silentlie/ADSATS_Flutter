@@ -8,7 +8,9 @@ class SearchAuthorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
+    AuthNotifier authNotifier =
+        Provider.of<AuthNotifier>(context, listen: false);
+    result['author'] = authNotifier.email;
     return Container(
       padding: const EdgeInsets.all(8.0),
       child: DropdownMenu(
@@ -20,7 +22,7 @@ class SearchAuthorWidget extends StatelessWidget {
         enableFilter: true,
         enabled: enabled,
         menuHeight: 200,
-        initialSelection: authNotifier.email,
+        initialSelection: result['author'],
         label: const Text("Author"),
         hintText: "Please enter the author",
         leadingIcon: const Icon(Icons.search),

@@ -13,7 +13,6 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:adsats_flutter/helper/table/abstract_data_table_async.dart';
-import 'package:wrapfit/wrapfit.dart';
 
 part 'documents_api.dart';
 part 'add_a_document.dart';
@@ -26,6 +25,7 @@ class Document {
         fileName = json["file_name"] as String,
         archived = intToBool(json["archived"] as int)!,
         author = json["author"] as String,
+        roles = json["roles"] as String,
         subcategory = json["subcategory"] as String,
         category = json["category"] as String,
         aircraft = json["aircraft"] as String?,
@@ -34,9 +34,11 @@ class Document {
   String fileName;
   bool archived;
   String author;
+  String? roles;
   String subcategory;
   String category;
   String? aircraft;
+
   DateTime createdAt;
 
   static bool? intToBool(int? value) {
@@ -52,6 +54,9 @@ class Document {
     temp["file_name"] = fileName;
     temp["email"] = author;
     temp["subcategory"] = subcategory;
+    if (roles != null) {
+      temp["roles"] = roles.toString();
+    }
     if (aircraft != null) {
       temp["aircraft"] = aircraft.toString();
     }
@@ -67,6 +72,7 @@ class Document {
         cellFor(subcategory),
         cellFor(category),
         cellFor(aircraft),
+        cellFor(roles),
         cellFor(archived),
         cellFor(createdAt),
         DataCell(

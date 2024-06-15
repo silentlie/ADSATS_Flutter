@@ -11,14 +11,14 @@ class DocumentNotifier extends ChangeNotifier {
         'archived': false,
       };
       body.addAll(results);
-      // debugPrint(body.toString());
+      debugPrint(body.toString());
       final restOperation = Amplify.API.post('/documents',
           apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
       int documentID = jsonDecode(jsonStr);
-      // debugPrint("document_id: $documentID");
+      debugPrint("document_id: $documentID");
       String pathStr = "${documentID}_${file.name}";
       final result = await Amplify.Storage.uploadFile(
         localFile: AWSFile.fromStream(
@@ -41,9 +41,7 @@ class DocumentNotifier extends ChangeNotifier {
     }
   }
 
-  void uploadFiles() {
-    for (PlatformFile file in filePickerResult!.files) {
-      uploadFile(file);
-    }
-  }
+  Future<void> uploadFiles() async {
+  await Future.wait(filePickerResult!.files.map((file) => uploadFile(file)));
+}
 }
