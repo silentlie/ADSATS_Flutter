@@ -6,7 +6,7 @@ class ChooseAircraft extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DocumentNotifier newDocument = Provider.of<DocumentNotifier>(context);
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
     return MultiSelect(
       buttonText: const Text("Add aircraft"),
       title: const Text("Add aircraft"),
@@ -33,7 +33,7 @@ class ChooseCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DocumentNotifier newDocument = Provider.of<DocumentNotifier>(context);
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
     newDocument.results['subcategory'] = authNotifier.subcategories[0];
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -54,7 +54,7 @@ class ChooseCategory extends StatelessWidget {
         onSelected: (value) {
           newDocument.results['subcategory'] = value!;
         },
-        initialSelection: authNotifier.subcategories[0],
+        initialSelection: authNotifier.subcategories.firstOrNull,
         expandedInsets: EdgeInsets.zero,
       ),
     );

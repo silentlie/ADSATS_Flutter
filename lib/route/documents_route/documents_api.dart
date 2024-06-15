@@ -92,7 +92,7 @@ class DocumentAPI extends DataTableSourceAsync {
         scrollDirection: Axis.horizontal,
         reverse: true,
         child: Builder(builder: (context) {
-          AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
+          AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
           _filters.filterResults.addAll({
             // 'limit_aircraft': staff.aircraft,
             // 'limit_subcategories': staff.subcategories,

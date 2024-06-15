@@ -113,7 +113,7 @@ class NotificationClass {
         ),
         leading: const Icon(Icons.edit_document),
         onTap: () {
-          context.go('/$noticeID');
+          context.go('/sms/$noticeID');
         },
       );
     });

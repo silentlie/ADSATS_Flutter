@@ -43,7 +43,7 @@ class _SpecificNoticeWidgetState extends State<SpecificNoticeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
     return FutureBuilder(
       future: fetchNotice(context, widget.documentID, authNotifier.staffID),
       builder: (context, snapshot) {

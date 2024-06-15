@@ -35,7 +35,7 @@ class AddADocumentBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DocumentNotifier newDocument = Provider.of<DocumentNotifier>(context);
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,

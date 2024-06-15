@@ -19,7 +19,7 @@ class NoticeWidget extends StatelessWidget {
     NoticeToCrew noticeToCrew = NoticeToCrew();
     // Access color scheme
     ColorScheme colorScheme = Theme.of(context).colorScheme;
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
     final formKey = GlobalKey<FormState>();
     Map<String, dynamic> results = {};
     bool editMode = true;

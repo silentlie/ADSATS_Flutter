@@ -102,19 +102,20 @@ class AuthNotifier with ChangeNotifier {
   int numOfOverdue = 0;
 
   Future<bool> initialize() async {
-    if (email.isEmpty) {}
-    await Future.wait([
-      if (email.isEmpty) fetchCognitoAuthSession(),
-      fetchNotifications(limit),
-      fetchStaff(),
-    ]);
+    fetchStaff();
+    if (email.isEmpty) {
+      await Future.wait([
+        fetchCognitoAuthSession(),
+        fetchNotifications(limit),
+      ]);
+    }
     return true;
   }
 
   Future<bool> reInitialize() async {
+    fetchStaff();
     fetchCognitoAuthSession();
     fetchNotifications(limit);
-    fetchStaff();
     return true;
   }
 
@@ -222,6 +223,7 @@ class AuthNotifier with ChangeNotifier {
       numOfUnread = rawData["count"]["unread"];
       numOfOverdue = rawData["count"]["overdue"];
       rebuildNotifications();
+      notifyListeners();
       debugPrint("you have $numOfOverdue overdue");
       // debugPrint("finished fetch notification");
     } on ApiException catch (e) {

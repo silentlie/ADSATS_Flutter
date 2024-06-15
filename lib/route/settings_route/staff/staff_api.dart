@@ -272,25 +272,18 @@ class AddStaff extends StatelessWidget {
                             filterData.length,
                             (index) {
                               // customise for visual, right now
-                              return Container(
-                                padding: const EdgeInsets.all(8),
-                                constraints:
-                                    const BoxConstraints(maxWidth: 300),
-                                child: MultiSelect(
-                                  // get text based on index
-                                  buttonText:
-                                      Text("Add ${filterTitles[index]}"),
-                                  // get list of item from fetchData
-                                  items: filterData[filterTitles[index]]!,
-                                  // send selected item to filterResult
-                                  onConfirm: (selectedOptions) {
-                                    result[filterTitles[index]] =
-                                        List<String>.from(selectedOptions)
-                                            .join(',');
-                                  },
-                                  title: Text("Add ${filterTitles[index]}"),
-                                  
-                                ),
+                              return MultiSelect(
+                                // get text based on index
+                                buttonText: Text("Add ${filterTitles[index]}"),
+                                // get list of item from fetchData
+                                items: filterData[filterTitles[index]]!,
+                                // send selected item to filterResult
+                                onConfirm: (selectedOptions) {
+                                  result[filterTitles[index]] =
+                                      List<String>.from(selectedOptions)
+                                          .join(',');
+                                },
+                                title: Text("Add ${filterTitles[index]}"),
                               );
                             },
                           );
