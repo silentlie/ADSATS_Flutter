@@ -118,7 +118,7 @@ class _DropFileWidgetState extends State<DropFileWidget> {
                       size: 80,
                     ),
                     Text(
-                      'Drop files here',
+                      'Click here to upload files',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -173,6 +173,8 @@ class ButtonsRow extends StatelessWidget {
               context: context,
               builder: (context) {
                 return AlertDialog(
+                  title: const Text("Confirm?"),
+                  content: const Text("Proceed with file upload?"),
                   actions: [
                     // cancel
                     TextButton(
@@ -186,7 +188,7 @@ class ButtonsRow extends StatelessWidget {
                         Navigator.pop(context, 'Apply');
                         context.go('/documents');
                       },
-                      child: const Text('Apply'),
+                      child: const Text('Confirm'),
                     )
                   ],
                 );
