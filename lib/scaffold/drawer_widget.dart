@@ -1,4 +1,3 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -91,7 +90,7 @@ class MyDrawerHeader extends StatelessWidget {
     }
     return SizedBox(
       // height of header
-      height: 250,
+      height: 270,
       child: DrawerHeader(
         decoration: const BoxDecoration(
           color: Colors.transparent,
@@ -120,32 +119,24 @@ class MyDrawerHeader extends StatelessWidget {
                 ),
               ),
             ),
-            Wrap(
-              alignment: WrapAlignment.center,
-              runSpacing: 2,
-              spacing: 2,
-              children: <Text>[
-                for (var item in staff.roles) Text("${item.capitalized},")
-              ],
+            Text(
+              'Roles: ${staff.roles.map((item) {
+                return item;
+              }).join(', ')}',
             ),
-            Wrap(
-              alignment: WrapAlignment.center,
-              runSpacing: 2,
-              spacing: 2,
-              children: <Text>[
-                const Text('Aircraft:'),
-                for (var item in staff.aircraft) Text("$item,")
-              ],
+            Text(
+              'Aircraft: ${staff.aircraft.map((item) {
+                return item;
+              }).join(', ')}',
             ),
-            Wrap(
-              alignment: WrapAlignment.center,
-              runSpacing: 2,
-              spacing: 2,
-              children: <Text>[
-                const Text('Categories:'),
-                for (var item in staff.categories) Text("${item.capitalized},")
-              ],
+            Text(
+              'Categories: ${staff.categories.map((item) {
+                return item;
+              }).join(', ')}',
             ),
+            // Text(
+            //   'Subcategores: ${staff.subcategories.map((item) => item.capitalized).join(', ')}',
+            // ),
           ],
         ),
       ),

@@ -68,22 +68,22 @@ class Role {
                 //     onPressed: () {},
                 //     icon: const Icon(Icons.remove_red_eye_outlined)),
                 IconButton(
-                    onPressed: () {
-                      changeDetails(context);
+                    onPressed: () async {
+                      await changeDetails(context);
                       authNotifier.reInitialize();
                       refreshDatasource();
                     },
                     icon: const Icon(Icons.edit_outlined)),
                 IconButton(
-                    onPressed: () {
-                      archive();
+                    onPressed: () async {
+                      await archive();
                       authNotifier.reInitialize();
                       refreshDatasource();
                     },
                     icon: const Icon(Icons.archive_outlined)),
                 IconButton(
-                    onPressed: () {
-                      delete();
+                    onPressed: () async {
+                      await delete();
                       authNotifier.reInitialize();
                       refreshDatasource();
                     },
@@ -96,12 +96,12 @@ class Role {
     );
   }
 
-  void changeDetails(BuildContext context) {
+  Future<void> changeDetails(BuildContext context) async {
     final formKey = GlobalKey<FormState>();
     String roleName = '';
     String description = '';
     ColorScheme colorScheme = Theme.of(context).colorScheme;
-    showDialog(
+    await showDialog(
       context: context,
       builder: (context) {
         return StatefulBuilder(

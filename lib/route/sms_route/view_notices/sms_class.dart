@@ -64,7 +64,7 @@ class Notice {
                 Provider.of<AuthNotifier>(context, listen: false);
             List<Widget> children = [
               IconButton(
-                onPressed: () async {
+                onPressed: () {
                   // TODO: view notice
                 },
                 icon: const Icon(Icons.remove_red_eye_outlined),
@@ -74,7 +74,7 @@ class Notice {
             if (authNotifier.isAdmin || authNotifier.isEditor) {
               children.addAll([
                 IconButton(
-                  onPressed: () {
+                  onPressed: () async {
                     // TODO: view notice and edit it
                     refreshDatasource();
                   },
@@ -82,8 +82,8 @@ class Notice {
                   tooltip: 'Edit',
                 ),
                 IconButton(
-                  onPressed: () {
-                    archive();
+                  onPressed: () async {
+                    await archive();
                     refreshDatasource();
                   },
                   icon: const Icon(Icons.archive_outlined),
@@ -94,8 +94,8 @@ class Notice {
             if (authNotifier.isAdmin) {
               children.add(
                 IconButton(
-                  onPressed: () {
-                    delete();
+                  onPressed: () async {
+                    await delete();
                     refreshDatasource();
                   },
                   icon: const Icon(Icons.delete_outline),

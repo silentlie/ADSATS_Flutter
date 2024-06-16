@@ -67,14 +67,7 @@ class Document {
   DataRow toDataRow(void Function() refreshDatasource) {
     return DataRow(
       cells: <DataCell>[
-        DataCell(Expanded(
-            // constraints: const BoxConstraints(minWidth: 400),
-            child: Text(
-          fileName.toString(),
-          maxLines: 1,
-        ))),
-        // cellFor(fileName),
-
+        cellFor(fileName),
         // cellFor(author),
         cellFor(subcategory),
         cellFor(category),
@@ -99,8 +92,8 @@ class Document {
                 ),
                 if (authNotifier.isAdmin || authNotifier.isEditor)
                   IconButton(
-                    onPressed: () {
-                      showDialog(
+                    onPressed: () async {
+                      await showDialog(
                         context: context,
                         builder: (context) {
                           return changeDocumentDetailsWidget(context);
@@ -113,8 +106,8 @@ class Document {
                   ),
                 if (authNotifier.isAdmin || authNotifier.isEditor)
                   IconButton(
-                    onPressed: () {
-                      archive();
+                    onPressed: () async {
+                      await archive();
                       refreshDatasource();
                     },
                     icon: const Icon(Icons.archive_outlined),
@@ -122,8 +115,8 @@ class Document {
                   ),
                 if (authNotifier.isAdmin)
                   IconButton(
-                    onPressed: () {
-                      delete();
+                    onPressed: () async {
+                      await delete();
                       refreshDatasource();
                     },
                     icon: const Icon(Icons.delete_outline),

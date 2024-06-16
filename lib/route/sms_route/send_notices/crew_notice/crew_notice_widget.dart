@@ -36,24 +36,21 @@ class CrewNoticeWidget extends StatelessWidget {
           ),
           const Divider(),
           const NoticeBasicDetails(),
+          const Divider(),
           CustomTextFormField(
             labelText: 'Subject',
-            str: 'subject',
+            jsonKey: 'subject',
             results: noticeBasicDetails,
           ),
           CustomTextFormField(
             labelText: 'Message',
-            str: 'message',
+            jsonKey: 'message',
             results: crewNoticeDetails,
             minLines: 5,
             maxLines: 10,
           ),
-          Container(
-            constraints: const BoxConstraints(maxWidth: 400),
-            padding: const EdgeInsets.all(8),
-            child: SearchFileWidget(
-              fileNames: noticeBasicDetails['fileNames'],
-            ),
+          SearchFileWidget(
+            fileNames: noticeBasicDetails['fileNames'],
           ),
           Row(
             // Align buttons to the right
@@ -84,8 +81,10 @@ class CrewNoticeWidget extends StatelessWidget {
                   if (formKey.currentState!.validate()) {
                     formKey.currentState!.save();
                     // TODO:Functionality for the sending button
-                    noticeBasicDetails;
                     crewNoticeDetails.addAll(RecepientsWidget.recipientsResult);
+                    debugPrint(noticeBasicDetails.toString());
+                    debugPrint(crewNoticeDetails.toString());
+                    // sendCrewNotice(crewNoticeDetails, noticeBasicDetails);
                     context.go('/sms');
                   }
                 },
@@ -110,12 +109,12 @@ class CrewNoticeWidget extends StatelessWidget {
     );
   }
 
-  Future<int> sendNotice(Map<String, dynamic> noticeDetails) async {
+  Future<int> sendNoticeBasic(Map<String, dynamic> noticeBasicDetails) async {
     try {
       Map<String, dynamic> body = {
         'archived': false,
       };
-      body.addAll(noticeDetails);
+      body.addAll(noticeBasicDetails);
       // debugPrint(body.toString());
       final restOperation = Amplify.API.post('/sms',
           apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
@@ -134,16 +133,17 @@ class CrewNoticeWidget extends StatelessWidget {
     }
   }
 
-  Future<int> sendNoticeToCrew(Map<String, dynamic> noticeToCrewDetails,
-      Map<String, dynamic> noticeDetails) async {
+  Future<int> sendCrewNotice(Map<String, dynamic> crewNoticeDetails,
+      Map<String, dynamic> noticeBasicDetails) async {
     try {
-      int noticeID = await sendNotice(noticeDetails);
+      int noticeID = await sendNoticeBasic(noticeBasicDetails);
       Map<String, dynamic> body = {
         'notice_id': noticeID,
       };
-      body.addAll(noticeToCrewDetails);
+      body.addAll(crewNoticeDetails);
+      body.addAll(RecepientsWidget.recipientsResult);
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.post('/sms/notice-to-crew',
+      final restOperation = Amplify.API.post('/sms/crew-notice',
           apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;

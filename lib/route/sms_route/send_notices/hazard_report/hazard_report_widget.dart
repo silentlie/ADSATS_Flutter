@@ -42,7 +42,7 @@ class HazardReportWidget extends StatelessWidget {
                   flex: 7,
                   child: CustomTextFormField(
                     labelText: 'Subject',
-                    str: 'subject',
+                    jsonKey: 'subject',
                     results: formResult,
                   ),
                 ),
@@ -50,7 +50,7 @@ class HazardReportWidget extends StatelessWidget {
                   flex: 3,
                   child: CustomTextFormField(
                     labelText: 'Location',
-                    str: 'location',
+                    jsonKey: 'location',
                     results: formResult,
                   ),
                 ),
@@ -59,7 +59,7 @@ class HazardReportWidget extends StatelessWidget {
             ),
             CustomTextFormField(
               labelText: 'Describe the Hazard or the Event',
-              str: 'describe',
+              jsonKey: 'describe',
               results: formResult,
               minLines: 5,
               maxLines: 10,
@@ -68,7 +68,7 @@ class HazardReportWidget extends StatelessWidget {
             CustomTextFormField(
               labelText:
                   'In your opinion, how could the hazard or event be mitigated? (optional)',
-              str: 'mitigation',
+              jsonKey: 'mitigation',
               results: formResult,
               minLines: 3,
               maxLines: 6,

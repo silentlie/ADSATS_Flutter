@@ -46,7 +46,7 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
       child: AsyncPaginatedDataTable2(
         headingRowColor: WidgetStateColor.resolveWith(
             (states) => colorScheme.surfaceContainerHighest),
-        // columnSpacing: 20,
+        columnSpacing: 0,
         columns: columns,
         source: dataSource,
         empty: const Placeholder(),
@@ -79,7 +79,7 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
         autoRowsToHeight: false,
         // how page handle when page go beyond total records
         pageSyncApproach: PageSyncApproach.goToLast,
-        minWidth: 1320,
+        minWidth: 1328,
         // stick paginator to the bottom when there's few rows
         fit: FlexFit.loose,
         // render empty rows to match rows per page

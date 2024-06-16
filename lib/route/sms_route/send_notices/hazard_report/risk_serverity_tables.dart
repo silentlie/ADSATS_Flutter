@@ -63,14 +63,14 @@ class RiskSeverityResult extends StatelessWidget {
             ),
             labelText: "Risk Severity",
             results: HazardReportWidget.formResult,
-            str: 'risk_severity',
+            jsonKey: 'risk_severity',
           ),
         ),
         Flexible(
           flex: 8,
           child: CustomTextFormField(
             labelText: "Interim Comment",
-            str: "interim_comment",
+            jsonKey: "interim_comment",
             results: HazardReportWidget.formResult,
           ),
         ),

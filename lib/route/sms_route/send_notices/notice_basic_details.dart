@@ -31,20 +31,20 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
     return Column(
       children: [
         Container(
-              padding: const EdgeInsets.only(left: 8),
-              alignment: Alignment.centerLeft,
-              child: const Text(
-                'Add recipients by:',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
+          padding: const EdgeInsets.only(left: 8),
+          alignment: Alignment.centerLeft,
+          child: const Text(
+            'Add recipients by:',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
         const RecepientsWidget(),
         Row(
           children: [
             Expanded(
               child: CustomTextFormField(
                 labelText: 'Report Number',
-                str: 'report_number',
+                jsonKey: 'report_number',
                 results: formResult,
                 enabled: false,
               ),
@@ -62,7 +62,7 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
             Expanded(
               child: CustomTextFormField(
                 labelText: "Notice Date",
-                str: 'notce_at',
+                jsonKey: 'notce_at',
                 results: formResult,
                 enabled: true,
                 readOnly: true,
@@ -90,7 +90,7 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
             Expanded(
               child: CustomTextFormField(
                 labelText: "Deadline Date",
-                str: 'deadline_at',
+                jsonKey: 'deadline_at',
                 results: formResult,
                 enabled: true,
                 readOnly: true,

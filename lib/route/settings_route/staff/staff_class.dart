@@ -69,7 +69,8 @@ class Staff {
         cellFor(roles),
         DataCell(
           Builder(builder: (context) {
-            AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
+            AuthNotifier authNotifier =
+                Provider.of<AuthNotifier>(context, listen: false);
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -77,22 +78,22 @@ class Staff {
                 //     onPressed: () {},
                 //     icon: const Icon(Icons.remove_red_eye_outlined)),
                 IconButton(
-                    onPressed: () {
-                      changeDetails(context);
+                    onPressed: () async {
+                      await changeDetails(context);
                       authNotifier.reInitialize();
                       refreshDatasource();
                     },
                     icon: const Icon(Icons.edit_outlined)),
                 IconButton(
-                    onPressed: () {
-                      archive();
+                    onPressed: () async {
+                      await archive();
                       authNotifier.reInitialize();
                       refreshDatasource();
                     },
                     icon: const Icon(Icons.archive_outlined)),
                 IconButton(
-                    onPressed: () {
-                      delete();
+                    onPressed: () async {
+                      await delete();
                       authNotifier.reInitialize();
                       refreshDatasource();
                     },
@@ -182,7 +183,7 @@ class Staff {
     }
   }
 
-  void changeDetails(BuildContext context) {
+  Future<void> changeDetails(BuildContext context) async {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
     final formKey = GlobalKey<FormState>();
     String firstName = this.firstName;
@@ -193,7 +194,7 @@ class Staff {
     );
     List<String> filterTitles = filterEndpoints.keys.toList();
     Map<String, dynamic> result = {};
-    showDialog(
+    await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -288,23 +289,18 @@ class Staff {
                               [];
                           // debugPrint(initialData.toString());
                           // customise for visual, right now
-
-                          return Container(
-                            padding: const EdgeInsets.all(8),
-                            constraints: const BoxConstraints(maxWidth: 300),
-                            child: MultiSelect(
-                              // get text based on index
-                              title: Text("Add ${filterTitles[index]}"),
-                              buttonText: Text("Add ${filterTitles[index]}"),
-                              // get list of item from fetchData
-                              items: filterData[filterTitles[index]]!,
-                              // send selected item to filterResult
-                              onConfirm: (selectedOptions) {
-                                result[filterTitles[index]] =
-                                    List<String>.from(selectedOptions);
-                              },
-                              initialValue: initialData,
-                            ),
+                          return MultiSelect(
+                            // get text based on index
+                            title: Text("Add ${filterTitles[index]}"),
+                            buttonText: Text("Add ${filterTitles[index]}"),
+                            // get list of item from fetchData
+                            items: filterData[filterTitles[index]]!,
+                            // send selected item to filterResult
+                            onConfirm: (selectedOptions) {
+                              result[filterTitles[index]] =
+                                  List<String>.from(selectedOptions);
+                            },
+                            initialValue: initialData,
                           );
                         },
                       );
