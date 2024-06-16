@@ -46,7 +46,7 @@ class RiskSeverityResult extends StatelessWidget {
             showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                      content: Image.asset('risk-severity.png'),
+                      content: Image.asset('Risk-severity-chart.png'),
                     ));
           },
         ),
@@ -288,21 +288,26 @@ class RiskSeverity extends ChangeNotifier {
   }
 
   Color? getColor() {
-    if (risk > 0 && risk < 4) {
+    if (_selectedLikelihood == 0 && _selectedSeverity == 3) {
       return Colors.green;
-    } else if (risk > 3 && risk < 8) {
+    } else if (risk > 0 && risk <= 4) {
+      return Colors.green;
+    } else if (risk > 4 && risk <= 7) {
       return Colors.amber;
     } else if (risk > 7 && risk < 11) {
       return Colors.red;
     } else {
       return Colors.transparent;
     }
+    //return null;
   }
 
   String getText() {
-    if (risk > 0 && risk < 4) {
+    if (_selectedLikelihood == 0 && _selectedSeverity == 3) {
       return "Acceptable";
-    } else if (risk > 3 && risk < 8) {
+    } else if (risk > 0 && risk <= 4) {
+      return "Acceptable";
+    } else if (risk > 3 && risk <= 7) {
       return "Review";
     } else if (risk > 7 && risk < 11) {
       return "Unacceptable";
