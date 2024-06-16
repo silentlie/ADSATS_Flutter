@@ -46,7 +46,7 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
       child: AsyncPaginatedDataTable2(
         headingRowColor: WidgetStateColor.resolveWith(
             (states) => colorScheme.surfaceContainerHighest),
-        columnSpacing: 5,
+        // columnSpacing: 20,
         columns: columns,
         source: dataSource,
         empty: const Placeholder(),
@@ -69,10 +69,10 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
         // can add more widget if need
         header: dataSource.header,
 
-        actions: const [],
-        horizontalMargin: 10,
-        checkboxHorizontalMargin: 12,
-        checkboxAlignment: Alignment.center,
+        // actions: const [],
+        // horizontalMargin: 10,
+        // checkboxHorizontalMargin: 12,
+        // checkboxAlignment: Alignment.centerLeft,
         dataRowHeight: 62,
         showCheckboxColumn: false,
         // dynamic change rows per page based on height of screen
@@ -103,9 +103,13 @@ abstract class DataTableSourceAsync extends AsyncDataTableSource {
       (index) {
         String columnName = columnNames[index];
         return DataColumn(
-            label: Center(
+            label: Container(
+              alignment: Alignment.center,
               child: Text(
                 columnName,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             tooltip: columnName);

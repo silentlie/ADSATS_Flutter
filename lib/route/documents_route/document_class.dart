@@ -67,7 +67,14 @@ class Document {
   DataRow toDataRow(void Function() refreshDatasource) {
     return DataRow(
       cells: <DataCell>[
-        cellFor(fileName),
+        DataCell(Expanded(
+            // constraints: const BoxConstraints(minWidth: 400),
+            child: Text(
+          fileName.toString(),
+          maxLines: 1,
+        ))),
+        // cellFor(fileName),
+
         // cellFor(author),
         cellFor(subcategory),
         cellFor(category),

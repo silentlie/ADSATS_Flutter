@@ -205,7 +205,7 @@ class ButtonsRow extends StatelessWidget {
             style: TextStyle(color: colorScheme.onSecondary),
           ),
           icon: Icon(
-            Icons.mail,
+            Icons.upload_file,
             color: colorScheme.onSecondary,
           ),
         ),

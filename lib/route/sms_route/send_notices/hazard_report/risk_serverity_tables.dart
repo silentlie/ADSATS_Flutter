@@ -114,7 +114,7 @@ class SeverityOfConsequenceWidget extends StatelessWidget {
     ];
     RiskSeverity riskSeverity = Provider.of<RiskSeverity>(context);
     return Container(
-      constraints: const BoxConstraints(minWidth: 650),
+      constraints: const BoxConstraints(minWidth: 500, maxWidth: 650),
       padding: const EdgeInsets.all(8),
       child: Column(
         children: [
@@ -173,7 +173,7 @@ class LikelihoodofOccurrenceWidget extends StatelessWidget {
     ];
     RiskSeverity riskSeverity = Provider.of<RiskSeverity>(context);
     return Container(
-      constraints: const BoxConstraints(minWidth: 650),
+      constraints: const BoxConstraints(minWidth: 500, maxWidth: 650),
       padding: const EdgeInsets.all(8),
       child: Column(
         children: [

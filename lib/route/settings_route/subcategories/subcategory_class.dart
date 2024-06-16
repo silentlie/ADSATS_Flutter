@@ -41,7 +41,7 @@ class Subcategory {
   DataRow toDataRow(void Function() refreshDatasource) {
     return DataRow(
       cells: <DataCell>[
-        cellFor(name),
+        DataCell(Text(name)),
         cellFor(description),
         cellFor(archived),
         cellFor(category),
@@ -151,22 +151,21 @@ class Subcategory {
                           // can make it into a error widget for more visualise
                           return Text('Error: ${snapshot.error}');
                         } else {
-                          return Container(
-                            padding: const EdgeInsets.all(8),
-                            child: DropdownMenu(
-                              dropdownMenuEntries: categories.map(
-                                (category) {
-                                  return DropdownMenuEntry(
-                                      value: category, label: category);
-                                },
-                              ).toList(),
-                              hintText: "Category?",
-                              initialSelection: category,
-                              label: const Text("Category?"),
-                              onSelected: (value) {
-                                category = value as String;
+                          return DropdownMenu(
+                            inputDecorationTheme: const InputDecorationTheme(
+                                disabledBorder: InputBorder.none),
+                            dropdownMenuEntries: categories.map(
+                              (category) {
+                                return DropdownMenuEntry(
+                                    value: category, label: category);
                               },
-                            ),
+                            ).toList(),
+                            hintText: "Category?",
+                            initialSelection: category,
+                            label: const Text("Category?"),
+                            onSelected: (value) {
+                              category = value as String;
+                            },
                           );
                         }
                       },

@@ -30,6 +30,14 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
     bool editMode = authNotifier.isAdmin || authNotifier.isEditor;
     return Column(
       children: [
+        Container(
+              padding: const EdgeInsets.only(left: 8),
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                'Add recipients by:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
         const RecepientsWidget(),
         Row(
           children: [

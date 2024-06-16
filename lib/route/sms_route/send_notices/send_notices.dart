@@ -75,7 +75,7 @@ class _SendNoticesState extends State<SendNotices> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth < 1000) {
+        if (constraints.maxWidth < 1533) {
           // https://api.flutter.dev/flutter/material/NavigationBar-class.html
           return Column(
             children: [
@@ -112,21 +112,24 @@ class _SendNoticesState extends State<SendNotices> {
         // https://api.flutter.dev/flutter/material/NavigationRail-class.html
         return Row(
           children: [
-            SafeArea(
-              child: NavigationRail(
-                onDestinationSelected: (value) {
-                  setState(() {
-                    _selectedIndex = value;
-                  });
-                },
-                destinations: _navigationRailDestinations,
-                selectedIndex: _selectedIndex,
-                elevation: 10,
-                extended: constraints.maxWidth >= 1440,
-                minExtendedWidth: 144,
-                minWidth: 72,
-                labelType: NavigationRailLabelType.none,
-                useIndicator: true,
+            SizedBox(
+              width: 175,
+              child: SafeArea(
+                child: NavigationRail(
+                  onDestinationSelected: (value) {
+                    setState(() {
+                      _selectedIndex = value;
+                    });
+                  },
+                  destinations: _navigationRailDestinations,
+                  selectedIndex: _selectedIndex,
+                  elevation: 10,
+                  extended: constraints.maxWidth >= 1533,
+                  // minExtendedWidth: 144,
+                  minWidth: 72,
+                  labelType: NavigationRailLabelType.none,
+                  useIndicator: true,
+                ),
               ),
             ),
             const VerticalDivider(thickness: 1, width: 1),

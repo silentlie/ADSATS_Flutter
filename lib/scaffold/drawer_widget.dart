@@ -1,3 +1,4 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -90,7 +91,7 @@ class MyDrawerHeader extends StatelessWidget {
     }
     return SizedBox(
       // height of header
-      height: 400,
+      height: 250,
       child: DrawerHeader(
         decoration: const BoxDecoration(
           color: Colors.transparent,
@@ -104,7 +105,7 @@ class MyDrawerHeader extends StatelessWidget {
             Center(
               // Center the name text
               child: Text(
-                "Name: ${staff.fName} ${staff.lName}",
+                "${staff.fName} ${staff.lName}",
                 style: const TextStyle(
                   fontSize: 16,
                 ),
@@ -113,47 +114,37 @@ class MyDrawerHeader extends StatelessWidget {
             Center(
               // Center the email text
               child: Text(
-                "Email: ${staff.email}",
+                staff.email,
                 style: const TextStyle(
                   fontSize: 16,
                 ),
               ),
             ),
-            Center(
-              // Center the role text
-              child: Text(
-                "Roles: ${staff.roles}",
-                style: const TextStyle(
-                  fontSize: 16,
-                ),
-              ),
+            Wrap(
+              alignment: WrapAlignment.center,
+              runSpacing: 2,
+              spacing: 2,
+              children: <Text>[
+                for (var item in staff.roles) Text("${item.capitalized},")
+              ],
             ),
-            Center(
-              // Center the role text
-              child: Text(
-                "Aircraft: ${staff.aircraft}",
-                style: const TextStyle(
-                  fontSize: 16,
-                ),
-              ),
+            Wrap(
+              alignment: WrapAlignment.center,
+              runSpacing: 2,
+              spacing: 2,
+              children: <Text>[
+                const Text('Aircraft:'),
+                for (var item in staff.aircraft) Text("$item,")
+              ],
             ),
-            Center(
-              // Center the role text
-              child: Text(
-                "Categories: ${staff.categories}",
-                style: const TextStyle(
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            Center(
-              // Center the role text
-              child: Text(
-                "Subcategories: ${staff.subcategories}",
-                style: const TextStyle(
-                  fontSize: 16,
-                ),
-              ),
+            Wrap(
+              alignment: WrapAlignment.center,
+              runSpacing: 2,
+              spacing: 2,
+              children: <Text>[
+                const Text('Categories:'),
+                for (var item in staff.categories) Text("${item.capitalized},")
+              ],
             ),
           ],
         ),

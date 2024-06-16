@@ -89,7 +89,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth < 1000) {
+        if (constraints.maxWidth < 1533) {
           // https://api.flutter.dev/flutter/material/NavigationBar-class.html
           return Column(
             children: [
@@ -119,20 +119,24 @@ class _SettingsWidgetState extends State<SettingsWidget> {
         return Row(
           children: [
             SafeArea(
-              child: NavigationRail(
-                onDestinationSelected: (value) {
-                  setState(() {
-                    _selectedIndex = value;
-                  });
-                },
-                destinations: _navigationRailDestinations,
-                selectedIndex: _selectedIndex,
-                elevation: 10,
-                extended: constraints.maxWidth >= 1440,
-                minExtendedWidth: 144,
-                minWidth: 72,
-                labelType: NavigationRailLabelType.none,
-                useIndicator: true,
+              child: Container(
+                alignment: Alignment.center,
+                width: 175,
+                child: NavigationRail(
+                  onDestinationSelected: (value) {
+                    setState(() {
+                      _selectedIndex = value;
+                    });
+                  },
+                  destinations: _navigationRailDestinations,
+                  selectedIndex: _selectedIndex,
+                  elevation: 10,
+                  extended: constraints.maxWidth >= 1533,
+                  // minExtendedWidth: 144,
+                  minWidth: 72,
+                  labelType: NavigationRailLabelType.none,
+                  useIndicator: true,
+                ),
               ),
             ),
             const VerticalDivider(thickness: 1, width: 1),

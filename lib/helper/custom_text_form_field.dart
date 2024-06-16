@@ -52,11 +52,12 @@ class CustomTextFormField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
-        decoration: decoration ?? InputDecoration(
-          labelText: labelText,
-          hintText: 'Please enter the ${labelText.toLowerCase()}',
-          border: OutlineInputBorder(),
-        ),
+        decoration: decoration ??
+            InputDecoration(
+              labelText: labelText,
+              hintText: 'Please enter the ${labelText.toLowerCase()}',
+              border: const OutlineInputBorder(),
+            ),
         textCapitalization: TextCapitalization.sentences,
         readOnly: readOnly,
         minLines: minLines,
