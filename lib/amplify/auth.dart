@@ -115,20 +115,24 @@ class AuthNotifier with ChangeNotifier {
   int numOfOverdue = 0;
 
   Future<bool> initialize() async {
-    fetchStaff();
     if (email.isEmpty) {
       await Future.wait([
         fetchCognitoAuthSession(),
+        fetchStaff(),
         fetchNotifications(limit),
       ]);
     }
+    // not call the first time but the second time onward
+    if (email.isNotEmpty) fetchStaff();
     return true;
   }
 
   Future<bool> reInitialize() async {
-    fetchStaff();
-    fetchCognitoAuthSession();
-    fetchNotifications(limit);
+    await Future.wait([
+      fetchCognitoAuthSession(),
+      fetchStaff(),
+      fetchNotifications(limit),
+    ]);
     return true;
   }
 
@@ -140,8 +144,7 @@ class AuthNotifier with ChangeNotifier {
       final test = await cognitoPlugin.fetchAuthSession();
       final result = await cognitoPlugin.fetchUserAttributes();
       // maybe be buggy, if nothing changes this should the index of the email
-      email = result[0].value;
-      await fetchStaffDetails(email);
+      await fetchStaffDetails(result[0].value);
     } on AuthException catch (e) {
       debugPrint('Error retrieving auth session: ${e.message}');
     }
@@ -178,6 +181,7 @@ class AuthNotifier with ChangeNotifier {
       subcategories = strToList(subcategoriesStr);
       isAdmin = roles.contains("administrator");
       isEditor = roles.contains("editor");
+      this.email = email;
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
     } on Error catch (e) {
