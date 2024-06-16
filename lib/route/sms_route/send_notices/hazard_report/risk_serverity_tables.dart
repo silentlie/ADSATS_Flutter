@@ -31,16 +31,9 @@ class RiskSeverityResult extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text(
-          'Risk Severity:',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
         IconButton(
           icon: const Icon(
             Icons.info_outline,
-            size: 20,
           ),
           onPressed: () {
             showDialog(
@@ -50,11 +43,11 @@ class RiskSeverityResult extends StatelessWidget {
                     ));
           },
         ),
-        Flexible(
-          flex: 5,
+        SizedBox(
+          width: 152,
           child: CustomTextFormField(
             controller: TextEditingController(text: riskSeverity.getText()),
-            enabled: false,
+            enabled: true,
             readOnly: true,
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
@@ -66,8 +59,7 @@ class RiskSeverityResult extends StatelessWidget {
             jsonKey: 'risk_severity',
           ),
         ),
-        Flexible(
-          flex: 8,
+        Expanded(
           child: CustomTextFormField(
             labelText: "Interim Comment",
             jsonKey: "interim_comment",
@@ -87,29 +79,29 @@ class SeverityOfConsequenceWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> data = [
       {
-        "definition": "Negligible",
-        "meaning": "Nuisance of little consequences",
-        "value": "1"
+        "Definition": "Negligible",
+        "Meaning": "Nuisance of little consequences",
+        "Value": "1"
       },
       {
-        "definition": "Minor",
-        "meaning": "Results in a minor incident",
-        "value": "2"
+        "Definition": "Minor",
+        "Meaning": "Results in a minor incident",
+        "Value": "2"
       },
       {
-        "definition": "Major",
-        "meaning": "Serious incident or injury",
-        "value": "3"
+        "Definition": "Major",
+        "Meaning": "Serious incident or injury",
+        "Value": "3"
       },
       {
-        "definition": "Hazardous",
-        "meaning": "Serious injury or major equipment damage",
-        "value": "4"
+        "Definition": "Hazardous",
+        "Meaning": "Serious injury or major equipment damage",
+        "Value": "4"
       },
       {
-        "definition": "Catastrophic",
-        "meaning": "Results in an accident, death or equipment destroyed",
-        "value": "5"
+        "Definition": "Catastrophic",
+        "Meaning": "Results in an accident, death or equipment destroyed",
+        "Value": "5"
       },
     ];
     RiskSeverity riskSeverity = Provider.of<RiskSeverity>(context);
@@ -146,28 +138,28 @@ class LikelihoodofOccurrenceWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> data = [
       {
-        "definition": "Extremely improbable",
-        "meaning": "Almost inconceivable that the event will occur",
+        "Definition": "Extremely improbable",
+        "Meaning": "Almost inconceivable that the event will occur",
         "value": "1"
       },
       {
-        "definition": "Improbable",
-        "meaning": "Very unlikely to occur",
+        "Definition": "Improbable",
+        "Meaning": "Very unlikely to occur",
         "value": "2"
       },
       {
-        "definition": "Remote",
-        "meaning": "Unlikely to occur but possible",
+        "Definition": "Remote",
+        "Meaning": "Unlikely to occur but possible",
         "value": "3"
       },
       {
-        "definition": "Occassional",
-        "meaning": "Likely to occur sometimes",
+        "Definition": "Occassional",
+        "Meaning": "Likely to occur sometimes",
         "value": "4"
       },
       {
-        "definition": "Frequent",
-        "meaning": "Likely to occur many time",
+        "Definition": "Frequent",
+        "Meaning": "Likely to occur many time",
         "value": "5"
       },
     ];
@@ -218,7 +210,16 @@ class _AbstractTableState extends State<AbstractTable> {
     }
     return widget.data.first.keys.map(
       (column) {
-        return DataColumn(label: Text(column));
+        return DataColumn(
+          label: Align(
+            alignment: Alignment.center,
+            child: Text(
+              column,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          onSort: null,
+        );
       },
     ).toList();
   }
@@ -230,26 +231,34 @@ class _AbstractTableState extends State<AbstractTable> {
       (index) {
         Map<String, dynamic> row = rows[index];
         return DataRow(
-            cells: row.values.map(
-              (column) {
-                return DataCell(Text(column));
-              },
-            ).toList(),
-            selected: index == widget.getSelectedIndex(),
-            onSelectChanged: (value) {
-              setState(() {
-                widget.setSelectedIndex(index);
-              });
+          cells: row.values.map(
+            (column) {
+              return DataCell(
+                Center(
+                  child: Text(
+                    column,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
             },
-            color: WidgetStateColor.resolveWith(
-              (states) {
-                if (states.contains(WidgetState.selected)) {
-                  return Colors.lightBlue;
-                } else {
-                  return Colors.transparent;
-                }
-              },
-            ));
+          ).toList(),
+          selected: index == widget.getSelectedIndex(),
+          onSelectChanged: (value) {
+            setState(() {
+              widget.setSelectedIndex(index);
+            });
+          },
+          color: WidgetStateColor.resolveWith(
+            (states) {
+              if (states.contains(WidgetState.selected)) {
+                return Colors.lightBlue;
+              } else {
+                return Colors.transparent;
+              }
+            },
+          ),
+        );
       },
     );
   }
@@ -259,11 +268,12 @@ class _AbstractTableState extends State<AbstractTable> {
     return DataTable(
       headingTextStyle: const TextStyle(fontWeight: FontWeight.bold),
       showCheckboxColumn: false,
-      border: const TableBorder(
-          horizontalInside: BorderSide(color: Colors.lightBlue)),
-      decoration: BoxDecoration(border: Border.all(color: Colors.lightBlue)),
+      border: TableBorder.all(color: Colors.lightBlue),
+      // decoration: BoxDecoration(border: Border.all(color: Colors.lightBlue)),
       columns: _columns,
       rows: _rows,
+      columnSpacing: 5,
+      horizontalMargin: 5,
     );
   }
 }

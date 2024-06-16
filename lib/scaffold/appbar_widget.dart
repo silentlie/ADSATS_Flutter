@@ -26,16 +26,13 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return SafeArea(
       child: AppBar(
         backgroundColor: colorScheme.secondary.withOpacity(0.3),
-        leading: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(5),
-              child: const DefaultLogoWidget(),
-            ),
-            // DefaultTextLogo(),
-          ],
+        leading: Container(
+          padding: const EdgeInsets.all(5),
+          child: const DefaultLogoWidget(),
         ),
-        leadingWidth: 105,
+        elevation: 20,
+        titleSpacing: 0,
+        leadingWidth: 81,
         title: const SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: MenuItemRow(menuItems: AppBarItems.fullMenuItems),
@@ -71,7 +68,7 @@ class _ThemeSwitchState extends State<ThemeSwitch> {
   @override
   Widget build(BuildContext context) {
     return Transform.scale(
-      scale: 0.6,
+      scale: 0.7,
       child: Tooltip(
         message: 'Change theme',
         child: Switch(
@@ -85,78 +82,6 @@ class _ThemeSwitchState extends State<ThemeSwitch> {
           },
         ),
       ),
-    );
-  }
-}
-
-class SampleMenuAnchor extends StatelessWidget {
-  const SampleMenuAnchor({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MenuAnchor(
-      menuChildren: [
-        ListTile(
-          visualDensity: VisualDensity.comfortable,
-          tileColor: Colors.blue.shade100,
-          titleTextStyle: const TextStyle(fontWeight: FontWeight.bold),
-          title: const Text('Author'),
-          subtitle: const Row(
-            children: [
-              Text(
-                'Subject: ',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text('Message')
-            ],
-          ),
-          trailing: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.more_vert,
-              )),
-          leading: const Icon(Icons.edit_document),
-          onTap: () {},
-        ),
-        ListTile(
-          dense: true,
-          title: const Text('Author'),
-          subtitle: const Text('Subject: Message'),
-          trailing: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.more_vert,
-              )),
-          leading: const Icon(Icons.edit_document),
-          onTap: () {},
-        ),
-        ListTile(
-          dense: true,
-          title: const Text('Author'),
-          subtitle: const Text('Subject: Message'),
-          trailing: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.more_vert,
-              )),
-          leading: const Icon(Icons.edit_document),
-          onTap: () {},
-        ),
-        const SizedBox(
-          width: 300,
-        )
-      ],
-      builder: (context, controller, child) {
-        return IconButton(
-            onPressed: () {
-              if (controller.isOpen) {
-                controller.close();
-              } else {
-                controller.open();
-              }
-            },
-            icon: const Icon(Icons.notifications_none));
-      },
     );
   }
 }

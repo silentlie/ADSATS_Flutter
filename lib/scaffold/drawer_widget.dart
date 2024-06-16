@@ -100,7 +100,7 @@ class MyDrawerHeader extends StatelessWidget {
           children: [
             Center(child: avatar),
             // Add some space between the header text and additional text
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Center(
               // Center the name text
               child: Text(
@@ -108,6 +108,7 @@ class MyDrawerHeader extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 16,
                 ),
+                textAlign: TextAlign.center,
               ),
             ),
             Center(
@@ -117,22 +118,32 @@ class MyDrawerHeader extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 16,
                 ),
+                textAlign: TextAlign.center,
               ),
             ),
-            Text(
-              'Roles: ${staff.roles.map((item) {
-                return item;
-              }).join(', ')}',
+            Center(
+              child: Text(
+                'Roles: ${staff.roles.map((item) {
+                  return item;
+                }).join(', ')}',
+                textAlign: TextAlign.center,
+              ),
             ),
-            Text(
-              'Aircraft: ${staff.aircraft.map((item) {
-                return item;
-              }).join(', ')}',
+            Center(
+              child: Text(
+                'Aircraft: ${staff.aircraft.map((item) {
+                  return item;
+                }).join(', ')}',
+                textAlign: TextAlign.center,
+              ),
             ),
-            Text(
-              'Categories: ${staff.categories.map((item) {
-                return item;
-              }).join(', ')}',
+            Center(
+              child: Text(
+                'Categories: ${staff.categories.map((item) {
+                  return item;
+                }).join(', ')}',
+                textAlign: TextAlign.center,
+              ),
             ),
             // Text(
             //   'Subcategores: ${staff.subcategories.map((item) => item.capitalized).join(', ')}',

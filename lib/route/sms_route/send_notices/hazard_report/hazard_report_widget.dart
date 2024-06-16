@@ -39,7 +39,7 @@ class HazardReportWidget extends StatelessWidget {
             Row(
               children: [
                 Flexible(
-                  flex: 7,
+                  flex: 6,
                   child: CustomTextFormField(
                     labelText: 'Subject',
                     jsonKey: 'subject',
@@ -47,16 +47,16 @@ class HazardReportWidget extends StatelessWidget {
                   ),
                 ),
                 Flexible(
-                  flex: 3,
+                  flex: 4,
                   child: CustomTextFormField(
                     labelText: 'Location',
                     jsonKey: 'location',
                     results: formResult,
                   ),
                 ),
-                const ReportType(),
               ],
             ),
+            const ReportType(),
             CustomTextFormField(
               labelText: 'Describe the Hazard or the Event',
               jsonKey: 'describe',
@@ -186,35 +186,38 @@ class _MitigationState extends State<Mitigation> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Text(
-          'Include mitigation comment?',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Radio(
-            value: true,
-            groupValue: _includeComment,
-            onChanged: (value) {
-              setState(() {
-                _includeComment = value!;
-              });
-            }),
-        const Text(
-          'Yes',
-        ),
-        Radio(
-            value: false,
-            groupValue: _includeComment,
-            onChanged: (value) {
-              setState(() {
-                _includeComment = value!;
-              });
-            }),
-        const Text(
-          'No',
-        ),
-      ],
+    return Container(
+      padding: const EdgeInsets.all(8),
+      child: Row(
+        children: [
+          const Text(
+            'Include mitigation comment?',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Radio(
+              value: true,
+              groupValue: _includeComment,
+              onChanged: (value) {
+                setState(() {
+                  _includeComment = value!;
+                });
+              }),
+          const Text(
+            'Yes',
+          ),
+          Radio(
+              value: false,
+              groupValue: _includeComment,
+              onChanged: (value) {
+                setState(() {
+                  _includeComment = value!;
+                });
+              }),
+          const Text(
+            'No',
+          ),
+        ],
+      ),
     );
   }
 }
