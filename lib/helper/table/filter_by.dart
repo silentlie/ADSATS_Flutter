@@ -49,7 +49,7 @@ class FilterBy extends StatelessWidget {
     'Notice to crew',
     'Safety notice',
     'Hazard report',
-    'BCAA pcciremce report',
+    'BCAA report',
   ];
 
   List<Widget> getFilterContent(

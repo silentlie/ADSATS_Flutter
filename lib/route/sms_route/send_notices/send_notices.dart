@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/hazard_report/hazard_report_widget.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/safety_notice/safety_notice_widget.dart';
-import 'package:adsats_flutter/route/sms_route/send_notices/notice_to_crew/notice_to_crew_widget.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/crew_notice/crew_notice_widget.dart';
 
 class SendNotices extends StatefulWidget {
   const SendNotices({super.key});
@@ -19,7 +19,7 @@ class _SendNoticesState extends State<SendNotices> {
     const NavigationRailDestination(
       icon: Icon(Icons.notifications_outlined),
       selectedIcon: Icon(Icons.notifications),
-      label: Text("Notice to crew"),
+      label: Text("Crew Notice"),
     ),
     const NavigationRailDestination(
       icon: Icon(Icons.gpp_maybe_outlined),
@@ -34,14 +34,14 @@ class _SendNoticesState extends State<SendNotices> {
     const NavigationRailDestination(
       icon: Icon(Icons.document_scanner_outlined),
       selectedIcon: Icon(Icons.document_scanner),
-      label: Text("BCAA reports"),
+      label: Text("BCAA report"),
     ),
   ];
   final List<NavigationDestination> _navigationDestinations = [
     const NavigationDestination(
       icon: Icon(Icons.notifications_outlined),
       selectedIcon: Icon(Icons.notifications),
-      label: "Notice to Crews",
+      label: "Crews Notice",
     ),
     const NavigationDestination(
       icon: Icon(Icons.gpp_maybe_outlined),
@@ -56,7 +56,7 @@ class _SendNoticesState extends State<SendNotices> {
     const NavigationDestination(
       icon: Icon(Icons.document_scanner_outlined),
       selectedIcon: Icon(Icons.document_scanner),
-      label: "BCAA Reports",
+      label: "BCAA report",
     ),
   ];
 
@@ -64,7 +64,7 @@ class _SendNoticesState extends State<SendNotices> {
   void initState() {
     super.initState();
     _pages = [
-      const NoticeWidget(),
+      const CrewNoticeWidget(),
       const SafetyNoticeWidget(),
       const HazardReportWidget(),
       const Placeholder(),

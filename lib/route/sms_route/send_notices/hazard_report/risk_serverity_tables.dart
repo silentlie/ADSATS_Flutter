@@ -11,6 +11,8 @@ class _RiskSeverityWidgetState extends State<RiskSeverityWidget> {
   @override
   Widget build(BuildContext context) {
     return const Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         SeverityOfConsequenceWidget(),
         LikelihoodofOccurrenceWidget(),
@@ -27,6 +29,7 @@ class RiskSeverityResult extends StatelessWidget {
   Widget build(BuildContext context) {
     RiskSeverity riskSeverity = Provider.of<RiskSeverity>(context);
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Text(
           'Risk Severity:',
@@ -47,10 +50,9 @@ class RiskSeverityResult extends StatelessWidget {
                     ));
           },
         ),
-        Container(
-          padding: const EdgeInsets.all(8),
-          width: 200,
-          child: TextField(
+        Flexible(
+          flex: 5,
+          child: CustomTextFormField(
             controller: TextEditingController(text: riskSeverity.getText()),
             enabled: false,
             readOnly: true,
@@ -59,8 +61,19 @@ class RiskSeverityResult extends StatelessWidget {
               fillColor: riskSeverity.getColor(),
               filled: true,
             ),
+            labelText: "Risk Severity",
+            results: HazardReportWidget.formResult,
+            str: 'risk_severity',
           ),
-        )
+        ),
+        Flexible(
+          flex: 8,
+          child: CustomTextFormField(
+            labelText: "Interim Comment",
+            str: "interim_comment",
+            results: HazardReportWidget.formResult,
+          ),
+        ),
       ],
     );
   }

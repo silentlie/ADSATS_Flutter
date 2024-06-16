@@ -9,19 +9,25 @@ class CustomTextFormField extends StatelessWidget {
       this.isFileName = false,
       required this.results,
       this.initialValue,
+      this.controller,
       this.enabled = true,
+      this.readOnly = false,
       this.maxLines,
-      this.minLines = 1});
+      this.minLines = 1,
+      this.decoration});
 
   final String labelText;
   final String? initialValue;
+  final TextEditingController? controller;
   final String str;
   final bool enabled;
+  final bool readOnly;
   final bool isEmail;
   final bool isFileName;
   final Map<String, dynamic> results;
   final int? maxLines;
   final int? minLines;
+  final InputDecoration? decoration;
 
   String? validatorTextFormField(String? value) {
     final RegExp emailRegExp = RegExp(
@@ -46,20 +52,20 @@ class CustomTextFormField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
-        decoration: InputDecoration(
+        decoration: decoration ?? InputDecoration(
           labelText: labelText,
           hintText: 'Please enter the ${labelText.toLowerCase()}',
-          border:
-              enabled ? const OutlineInputBorder() : const OutlineInputBorder(),
+          border: OutlineInputBorder(),
         ),
         textCapitalization: TextCapitalization.sentences,
-        readOnly: false,
+        readOnly: readOnly,
         minLines: minLines,
         maxLines: maxLines,
         validator: validatorTextFormField,
+        controller: controller,
         buildCounter: (context,
             {required currentLength, required isFocused, required maxLength}) {
-          if (isFocused) {
+          if (isFocused && !readOnly) {
             return Text(currentLength.toString());
           }
           return null;

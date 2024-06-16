@@ -8,7 +8,18 @@ class RecepientsWidget extends StatelessWidget {
   const RecepientsWidget({super.key});
 
   static Map<String, List<String>> recipientsResult = {};
-
+  bool validate() {
+    bool isValidate = false;
+    recipientsResult.forEach(
+      (key, value) {
+        if (value.isNotEmpty) {
+          isValidate = true;
+        }
+      },
+    );
+    return isValidate;
+  }
+  
   @override
   Widget build(BuildContext context) {
     AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);

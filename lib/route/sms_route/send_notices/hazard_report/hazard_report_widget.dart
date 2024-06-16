@@ -1,11 +1,10 @@
-import 'package:adsats_flutter/helper/recipients.dart';
 import 'package:adsats_flutter/helper/search_file_widget.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/notice_basic_details.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-part 'hazard_report_class.dart';
-part 'hazard_report_tables.dart';
+part 'risk_serverity_tables.dart';
 
 class HazardReportWidget extends StatelessWidget {
   const HazardReportWidget({
@@ -16,56 +15,65 @@ class HazardReportWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HazardReport hazardReport = HazardReport();
-
+    final formKey = GlobalKey<FormState>();
     // Access color scheme
     ColorScheme colorScheme = Theme.of(context).colorScheme;
-    Map<String, dynamic> results = {};
     return Form(
+      key: formKey,
       child: ChangeNotifierProvider(
         create: (context) => RiskSeverity(),
         child: Column(
           children: [
-            const Text(
-              'Send a notice - Hazard report',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            Container(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: const Text(
+                'Hazard report',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             const Divider(),
-            const RecepientsWidget(),
-            const Divider(),
-            Wrap(
+            const NoticeBasicDetails(),
+            Row(
               children: [
-                SearchAuthorWidget(
-                  result: results,
+                Flexible(
+                  flex: 7,
+                  child: CustomTextFormField(
+                    labelText: 'Subject',
+                    str: 'subject',
+                    results: formResult,
+                  ),
                 ),
-                const DateFormField(),
+                Flexible(
+                  flex: 3,
+                  child: CustomTextFormField(
+                    labelText: 'Location',
+                    str: 'location',
+                    results: formResult,
+                  ),
+                ),
                 const ReportType(),
               ],
             ),
-            const Row(children: [
-              SubjectTextField(),
-              LocationTextField(),
-            ]),
-            const Row(
-              children: [
-                DescribeTextField(),
-                MitigationColumn(),
-              ],
+            CustomTextFormField(
+              labelText: 'Describe the Hazard or the Event',
+              str: 'describe',
+              results: formResult,
+              minLines: 5,
+              maxLines: 10,
+            ),
+            const Mitigation(),
+            CustomTextFormField(
+              labelText:
+                  'In your opinion, how could the hazard or event be mitigated? (optional)',
+              str: 'mitigation',
+              results: formResult,
+              minLines: 3,
+              maxLines: 6,
             ),
             const RiskSeverityWidget(),
-            Container(
-              padding: const EdgeInsets.all(8),
-              child: const TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  label: Text('Interim action/comments'),
-                ),
-              ),
-            ),
-            SearchFileWidget(fileNames: hazardReport.fileNameResult),
             Row(
               mainAxisAlignment:
                   MainAxisAlignment.end, // Align buttons to the right
@@ -119,7 +127,7 @@ class HazardReportWidget extends StatelessWidget {
 
 class ReportType extends StatefulWidget {
   const ReportType({super.key});
-
+  static bool reportTypeRadio = true;
   @override
   State<ReportType> createState() => _ReportTypeState();
 }
@@ -127,12 +135,10 @@ class ReportType extends StatefulWidget {
 enum ReportTypeRadio { open, confidential }
 
 class _ReportTypeState extends State<ReportType> {
-  ReportTypeRadio? _reportTypeRadio = ReportTypeRadio.open;
-
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 300,
+    return Container(
+      padding: const EdgeInsets.all(8),
       child: Row(
         children: [
           const Text(
@@ -140,24 +146,25 @@ class _ReportTypeState extends State<ReportType> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           Radio(
-              value: ReportTypeRadio.open,
-              groupValue: _reportTypeRadio,
-              onChanged: (ReportTypeRadio? value) {
+              value: true,
+              groupValue: ReportType.reportTypeRadio,
+              onChanged: (value) {
                 setState(() {
-                  _reportTypeRadio = value;
+                  ReportType.reportTypeRadio = value!;
                 });
               }),
           const Text(
             'Open',
           ),
           Radio(
-              value: ReportTypeRadio.confidential,
-              groupValue: _reportTypeRadio,
-              onChanged: (ReportTypeRadio? value) {
-                setState(() {
-                  _reportTypeRadio = value;
-                });
-              }),
+            value: false,
+            groupValue: ReportType.reportTypeRadio,
+            onChanged: (value) {
+              setState(() {
+                ReportType.reportTypeRadio = value!;
+              });
+            },
+          ),
           const Text(
             'Confidential',
           ),
@@ -174,10 +181,8 @@ class Mitigation extends StatefulWidget {
   State<Mitigation> createState() => _MitigationState();
 }
 
-enum IncludeComment { yes, no }
-
 class _MitigationState extends State<Mitigation> {
-  IncludeComment? _includeComment = IncludeComment.no;
+  bool _includeComment = false;
 
   @override
   Widget build(BuildContext context) {
@@ -188,151 +193,28 @@ class _MitigationState extends State<Mitigation> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         Radio(
-            value: IncludeComment.yes,
+            value: true,
             groupValue: _includeComment,
-            onChanged: (IncludeComment? value) {
+            onChanged: (value) {
               setState(() {
-                _includeComment = value;
+                _includeComment = value!;
               });
             }),
         const Text(
           'Yes',
         ),
         Radio(
-            value: IncludeComment.no,
+            value: false,
             groupValue: _includeComment,
-            onChanged: (IncludeComment? value) {
+            onChanged: (value) {
               setState(() {
-                _includeComment = value;
+                _includeComment = value!;
               });
             }),
         const Text(
           'No',
         ),
       ],
-    );
-  }
-}
-
-class MitigationColumn extends StatelessWidget {
-  const MitigationColumn({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Flexible(
-      flex: 2,
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        child: const Column(
-          children: [
-            Mitigation(),
-            MitigationTextField(),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class MitigationTextField extends StatelessWidget {
-  const MitigationTextField({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const TextField(
-      decoration: InputDecoration(
-        label: Text(
-            'In your opinion, how could the hazard or event be mitigated? (optional)'),
-        border: OutlineInputBorder(),
-      ),
-      maxLines: 3,
-    );
-  }
-}
-
-class DescribeTextField extends StatelessWidget {
-  const DescribeTextField({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Flexible(
-      flex: 2,
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        child: const TextField(
-          decoration: InputDecoration(
-            label: Text('Describe the Hazard or the Event'),
-            border: OutlineInputBorder(),
-          ),
-          maxLines: 5,
-        ),
-      ),
-    );
-  }
-}
-
-class LocationTextField extends StatelessWidget {
-  const LocationTextField({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Flexible(
-      flex: 2,
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        child: const TextField(
-          decoration: InputDecoration(
-            label: Text('Location'),
-            border: OutlineInputBorder(),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class SubjectTextField extends StatelessWidget {
-  const SubjectTextField({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Flexible(
-      flex: 2,
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        child: const TextField(
-          decoration: InputDecoration(
-              label: Text('Subject'), border: OutlineInputBorder()),
-        ),
-      ),
-    );
-  }
-}
-
-class DateFormField extends StatelessWidget {
-  const DateFormField({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(minWidth: 200, maxWidth: 325),
-      // constraints: const BoxConstraints(maxWidth: 200),
-      padding: const EdgeInsets.all(5),
-      child: InputDatePickerFormField(
-        initialDate: DateTime.timestamp(),
-        firstDate: DateTime(2020),
-        lastDate: DateTime.now(),
-      ),
     );
   }
 }
