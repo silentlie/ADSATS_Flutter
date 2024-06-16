@@ -7,7 +7,6 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'package:adsats_flutter/scaffold/default_widget.dart';
-import 'package:flutter/widgets.dart';
 
 Future<void> signOutCurrentUser() async {
   final result = await Amplify.Auth.signOut();

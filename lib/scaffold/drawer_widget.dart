@@ -2,7 +2,6 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:wrapfit/wrapfit.dart';
 import 'default_widget.dart';
 
 import 'package:adsats_flutter/amplify/auth.dart';
