@@ -14,16 +14,21 @@ part 'custom_text_form_field.dart';
 // this widget is reference from search_anchor4.dart
 
 class SearchFileWidget extends StatefulWidget {
-  const SearchFileWidget({super.key, required this.fileNames});
+  const SearchFileWidget({
+    super.key,
+    required this.fileNames,
+    this.enabled = false,
+  });
   final List<String> fileNames;
-
+  final bool enabled;
   @override
   State<SearchFileWidget> createState() => _SearchFileWidgetState();
 }
 
 class _SearchFileWidgetState extends State<SearchFileWidget> {
   // the API call
-  Future<Iterable<String>> fetchData(String search) async {
+  Future<Iterable<String>> fetchData(
+      String search, Map<String, String>? limit) async {
     if (search.isEmpty) {
       return const Iterable<String>.empty();
     }
@@ -33,8 +38,8 @@ class _SearchFileWidgetState extends State<SearchFileWidget> {
         "limit": "10",
         "search": "%$search%",
         "archived": "false",
+        ...limit ?? {}
       };
-      debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/documents',
           apiName: 'AmplifyAviationAPI', queryParameters: queryParameters);
 
@@ -63,15 +68,17 @@ class _SearchFileWidgetState extends State<SearchFileWidget> {
   // The most recent suggestions received from the API.
   late Iterable<Widget> _lastOptions = <Widget>[];
 
-  late final _Debounceable<Iterable<String>?, String> _debouncedSearch;
+  late final _Debounceable<Iterable<String>?, String, Map<String, String>?>
+      _debouncedSearch;
 
   // Calls the "remote" API to search with the given query. Returns null when
   // the call has been made obsolete.
-  Future<Iterable<String>?> _search(String query) async {
+  Future<Iterable<String>?> _search(
+      String query, Map<String, String>? limit) async {
     _currentQuery = query;
 
     // In a real application, there should be some error handling here.
-    final Iterable<String> options = await fetchData(_currentQuery!);
+    final Iterable<String> options = await fetchData(_currentQuery!, limit);
 
     // If another search happened after this one, throw away these options.
     if (_currentQuery != query) {
@@ -85,24 +92,36 @@ class _SearchFileWidgetState extends State<SearchFileWidget> {
   @override
   void initState() {
     super.initState();
-    _debouncedSearch = _debounce<Iterable<String>?, String>(_search);
+    _debouncedSearch =
+        _debounce<Iterable<String>?, String, Map<String, String>?>(_search);
   }
 
   TextEditingController barController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Wrap(
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
+    Map<String, String> limit = {
+      'limit_categories': authNotifier.categories.join(','),
+      'limit_author': authNotifier.email,
+    };
+
+    return Column(
       children: [
         SearchAnchor(
           builder: (context, controller) {
             return SearchBar(
+              enabled: widget.enabled,
               onTap: () {
-                controller.openView();
+                if (widget.enabled) {
+                  controller.openView();
+                }
               },
               hintText: "Choose documents (Optional)",
               onChanged: (value) {
-                controller.openView();
-                controller.text = value;
+                if (widget.enabled) {
+                  controller.openView();
+                  controller.text = value;
+                }
               },
               controller: barController,
               leading: const Icon(Icons.search),
@@ -115,7 +134,7 @@ class _SearchFileWidgetState extends State<SearchFileWidget> {
             barController.text = controller.text;
 
             final List<String>? options =
-                (await _debouncedSearch(controller.text))?.toList();
+                (await _debouncedSearch(controller.text, limit))?.toList();
             if (options == null) {
               return _lastOptions;
             }
@@ -151,9 +170,11 @@ class _SearchFileWidgetState extends State<SearchFileWidget> {
                 return Chip(
                   label: Text(fileName),
                   onDeleted: () {
-                    setState(() {
-                      widget.fileNames.remove(fileName);
-                    });
+                    widget.enabled
+                        ? setState(() {
+                            widget.fileNames.remove(fileName);
+                          })
+                        : null;
                   },
                 );
               },
@@ -167,16 +188,16 @@ class _SearchFileWidgetState extends State<SearchFileWidget> {
 
 const Duration debounceDuration = Duration(milliseconds: 500);
 
-typedef _Debounceable<S, T> = Future<S?> Function(T parameter);
+typedef _Debounceable<S, T, U> = Future<S?> Function(T parameter, U? limit);
 
 /// Returns a new function that is a debounced version of the given function.
 ///
 /// This means that the original function will be called only after no calls
 /// have been made for the given Duration.
-_Debounceable<S, T> _debounce<S, T>(_Debounceable<S?, T> function) {
+_Debounceable<S?, T, U?> _debounce<S, T, U>(_Debounceable<S?, T, U?> function) {
   _DebounceTimer? debounceTimer;
 
-  return (T parameter) async {
+  return (T parameter, U? limit) async {
     if (debounceTimer != null && !debounceTimer!.isCompleted) {
       debounceTimer!.cancel();
     }
@@ -189,7 +210,7 @@ _Debounceable<S, T> _debounce<S, T>(_Debounceable<S?, T> function) {
       }
       rethrow;
     }
-    return function(parameter);
+    return function(parameter, limit);
   };
 }
 

@@ -48,6 +48,7 @@ class MultiSelect extends StatelessWidget {
           scroll: true,
           scrollBar: HorizontalScrollBar(isAlwaysShown: true),
         ),
+        
       ),
     );
   }

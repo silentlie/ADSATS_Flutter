@@ -14,7 +14,8 @@ class CustomTextFormField extends StatelessWidget {
       this.readOnly = false,
       this.maxLines,
       this.minLines = 1,
-      this.decoration});
+      this.decoration,
+      this.padding = const EdgeInsets.all(8.0)});
 
   final String labelText;
   final String? initialValue;
@@ -28,6 +29,7 @@ class CustomTextFormField extends StatelessWidget {
   final int? maxLines;
   final int? minLines;
   final InputDecoration? decoration;
+  final EdgeInsetsGeometry padding;
 
   String? validatorTextFormField(String? value) {
     final RegExp emailRegExp = RegExp(
@@ -50,7 +52,7 @@ class CustomTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: padding,
       child: TextFormField(
         decoration: decoration ??
             InputDecoration(

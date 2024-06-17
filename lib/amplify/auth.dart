@@ -179,8 +179,8 @@ class AuthNotifier with ChangeNotifier {
       aircraft = strToList(aircraftStr);
       categories = strToList(categoriesStr);
       subcategories = strToList(subcategoriesStr);
-      isAdmin = roles.contains("administrator");
-      isEditor = roles.contains("editor");
+      isAdmin = roles.contains("Administrator");
+      isEditor = roles.contains("Editor");
       this.email = email;
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
@@ -239,7 +239,36 @@ class AuthNotifier with ChangeNotifier {
       ).toList();
       numOfUnread = rawData["count"]["unread"];
       numOfOverdue = rawData["count"]["overdue"];
-      rebuildNotifications();
+      notificationWidgets = [
+        if (numOfUnread > 0)
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: Text(
+              "You have $numOfUnread unread notifications",
+              style: const TextStyle(color: Colors.yellow),
+            ),
+          ),
+        if (numOfOverdue > 0)
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: Text(
+              "You have $numOfOverdue overdue notifications",
+              style: const TextStyle(color: Colors.red),
+            ),
+          ),
+        ...notifications.map((notif) => notif.toListTile()),
+        Row(
+          children: [
+            TextButton.icon(
+              onPressed: () {
+                fetchNotifications(limit);
+              },
+              label: const Text("Refresh"),
+              icon: const Icon(Icons.refresh),
+            ),
+          ],
+        ),
+      ];
       notifyListeners();
       debugPrint("you have $numOfOverdue overdue");
       // debugPrint("finished fetch notification");
@@ -250,44 +279,5 @@ class AuthNotifier with ChangeNotifier {
       debugPrint('Error: $e');
       rethrow;
     }
-  }
-
-  void rebuildNotifications() {
-    notificationWidgets = [
-      if (numOfUnread > 0)
-        Container(
-          padding: const EdgeInsets.all(8),
-          child: Text(
-            "You have $numOfUnread unread notifications",
-            style: const TextStyle(color: Colors.yellow),
-          ),
-        ),
-      if (numOfOverdue > 0)
-        Container(
-          padding: const EdgeInsets.all(8),
-          child: Text(
-            "You have $numOfOverdue overdue notifications",
-            style: const TextStyle(color: Colors.red),
-          ),
-        ),
-    ];
-    notificationWidgets.addAll(notifications.map(
-      (notification) {
-        return notification.toListTile();
-      },
-    ));
-    notificationWidgets.add(
-      Row(
-        children: [
-          TextButton.icon(
-            onPressed: () {
-              fetchNotifications(limit);
-            },
-            label: const Text("Refresh"),
-            icon: const Icon(Icons.refresh),
-          ),
-        ],
-      ),
-    );
   }
 }

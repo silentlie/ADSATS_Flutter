@@ -53,9 +53,26 @@ class RiskSeverityResult extends StatelessWidget {
               border: const OutlineInputBorder(),
               fillColor: riskSeverity.getColor(),
               filled: true,
+              label: Stack(
+                children: [
+                  Text(
+                    "Risk Severity",
+                    style: TextStyle(
+                      foreground: Paint()
+                        ..style = PaintingStyle.stroke
+                        ..strokeWidth = 4
+                        ..color = Colors.white,
+                    ),
+                  ),
+                  const Text(
+                    "Risk Severity",
+                  ),
+                ],
+              ),
+              hintText: 'Please enter the risk severity',
             ),
             labelText: "Risk Severity",
-            results: HazardReportWidget.formResult,
+            results: HazardReportWidget.noticeBasicDetails,
             jsonKey: 'risk_severity',
           ),
         ),
@@ -63,7 +80,7 @@ class RiskSeverityResult extends StatelessWidget {
           child: CustomTextFormField(
             labelText: "Interim Comment",
             jsonKey: "interim_comment",
-            results: HazardReportWidget.formResult,
+            results: HazardReportWidget.noticeBasicDetails,
           ),
         ),
       ],
@@ -110,13 +127,10 @@ class SeverityOfConsequenceWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text(
-              'What do you consider to be the worst possible consequence of this event happening? Click on the table below.',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+          const Text(
+            'What do you consider to be the worst possible consequence of this event happening? Click on the table below.',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
             ),
           ),
           AbstractTable(
@@ -169,13 +183,10 @@ class LikelihoodofOccurrenceWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text(
-              'In your opinion, what is the likelihood of the occurrence happening again? Click on the table below.',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+          const Text(
+            'In your opinion, what is the likelihood of the occurrence happening again? Click on the table below.',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
             ),
           ),
           AbstractTable(

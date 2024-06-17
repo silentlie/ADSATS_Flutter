@@ -1,3 +1,5 @@
+import 'package:adsats_flutter/amplify/auth.dart';
+import 'package:adsats_flutter/helper/recipients.dart';
 import 'package:adsats_flutter/helper/search_file_widget.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/notice_basic_details.dart';
 import 'package:flutter/material.dart';
@@ -9,15 +11,26 @@ part 'risk_serverity_tables.dart';
 class HazardReportWidget extends StatelessWidget {
   const HazardReportWidget({
     super.key,
+    this.viewMode = false,
+    this.noticeID,
   });
-
-  static Map<String, List<String>> formResult = {};
+  final int? noticeID;
+  static Map<String, dynamic> noticeBasicDetails = {};
+  static Map<String, dynamic> hazardReportDetails = {};
+  static Map<String, dynamic> recipients = {};
+  final bool viewMode;
 
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
     // Access color scheme
     ColorScheme colorScheme = Theme.of(context).colorScheme;
+    AuthNotifier authNotifier =
+        Provider.of<AuthNotifier>(context, listen: false);
+    bool editPermission = authNotifier.isAdmin || authNotifier.isEditor;
+    noticeBasicDetails['file_names'] = <String>[];
+    hazardReportDetails['included_comment'] = false;
+    hazardReportDetails['report_type'] = true;
     return Form(
       key: formKey,
       child: ChangeNotifierProvider(
@@ -35,88 +48,78 @@ class HazardReportWidget extends StatelessWidget {
               ),
             ),
             const Divider(),
-            const NoticeBasicDetails(),
-            Row(
-              children: [
-                Flexible(
-                  flex: 6,
-                  child: CustomTextFormField(
-                    labelText: 'Subject',
-                    jsonKey: 'subject',
-                    results: formResult,
-                  ),
-                ),
-                Flexible(
-                  flex: 4,
-                  child: CustomTextFormField(
-                    labelText: 'Location',
-                    jsonKey: 'location',
-                    results: formResult,
-                  ),
-                ),
-              ],
+            NoticeBasicDetails(noticeBasicDetails: HazardReportWidget.noticeBasicDetails, viewMode: viewMode, editPermission: editPermission,),
+            CustomTextFormField(
+              labelText: 'Location',
+              jsonKey: 'location',
+              results: noticeBasicDetails,
             ),
             const ReportType(),
             CustomTextFormField(
               labelText: 'Describe the Hazard or the Event',
               jsonKey: 'describe',
-              results: formResult,
+              results: noticeBasicDetails,
               minLines: 5,
               maxLines: 10,
             ),
             const Mitigation(),
-            CustomTextFormField(
-              labelText:
-                  'In your opinion, how could the hazard or event be mitigated? (optional)',
-              jsonKey: 'mitigation',
-              results: formResult,
-              minLines: 3,
-              maxLines: 6,
-            ),
             const RiskSeverityWidget(),
-            Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.end, // Align buttons to the right
-              children: [
-                ElevatedButton.icon(
-                  onPressed: () {
-                    context.go('/sms');
-                  },
-                  label: const Text('Cancel'),
-                ),
-                // No save function for now
-                // const SizedBox(width: 10),
-                // ElevatedButton.icon(
-                //   onPressed: () {
-                //     // Functionality for the second button
-                //   },
-                //   // Change text color
-                //   label: const Text('Save'),
-                //   icon: Icon(
-                //     Icons.mail,
-                //     color: colorScheme.onSecondary,
-                //   ),
-                // ),
-                const SizedBox(width: 10),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO:Functionality for the sending button
-                  },
-                  style: ButtonStyle(
-                    // Change button background color
-                    backgroundColor:
-                        WidgetStateProperty.all<Color>(colorScheme.secondary),
+            Container(
+              padding: const EdgeInsets.all(8),
+              child: SearchFileWidget(
+                fileNames: noticeBasicDetails['file_names'],
+              ),
+            ),
+            if (viewMode)
+              RecepientsWidget(
+                recipients: recipients,
+              ),
+            Container(
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                mainAxisAlignment:
+                    MainAxisAlignment.end, // Align buttons to the right
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      context.go('/sms');
+                    },
+                    label: const Text('Cancel'),
                   ),
-                  label: Text(
-                    'Send Notification',
-                    style: TextStyle(color: colorScheme.onSecondary),
+                  // No save function for now
+                  // const SizedBox(width: 10),
+                  // ElevatedButton.icon(
+                  //   onPressed: () {
+                  //     // Functionality for the second button
+                  //   },
+                  //   // Change text color
+                  //   label: const Text('Save'),
+                  //   icon: Icon(
+                  //     Icons.mail,
+                  //     color: colorScheme.onSecondary,
+                  //   ),
+                  // ),
+                  const SizedBox(width: 10),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      // TODO:Functionality for the sending button
+                    },
+                    style: ButtonStyle(
+                      // Change button background color
+                      backgroundColor:
+                          WidgetStateProperty.all<Color>(colorScheme.secondary),
+                    ),
+                    label: Text(
+                      'Send Notification',
+                      style: TextStyle(color: colorScheme.onSecondary),
+                    ),
+                    icon: Icon(
+                      Icons.mail,
+                      color: colorScheme.onSecondary,
+                    ),
                   ),
-                  icon: Icon(
-                    Icons.mail,
-                    color: colorScheme.onSecondary,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
@@ -127,12 +130,9 @@ class HazardReportWidget extends StatelessWidget {
 
 class ReportType extends StatefulWidget {
   const ReportType({super.key});
-  static bool reportTypeRadio = true;
   @override
   State<ReportType> createState() => _ReportTypeState();
 }
-
-enum ReportTypeRadio { open, confidential }
 
 class _ReportTypeState extends State<ReportType> {
   @override
@@ -147,10 +147,11 @@ class _ReportTypeState extends State<ReportType> {
           ),
           Radio(
               value: true,
-              groupValue: ReportType.reportTypeRadio,
+              groupValue: HazardReportWidget.hazardReportDetails['report_type'],
               onChanged: (value) {
                 setState(() {
-                  ReportType.reportTypeRadio = value!;
+                  HazardReportWidget.hazardReportDetails['report_type'] =
+                      value!;
                 });
               }),
           const Text(
@@ -158,10 +159,10 @@ class _ReportTypeState extends State<ReportType> {
           ),
           Radio(
             value: false,
-            groupValue: ReportType.reportTypeRadio,
+            groupValue: HazardReportWidget.hazardReportDetails['report_type'],
             onChanged: (value) {
               setState(() {
-                ReportType.reportTypeRadio = value!;
+                HazardReportWidget.hazardReportDetails['report_type'] = value!;
               });
             },
           ),
@@ -176,46 +177,62 @@ class _ReportTypeState extends State<ReportType> {
 
 class Mitigation extends StatefulWidget {
   const Mitigation({super.key});
-
   @override
   State<Mitigation> createState() => _MitigationState();
 }
 
 class _MitigationState extends State<Mitigation> {
-  bool _includeComment = false;
-
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(8),
-      child: Row(
+      child: Column(
         children: [
-          const Text(
-            'Include mitigation comment?',
-            style: TextStyle(fontWeight: FontWeight.bold),
+          Row(
+            children: [
+              const Text(
+                'Include mitigation comment?',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Radio(
+                  value: true,
+                  groupValue: HazardReportWidget
+                      .hazardReportDetails['included_comment'],
+                  onChanged: (value) {
+                    setState(() {
+                      HazardReportWidget
+                          .hazardReportDetails['included_comment'] = value!;
+                    });
+                  }),
+              const Text(
+                'Yes',
+              ),
+              Radio(
+                value: false,
+                groupValue:
+                    HazardReportWidget.hazardReportDetails['included_comment'],
+                onChanged: (value) {
+                  setState(() {
+                    HazardReportWidget.hazardReportDetails['included_comment'] =
+                        value!;
+                  });
+                },
+              ),
+              const Text(
+                'No',
+              ),
+            ],
           ),
-          Radio(
-              value: true,
-              groupValue: _includeComment,
-              onChanged: (value) {
-                setState(() {
-                  _includeComment = value!;
-                });
-              }),
-          const Text(
-            'Yes',
-          ),
-          Radio(
-              value: false,
-              groupValue: _includeComment,
-              onChanged: (value) {
-                setState(() {
-                  _includeComment = value!;
-                });
-              }),
-          const Text(
-            'No',
-          ),
+          if (HazardReportWidget.hazardReportDetails['included_comment'])
+            CustomTextFormField(
+              labelText:
+                  'In your opinion, how could the hazard or event be mitigated? (optional)',
+              jsonKey: 'mitigation',
+              results: HazardReportWidget.noticeBasicDetails,
+              minLines: 3,
+              maxLines: 6,
+              padding: const EdgeInsets.only(),
+            ),
         ],
       ),
     );

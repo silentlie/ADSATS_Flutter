@@ -11,7 +11,8 @@ class SearchAuthorWidgetAsync extends StatefulWidget {
 
 class _SearchAuthorWidgetAsyncState extends State<SearchAuthorWidgetAsync> {
 // the API call
-  Future<Iterable<String>> fetchData(String search) async {
+  Future<Iterable<String>> fetchData(
+      String search, Map<String, String>? limit) async {
     if (search.isEmpty) {
       return const Iterable<String>.empty();
     }
@@ -21,6 +22,7 @@ class _SearchAuthorWidgetAsyncState extends State<SearchAuthorWidgetAsync> {
         "limit": "10",
         "search": "%$search%",
         "archived": "false",
+        ...limit ?? {},
       };
       // debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/staff',
@@ -51,15 +53,17 @@ class _SearchAuthorWidgetAsyncState extends State<SearchAuthorWidgetAsync> {
   // The most recent suggestions received from the API.
   late Iterable<Widget> _lastOptions = <Widget>[];
 
-  late final _Debounceable<Iterable<String>?, String> _debouncedSearch;
+  late final _Debounceable<Iterable<String>?, String, Map<String, String>?>
+      _debouncedSearch;
 
   // Calls the "remote" API to search with the given query. Returns null when
   // the call has been made obsolete.
-  Future<Iterable<String>?> _search(String query) async {
+  Future<Iterable<String>?> _search(
+      String query, Map<String, String>? limit) async {
     _currentQuery = query;
 
     // In a real application, there should be some error handling here.
-    final Iterable<String> options = await fetchData(_currentQuery!);
+    final Iterable<String> options = await fetchData(_currentQuery!, limit);
 
     // If another search happened after this one, throw away these options.
     if (_currentQuery != query) {
@@ -73,7 +77,8 @@ class _SearchAuthorWidgetAsyncState extends State<SearchAuthorWidgetAsync> {
   @override
   void initState() {
     super.initState();
-    _debouncedSearch = _debounce<Iterable<String>?, String>(_search);
+    _debouncedSearch =
+        _debounce<Iterable<String>?, String, Map<String, String>?>(_search);
   }
 
   TextEditingController barController = TextEditingController();
@@ -104,7 +109,7 @@ class _SearchAuthorWidgetAsyncState extends State<SearchAuthorWidgetAsync> {
           barController.text = controller.text;
 
           final List<String>? options =
-              (await _debouncedSearch(controller.text))?.toList();
+              (await _debouncedSearch(controller.text, null))?.toList();
           if (options == null) {
             return _lastOptions;
           }
