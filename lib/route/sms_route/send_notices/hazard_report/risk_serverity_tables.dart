@@ -304,9 +304,11 @@ class RiskSeverity extends ChangeNotifier {
   }
 
   Color? getColor() {
-    if (risk > 0 && risk < 4) {
+    if (getSelectedLikelihood() == 0 && getSelectedSeverity() == 3) {
       return Colors.green;
-    } else if (risk > 3 && risk < 8) {
+    } else if (risk > 0 && risk <= 4) {
+      return Colors.green;
+    } else if (risk > 3 && risk <= 7) {
       return Colors.amber;
     } else if (risk > 7 && risk < 11) {
       return Colors.red;
@@ -316,9 +318,11 @@ class RiskSeverity extends ChangeNotifier {
   }
 
   String getText() {
-    if (risk > 0 && risk < 4) {
+    if (getSelectedLikelihood() == 0 && getSelectedSeverity() == 3) {
       return "Acceptable";
-    } else if (risk > 3 && risk < 8) {
+    } else if (risk > 0 && risk <= 4) {
+      return "Acceptable";
+    } else if (risk > 3 && risk <= 7) {
       return "Review";
     } else if (risk > 7 && risk < 11) {
       return "Unacceptable";
