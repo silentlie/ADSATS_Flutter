@@ -4,7 +4,7 @@ class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField(
       {super.key,
       required this.labelText,
-      required this.jsonKey,
+      this.jsonKey,
       this.isEmail = false,
       this.isFileName = false,
       required this.results,
@@ -20,7 +20,7 @@ class CustomTextFormField extends StatelessWidget {
   final String labelText;
   final String? initialValue;
   final TextEditingController? controller;
-  final String jsonKey;
+  final String? jsonKey;
   final bool enabled;
   final bool readOnly;
   final bool isEmail;
@@ -74,7 +74,9 @@ class CustomTextFormField extends StatelessWidget {
           return null;
         },
         onSaved: (value) {
-          results[jsonKey] = value!;
+          if (jsonKey != null){
+            results[jsonKey!] = value!;
+          }
         },
         initialValue: initialValue,
         autovalidateMode: AutovalidateMode.onUserInteraction,

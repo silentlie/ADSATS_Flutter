@@ -1,14 +1,17 @@
-
+import 'package:adsats_flutter/amplify/auth.dart';
 import 'package:adsats_flutter/helper/search_file_widget.dart';
+import 'package:adsats_flutter/helper/table/abstract_data_table_async.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:provider/provider.dart';
 
 class NoticeBasicDetails extends StatefulWidget {
   const NoticeBasicDetails({
     super.key,
-    required this.noticeBasicDetails,
-    required this.viewMode,
+    this.viewMode = false,
     required this.editPermission,
+    required this.noticeBasicDetails,
   });
 
   final Map<String, dynamic> noticeBasicDetails;
@@ -34,6 +37,7 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
     Map<String, dynamic> noticeBasicDetails = widget.noticeBasicDetails;
     bool editPermission = widget.editPermission;
     bool viewMode = widget.viewMode;
+
     return Column(
       children: [
         Row(
@@ -59,7 +63,6 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
             Expanded(
               child: CustomTextFormField(
                 labelText: "Notice Date",
-                jsonKey: 'notce_at',
                 results: noticeBasicDetails,
                 enabled: !viewMode || editPermission,
                 readOnly: true,
@@ -89,7 +92,6 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
             Expanded(
               child: CustomTextFormField(
                 labelText: "Deadline Date",
-                jsonKey: 'deadline_at',
                 results: noticeBasicDetails,
                 enabled: !viewMode || editPermission,
                 readOnly: true,
@@ -119,11 +121,35 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
               ),
           ],
         ),
-        CustomTextFormField(
-          labelText: 'Subject',
-          jsonKey: 'subject',
-          results: noticeBasicDetails,
-          enabled: !viewMode || editPermission,
+        Row(
+          children: [
+            Flexible(
+              child: CustomTextFormField(
+                labelText: 'Subject',
+                jsonKey: 'subject',
+                results: noticeBasicDetails,
+                enabled: !viewMode || editPermission,
+              ),
+            ),
+            Flexible(
+              child: MultiSelect(
+                buttonText: const Text("Aircraft"),
+                title: const Text("Aircraft"),
+                onConfirm: (selectedOptions) {
+                  noticeBasicDetails['aircraft'] =
+                      List<String>.from(selectedOptions);
+                },
+                items: Provider.of<AuthNotifier>(context, listen: false)
+                    .aircraft
+                    .map(
+                  (aircraft) {
+                    return MultiSelectItem(aircraft, aircraft);
+                  },
+                ).toList(),
+                initialValue: noticeBasicDetails['aircraft'] ?? [],
+              ),
+            )
+          ],
         ),
       ],
     );

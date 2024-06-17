@@ -31,7 +31,7 @@ class _SafetyNoticeWidgetState extends State<SafetyNoticeWidget> {
   late Map<String, dynamic> recipients;
   late bool editPermission;
   late bool viewMode = widget.viewMode;
-
+  bool isRead = true;
   Future<void> getSafetyNotice() async {
     try {
       viewMode = widget.viewMode;
@@ -41,10 +41,12 @@ class _SafetyNoticeWidgetState extends State<SafetyNoticeWidget> {
         recipients = {};
       } else {
         noticeBasicDetails = {
-          'fileNames': <String>[],
+          'file_names': <String>[],
         };
         safetyNoticeDetails = {};
-        recipients = {};
+        recipients = {
+          'roles': ['safety officer']
+        };
         return;
       }
       Map<String, String> queryParameters = {
@@ -77,6 +79,13 @@ class _SafetyNoticeWidgetState extends State<SafetyNoticeWidget> {
     return FutureBuilder(
       future: getSafetyNotice(),
       builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // loading widget can be customise
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          // can make it into a error widget for more visualise
+          return Text('Error: ${snapshot.error}');
+        }
         return Form(
           key: formKey,
           child: Column(
@@ -93,23 +102,28 @@ class _SafetyNoticeWidgetState extends State<SafetyNoticeWidget> {
               ),
               const Divider(),
               NoticeBasicDetails(
-                noticeBasicDetails:
-                    noticeBasicDetails,
+                noticeBasicDetails: noticeBasicDetails,
                 viewMode: viewMode,
                 editPermission: editPermission,
               ),
               const Divider(),
               CustomTextFormField(
-                labelText: 'Message',
+                labelText: 'Potential safety risk',
                 jsonKey: 'message',
                 results: safetyNoticeDetails,
                 minLines: 5,
-                maxLines: 10,
               ),
               const Divider(),
               SearchFileWidget(
                 fileNames: noticeBasicDetails['file_names'],
+                enabled: !viewMode || editPermission,
               ),
+              if (!viewMode)
+                const Center(
+                  child: Text(
+                    "This will send to Safety officers",
+                  ),
+                ),
               if (viewMode)
                 RecepientsWidget(
                   recipients: recipients,
@@ -120,7 +134,7 @@ class _SafetyNoticeWidgetState extends State<SafetyNoticeWidget> {
                   // Align buttons to the right
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    if (viewMode)
+                    if (viewMode && !isRead)
                       ElevatedButton.icon(
                         onPressed: () {
                           // TODO: add mark as read
@@ -167,8 +181,8 @@ class _SafetyNoticeWidgetState extends State<SafetyNoticeWidget> {
                         if (formKey.currentState!.validate()) {
                           formKey.currentState!.save();
                           debugPrint(noticeBasicDetails.toString());
-                            debugPrint(safetyNoticeDetails.toString());
-                            debugPrint(recipients.toString());
+                          debugPrint(safetyNoticeDetails.toString());
+                          debugPrint(recipients.toString());
                           // sendSafetyNotice(safetyNoticeDetails, noticeBasicDetails);
                           // context.go('/sms');
                         }

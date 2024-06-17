@@ -28,6 +28,8 @@ class RiskSeverityResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     RiskSeverity riskSeverity = Provider.of<RiskSeverity>(context);
+    HazardReportNotifier hazardReportNotifier =
+        Provider.of<HazardReportNotifier>(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -72,7 +74,7 @@ class RiskSeverityResult extends StatelessWidget {
               hintText: 'Please enter the risk severity',
             ),
             labelText: "Risk Severity",
-            results: HazardReportWidget.noticeBasicDetails,
+            results: hazardReportNotifier.noticeBasicDetails,
             jsonKey: 'risk_severity',
           ),
         ),
@@ -80,7 +82,7 @@ class RiskSeverityResult extends StatelessWidget {
           child: CustomTextFormField(
             labelText: "Interim Comment",
             jsonKey: "interim_comment",
-            results: HazardReportWidget.noticeBasicDetails,
+            results: hazardReportNotifier.noticeBasicDetails,
           ),
         ),
       ],

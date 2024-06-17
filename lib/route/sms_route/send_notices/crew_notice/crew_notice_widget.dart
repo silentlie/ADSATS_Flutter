@@ -10,11 +10,12 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class CrewNoticeWidget extends StatefulWidget {
-  const CrewNoticeWidget(
-      {super.key,
-      this.viewMode = false,
-      this.noticeID,
-      this.noticeBasicDetails});
+  const CrewNoticeWidget({
+    super.key,
+    this.viewMode = false,
+    this.noticeID,
+    this.noticeBasicDetails,
+  });
   final int? noticeID;
   final bool viewMode;
   final Map<String, dynamic>? noticeBasicDetails;
@@ -30,7 +31,7 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
   final formKey = GlobalKey<FormState>();
   late bool editPermission;
   late bool viewMode = widget.viewMode;
-
+   bool isRead = true;
   Future<void> getCrewNotice() async {
     try {
       viewMode = widget.viewMode;
@@ -40,7 +41,8 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
         recipients = {};
       } else {
         noticeBasicDetails = {
-          'fileNames': <String>[],
+          'file_names': <String>[],
+          'resolved': true,
         };
         crewNoticeDetails = {};
         recipients = {};
@@ -78,7 +80,8 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // loading widget can be customise
           return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
+        } else 
+        if (snapshot.hasError) {
           // can make it into a error widget for more visualise
           return Text('Error: ${snapshot.error}');
         }
@@ -113,7 +116,7 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
               ),
               const Divider(),
               SearchFileWidget(
-                fileNames: noticeBasicDetails['fileNames'],
+                fileNames: noticeBasicDetails['file_names'],
                 enabled: !viewMode || editPermission,
               ),
               if (!viewMode || editPermission)
@@ -126,7 +129,7 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
                   // Align buttons to the right
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    if (viewMode)
+                    if (viewMode && !isRead)
                       ElevatedButton.icon(
                         onPressed: () {
                           // TODO: add mark as read
