@@ -30,23 +30,32 @@ class RiskSeverityResult extends StatelessWidget {
     RiskSeverity riskSeverity = Provider.of<RiskSeverity>(context);
     HazardReportNotifier hazardReportNotifier =
         Provider.of<HazardReportNotifier>(context);
+    riskSeverity.likelihoodAndSeverity =
+        hazardReportNotifier.hazardReportDetails;
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        const Text(
+          "Risk Severity:",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         IconButton(
           icon: const Icon(
             Icons.info_outline,
           ),
           onPressed: () {
             showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                      content: Image.asset('risk-severity.png'),
-                    ));
+              context: context,
+              builder: (context) => AlertDialog(
+                content: Image.asset('risk-severity.png'),
+              ),
+            );
           },
         ),
         SizedBox(
-          width: 152,
+          width: 220,
           child: CustomTextFormField(
             controller: TextEditingController(text: riskSeverity.getText()),
             enabled: true,
@@ -55,34 +64,9 @@ class RiskSeverityResult extends StatelessWidget {
               border: const OutlineInputBorder(),
               fillColor: riskSeverity.getColor(),
               filled: true,
-              label: Stack(
-                children: [
-                  Text(
-                    "Risk Severity",
-                    style: TextStyle(
-                      foreground: Paint()
-                        ..style = PaintingStyle.stroke
-                        ..strokeWidth = 4
-                        ..color = Colors.white,
-                    ),
-                  ),
-                  const Text(
-                    "Risk Severity",
-                  ),
-                ],
-              ),
-              hintText: 'Please enter the risk severity',
             ),
             labelText: "Risk Severity",
-            results: hazardReportNotifier.noticeBasicDetails,
-            jsonKey: 'risk_severity',
-          ),
-        ),
-        Expanded(
-          child: CustomTextFormField(
-            labelText: "Interim Comment",
-            jsonKey: "interim_comment",
-            results: hazardReportNotifier.noticeBasicDetails,
+            results: hazardReportNotifier.hazardReportDetails,
           ),
         ),
       ],
@@ -292,22 +276,21 @@ class _AbstractTableState extends State<AbstractTable> {
 }
 
 class RiskSeverity extends ChangeNotifier {
-  int _selectedLikelihood = -1;
-  int _selectedSeverity = -1;
-  int getSelectedLikelihood() => _selectedLikelihood;
-  int getSelectedSeverity() => _selectedSeverity;
+  Map<String, dynamic> likelihoodAndSeverity = {};
+  int getSelectedLikelihood() => likelihoodAndSeverity['likelihood'] ?? -1;
+  int getSelectedSeverity() => likelihoodAndSeverity['severity'] ?? -1;
   void setSelectedLikelihood(int value) {
-    _selectedLikelihood = value;
+    likelihoodAndSeverity['likelihood'] = value;
     notifyListeners();
   }
 
   void setSelectedSeverity(int value) {
-    _selectedSeverity = value;
+    likelihoodAndSeverity['severity'] = value;
     notifyListeners();
   }
 
   int get risk {
-    return (_selectedLikelihood + 1) + (_selectedSeverity + 1);
+    return (getSelectedLikelihood() + 1) + (getSelectedSeverity() + 1);
   }
 
   Color? getColor() {

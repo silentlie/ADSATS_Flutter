@@ -111,8 +111,8 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
                 jsonKey: 'message',
                 results: crewNoticeDetails,
                 minLines: 5,
-                maxLines: 10,
                 enabled: !viewMode || editPermission,
+                initialValue: crewNoticeDetails['message'] ?? '',
               ),
               const Divider(),
               SearchFileWidget(

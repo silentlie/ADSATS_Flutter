@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+part 'safety_notice_component.dart';
+
 class SafetyNoticeWidget extends StatefulWidget {
   const SafetyNoticeWidget({
     super.key,
@@ -125,6 +127,10 @@ class _SafetyNoticeWidgetState extends State<SafetyNoticeWidget> {
                   ),
                 ),
               if (viewMode)
+                ResolveWidget(
+                  noticeBasicDetails: noticeBasicDetails,
+                ),
+              if (viewMode)
                 RecepientsWidget(
                   recipients: recipients,
                 ),
@@ -161,23 +167,9 @@ class _SafetyNoticeWidgetState extends State<SafetyNoticeWidget> {
                       },
                       label: const Text('Cancel'),
                     ),
-                    // No save function for now
-                    // const SizedBox(width: 10),
-                    // ElevatedButton.icon(
-                    //   onPressed: () {
-                    //     // Functionality for the second button
-                    //   },
-                    //   // Change text color
-                    //   label: const Text('Save'),
-                    //   icon: Icon(
-                    //     Icons.mail,
-                    //     color: colorScheme.onSecondary,
-                    //   ),
-                    // ),
                     const SizedBox(width: 10),
                     ElevatedButton.icon(
                       onPressed: () {
-                        // TODO:Functionality for the sending button
                         if (formKey.currentState!.validate()) {
                           formKey.currentState!.save();
                           debugPrint(noticeBasicDetails.toString());

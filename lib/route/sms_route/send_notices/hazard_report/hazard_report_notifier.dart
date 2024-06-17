@@ -88,10 +88,12 @@ class HazardReportNotifier extends ChangeNotifier {
                     const SizedBox(width: 10),
                     ElevatedButton.icon(
                       onPressed: () {
-                        // TODO:Functionality for the sending button
-                        debugPrint(noticeBasicDetails.toString());
-                        debugPrint(hazardReportDetails.toString());
-                        debugPrint(recipients.toString());
+                        if (formKey.currentState!.validate()) {
+                          formKey.currentState!.save();
+                          debugPrint(noticeBasicDetails.toString());
+                          debugPrint(hazardReportDetails.toString());
+                          debugPrint(recipients.toString());
+                        }
                       },
                       style: ButtonStyle(
                         backgroundColor: WidgetStateProperty.all<Color>(
@@ -137,15 +139,15 @@ class HazardReportNotifier extends ChangeNotifier {
       CustomTextFormField(
         labelText: 'Location',
         jsonKey: 'location',
-        results: noticeBasicDetails,
+        results: hazardReportDetails,
       ),
       CustomTextFormField(
         labelText: 'Describe the Hazard or the Event',
         jsonKey: 'describe',
-        results: noticeBasicDetails,
+        results: hazardReportDetails,
         minLines: 5,
       ),
-      Mitigation(hazardReportDetails: hazardReportDetails),
+      ComponentsWidget(hazardReportDetails: hazardReportDetails),
       const RiskSeverityWidget(),
       Container(
         padding: const EdgeInsets.all(8),
@@ -161,8 +163,23 @@ class HazardReportNotifier extends ChangeNotifier {
           ),
         ),
       if (viewMode)
+        InterimCommentAndReviewDate(
+          editPermission: editPermission,
+          hazardReportDetails: hazardReportDetails,
+        ),
+      if (viewMode)
+        ResolveWidget(
+          noticeBasicDetails: noticeBasicDetails,
+        ),
+      if (viewMode)
         RecepientsWidget(
           recipients: recipients,
+        ),
+      if (viewMode)
+        CustomTextFormField(
+          labelText: "Additional comments",
+          results: hazardReportDetails,
+          jsonKey: 'additional_comments',
         ),
     ];
   }

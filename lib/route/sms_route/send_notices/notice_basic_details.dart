@@ -25,19 +25,37 @@ class NoticeBasicDetails extends StatefulWidget {
 class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
   final TextEditingController _noticeDateController = TextEditingController();
   final TextEditingController _delineDateController = TextEditingController();
+  late Map<String, dynamic> noticeBasicDetails;
+  @override
+  void initState() {
+    noticeBasicDetails = widget.noticeBasicDetails;
+    if (noticeBasicDetails['notice_at'] != null) {
+      _noticeDateController.text =
+          DateFormat('dd/MM/yyyy').format(noticeBasicDetails['notice_at']);
+    } else {
+      _noticeDateController.text = "";
+    }
+    if (noticeBasicDetails['deadline_at'] != null) {
+      _delineDateController.text =
+          DateFormat('dd/MM/yyyy').format(noticeBasicDetails['deadline_at']);
+    } else {
+      _delineDateController.text = "";
+    }
+    setState(() {});
+    super.initState();
+  }
 
   @override
   void dispose() {
     _noticeDateController.dispose();
+    _delineDateController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> noticeBasicDetails = widget.noticeBasicDetails;
     bool editPermission = widget.editPermission;
     bool viewMode = widget.viewMode;
-
     return Column(
       children: [
         Row(
@@ -45,9 +63,9 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
             Expanded(
               child: CustomTextFormField(
                 labelText: 'Report Number',
-                jsonKey: 'report_number',
                 results: noticeBasicDetails,
                 enabled: false,
+                initialValue: noticeBasicDetails['notice_id'] ?? '',
               ),
             ),
             Expanded(
@@ -129,6 +147,7 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
                 jsonKey: 'subject',
                 results: noticeBasicDetails,
                 enabled: !viewMode || editPermission,
+                initialValue: noticeBasicDetails['subject'] ?? '',
               ),
             ),
             Flexible(
