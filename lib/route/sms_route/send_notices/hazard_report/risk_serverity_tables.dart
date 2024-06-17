@@ -48,7 +48,7 @@ class RiskSeverityResult extends StatelessWidget {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                content: Image.asset('risk-severity.png'),
+                content: Image.asset('risk-severity-chart.png'),
               ),
             );
           },
