@@ -26,8 +26,12 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
   final TextEditingController _noticeDateController = TextEditingController();
   final TextEditingController _delineDateController = TextEditingController();
   late Map<String, dynamic> noticeBasicDetails;
+  late bool editPermission;
+  late bool viewMode;
   @override
   void initState() {
+    editPermission = widget.editPermission;
+    viewMode = widget.viewMode;
     noticeBasicDetails = widget.noticeBasicDetails;
     if (noticeBasicDetails['notice_at'] != null) {
       _noticeDateController.text =
@@ -54,8 +58,6 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
 
   @override
   Widget build(BuildContext context) {
-    bool editPermission = widget.editPermission;
-    bool viewMode = widget.viewMode;
     return Column(
       children: [
         Row(
@@ -155,8 +157,10 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
                 buttonText: const Text("Aircraft"),
                 title: const Text("Aircraft"),
                 onConfirm: (selectedOptions) {
-                  noticeBasicDetails['aircraft'] =
+                  if (!viewMode || editPermission){
+                    noticeBasicDetails['aircraft'] =
                       List<String>.from(selectedOptions);
+                  }
                 },
                 items: Provider.of<AuthNotifier>(context, listen: false)
                     .aircraft

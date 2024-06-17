@@ -61,7 +61,8 @@ class HazardReportNotifier extends ChangeNotifier {
                       ElevatedButton.icon(
                         onPressed: () {
                           setRead(authNotifier.staffID,
-                              noticeBasicDetails['notice_id'] as int);
+                              noticeBasicDetails['notice_id']);
+                          // NEED TO SET ISREAD TO TRUE
                           context.go('/sms');
                         },
                         label: const Text('Mark as read'),
@@ -73,41 +74,56 @@ class HazardReportNotifier extends ChangeNotifier {
                         onPressed: () {
                           setState(() {
                             editPermission = true;
-                            viewMode = false;
                           });
                         },
                         label: const Text('Edit Mode'),
                       ),
                     const SizedBox(width: 10),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        context.go('/sms');
-                      },
-                      label: const Text('Cancel'),
-                    ),
+                    if (!viewMode || editPermission)
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          context.go('/sms');
+                        },
+                        label: const Text('Cancel'),
+                      ),
                     const SizedBox(width: 10),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          formKey.currentState!.save();
-                          debugPrint(noticeBasicDetails.toString());
-                          debugPrint(hazardReportDetails.toString());
-                          debugPrint(recipients.toString());
-                        }
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStateProperty.all<Color>(
-                            colorScheme.secondary),
+                    if (!viewMode || editPermission)
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          if (formKey.currentState!.validate()) {
+                            formKey.currentState!.save();
+                            debugPrint(noticeBasicDetails.toString());
+                            debugPrint(hazardReportDetails.toString());
+                            debugPrint(recipients.toString());
+                            // context.go('/sms');
+                            if (!viewMode) {
+                              // int noticeID = await sendNoticeBasicDetails(noticeBasicDetails);
+                              // sendHazardReportDetails(
+                              //     hazardReportDetails, noticeID);
+                              // sendNotifications(recipients, noticeID);
+                            } else {
+                              // int noticeID = noticeBasicDetails['notice_id'];
+                              // updateNoticeBasicDetails(
+                              //     noticeBasicDetails, noticeID);
+                              // updateHazardReportDetails(
+                              //     hazardReportDetails, noticeID);
+                              // sendNotifications(recipients, noticeID);
+                            }
+                          }
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStateProperty.all<Color>(
+                              colorScheme.secondary),
+                        ),
+                        label: Text(
+                          'Submit and Send',
+                          style: TextStyle(color: colorScheme.onSecondary),
+                        ),
+                        icon: Icon(
+                          Icons.mail,
+                          color: colorScheme.onSecondary,
+                        ),
                       ),
-                      label: Text(
-                        'Submit and Send',
-                        style: TextStyle(color: colorScheme.onSecondary),
-                      ),
-                      icon: Icon(
-                        Icons.mail,
-                        color: colorScheme.onSecondary,
-                      ),
-                    ),
                   ],
                 ),
               )
@@ -140,15 +156,22 @@ class HazardReportNotifier extends ChangeNotifier {
         labelText: 'Location',
         jsonKey: 'location',
         results: hazardReportDetails,
+        enabled: !viewMode || editPermission,
       ),
       CustomTextFormField(
         labelText: 'Describe the Hazard or the Event',
         jsonKey: 'describe',
         results: hazardReportDetails,
         minLines: 5,
+        enabled: !viewMode || editPermission,
       ),
-      ComponentsWidget(hazardReportDetails: hazardReportDetails),
-      const RiskSeverityWidget(),
+      ComponentsWidget(
+        hazardReportDetails: hazardReportDetails,
+        enabled: !viewMode || editPermission,
+      ),
+      RiskSeverityWidget(
+        enabled: !viewMode || editPermission,
+      ),
       Container(
         padding: const EdgeInsets.all(8),
         child: SearchFileWidget(
@@ -170,16 +193,18 @@ class HazardReportNotifier extends ChangeNotifier {
       if (viewMode)
         ResolveWidget(
           noticeBasicDetails: noticeBasicDetails,
-        ),
-      if (viewMode)
-        RecepientsWidget(
-          recipients: recipients,
+          enabled: editPermission,
         ),
       if (viewMode)
         CustomTextFormField(
           labelText: "Additional comments",
           results: hazardReportDetails,
           jsonKey: 'additional_comments',
+          enabled: editPermission,
+        ),
+      if (viewMode && editPermission)
+        RecepientsWidget(
+          recipients: recipients,
         ),
     ];
   }
@@ -210,10 +235,7 @@ class HazardReportNotifier extends ChangeNotifier {
   Future<int> sendNoticeBasicDetails(
       Map<String, dynamic> noticeBasicDetails) async {
     try {
-      Map<String, dynamic> body = {
-        'archived': false,
-      };
-      body.addAll(noticeBasicDetails);
+      Map<String, dynamic> body = {'archived': false, ...noticeBasicDetails};
       // debugPrint(body.toString());
       final restOperation = Amplify.API.post('/sms',
           apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
@@ -224,7 +246,28 @@ class HazardReportNotifier extends ChangeNotifier {
       debugPrint("finish send basic notice details with notice id: $id");
       return id;
     } on ApiException catch (e) {
-      debugPrint('GET call failed: $e');
+      debugPrint('POST call failed: $e');
+      rethrow;
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> updateNoticeBasicDetails(
+      Map<String, dynamic> noticeBasicDetails, int noticeID) async {
+    try {
+      Map<String, dynamic> body = {'noticeID': noticeID, ...noticeBasicDetails,};
+      // debugPrint(body.toString());
+      final restOperation = Amplify.API.patch('/sms',
+          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int id = jsonDecode(jsonStr);
+      debugPrint("finish update basic notice details with notice id: $id");
+    } on ApiException catch (e) {
+      debugPrint('PATCH call failed: $e');
       rethrow;
     } on Error catch (e) {
       debugPrint('Error: $e');
@@ -248,7 +291,31 @@ class HazardReportNotifier extends ChangeNotifier {
       int id = jsonDecode(jsonStr);
       debugPrint("finish send hazard report details with notice id: $id");
     } on ApiException catch (e) {
-      debugPrint('GET call failed: $e');
+      debugPrint('POST call failed: $e');
+      rethrow;
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> updateHazardReportDetails(
+      Map<String, dynamic> hazardReportDetails, int noticeID,) async {
+    try {
+      Map<String, dynamic> body = {
+        'notice_id': noticeID,
+        ...hazardReportDetails
+      };
+      // debugPrint(body.toString());
+      final restOperation = Amplify.API.patch('/sms/hazard-report',
+          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int id = jsonDecode(jsonStr);
+      debugPrint("finish update hazard report details with notice id: $id");
+    } on ApiException catch (e) {
+      debugPrint('PATCH call failed: $e');
       rethrow;
     } on Error catch (e) {
       debugPrint('Error: $e');
@@ -259,7 +326,10 @@ class HazardReportNotifier extends ChangeNotifier {
   Future<void> sendNotifications(
       Map<String, dynamic> recipients, int noticeID) async {
     try {
-      Map<String, dynamic> body = {'notice_id': noticeID, ...recipients};
+      Map<String, dynamic> body = {
+        'notice_id': noticeID,
+        ...recipients,
+      };
       // debugPrint(body.toString());
       final restOperation = Amplify.API.post('/notifications',
           apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
@@ -269,7 +339,7 @@ class HazardReportNotifier extends ChangeNotifier {
       int id = jsonDecode(jsonStr);
       debugPrint("finish send notification with notice id: $id");
     } on ApiException catch (e) {
-      debugPrint('GET call failed: $e');
+      debugPrint('POST call failed: $e');
       rethrow;
     } on Error catch (e) {
       debugPrint('Error: $e');
@@ -292,7 +362,7 @@ class HazardReportNotifier extends ChangeNotifier {
       int id = jsonDecode(jsonStr);
       debugPrint("finish set read with notice id: $id");
     } on ApiException catch (e) {
-      debugPrint('GET call failed: $e');
+      debugPrint('PATCH call failed: $e');
       rethrow;
     } on Error catch (e) {
       debugPrint('Error: $e');

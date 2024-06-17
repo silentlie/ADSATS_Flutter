@@ -62,50 +62,43 @@ class Notice {
           Builder(builder: (context) {
             AuthNotifier authNotifier =
                 Provider.of<AuthNotifier>(context, listen: false);
-            List<Widget> children = [
-              IconButton(
-                onPressed: () {
-                  // TODO: view notice
-                },
-                icon: const Icon(Icons.remove_red_eye_outlined),
-                tooltip: 'View',
-              ),
-            ];
-            if (authNotifier.isAdmin || authNotifier.isEditor) {
-              children.addAll([
-                IconButton(
-                  onPressed: () async {
-                    // TODO: view notice and edit it
-                    refreshDatasource();
-                  },
-                  icon: const Icon(Icons.edit_outlined),
-                  tooltip: 'Edit',
-                ),
-                IconButton(
-                  onPressed: () async {
-                    await archive();
-                    refreshDatasource();
-                  },
-                  icon: const Icon(Icons.archive_outlined),
-                  tooltip: 'Archive',
-                ),
-              ]);
-            }
-            if (authNotifier.isAdmin) {
-              children.add(
-                IconButton(
-                  onPressed: () async {
-                    await delete();
-                    refreshDatasource();
-                  },
-                  icon: const Icon(Icons.delete_outline),
-                  tooltip: 'Delete',
-                ),
-              );
-            }
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: children,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    context.go('/sms/$id');
+                  },
+                  icon: const Icon(Icons.remove_red_eye_outlined),
+                  tooltip: 'View',
+                ),
+                if (authNotifier.isAdmin || authNotifier.isEditor)
+                  IconButton(
+                    onPressed: () async {
+                      context.go('/sms/$id');
+                    },
+                    icon: const Icon(Icons.edit_outlined),
+                    tooltip: 'Edit',
+                  ),
+                if (authNotifier.isAdmin || authNotifier.isEditor)
+                  IconButton(
+                    onPressed: () async {
+                      await archive();
+                      refreshDatasource();
+                    },
+                    icon: const Icon(Icons.archive_outlined),
+                    tooltip: 'Archive',
+                  ),
+                if (authNotifier.isAdmin)
+                  IconButton(
+                    onPressed: () async {
+                      await delete();
+                      refreshDatasource();
+                    },
+                    icon: const Icon(Icons.delete_outline),
+                    tooltip: 'Delete',
+                  ),
+              ],
             );
           }),
         ),

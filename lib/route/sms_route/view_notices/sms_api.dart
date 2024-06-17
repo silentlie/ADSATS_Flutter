@@ -92,8 +92,9 @@ class NoticeAPI extends DataTableSourceAsync {
         scrollDirection: Axis.horizontal,
         reverse: true,
         child: Builder(builder: (context) {
-          AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
-          _filters.filterResults['staff_id'] = 2;
+          AuthNotifier authNotifier =
+              Provider.of<AuthNotifier>(context, listen: false);
+          _filters.filterResults['staff_id'] = authNotifier.staffID;
           return Row(
             children: [
               IconButton(

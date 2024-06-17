@@ -1,8 +1,9 @@
 part of 'safety_notice_widget.dart';
 
 class ResolveWidget extends StatefulWidget {
-  const ResolveWidget({super.key, required this.noticeBasicDetails});
+  const ResolveWidget({super.key, required this.noticeBasicDetails,required this.enabled,});
   final Map<String, dynamic> noticeBasicDetails;
+  final bool enabled;
   @override
   State<ResolveWidget> createState() => _ResolveWidgetState();
 }
@@ -27,9 +28,11 @@ class _ResolveWidgetState extends State<ResolveWidget> {
                   value: true,
                   groupValue: widget.noticeBasicDetails['resovled'],
                   onChanged: (value) {
+                    if (widget.enabled) {
                     setState(() {
-                      widget.noticeBasicDetails['resovled'] = value!;
+                      widget.noticeBasicDetails['resolved'] = value!;
                     });
+                  }
                   }),
               const Text(
                 'Resolved',
@@ -38,9 +41,11 @@ class _ResolveWidgetState extends State<ResolveWidget> {
                 value: false,
                 groupValue: widget.noticeBasicDetails['resovled'],
                 onChanged: (value) {
-                  setState(() {
-                    widget.noticeBasicDetails['resovled'] = value!;
-                  });
+                  if (widget.enabled) {
+                    setState(() {
+                      widget.noticeBasicDetails['resolved'] = value!;
+                    });
+                  }
                 },
               ),
               const Text(
@@ -55,6 +60,7 @@ class _ResolveWidgetState extends State<ResolveWidget> {
               results: widget.noticeBasicDetails,
               minLines: 3,
               padding: const EdgeInsets.only(),
+              enabled: widget.enabled,
             ),
         ],
       ),

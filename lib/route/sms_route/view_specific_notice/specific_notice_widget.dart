@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:adsats_flutter/amplify/auth.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/crew_notice/crew_notice_widget.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/hazard_report/hazard_report_widget.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/safety_notice/safety_notice_widget.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +46,8 @@ class _SpecificNoticeWidgetState extends State<SpecificNoticeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
+    AuthNotifier authNotifier =
+        Provider.of<AuthNotifier>(context, listen: false);
     return FutureBuilder(
       future: fetchNotice(context, widget.documentID, authNotifier.staffID),
       builder: (context, snapshot) {
@@ -55,15 +59,26 @@ class _SpecificNoticeWidgetState extends State<SpecificNoticeWidget> {
           return Text('Error: ${snapshot.error}');
         } else if (snapshot.hasData) {
           final rawData = snapshot.data!;
-          List<Widget> children = [];
-          rawData.forEach(
-            (key, value) {
-              children.add(Text("$key: $value"));
-            },
-          );
-          return Column(
-            children: children,
-          );
+          switch (rawData['category']) {
+            case 'Crew notice':
+              return CrewNoticeWidget(
+                noticeBasicDetails: rawData,
+                viewMode: true,
+              );
+            case 'Safety notice':
+              return SafetyNoticeWidget(
+                noticeBasicDetails: rawData,
+                viewMode: true,
+              );
+            case 'Hazard report':
+              return HazardReportWidget(
+                noticeBasicDetails: rawData,
+              );
+            case 'BCAA report':
+              return const Placeholder();
+            default:
+              return const Placeholder();
+          }
         } else {
           return const Placeholder();
         }

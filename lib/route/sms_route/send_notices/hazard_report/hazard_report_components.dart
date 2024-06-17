@@ -1,12 +1,15 @@
 import 'package:adsats_flutter/helper/search_file_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ComponentsWidget extends StatefulWidget {
   const ComponentsWidget({
     super.key,
     required this.hazardReportDetails,
+    required this.enabled,
   });
   final Map<String, dynamic> hazardReportDetails;
+  final bool enabled;
   @override
   State<ComponentsWidget> createState() => _ComponentsWidgetState();
 }
@@ -25,13 +28,16 @@ class _ComponentsWidgetState extends State<ComponentsWidget> {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Radio(
-                  value: true,
-                  groupValue: widget.hazardReportDetails['included_comment'],
-                  onChanged: (value) {
+                value: true,
+                groupValue: widget.hazardReportDetails['included_comment'],
+                onChanged: (value) {
+                  if (widget.enabled) {
                     setState(() {
                       widget.hazardReportDetails['included_comment'] = value!;
                     });
-                  }),
+                  }
+                },
+              ),
               const Text(
                 'Yes',
               ),
@@ -39,9 +45,11 @@ class _ComponentsWidgetState extends State<ComponentsWidget> {
                 value: false,
                 groupValue: widget.hazardReportDetails['included_comment'],
                 onChanged: (value) {
-                  setState(() {
-                    widget.hazardReportDetails['included_comment'] = value!;
-                  });
+                  if (widget.enabled) {
+                    setState(() {
+                      widget.hazardReportDetails['included_comment'] = value!;
+                    });
+                  }
                 },
               ),
               const Text(
@@ -55,13 +63,16 @@ class _ComponentsWidgetState extends State<ComponentsWidget> {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Radio(
-                  value: true,
-                  groupValue: widget.hazardReportDetails['report_type'],
-                  onChanged: (value) {
+                value: true,
+                groupValue: widget.hazardReportDetails['report_type'],
+                onChanged: (value) {
+                  if (widget.enabled) {
                     setState(() {
                       widget.hazardReportDetails['report_type'] = value!;
                     });
-                  }),
+                  }
+                },
+              ),
               const Text(
                 'Open',
               ),
@@ -69,9 +80,11 @@ class _ComponentsWidgetState extends State<ComponentsWidget> {
                 value: false,
                 groupValue: widget.hazardReportDetails['report_type'],
                 onChanged: (value) {
-                  setState(() {
-                    widget.hazardReportDetails['report_type'] = value!;
-                  });
+                  if (widget.enabled) {
+                    setState(() {
+                      widget.hazardReportDetails['report_type'] = value!;
+                    });
+                  }
                 },
               ),
               const Text(
@@ -86,8 +99,8 @@ class _ComponentsWidgetState extends State<ComponentsWidget> {
               jsonKey: 'mitigation',
               results: widget.hazardReportDetails,
               minLines: 3,
-              maxLines: 6,
               padding: const EdgeInsets.only(),
+              enabled: widget.enabled,
             ),
         ],
       ),
@@ -96,8 +109,13 @@ class _ComponentsWidgetState extends State<ComponentsWidget> {
 }
 
 class ResolveWidget extends StatefulWidget {
-  const ResolveWidget({super.key, required this.noticeBasicDetails});
+  const ResolveWidget({
+    super.key,
+    required this.noticeBasicDetails,
+    required this.enabled,
+  });
   final Map<String, dynamic> noticeBasicDetails;
+  final bool enabled;
   @override
   State<ResolveWidget> createState() => _ResolveWidgetState();
 }
@@ -119,13 +137,16 @@ class _ResolveWidgetState extends State<ResolveWidget> {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Radio(
-                  value: true,
-                  groupValue: widget.noticeBasicDetails['resolved'],
-                  onChanged: (value) {
+                value: true,
+                groupValue: widget.noticeBasicDetails['resolved'],
+                onChanged: (value) {
+                  if (widget.enabled) {
                     setState(() {
                       widget.noticeBasicDetails['resolved'] = value!;
                     });
-                  }),
+                  }
+                },
+              ),
               const Text(
                 'Resolved',
               ),
@@ -133,9 +154,11 @@ class _ResolveWidgetState extends State<ResolveWidget> {
                 value: false,
                 groupValue: widget.noticeBasicDetails['resolved'],
                 onChanged: (value) {
-                  setState(() {
-                    widget.noticeBasicDetails['resolved'] = value!;
-                  });
+                  if (widget.enabled) {
+                    setState(() {
+                      widget.noticeBasicDetails['resolved'] = value!;
+                    });
+                  }
                 },
               ),
               const Text(
@@ -151,6 +174,7 @@ class _ResolveWidgetState extends State<ResolveWidget> {
               minLines: 3,
               maxLines: 6,
               padding: const EdgeInsets.only(),
+              enabled: widget.enabled,
             ),
         ],
       ),
@@ -174,10 +198,30 @@ class InterimCommentAndReviewDate extends StatefulWidget {
 class _InterimCommentAndReviewDateState
     extends State<InterimCommentAndReviewDate> {
   final TextEditingController _reviewDateController = TextEditingController();
+  late Map<String, dynamic> hazardReportDetails;
+  late bool editPermission;
+
+  @override
+  void initState() {
+    hazardReportDetails = widget.hazardReportDetails;
+    editPermission = widget.editPermission;
+    if (hazardReportDetails['review_at'] != null) {
+      _reviewDateController.text =
+          DateFormat('dd/MM/yyyy').format(hazardReportDetails['review_at']);
+    } else {
+      _reviewDateController.text = "";
+    }
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _reviewDateController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> hazardReportDetails = widget.hazardReportDetails;
-    bool editPermission = widget.editPermission;
     return Row(
       children: [
         Flexible(
@@ -185,6 +229,7 @@ class _InterimCommentAndReviewDateState
             labelText: "Interim Comment",
             jsonKey: "interim_comment",
             results: hazardReportDetails,
+            enabled: editPermission,
           ),
         ),
         Flexible(
@@ -195,7 +240,27 @@ class _InterimCommentAndReviewDateState
             readOnly: true,
             controller: _reviewDateController,
           ),
-        )
+        ),
+        if (editPermission)
+          IconButton(
+            onPressed: () async {
+              hazardReportDetails['review_at'] = await showDatePicker(
+                context: context,
+                firstDate:
+                    DateTime.now().subtract(const Duration(days: 365 * 10)),
+                lastDate: DateTime.now().add(const Duration(days: 365 * 10)),
+                initialDate: hazardReportDetails['review_at'],
+              );
+              if (hazardReportDetails['review_at'] != null) {
+                _reviewDateController.text = DateFormat('dd/MM/yyyy')
+                    .format(hazardReportDetails['review_at']);
+              } else {
+                _reviewDateController.text = "";
+              }
+              setState(() {});
+            },
+            icon: const Icon(Icons.calendar_today),
+          ),
       ],
     );
   }

@@ -219,8 +219,7 @@ class AuthNotifier with ChangeNotifier {
   Future<void> fetchNotifications(int limit) async {
     try {
       Map<String, String> queryParameters = {
-        // 'staff_id': staffID as String,
-        'staff_id': "2",
+        'staff_id': staffID.toString(),
         "offset": "0",
         "limit": limit.toString(),
       };
@@ -237,8 +236,8 @@ class AuthNotifier with ChangeNotifier {
           return NotificationClass.fromJSON(notification);
         },
       ).toList();
-      numOfUnread = rawData["count"]["unread"];
-      numOfOverdue = rawData["count"]["overdue"];
+      numOfUnread = rawData["count"]["unread"] ?? 0;
+      numOfOverdue = rawData["count"]["overdue"] ?? 0;
       notificationWidgets = [
         if (numOfUnread > 0)
           Container(

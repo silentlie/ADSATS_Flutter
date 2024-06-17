@@ -1,22 +1,21 @@
 part of 'hazard_report_widget.dart';
 
-class RiskSeverityWidget extends StatefulWidget {
-  const RiskSeverityWidget({super.key});
-
-  @override
-  State<RiskSeverityWidget> createState() => _RiskSeverityWidgetState();
-}
-
-class _RiskSeverityWidgetState extends State<RiskSeverityWidget> {
+class RiskSeverityWidget extends StatelessWidget {
+  const RiskSeverityWidget({super.key, required this.enabled});
+  final bool enabled;
   @override
   Widget build(BuildContext context) {
-    return const Wrap(
+    return Wrap(
       alignment: WrapAlignment.center,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        SeverityOfConsequenceWidget(),
-        LikelihoodofOccurrenceWidget(),
-        RiskSeverityResult(),
+        SeverityOfConsequenceWidget(
+          enabled: enabled,
+        ),
+        LikelihoodofOccurrenceWidget(
+          enabled: enabled,
+        ),
+        const RiskSeverityResult(),
       ],
     );
   }
@@ -77,7 +76,9 @@ class RiskSeverityResult extends StatelessWidget {
 class SeverityOfConsequenceWidget extends StatelessWidget {
   const SeverityOfConsequenceWidget({
     super.key,
+    required this.enabled,
   });
+  final bool enabled;
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> data = [
@@ -109,7 +110,7 @@ class SeverityOfConsequenceWidget extends StatelessWidget {
     ];
     RiskSeverity riskSeverity = Provider.of<RiskSeverity>(context);
     return Container(
-      constraints: const BoxConstraints(minWidth: 500, maxWidth: 650),
+      // constraints: const BoxConstraints(minWidth: 500, maxWidth: 650),
       padding: const EdgeInsets.all(8),
       child: Column(
         children: [
@@ -123,6 +124,7 @@ class SeverityOfConsequenceWidget extends StatelessWidget {
             data: data,
             getSelectedIndex: riskSeverity.getSelectedSeverity,
             setSelectedIndex: riskSeverity.setSelectedSeverity,
+            enabled: enabled,
           ),
         ],
       ),
@@ -133,7 +135,9 @@ class SeverityOfConsequenceWidget extends StatelessWidget {
 class LikelihoodofOccurrenceWidget extends StatelessWidget {
   const LikelihoodofOccurrenceWidget({
     super.key,
+    required this.enabled,
   });
+  final bool enabled;
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> data = [
@@ -179,6 +183,7 @@ class LikelihoodofOccurrenceWidget extends StatelessWidget {
             data: data,
             getSelectedIndex: riskSeverity.getSelectedLikelihood,
             setSelectedIndex: riskSeverity.setSelectedLikelihood,
+            enabled: enabled,
           )
         ],
       ),
@@ -187,12 +192,15 @@ class LikelihoodofOccurrenceWidget extends StatelessWidget {
 }
 
 class AbstractTable extends StatefulWidget {
-  const AbstractTable(
-      {super.key,
-      required this.data,
-      required this.setSelectedIndex,
-      required this.getSelectedIndex});
+  const AbstractTable({
+    super.key,
+    required this.data,
+    required this.setSelectedIndex,
+    required this.getSelectedIndex,
+    required this.enabled,
+  });
   final List<Map<String, dynamic>> data;
+  final bool enabled;
   final void Function(int) setSelectedIndex;
   final int Function() getSelectedIndex;
 
@@ -242,9 +250,11 @@ class _AbstractTableState extends State<AbstractTable> {
           ).toList(),
           selected: index == widget.getSelectedIndex(),
           onSelectChanged: (value) {
-            setState(() {
-              widget.setSelectedIndex(index);
-            });
+            if (widget.enabled) {
+              setState(() {
+                widget.setSelectedIndex(index);
+              });
+            }
           },
           color: WidgetStateColor.resolveWith(
             (states) {
@@ -269,8 +279,8 @@ class _AbstractTableState extends State<AbstractTable> {
       // decoration: BoxDecoration(border: Border.all(color: Colors.lightBlue)),
       columns: _columns,
       rows: _rows,
-      columnSpacing: 5,
-      horizontalMargin: 5,
+      columnSpacing: 10,
+      horizontalMargin: 10,
     );
   }
 }

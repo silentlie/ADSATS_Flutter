@@ -13,10 +13,8 @@ class CrewNoticeWidget extends StatefulWidget {
   const CrewNoticeWidget({
     super.key,
     this.viewMode = false,
-    this.noticeID,
     this.noticeBasicDetails,
   });
-  final int? noticeID;
   final bool viewMode;
   final Map<String, dynamic>? noticeBasicDetails;
 
@@ -31,7 +29,7 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
   final formKey = GlobalKey<FormState>();
   late bool editPermission;
   late bool viewMode = widget.viewMode;
-   bool isRead = true;
+  bool isRead = true;
   Future<void> getCrewNotice() async {
     try {
       viewMode = widget.viewMode;
@@ -39,6 +37,7 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
       if (widget.noticeBasicDetails != null) {
         noticeBasicDetails = widget.noticeBasicDetails!;
         recipients = {};
+        isRead = noticeBasicDetails['status'];
       } else {
         noticeBasicDetails = {
           'file_names': <String>[],
@@ -80,8 +79,7 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // loading widget can be customise
           return const Center(child: CircularProgressIndicator());
-        } else 
-        if (snapshot.hasError) {
+        } else if (snapshot.hasError) {
           // can make it into a error widget for more visualise
           return Text('Error: ${snapshot.error}');
         }
@@ -132,7 +130,9 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
                     if (viewMode && !isRead)
                       ElevatedButton.icon(
                         onPressed: () {
-                          // TODO: add mark as read
+                          setRead(authNotifier.staffID,
+                              noticeBasicDetails['notice_id']);
+                          // NEED TO SET ISREAD TO TRUE
                           context.go('/sms');
                         },
                         label: const Text('Mark as read'),
@@ -157,31 +157,28 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
                         },
                         label: const Text('Cancel'),
                       ),
-                    // No save function for now
-                    // const SizedBox(width: 10),
-                    // ElevatedButton.icon(
-                    //   onPressed: () {
-                    //     // Functionality for the second button
-                    //   },
-                    //   // Change text color
-                    //   label: const Text('Save'),
-                    //   icon: Icon(
-                    //     Icons.mail,
-                    //     color: colorScheme.onSecondary,
-                    //   ),
-                    // ),
                     const SizedBox(width: 10),
                     if (!viewMode || editPermission)
                       ElevatedButton.icon(
-                        onPressed: () {
+                        onPressed: () async {
                           if (formKey.currentState!.validate()) {
                             formKey.currentState!.save();
-                            // TODO:Functionality for the sending button
+
                             debugPrint(noticeBasicDetails.toString());
                             debugPrint(crewNoticeDetails.toString());
                             debugPrint(recipients.toString());
-                            // sendCrewNotice(crewNoticeDetails, noticeBasicDetails);
                             // context.go('/sms');
+                            if (!viewMode) {
+                              // int noticeID =
+                              //     await sendNoticeBasic(noticeBasicDetails);
+                              // sendCrewNotice(crewNoticeDetails, noticeID);
+                              // sendNotifications(recipients, noticeID);
+                            } else {
+                              // int noticeID = noticeBasicDetails['notice_id'];
+                              // updateNoticeBasic(noticeBasicDetails, noticeID);
+                              // updateCrewNotice(crewNoticeDetails, noticeID);
+                              // sendNotifications(recipients, noticeID);
+                            }
                           }
                         },
                         style: ButtonStyle(
@@ -210,21 +207,18 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
 
   Future<int> sendNoticeBasic(Map<String, dynamic> noticeBasicDetails) async {
     try {
-      Map<String, dynamic> body = {
-        'archived': false,
-      };
-      body.addAll(noticeBasicDetails);
+      Map<String, dynamic> body = {'archived': false, ...noticeBasicDetails};
       // debugPrint(body.toString());
       final restOperation = Amplify.API.post('/sms',
           apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
-      int documentID = jsonDecode(jsonStr);
-      debugPrint("document_id: $documentID");
-      return documentID;
+      int id = jsonDecode(jsonStr);
+      debugPrint("finish send basic notice details with notice id: $id");
+      return id;
     } on ApiException catch (e) {
-      debugPrint('GET call failed: $e');
+      debugPrint('POST call failed: $e');
       rethrow;
     } on Error catch (e) {
       debugPrint('Error: $e');
@@ -232,10 +226,37 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
     }
   }
 
-  Future<int> sendCrewNotice(Map<String, dynamic> crewNoticeDetails,
-      Map<String, dynamic> noticeBasicDetails) async {
+  Future<void> updateNoticeBasic(
+    Map<String, dynamic> noticeBasicDetails,
+    int noticeID,
+  ) async {
     try {
-      int noticeID = await sendNoticeBasic(noticeBasicDetails);
+      Map<String, dynamic> body = {
+        'noticeID': noticeID,
+        ...noticeBasicDetails,
+      };
+      // debugPrint(body.toString());
+      final restOperation = Amplify.API.patch('/sms',
+          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int id = jsonDecode(jsonStr);
+      debugPrint("finish update basic notice details with notice id: $id");
+    } on ApiException catch (e) {
+      debugPrint('PATCH call failed: $e');
+      rethrow;
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> sendCrewNotice(
+    Map<String, dynamic> crewNoticeDetails,
+    int noticeID,
+  ) async {
+    try {
       Map<String, dynamic> body = {
         'notice_id': noticeID,
         ...crewNoticeDetails,
@@ -246,11 +267,83 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
-      int documentID = jsonDecode(jsonStr);
-      debugPrint("document_id: $documentID");
-      return documentID;
+      int id = jsonDecode(jsonStr);
+      debugPrint("finish send crew notice details with notice id: $id");
     } on ApiException catch (e) {
-      debugPrint('GET call failed: $e');
+      debugPrint('POST call failed: $e');
+      rethrow;
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> updateCrewNotice(
+    Map<String, dynamic> crewNoticeDetails,
+    int noticeID,
+  ) async {
+    try {
+      Map<String, dynamic> body = {
+        'notice_id': noticeID,
+        ...crewNoticeDetails,
+      };
+      // debugPrint(body.toString());
+      final restOperation = Amplify.API.patch('/sms/crew-notice',
+          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int id = jsonDecode(jsonStr);
+      debugPrint("finish update crew notice details with notice id: $id");
+    } on ApiException catch (e) {
+      debugPrint('PATCH call failed: $e');
+      rethrow;
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> sendNotifications(
+      Map<String, dynamic> recipients, int noticeID) async {
+    try {
+      Map<String, dynamic> body = {
+        'notice_id': noticeID,
+        ...recipients,
+      };
+      // debugPrint(body.toString());
+      final restOperation = Amplify.API.post('/notifications',
+          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int id = jsonDecode(jsonStr);
+      debugPrint("finish send notification with notice id: $id");
+    } on ApiException catch (e) {
+      debugPrint('POST call failed: $e');
+      rethrow;
+    } on Error catch (e) {
+      debugPrint('Error: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> setRead(int staffID, int noticeID) async {
+    try {
+      Map<String, dynamic> body = {
+        'notice_id': noticeID,
+        'staff_id': staffID,
+      };
+      // debugPrint(body.toString());
+      final restOperation = Amplify.API.patch('/notifications',
+          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+
+      final response = await restOperation.response;
+      String jsonStr = response.decodeBody();
+      int id = jsonDecode(jsonStr);
+      debugPrint("finish set read with notice id: $id");
+    } on ApiException catch (e) {
+      debugPrint('PATCH call failed: $e');
       rethrow;
     } on Error catch (e) {
       debugPrint('Error: $e');
