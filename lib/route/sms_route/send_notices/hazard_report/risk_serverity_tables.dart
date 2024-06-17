@@ -315,6 +315,7 @@ class RiskSeverity extends ChangeNotifier {
     } else {
       return Colors.transparent;
     }
+    //return null;
   }
 
   String getText() {
