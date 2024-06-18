@@ -97,6 +97,7 @@ class NoticeAPI extends DataTableSourceAsync {
           _filters.filterResults['staff_id'] = authNotifier.staffID;
           return Row(
             children: [
+              Text('KPI: $_totalRecords'),
               IconButton(
                 onPressed: () {
                   refreshDatasource();
