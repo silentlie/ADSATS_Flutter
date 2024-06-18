@@ -43,7 +43,8 @@
     "categories": {
       "auth": {
         "adsatsFlutterAuth": {},
-        "userPoolGroups": {}
+        "userPoolGroups": {},
+        "adsatsAuth": {}
       },
       "function": {
         "AdminQueries93b1e66a": {},
