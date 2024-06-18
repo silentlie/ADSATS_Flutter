@@ -53,6 +53,30 @@
           ],
           "category": "function",
           "resourceName": "EndpointRoles"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointAircraft"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointCategories"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointSubcategories"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -123,6 +147,18 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "EndpointAircraft": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "EndpointCategories": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "EndpointRoles": {
       "build": true,
       "dependsOn": [],
@@ -134,72 +170,12 @@
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
-    }
-  },
-  "parameters": {
-    "AMPLIFY_function_AdminQueries0b8e757d_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "AdminQueries0b8e757d"
-        }
-      ]
     },
-    "AMPLIFY_function_AdminQueries0b8e757d_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "AdminQueries0b8e757d"
-        }
-      ]
-    },
-    "AMPLIFY_function_EndpointRoles_host": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "EndpointRoles"
-        }
-      ]
-    },
-    "AMPLIFY_function_EndpointRoles_password": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "EndpointRoles"
-        }
-      ]
-    },
-    "AMPLIFY_function_EndpointRoles_user": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "EndpointRoles"
-        }
-      ]
-    },
-    "AMPLIFY_function_EndpointStaff_host": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "EndpointStaff"
-        }
-      ]
-    },
-    "AMPLIFY_function_EndpointStaff_password": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "EndpointStaff"
-        }
-      ]
-    },
-    "AMPLIFY_function_EndpointStaff_user": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "EndpointStaff"
-        }
-      ]
+    "EndpointSubcategories": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   }
 }

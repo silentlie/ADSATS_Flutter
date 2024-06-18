@@ -30,6 +30,51 @@
         },
         "setting": "private"
       }
+    },
+    "/aircraft": {
+      "name": "/aircraft",
+      "lambdaFunction": "EndpointAircraft",
+      "permissions": {
+        "groups": {
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/categories": {
+      "name": "/categories",
+      "lambdaFunction": "EndpointCategories",
+      "permissions": {
+        "groups": {
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/subcategories": {
+      "name": "/subcategories",
+      "lambdaFunction": "EndpointSubcategories",
+      "permissions": {
+        "groups": {
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
     }
   }
 }

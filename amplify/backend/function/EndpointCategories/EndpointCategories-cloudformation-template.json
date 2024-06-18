@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.12.1\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+  "Description": "Lambda Function resource stack creation using Amplify CLI",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -14,15 +14,6 @@
       "Type": "String"
     },
     "s3Key": {
-      "Type": "String"
-    },
-    "host": {
-      "Type": "String"
-    },
-    "password": {
-      "Type": "String"
-    },
-    "user": {
       "Type": "String"
     }
   },
@@ -56,12 +47,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "EndpointStaff",
+            "EndpointCategories",
             {
               "Fn::Join": [
                 "",
                 [
-                  "EndpointStaff",
+                  "EndpointCategories",
                   "-",
                   {
                     "Ref": "env"
@@ -78,15 +69,6 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "HOST": {
-              "Ref": "host"
-            },
-            "PASSWORD": {
-              "Ref": "password"
-            },
-            "USER": {
-              "Ref": "user"
             }
           }
         },
@@ -109,12 +91,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "adsatsLambdaRole88496ad1",
+            "adsatsLambdaRole278228a5",
             {
               "Fn::Join": [
                 "",
                 [
-                  "adsatsLambdaRole88496ad1",
+                  "adsatsLambdaRole278228a5",
                   "-",
                   {
                     "Ref": "env"

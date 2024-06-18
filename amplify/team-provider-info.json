@@ -60,7 +60,10 @@
           "host": "adsats-dev.ctewmgwm2h86.ap-southeast-2.rds.amazonaws.com",
           "password": "LM00r3??",
           "user": "admin"
-        }
+        },
+        "EndpointAircraft": {},
+        "EndpointCategories": {},
+        "EndpointSubcategories": {}
       },
       "api": {
         "AdminQueries": {}
