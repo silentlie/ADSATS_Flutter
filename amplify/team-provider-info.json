@@ -50,7 +50,12 @@
         "AdminQueries93b1e66a": {},
         "adsatsFlutterAuthPostConfirmation": {},
         "placeHolder": {},
-        "adsatsFlutterAuth": {}
+        "adsatsFlutterAuth": {},
+        "EndpointStaff": {},
+        "EndpointAircraft": {},
+        "EndpointRoles": {},
+        "EndpointCategories": {},
+        "EndpointSubcategories": {}
       }
     }
   }

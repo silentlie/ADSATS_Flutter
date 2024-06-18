@@ -21,6 +21,66 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
+    },
+    "AmplifyAdminAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointStaff"
+        },
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "adsatsAuth"
+        },
+        {
+          "attributes": [
+            "adminGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointAircraft"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointRoles"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointCategories"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointSubcategories"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
     }
   },
   "auth": {
@@ -61,7 +121,8 @@
           "attributes": [
             "UserPoolId",
             "AppClientIDWeb",
-            "AppClientID"
+            "AppClientID",
+            "IdentityPoolId"
           ],
           "category": "auth",
           "resourceName": "adsatsAuth"
@@ -83,6 +144,32 @@
           "resourceName": "adsatsAuth"
         }
       ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "EndpointAircraft": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "EndpointCategories": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "EndpointRoles": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "EndpointStaff": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "EndpointSubcategories": {
+      "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }

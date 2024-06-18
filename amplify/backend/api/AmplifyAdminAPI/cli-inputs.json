@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "paths": {
+    "/staff": {
+      "name": "/staff",
+      "lambdaFunction": "EndpointStaff",
+      "permissions": {
+        "groups": {
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/aircraft": {
+      "name": "/aircraft",
+      "lambdaFunction": "EndpointAircraft",
+      "permissions": {
+        "groups": {
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/roles": {
+      "name": "/roles",
+      "lambdaFunction": "EndpointRoles",
+      "permissions": {
+        "groups": {
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/categories": {
+      "name": "/categories",
+      "lambdaFunction": "EndpointCategories",
+      "permissions": {
+        "groups": {
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/subcategories": {
+      "name": "/subcategories",
+      "lambdaFunction": "EndpointSubcategories",
+      "permissions": {
+        "groups": {
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    }
+  }
+}
