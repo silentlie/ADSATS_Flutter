@@ -28,42 +28,28 @@
       }
     }
   },
-  "prod": {
+  "production": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-adsats-prod-2f25f-authRole",
-      "UnauthRoleArn": "arn:aws:iam::891377389351:role/amplify-adsats-prod-2f25f-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::891377389351:role/amplify-adsats-prod-2f25f-authRole",
+      "AuthRoleName": "amplify-adsats-production-e18f1-authRole",
+      "UnauthRoleArn": "arn:aws:iam::891377389351:role/amplify-adsats-production-e18f1-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::891377389351:role/amplify-adsats-production-e18f1-authRole",
       "Region": "ap-southeast-2",
-      "DeploymentBucketName": "amplify-adsats-prod-2f25f-deployment",
-      "UnauthRoleName": "amplify-adsats-prod-2f25f-unauthRole",
-      "StackName": "amplify-adsats-prod-2f25f",
-      "StackId": "arn:aws:cloudformation:ap-southeast-2:891377389351:stack/amplify-adsats-prod-2f25f/94864f50-2d6d-11ef-8a55-0273f2cac539",
+      "DeploymentBucketName": "amplify-adsats-production-e18f1-deployment",
+      "UnauthRoleName": "amplify-adsats-production-e18f1-unauthRole",
+      "StackName": "amplify-adsats-production-e18f1",
+      "StackId": "arn:aws:cloudformation:ap-southeast-2:891377389351:stack/amplify-adsats-production-e18f1/878e67f0-2d82-11ef-8ee0-0601802d9139",
       "AmplifyAppId": "dwrj4qpzwmwgv"
     },
     "categories": {
       "auth": {
-        "AuthADSATS": {},
+        "adsatsFlutterAuth": {},
         "userPoolGroups": {}
       },
       "function": {
-        "AdminQueries0b8e757d": {
-          "deploymentBucketName": "amplify-adsats-prod-2f25f-deployment",
-          "s3Key": "amplify-builds/AdminQueries0b8e757d-3161676b6c3369533063-build.zip"
-        },
-        "AuthADSATS": {},
-        "EndpointStaff": {
-          "host": "adsats-dev.ctewmgwm2h86.ap-southeast-2.rds.amazonaws.com",
-          "password": "LM00r3??",
-          "user": "admin"
-        },
-        "EndpointRoles": {
-          "host": "adsats-dev.ctewmgwm2h86.ap-southeast-2.rds.amazonaws.com",
-          "password": "LM00r3??",
-          "user": "admin"
-        }
-      },
-      "api": {
-        "AdminQueries": {}
+        "AdminQueries93b1e66a": {},
+        "adsatsFlutterAuthPostConfirmation": {},
+        "placeHolder": {},
+        "adsatsFlutterAuth": {}
       }
     }
   }
