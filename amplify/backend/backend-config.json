@@ -81,6 +81,89 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
+    },
+    "AmplifyAppApi": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointDocuments"
+        },
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "adsatsAuth"
+        },
+        {
+          "attributes": [
+            "adminGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "staffGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointNotices"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointNotifications"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointCrewNotices"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointSafetyNotices"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointHazardReport"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointBCAAReport"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
     }
   },
   "auth": {
@@ -152,13 +235,48 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "EndpointBCAAReport": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "EndpointCategories": {
       "build": true,
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "EndpointCrewNotices": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "EndpointDocuments": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "EndpointHazardReport": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "EndpointNotices": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "EndpointNotifications": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "EndpointRoles": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "EndpointSafetyNotices": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"

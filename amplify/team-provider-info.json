@@ -55,7 +55,14 @@
         "EndpointAircraft": {},
         "EndpointRoles": {},
         "EndpointCategories": {},
-        "EndpointSubcategories": {}
+        "EndpointSubcategories": {},
+        "EndpointDocuments": {},
+        "EndpointNotices": {},
+        "EndpointNotifications": {},
+        "EndpointCrewNotices": {},
+        "EndpointSafetyNotices": {},
+        "EndpointHazardReport": {},
+        "EndpointBCAAReport": {}
       }
     }
   }
