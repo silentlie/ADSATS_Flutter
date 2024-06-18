@@ -35,13 +35,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
       label: Text("Roles"),
     ),
     const NavigationRailDestination(
-      icon: Icon(Icons.groups_outlined),
-      selectedIcon: Icon(Icons.groups),
+      icon: Icon(Icons.view_agenda_outlined),
+      selectedIcon: Icon(Icons.view_agenda),
       label: Text("Categories"),
     ),
     const NavigationRailDestination(
-      icon: Icon(Icons.groups_outlined),
-      selectedIcon: Icon(Icons.groups),
+      icon: Icon(Icons.view_list_outlined),
+      selectedIcon: Icon(Icons.view_list),
       label: Text("Subcategories"),
     ),
   ];
@@ -62,13 +62,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
       label: "Roles",
     ),
     const NavigationDestination(
-      icon: Icon(Icons.groups_outlined),
-      selectedIcon: Icon(Icons.groups),
+      icon: Icon(Icons.view_agenda_outlined),
+      selectedIcon: Icon(Icons.view_agenda),
       label: "Categories",
     ),
     const NavigationDestination(
-      icon: Icon(Icons.groups_outlined),
-      selectedIcon: Icon(Icons.groups),
+      icon: Icon(Icons.view_list_outlined),
+      selectedIcon: Icon(Icons.view_list),
       label: "Subcategories",
     ),
   ];

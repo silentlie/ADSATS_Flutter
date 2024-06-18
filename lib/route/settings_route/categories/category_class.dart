@@ -38,7 +38,8 @@ class Category {
         cellFor(archived),
         DataCell(
           Builder(builder: (context) {
-            AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
+            AuthNotifier authNotifier =
+                Provider.of<AuthNotifier>(context, listen: false);
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -52,6 +53,7 @@ class Category {
                     refreshDatasource();
                   },
                   icon: const Icon(Icons.edit_outlined),
+                  tooltip: 'Edit',
                 ),
                 IconButton(
                   onPressed: () async {
@@ -60,6 +62,7 @@ class Category {
                     refreshDatasource();
                   },
                   icon: const Icon(Icons.archive_outlined),
+                  tooltip: 'Archive',
                 ),
                 IconButton(
                   onPressed: () async {
@@ -68,6 +71,7 @@ class Category {
                     refreshDatasource();
                   },
                   icon: const Icon(Icons.delete_outline),
+                  tooltip: 'Delete',
                 ),
               ],
             );
