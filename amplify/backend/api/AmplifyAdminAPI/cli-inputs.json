@@ -31,6 +31,21 @@
         "setting": "private"
       }
     },
+    "/aircraft": {
+      "name": "/aircraft",
+      "lambdaFunction": "EndpointAircraft",
+      "permissions": {
+        "groups": {
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    },
     "/categories": {
       "name": "/categories",
       "lambdaFunction": "EndpointCategories",
@@ -59,16 +74,6 @@
           ]
         },
         "setting": "private"
-      }
-    },
-    "/aircraft": {
-      "name": "/aircraft",
-      "lambdaFunction": "EndpointAircraft",
-      "permissions": {
-        "setting": "private",
-        "auth": [
-          "read"
-        ]
       }
     }
   }

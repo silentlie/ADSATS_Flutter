@@ -4,5 +4,6 @@
       "type": "ExternalLayer",
       "arn": "arn:aws:lambda:ap-southeast-2:891377389351:layer:mysql-840:1"
     }
-  ]
+  ],
+  "environmentVariableList": []
 }
