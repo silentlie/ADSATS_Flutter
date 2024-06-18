@@ -24,51 +24,51 @@
         },
         "EndpointAircraft": {
           "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
-          "s3Key": "amplify-builds/EndpointAircraft-46554f7546686e494c76-build.zip"
+          "s3Key": "amplify-builds/EndpointAircraft-794238724f446565524b-build.zip"
         },
         "EndpointCategories": {
           "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
-          "s3Key": "amplify-builds/EndpointCategories-427a2f50716c4675556c-build.zip"
+          "s3Key": "amplify-builds/EndpointCategories-61332b4a526c6a797255-build.zip"
         },
         "EndpointRoles": {
           "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
-          "s3Key": "amplify-builds/EndpointRoles-785a7170632f6d4a686d-build.zip"
+          "s3Key": "amplify-builds/EndpointRoles-545a6e644d6f61644847-build.zip"
         },
         "EndpointStaff": {
           "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
-          "s3Key": "amplify-builds/EndpointStaff-7633694c5a71734c7a65-build.zip"
+          "s3Key": "amplify-builds/EndpointStaff-7861644f6e2f612b6833-build.zip"
         },
         "EndpointSubcategories": {
           "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
-          "s3Key": "amplify-builds/EndpointSubcategories-4c744732356e504a4138-build.zip"
+          "s3Key": "amplify-builds/EndpointSubcategories-314f522b55693736506b-build.zip"
         },
         "EndpointDocuments": {
           "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
-          "s3Key": "amplify-builds/EndpointDocuments-6c69576756733569446d-build.zip"
+          "s3Key": "amplify-builds/EndpointDocuments-48384a424c46306e2b65-build.zip"
         },
         "EndpointNotices": {
           "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
-          "s3Key": "amplify-builds/EndpointNotices-37796d716e705937344b-build.zip"
+          "s3Key": "amplify-builds/EndpointNotices-337448487a7573364753-build.zip"
         },
         "EndpointNotifications": {
           "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
-          "s3Key": "amplify-builds/EndpointNotifications-706e4937707077362b34-build.zip"
+          "s3Key": "amplify-builds/EndpointNotifications-5739593174484d444a6e-build.zip"
         },
         "EndpointCrewNotices": {
           "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
-          "s3Key": "amplify-builds/EndpointCrewNotices-7155484f387345727676-build.zip"
+          "s3Key": "amplify-builds/EndpointCrewNotices-5841583348557a516c78-build.zip"
         },
         "EndpointSafetyNotices": {
           "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
-          "s3Key": "amplify-builds/EndpointSafetyNotices-4b423845346e63417643-build.zip"
+          "s3Key": "amplify-builds/EndpointSafetyNotices-6b44564f356539794538-build.zip"
         },
         "EndpointHazardReport": {
           "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
-          "s3Key": "amplify-builds/EndpointHazardReport-77456c487a6e50316959-build.zip"
+          "s3Key": "amplify-builds/EndpointHazardReport-5a62764a7543626b5175-build.zip"
         },
         "EndpointBCAAReport": {
           "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
-          "s3Key": "amplify-builds/EndpointBCAAReport-785634656334367a4f61-build.zip"
+          "s3Key": "amplify-builds/EndpointBCAAReport-4c735863324339327943-build.zip"
         }
       },
       "api": {
