@@ -1,0 +1,70 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-adsats-dev-71496-authRole",
+      "UnauthRoleArn": "arn:aws:iam::891377389351:role/amplify-adsats-dev-71496-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::891377389351:role/amplify-adsats-dev-71496-authRole",
+      "Region": "ap-southeast-2",
+      "DeploymentBucketName": "amplify-adsats-dev-71496-deployment",
+      "UnauthRoleName": "amplify-adsats-dev-71496-unauthRole",
+      "StackName": "amplify-adsats-dev-71496",
+      "StackId": "arn:aws:cloudformation:ap-southeast-2:891377389351:stack/amplify-adsats-dev-71496/78f99d70-2d6b-11ef-9118-06a39b0a292f",
+      "AmplifyAppId": "dwrj4qpzwmwgv"
+    },
+    "categories": {
+      "auth": {
+        "AuthADSATS": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "AdminQueries0b8e757d": {
+          "deploymentBucketName": "amplify-adsats-dev-71496-deployment",
+          "s3Key": "amplify-builds/AdminQueries0b8e757d-3161676b6c3369533063-build.zip"
+        },
+        "AuthADSATS": {}
+      },
+      "api": {
+        "AdminQueries": {}
+      }
+    }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-adsats-prod-2f25f-authRole",
+      "UnauthRoleArn": "arn:aws:iam::891377389351:role/amplify-adsats-prod-2f25f-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::891377389351:role/amplify-adsats-prod-2f25f-authRole",
+      "Region": "ap-southeast-2",
+      "DeploymentBucketName": "amplify-adsats-prod-2f25f-deployment",
+      "UnauthRoleName": "amplify-adsats-prod-2f25f-unauthRole",
+      "StackName": "amplify-adsats-prod-2f25f",
+      "StackId": "arn:aws:cloudformation:ap-southeast-2:891377389351:stack/amplify-adsats-prod-2f25f/94864f50-2d6d-11ef-8a55-0273f2cac539",
+      "AmplifyAppId": "dwrj4qpzwmwgv"
+    },
+    "categories": {
+      "auth": {
+        "AuthADSATS": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "AdminQueries0b8e757d": {
+          "deploymentBucketName": "amplify-adsats-prod-2f25f-deployment",
+          "s3Key": "amplify-builds/AdminQueries0b8e757d-3161676b6c3369533063-build.zip"
+        },
+        "AuthADSATS": {},
+        "EndpointStaff": {
+          "host": "adsats-dev.ctewmgwm2h86.ap-southeast-2.rds.amazonaws.com",
+          "password": "LM00r3??",
+          "user": "admin"
+        },
+        "EndpointRoles": {
+          "host": "adsats-dev.ctewmgwm2h86.ap-southeast-2.rds.amazonaws.com",
+          "password": "LM00r3??",
+          "user": "admin"
+        }
+      },
+      "api": {
+        "AdminQueries": {}
+      }
+    }
+  }
+}

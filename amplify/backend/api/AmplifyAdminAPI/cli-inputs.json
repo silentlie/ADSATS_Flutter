@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "paths": {
+    "/staff": {
+      "name": "/staff",
+      "lambdaFunction": "EndpointStaff",
+      "permissions": {
+        "groups": {
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/roles": {
+      "name": "/roles",
+      "lambdaFunction": "EndpointRoles",
+      "permissions": {
+        "groups": {
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    }
+  }
+}
