@@ -1,0 +1,20 @@
+{
+  "resourceName": "s3adsats",
+  "policyUUID": "7f0ef883",
+  "bucketName": "adsats3",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [],
+  "triggerFunction": "NONE",
+  "groupAccess": {
+    "admin": [
+      "CREATE_AND_UPDATE",
+      "READ",
+      "DELETE"
+    ],
+    "staff": [
+      "CREATE_AND_UPDATE",
+      "READ"
+    ]
+  }
+}

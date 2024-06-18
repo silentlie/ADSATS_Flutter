@@ -123,5 +123,11 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     }
+  },
+  "storage": {
+    "s3adsats": {
+      "BucketName": "string",
+      "Region": "string"
+    }
   }
 }
