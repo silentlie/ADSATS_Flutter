@@ -225,8 +225,8 @@ class _SafetyNoticeWidgetState extends State<SafetyNoticeWidget> {
     try {
       Map<String, dynamic> body = {'archived': false, ...noticeBasicDetails};
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.post('/sms',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+      final restOperation = Amplify.API.post('/notices',
+          apiName: 'AmplifyAppAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -252,8 +252,8 @@ class _SafetyNoticeWidgetState extends State<SafetyNoticeWidget> {
         ...noticeBasicDetails,
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.patch('/sms',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+      final restOperation = Amplify.API.patch('/notices',
+          apiName: 'AmplifyAppAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -280,7 +280,7 @@ class _SafetyNoticeWidgetState extends State<SafetyNoticeWidget> {
       body.addAll(safetyNoticeDetails);
       // debugPrint(body.toString());
       final restOperation = Amplify.API.post('/sms/safety-notice',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+          apiName: 'AmplifyAppAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -306,8 +306,8 @@ class _SafetyNoticeWidgetState extends State<SafetyNoticeWidget> {
       };
       body.addAll(safetyNoticeDetails);
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.patch('/sms/safety-notice',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+      final restOperation = Amplify.API.patch('/notices/safety-notice',
+          apiName: 'AmplifyAppAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -331,7 +331,7 @@ class _SafetyNoticeWidgetState extends State<SafetyNoticeWidget> {
       };
       // debugPrint(body.toString());
       final restOperation = Amplify.API.post('/notifications',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+          apiName: 'AmplifyNotificationsAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -354,7 +354,7 @@ class _SafetyNoticeWidgetState extends State<SafetyNoticeWidget> {
       };
       // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/notifications',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+          apiName: 'AmplifyNotificationsAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();

@@ -1,33 +1,4 @@
 {
-  "dev": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-adsats-dev-71496-authRole",
-      "UnauthRoleArn": "arn:aws:iam::891377389351:role/amplify-adsats-dev-71496-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::891377389351:role/amplify-adsats-dev-71496-authRole",
-      "Region": "ap-southeast-2",
-      "DeploymentBucketName": "amplify-adsats-dev-71496-deployment",
-      "UnauthRoleName": "amplify-adsats-dev-71496-unauthRole",
-      "StackName": "amplify-adsats-dev-71496",
-      "StackId": "arn:aws:cloudformation:ap-southeast-2:891377389351:stack/amplify-adsats-dev-71496/78f99d70-2d6b-11ef-9118-06a39b0a292f",
-      "AmplifyAppId": "dwrj4qpzwmwgv"
-    },
-    "categories": {
-      "auth": {
-        "AuthADSATS": {},
-        "userPoolGroups": {}
-      },
-      "function": {
-        "AdminQueries0b8e757d": {
-          "deploymentBucketName": "amplify-adsats-dev-71496-deployment",
-          "s3Key": "amplify-builds/AdminQueries0b8e757d-3161676b6c3369533063-build.zip"
-        },
-        "AuthADSATS": {}
-      },
-      "api": {
-        "AdminQueries": {}
-      }
-    }
-  },
   "production": {
     "awscloudformation": {
       "AuthRoleName": "amplify-adsats-production-e18f1-authRole",
@@ -42,27 +13,72 @@
     },
     "categories": {
       "auth": {
-        "adsatsFlutterAuth": {},
-        "userPoolGroups": {},
-        "adsatsAuth": {}
+        "adsatsAuth": {},
+        "userPoolGroups": {}
       },
       "function": {
-        "AdminQueries93b1e66a": {},
-        "adsatsFlutterAuthPostConfirmation": {},
-        "placeHolder": {},
-        "adsatsFlutterAuth": {},
-        "EndpointStaff": {},
-        "EndpointAircraft": {},
-        "EndpointRoles": {},
-        "EndpointCategories": {},
-        "EndpointSubcategories": {},
-        "EndpointDocuments": {},
-        "EndpointNotices": {},
-        "EndpointNotifications": {},
-        "EndpointCrewNotices": {},
-        "EndpointSafetyNotices": {},
-        "EndpointHazardReport": {},
-        "EndpointBCAAReport": {}
+        "AdminQueriesb2e1c472": {
+          "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
+          "s3Key": "amplify-builds/AdminQueriesb2e1c472-3161676b6c3369533063-build.zip"
+        },
+        "EndpointAircraft": {
+          "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
+          "s3Key": "amplify-builds/EndpointAircraft-46554f7546686e494c76-build.zip"
+        },
+        "EndpointCategories": {
+          "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
+          "s3Key": "amplify-builds/EndpointCategories-427a2f50716c4675556c-build.zip"
+        },
+        "EndpointRoles": {
+          "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
+          "s3Key": "amplify-builds/EndpointRoles-785a7170632f6d4a686d-build.zip"
+        },
+        "EndpointStaff": {
+          "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
+          "s3Key": "amplify-builds/EndpointStaff-7633694c5a71734c7a65-build.zip"
+        },
+        "EndpointSubcategories": {
+          "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
+          "s3Key": "amplify-builds/EndpointSubcategories-4c744732356e504a4138-build.zip"
+        },
+        "EndpointDocuments": {
+          "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
+          "s3Key": "amplify-builds/EndpointDocuments-6c69576756733569446d-build.zip"
+        },
+        "EndpointNotices": {
+          "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
+          "s3Key": "amplify-builds/EndpointNotices-37796d716e705937344b-build.zip"
+        },
+        "EndpointNotifications": {
+          "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
+          "s3Key": "amplify-builds/EndpointNotifications-706e4937707077362b34-build.zip"
+        },
+        "EndpointCrewNotices": {
+          "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
+          "s3Key": "amplify-builds/EndpointCrewNotices-7155484f387345727676-build.zip"
+        },
+        "EndpointSafetyNotices": {
+          "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
+          "s3Key": "amplify-builds/EndpointSafetyNotices-4b423845346e63417643-build.zip"
+        },
+        "EndpointHazardReport": {
+          "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
+          "s3Key": "amplify-builds/EndpointHazardReport-77456c487a6e50316959-build.zip"
+        },
+        "EndpointBCAAReport": {
+          "deploymentBucketName": "amplify-adsats-production-e18f1-deployment",
+          "s3Key": "amplify-builds/EndpointBCAAReport-785634656334367a4f61-build.zip"
+        }
+      },
+      "api": {
+        "AdminQueries": {},
+        "AmplifyAdminAPI": {},
+        "AmplifyDocumentsAPI": {},
+        "AmplifyNotificationsAPI": {},
+        "AmplifyNoticesAPI": {}
+      },
+      "storage": {
+        "s3": {}
       }
     }
   }

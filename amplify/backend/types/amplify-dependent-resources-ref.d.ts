@@ -10,7 +10,17 @@ export type AmplifyDependentResourcesAttributes = {
       "ApiName": "string",
       "RootUrl": "string"
     },
-    "AmplifyAppApi": {
+    "AmplifyDocumentsAPI": {
+      "ApiId": "string",
+      "ApiName": "string",
+      "RootUrl": "string"
+    },
+    "AmplifyNoticesAPI": {
+      "ApiId": "string",
+      "ApiName": "string",
+      "RootUrl": "string"
+    },
+    "AmplifyNotificationsAPI": {
       "ApiId": "string",
       "ApiName": "string",
       "RootUrl": "string"
@@ -125,7 +135,7 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "storage": {
-    "s3adsats": {
+    "s3": {
       "BucketName": "string",
       "Region": "string"
     }

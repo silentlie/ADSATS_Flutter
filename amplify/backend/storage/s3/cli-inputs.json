@@ -1,6 +1,6 @@
 {
-  "resourceName": "s3adsats",
-  "policyUUID": "7f0ef883",
+  "resourceName": "s3",
+  "policyUUID": "b54a4847",
   "bucketName": "adsats3",
   "storageAccess": "auth",
   "guestAccess": [],

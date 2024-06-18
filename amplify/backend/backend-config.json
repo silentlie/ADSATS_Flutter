@@ -82,7 +82,7 @@
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
     },
-    "AmplifyAppApi": {
+    "AmplifyDocumentsAPI": {
       "dependsOn": [
         {
           "attributes": [
@@ -91,6 +91,41 @@
           ],
           "category": "function",
           "resourceName": "EndpointDocuments"
+        },
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "adsatsAuth"
+        },
+        {
+          "attributes": [
+            "adminGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "staffGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
+    "AmplifyNoticesAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointCrewNotices"
         },
         {
           "attributes": [
@@ -127,22 +162,6 @@
             "Arn"
           ],
           "category": "function",
-          "resourceName": "EndpointNotifications"
-        },
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
-          "resourceName": "EndpointCrewNotices"
-        },
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
           "resourceName": "EndpointSafetyNotices"
         },
         {
@@ -152,14 +171,41 @@
           ],
           "category": "function",
           "resourceName": "EndpointHazardReport"
-        },
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
+    "AmplifyNotificationsAPI": {
+      "dependsOn": [
         {
           "attributes": [
             "Name",
             "Arn"
           ],
           "category": "function",
-          "resourceName": "EndpointBCAAReport"
+          "resourceName": "EndpointNotifications"
+        },
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "adsatsAuth"
+        },
+        {
+          "attributes": [
+            "adminGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "staffGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -292,8 +338,218 @@
       "service": "Lambda"
     }
   },
+  "parameters": {
+    "AMPLIFY_function_AdminQueriesb2e1c472_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AdminQueriesb2e1c472"
+        }
+      ]
+    },
+    "AMPLIFY_function_AdminQueriesb2e1c472_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AdminQueriesb2e1c472"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointAircraft_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointAircraft"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointAircraft_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointAircraft"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointBCAAReport_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointBCAAReport"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointBCAAReport_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointBCAAReport"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointCategories_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointCategories"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointCategories_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointCategories"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointCrewNotices_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointCrewNotices"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointCrewNotices_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointCrewNotices"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointDocuments_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointDocuments"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointDocuments_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointDocuments"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointHazardReport_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointHazardReport"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointHazardReport_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointHazardReport"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointNotices_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointNotices"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointNotices_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointNotices"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointNotifications_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointNotifications"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointNotifications_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointNotifications"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointRoles_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointRoles"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointRoles_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointRoles"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointSafetyNotices_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointSafetyNotices"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointSafetyNotices_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointSafetyNotices"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointStaff_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointStaff"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointStaff_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointStaff"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointSubcategories_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointSubcategories"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointSubcategories_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointSubcategories"
+        }
+      ]
+    }
+  },
   "storage": {
-    "s3adsats": {
+    "s3": {
       "dependsOn": [
         {
           "attributes": [
