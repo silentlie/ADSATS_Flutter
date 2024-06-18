@@ -169,15 +169,15 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
                             debugPrint(recipients.toString());
                             // context.go('/sms');
                             if (!viewMode) {
-                              // int noticeID =
-                              //     await sendNoticeBasic(noticeBasicDetails);
-                              // sendCrewNotice(crewNoticeDetails, noticeID);
-                              // sendNotifications(recipients, noticeID);
+                              int noticeID =
+                                  await sendNoticeBasic(noticeBasicDetails);
+                              sendCrewNotice(crewNoticeDetails, noticeID);
+                              sendNotifications(recipients, noticeID);
                             } else {
-                              // int noticeID = noticeBasicDetails['notice_id'];
-                              // updateNoticeBasic(noticeBasicDetails, noticeID);
-                              // updateCrewNotice(crewNoticeDetails, noticeID);
-                              // sendNotifications(recipients, noticeID);
+                              int noticeID = noticeBasicDetails['notice_id'];
+                              updateNoticeBasic(noticeBasicDetails, noticeID);
+                              updateCrewNotice(crewNoticeDetails, noticeID);
+                              sendNotifications(recipients, noticeID);
                             }
                           }
                         },

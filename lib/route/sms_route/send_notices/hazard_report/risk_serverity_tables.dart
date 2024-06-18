@@ -31,44 +31,47 @@ class RiskSeverityResult extends StatelessWidget {
         Provider.of<HazardReportNotifier>(context);
     riskSeverity.likelihoodAndSeverity =
         hazardReportNotifier.hazardReportDetails;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        const Text(
-          "Risk Severity:",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        IconButton(
-          icon: const Icon(
-            Icons.info_outline,
-          ),
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                content: Image.asset('risk-severity-chart.png'),
-              ),
-            );
-          },
-        ),
-        SizedBox(
-          width: 220,
-          child: CustomTextFormField(
-            controller: TextEditingController(text: riskSeverity.getText()),
-            enabled: true,
-            readOnly: true,
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              fillColor: riskSeverity.getColor(),
-              filled: true,
+    return Container(
+      padding: const EdgeInsets.all(8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const Text(
+            "Risk Severity:",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
             ),
-            labelText: "Risk Severity",
-            results: hazardReportNotifier.hazardReportDetails,
           ),
-        ),
-      ],
+          IconButton(
+            icon: const Icon(
+              Icons.info_outline,
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  content: Image.asset('risk-severity-chart.png'),
+                ),
+              );
+            },
+          ),
+          SizedBox(
+            width: 220,
+            child: CustomTextFormField(
+              controller: TextEditingController(text: riskSeverity.getText()),
+              enabled: true,
+              readOnly: true,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                fillColor: riskSeverity.getColor(),
+                filled: true,
+              ),
+              labelText: "Risk Severity",
+              results: hazardReportNotifier.hazardReportDetails,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -109,25 +112,24 @@ class SeverityOfConsequenceWidget extends StatelessWidget {
       },
     ];
     RiskSeverity riskSeverity = Provider.of<RiskSeverity>(context);
-    return Container(
-      // constraints: const BoxConstraints(minWidth: 500, maxWidth: 650),
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        children: [
-          const Text(
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          child: const Text(
             'What do you consider to be the worst possible consequence of this event happening? Click on the table below.',
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
-          AbstractTable(
-            data: data,
-            getSelectedIndex: riskSeverity.getSelectedSeverity,
-            setSelectedIndex: riskSeverity.setSelectedSeverity,
-            enabled: enabled,
-          ),
-        ],
-      ),
+        ),
+        AbstractTable(
+          data: data,
+          getSelectedIndex: riskSeverity.getSelectedSeverity,
+          setSelectedIndex: riskSeverity.setSelectedSeverity,
+          enabled: enabled,
+        ),
+      ],
     );
   }
 }
@@ -168,25 +170,24 @@ class LikelihoodofOccurrenceWidget extends StatelessWidget {
       },
     ];
     RiskSeverity riskSeverity = Provider.of<RiskSeverity>(context);
-    return Container(
-      constraints: const BoxConstraints(minWidth: 500, maxWidth: 650),
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        children: [
-          const Text(
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          child: const Text(
             'In your opinion, what is the likelihood of the occurrence happening again? Click on the table below.',
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
-          AbstractTable(
-            data: data,
-            getSelectedIndex: riskSeverity.getSelectedLikelihood,
-            setSelectedIndex: riskSeverity.setSelectedLikelihood,
-            enabled: enabled,
-          )
-        ],
-      ),
+        ),
+        AbstractTable(
+          data: data,
+          getSelectedIndex: riskSeverity.getSelectedLikelihood,
+          setSelectedIndex: riskSeverity.setSelectedLikelihood,
+          enabled: enabled,
+        )
+      ],
     );
   }
 }
@@ -272,15 +273,18 @@ class _AbstractTableState extends State<AbstractTable> {
 
   @override
   Widget build(BuildContext context) {
-    return DataTable(
-      headingTextStyle: const TextStyle(fontWeight: FontWeight.bold),
-      showCheckboxColumn: false,
-      border: TableBorder.all(color: Colors.lightBlue),
-      // decoration: BoxDecoration(border: Border.all(color: Colors.lightBlue)),
-      columns: _columns,
-      rows: _rows,
-      columnSpacing: 10,
-      horizontalMargin: 10,
+    return Container(
+      padding: const EdgeInsets.all(8),
+      child: DataTable(
+        headingTextStyle: const TextStyle(fontWeight: FontWeight.bold),
+        showCheckboxColumn: false,
+        border: TableBorder.all(color: Colors.lightBlue),
+        // decoration: BoxDecoration(border: Border.all(color: Colors.lightBlue)),
+        columns: _columns,
+        rows: _rows,
+        columnSpacing: 10,
+        horizontalMargin: 10,
+      ),
     );
   }
 }
