@@ -22,6 +22,52 @@
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
     },
+    "AmplifyAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointStaff"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointRoles"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointCategories"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointSubcategories"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointAircraft"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
     "AmplifyAdminAPI": {
       "dependsOn": [
         {
@@ -60,14 +106,6 @@
             "Arn"
           ],
           "category": "function",
-          "resourceName": "EndpointAircraft"
-        },
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
           "resourceName": "EndpointCategories"
         },
         {
@@ -77,6 +115,97 @@
           ],
           "category": "function",
           "resourceName": "EndpointSubcategories"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointAircraft"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
+    "AmplifyAppAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointDocuments"
+        },
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "AuthADSATS"
+        },
+        {
+          "attributes": [
+            "adminGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "staffGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointSafetyNotices"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointHazardReports"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointBCAAReport"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointNotifications"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointNotices"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointCrewNotices"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -153,13 +282,55 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "EndpointBCAAReport": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "EndpointCategories": {
       "build": true,
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "EndpointCrewNotices": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "EndpointDocuments": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "EndpointHazardReports": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "EndpointNotices": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "EndpointNotifications": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "EndpointRoles": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "EndpointSafetyNotices": {
       "build": true,
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
@@ -176,6 +347,293 @@
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_AdminQueries0b8e757d_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AdminQueries0b8e757d"
+        }
+      ]
+    },
+    "AMPLIFY_function_AdminQueries0b8e757d_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AdminQueries0b8e757d"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointAircraft_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointAircraft"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointAircraft_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointAircraft"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointBCAAReport_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointBCAAReport"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointBCAAReport_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointBCAAReport"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointCategories_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointCategories"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointCategories_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointCategories"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointCrewNotices_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointCrewNotices"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointCrewNotices_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointCrewNotices"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointDocuments_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointDocuments"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointDocuments_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointDocuments"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointHazardReports_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointHazardReports"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointHazardReports_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointHazardReports"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointNotices_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointNotices"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointNotices_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointNotices"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointNotifications_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointNotifications"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointNotifications_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointNotifications"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointRoles_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointRoles"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointRoles_host": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointRoles"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointRoles_password": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointRoles"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointRoles_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointRoles"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointRoles_user": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointRoles"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointSafetyNotices_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointSafetyNotices"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointSafetyNotices_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointSafetyNotices"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointStaff_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointStaff"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointStaff_host": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointStaff"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointStaff_password": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointStaff"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointStaff_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointStaff"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointStaff_user": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointStaff"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointSubcategories_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointSubcategories"
+        }
+      ]
+    },
+    "AMPLIFY_function_EndpointSubcategories_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EndpointSubcategories"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "AmplifyStorage": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "AuthADSATS"
+        },
+        {
+          "attributes": [
+            "adminGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "staffGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
     }
   }
 }
