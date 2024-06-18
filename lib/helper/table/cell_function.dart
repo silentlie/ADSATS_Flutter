@@ -14,7 +14,7 @@ DataCell cellFor(Object? data) {
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(20),
-        color: data ? Colors.green : Colors.red,
+        color: data ? Colors.grey : const Color(0xFF05ABC4),
       ),
       child: Center(child: Text(data ? "Yes" : "No")),
     );

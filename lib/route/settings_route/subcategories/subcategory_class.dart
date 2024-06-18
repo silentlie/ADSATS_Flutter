@@ -47,7 +47,8 @@ class Subcategory {
         cellFor(category),
         DataCell(
           Builder(builder: (context) {
-            AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
+            AuthNotifier authNotifier =
+                Provider.of<AuthNotifier>(context, listen: false);
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -55,29 +56,29 @@ class Subcategory {
                 //     onPressed: () {},
                 //     icon: const Icon(Icons.remove_red_eye_outlined)),
                 IconButton(
-                  onPressed: () async {
-                    await changeDetails(context);
-                    authNotifier.reInitialize();
-                    refreshDatasource();
-                  },
-                  icon: const Icon(Icons.edit_outlined),
-                ),
+                    onPressed: () async {
+                      await changeDetails(context);
+                      authNotifier.reInitialize();
+                      refreshDatasource();
+                    },
+                    icon: const Icon(Icons.edit_outlined),
+                    tooltip: 'Edit'),
                 IconButton(
-                  onPressed: () async {
-                    await archive();
-                    authNotifier.reInitialize();
-                    refreshDatasource();
-                  },
-                  icon: const Icon(Icons.archive_outlined),
-                ),
+                    onPressed: () async {
+                      await archive();
+                      authNotifier.reInitialize();
+                      refreshDatasource();
+                    },
+                    icon: const Icon(Icons.archive_outlined),
+                    tooltip: 'Archive'),
                 IconButton(
-                  onPressed: () async {
-                    await delete();
-                    authNotifier.reInitialize();
-                    refreshDatasource();
-                  },
-                  icon: const Icon(Icons.delete_outline),
-                ),
+                    onPressed: () async {
+                      await delete();
+                      authNotifier.reInitialize();
+                      refreshDatasource();
+                    },
+                    icon: const Icon(Icons.delete_outline),
+                    tooltip: 'Delete'),
               ],
             );
           }),

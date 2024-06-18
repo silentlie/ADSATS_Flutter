@@ -7,7 +7,7 @@ class SubcategoriesApi extends DataTableSourceAsync {
   // can rearrange collumn
   @override
   List<String> get columnNames =>
-      ["Name", "Description", "Archived", "Actions", "Category"];
+      ["Name", "Description", "Archived", "Category", "Actions"];
 
   final CustomTableFilter _filters = CustomTableFilter();
   @override
