@@ -5,20 +5,13 @@
       "name": "/documents",
       "lambdaFunction": "EndpointDocuments",
       "permissions": {
-        "groups": {
-          "admin": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ],
-          "staff": [
-            "create",
-            "read",
-            "update"
-          ]
-        },
-        "setting": "private"
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
       }
     }
   }

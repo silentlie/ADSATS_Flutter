@@ -47,9 +47,9 @@ class ChooseCategory extends StatelessWidget {
         ).toList(),
         enableSearch: true,
         enabled: true,
-        hintText: "Choose a sub-category",
+        hintText: "Choose a subcategory",
         menuHeight: 200,
-        label: const Text("Choose a sub-category"),
+        label: const Text("Choose a subcategory"),
         leadingIcon: const Icon(Icons.search),
         onSelected: (value) {
           newDocument.results['subcategory'] = value!;

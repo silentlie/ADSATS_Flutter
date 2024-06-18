@@ -1,79 +1,69 @@
 {
   "version": 1,
   "paths": {
-    "/staff": {
-      "name": "/staff",
-      "lambdaFunction": "EndpointStaff",
-      "permissions": {
-        "groups": {
-          "admin": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ]
-        },
-        "setting": "private"
-      }
-    },
     "/aircraft": {
       "name": "/aircraft",
       "lambdaFunction": "EndpointAircraft",
       "permissions": {
-        "groups": {
-          "admin": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ]
-        },
-        "setting": "private"
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
       }
     },
     "/roles": {
       "name": "/roles",
       "lambdaFunction": "EndpointRoles",
       "permissions": {
-        "groups": {
-          "admin": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ]
-        },
-        "setting": "private"
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
       }
     },
     "/categories": {
       "name": "/categories",
       "lambdaFunction": "EndpointCategories",
       "permissions": {
-        "groups": {
-          "admin": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ]
-        },
-        "setting": "private"
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
       }
     },
     "/subcategories": {
       "name": "/subcategories",
       "lambdaFunction": "EndpointSubcategories",
       "permissions": {
-        "groups": {
-          "admin": [
-            "create",
-            "read",
-            "update",
-            "delete"
-          ]
-        },
-        "setting": "private"
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    },
+    "/staff": {
+      "name": "/staff",
+      "lambdaFunction": "EndpointStaff",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
       }
     }
   }

@@ -27,7 +27,7 @@ class SubcategoriesApi extends DataTableSourceAsync {
       };
       queryParameters.addAll(filter.toJSON());
       // debugPrint(queryParameters.toString());
-      final restOperation = Amplify.API.get('/sub-categories',
+      final restOperation = Amplify.API.get('/subcategories',
           apiName: 'AmplifyAdminAPI', queryParameters: queryParameters);
 
       final response = await restOperation.response;
@@ -281,7 +281,7 @@ class SubcategoriesApi extends DataTableSourceAsync {
         "category": category
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.post('/sub-categories',
+      final restOperation = Amplify.API.post('/subcategories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;

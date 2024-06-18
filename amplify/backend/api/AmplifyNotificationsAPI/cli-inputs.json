@@ -5,19 +5,12 @@
       "name": "/notifications",
       "lambdaFunction": "EndpointNotifications",
       "permissions": {
-        "groups": {
-          "admin": [
-            "create",
-            "read",
-            "update"
-          ],
-          "staff": [
-            "create",
-            "read",
-            "update"
-          ]
-        },
-        "setting": "private"
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update"
+        ]
       }
     }
   }

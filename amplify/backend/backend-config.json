@@ -30,28 +30,6 @@
             "Arn"
           ],
           "category": "function",
-          "resourceName": "EndpointStaff"
-        },
-        {
-          "attributes": [
-            "UserPoolId"
-          ],
-          "category": "auth",
-          "resourceName": "adsatsAuth"
-        },
-        {
-          "attributes": [
-            "adminGroupRole"
-          ],
-          "category": "auth",
-          "resourceName": "userPoolGroups"
-        },
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
           "resourceName": "EndpointAircraft"
         },
         {
@@ -77,6 +55,14 @@
           ],
           "category": "function",
           "resourceName": "EndpointSubcategories"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointStaff"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -91,27 +77,6 @@
           ],
           "category": "function",
           "resourceName": "EndpointDocuments"
-        },
-        {
-          "attributes": [
-            "UserPoolId"
-          ],
-          "category": "auth",
-          "resourceName": "adsatsAuth"
-        },
-        {
-          "attributes": [
-            "adminGroupRole"
-          ],
-          "category": "auth",
-          "resourceName": "userPoolGroups"
-        },
-        {
-          "attributes": [
-            "staffGroupRole"
-          ],
-          "category": "auth",
-          "resourceName": "userPoolGroups"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -119,43 +84,6 @@
     },
     "AmplifyNoticesAPI": {
       "dependsOn": [
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
-          "resourceName": "EndpointCrewNotices"
-        },
-        {
-          "attributes": [
-            "UserPoolId"
-          ],
-          "category": "auth",
-          "resourceName": "adsatsAuth"
-        },
-        {
-          "attributes": [
-            "adminGroupRole"
-          ],
-          "category": "auth",
-          "resourceName": "userPoolGroups"
-        },
-        {
-          "attributes": [
-            "staffGroupRole"
-          ],
-          "category": "auth",
-          "resourceName": "userPoolGroups"
-        },
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
-          "resourceName": "EndpointNotices"
-        },
         {
           "attributes": [
             "Name",
@@ -171,6 +99,22 @@
           ],
           "category": "function",
           "resourceName": "EndpointHazardReport"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointCrewNotices"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EndpointNotices"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -185,27 +129,6 @@
           ],
           "category": "function",
           "resourceName": "EndpointNotifications"
-        },
-        {
-          "attributes": [
-            "UserPoolId"
-          ],
-          "category": "auth",
-          "resourceName": "adsatsAuth"
-        },
-        {
-          "attributes": [
-            "adminGroupRole"
-          ],
-          "category": "auth",
-          "resourceName": "userPoolGroups"
-        },
-        {
-          "attributes": [
-            "staffGroupRole"
-          ],
-          "category": "auth",
-          "resourceName": "userPoolGroups"
         }
       ],
       "providerPlugin": "awscloudformation",

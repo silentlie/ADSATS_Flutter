@@ -228,7 +228,7 @@ class Subcategory {
         body["description"] = description;
       }
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.patch('/sub-categories',
+      final restOperation = Amplify.API.patch('/subcategories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
@@ -271,7 +271,7 @@ class Subcategory {
         "category": category
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.patch('/sub-categories',
+      final restOperation = Amplify.API.patch('/subcategories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
@@ -293,7 +293,7 @@ class Subcategory {
         'subcategory_id': id,
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.patch('/sub-categories',
+      final restOperation = Amplify.API.patch('/subcategories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
@@ -315,7 +315,7 @@ class Subcategory {
         'subcategory_id': id,
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.delete('/sub-categories',
+      final restOperation = Amplify.API.delete('/subcategories',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;

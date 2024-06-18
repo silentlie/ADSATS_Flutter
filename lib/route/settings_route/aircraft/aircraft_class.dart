@@ -174,7 +174,7 @@ class Aircraft {
         "name": name,
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.patch('/aircrafts',
+      final restOperation = Amplify.API.patch('/aircraft',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
@@ -196,7 +196,7 @@ class Aircraft {
         'aircraft_id': id,
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.patch('/aircrafts',
+      final restOperation = Amplify.API.patch('/aircraft',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
@@ -218,7 +218,7 @@ class Aircraft {
         'aircraft_id': id,
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.delete('/aircrafts',
+      final restOperation = Amplify.API.delete('/aircraft',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;

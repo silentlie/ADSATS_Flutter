@@ -119,7 +119,6 @@ class AuthNotifier with ChangeNotifier {
       await Future.wait([
         fetchCognitoAuthSession(),
         fetchStaff(),
-        fetchNotifications(limit),
       ]);
     }
     // not call the first time but the second time onward
@@ -131,7 +130,6 @@ class AuthNotifier with ChangeNotifier {
     await Future.wait([
       fetchCognitoAuthSession(),
       fetchStaff(),
-      fetchNotifications(limit),
     ]);
     return true;
   }
@@ -144,7 +142,10 @@ class AuthNotifier with ChangeNotifier {
       final test = await cognitoPlugin.fetchAuthSession();
       final result = await cognitoPlugin.fetchUserAttributes();
       // maybe be buggy, if nothing changes this should the index of the email
-      await fetchStaffDetails(result[0].value);
+      await Future.wait([
+        fetchStaffDetails(result[0].value),
+        fetchNotifications(limit),
+      ]);
     } on AuthException catch (e) {
       debugPrint('Error retrieving auth session: ${e.message}');
     }
@@ -167,7 +168,7 @@ class AuthNotifier with ChangeNotifier {
         return;
       }
       Map<String, dynamic> rawData = jsonDecode(jsonStr)[0];
-      // debugPrint(rawData.toString());
+      debugPrint(rawData.toString());
       staffID = rawData["staff_id"];
       fName = rawData["f_name"];
       lName = rawData["l_name"];
@@ -179,8 +180,8 @@ class AuthNotifier with ChangeNotifier {
       aircraft = strToList(aircraftStr);
       categories = strToList(categoriesStr);
       subcategories = strToList(subcategoriesStr);
-      isAdmin = roles.contains("administrator");
-      isEditor = roles.contains("editor");
+      isAdmin = roles.contains("Administrator");
+      isEditor = roles.contains("Editor");
       this.email = email;
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');

@@ -72,7 +72,7 @@ class DocumentAPI extends DataTableSourceAsync {
         // 'Author': 'email',
         'Archived': "archived",
         'Category': 'category',
-        'Sub-category': 'sub_category',
+        'Subcategory': 'sub_category',
         'Aircraft': 'aircraft',
         'Date': 'created_at',
       };

@@ -135,7 +135,7 @@ class Staff {
 
   static Map<String, String> filterEndpoints = {
     'roles': '/roles',
-    'aircraft': '/aircrafts',
+    'aircraft': '/aircraft',
     'categories': '/categories'
   };
 

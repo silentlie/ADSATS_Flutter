@@ -33,7 +33,7 @@ class AircraftAPI extends DataTableSourceAsync {
       };
       queryParameters.addAll(filter.toJSON());
       debugPrint(queryParameters.toString());
-      final restOperation = Amplify.API.get('/aircrafts',
+      final restOperation = Amplify.API.get('/aircraft',
           apiName: 'AmplifyAdminAPI', queryParameters: queryParameters);
 
       final response = await restOperation.response;
@@ -296,7 +296,7 @@ class AircraftAPI extends DataTableSourceAsync {
         body["staff"] = emails;
       }
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.post('/aircrafts',
+      final restOperation = Amplify.API.post('/aircraft',
           apiName: 'AmplifyAdminAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
