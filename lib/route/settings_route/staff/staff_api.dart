@@ -141,7 +141,7 @@ class AddStaff extends StatelessWidget {
       // Function to make API requests and return the parsed response
       Future<List<String>> fetchData(String endpoint) async {
         RestOperation restOperation =
-            Amplify.API.get(endpoint, apiName: 'AmplifyFilterAPI');
+            Amplify.API.get(endpoint, apiName: 'AmplifyAdminAPI');
         AWSHttpResponse response = await restOperation.response;
         String jsonStr = response.decodeBody();
         // Map<String, dynamic> rawData = jsonDecode(jsonStr);

@@ -26,8 +26,8 @@ class _SpecificNoticeWidgetState extends State<SpecificNoticeWidget> {
         "staff_id": staffID.toString(),
       };
       // debugPrint(queryParameters.toString());
-      final restOperation = Amplify.API.get('/sms',
-          apiName: 'AmplifyAviationAPI', queryParameters: queryParameters);
+      final restOperation = Amplify.API.get('/notices',
+          apiName: 'AmplifyNoticesAPI', queryParameters: queryParameters);
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();

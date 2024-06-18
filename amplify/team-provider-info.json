@@ -9,7 +9,8 @@
       "UnauthRoleName": "amplify-adsats-production-e18f1-unauthRole",
       "StackName": "amplify-adsats-production-e18f1",
       "StackId": "arn:aws:cloudformation:ap-southeast-2:891377389351:stack/amplify-adsats-production-e18f1/878e67f0-2d82-11ef-8ee0-0601802d9139",
-      "AmplifyAppId": "dwrj4qpzwmwgv"
+      "AmplifyAppId": "dwrj4qpzwmwgv",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-adsats-production-e18f1-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
@@ -75,7 +76,8 @@
         "AmplifyAdminAPI": {},
         "AmplifyDocumentsAPI": {},
         "AmplifyNotificationsAPI": {},
-        "AmplifyNoticesAPI": {}
+        "AmplifyNoticesAPI": {},
+        "AmplifyStaffAPI": {}
       },
       "storage": {
         "s3": {}

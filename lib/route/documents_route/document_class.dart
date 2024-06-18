@@ -202,7 +202,7 @@ class Document {
       body.addAll(newDocument.results);
       // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/documents',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+          apiName: 'AmplifyDocumentsAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -301,7 +301,7 @@ class Document {
       };
       // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/documents',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+          apiName: 'AmplifyDocumentsAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -324,7 +324,7 @@ class Document {
       };
       // debugPrint(body.toString());
       final restOperation = Amplify.API.delete('/documents',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+          apiName: 'AmplifyDocumentsAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();

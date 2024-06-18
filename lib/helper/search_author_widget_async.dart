@@ -26,7 +26,7 @@ class _SearchAuthorWidgetAsyncState extends State<SearchAuthorWidgetAsync> {
       };
       // debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/staff',
-          apiName: 'AmplifyFilterAPI', queryParameters: queryParameters);
+          apiName: 'AmplifyStaffAPI', queryParameters: queryParameters);
 
       final response = await restOperation.response;
 

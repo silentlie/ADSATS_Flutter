@@ -113,7 +113,7 @@ class Staff {
       };
       final restOperation = Amplify.API.get(
         '/staff',
-        apiName: 'AmplifyFilterAPI',
+        apiName: 'AmplifyAdminAPI',
         queryParameters: queryParameters,
       );
       final response = await restOperation.response;
@@ -144,7 +144,7 @@ class Staff {
       // Function to make API requests and return the parsed response
       Future<List<String>> fetchData(String endpoint) async {
         RestOperation restOperation =
-            Amplify.API.get(endpoint, apiName: 'AmplifyFilterAPI');
+            Amplify.API.get(endpoint, apiName: 'AmplifyAdminAPI');
         AWSHttpResponse response = await restOperation.response;
         String jsonStr = response.decodeBody();
         // Map<String, dynamic> rawData = jsonDecode(jsonStr);

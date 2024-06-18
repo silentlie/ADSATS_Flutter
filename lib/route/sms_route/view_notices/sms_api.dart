@@ -42,7 +42,7 @@ class NoticeAPI extends DataTableSourceAsync {
       queryParameters.addAll(filter.toJSON());
       // debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/notices',
-          apiName: 'AmplifyAviationAPI', queryParameters: queryParameters);
+          apiName: 'AmplifyNoticesAPI', queryParameters: queryParameters);
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();

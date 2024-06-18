@@ -43,7 +43,7 @@ class DocumentAPI extends DataTableSourceAsync {
       queryParameters.addAll(filter.toJSON());
       // debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/documents',
-          apiName: 'AmplifyAviationAPI', queryParameters: queryParameters);
+          apiName: 'AmplifyDocumentsAPI', queryParameters: queryParameters);
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();

@@ -113,8 +113,8 @@ class Notice {
         'notice_id': id,
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.patch('/sms',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+      final restOperation = Amplify.API.patch('/notices',
+          apiName: 'AmplifyNoticesAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -135,8 +135,8 @@ class Notice {
         'notice_id': id,
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.delete('/sms',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+      final restOperation = Amplify.API.delete('/notices',
+          apiName: 'AmplifyNoticesAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();

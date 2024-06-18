@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "paths": {
+    "/staff": {
+      "name": "/staff",
+      "lambdaFunction": "EndpointStaff",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "read"
+        ]
+      }
+    }
+  }
+}

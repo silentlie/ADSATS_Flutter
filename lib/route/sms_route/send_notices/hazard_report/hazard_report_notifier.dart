@@ -216,8 +216,8 @@ class HazardReportNotifier extends ChangeNotifier {
         ...hazardReportDetails
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.get('/sms/hazard-report',
-          apiName: 'AmplifyAviationAPI', queryParameters: queryParameters);
+      final restOperation = Amplify.API.get('/hazard-report',
+          apiName: 'AmplifyNoticesAPI', queryParameters: queryParameters);
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -237,8 +237,8 @@ class HazardReportNotifier extends ChangeNotifier {
     try {
       Map<String, dynamic> body = {'archived': false, ...noticeBasicDetails};
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.post('/sms',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+      final restOperation = Amplify.API.post('/notices',
+          apiName: 'AmplifyNoticesAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -259,8 +259,8 @@ class HazardReportNotifier extends ChangeNotifier {
     try {
       Map<String, dynamic> body = {'noticeID': noticeID, ...noticeBasicDetails,};
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.patch('/sms',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+      final restOperation = Amplify.API.patch('/notices',
+          apiName: 'AmplifyNoticesAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -283,8 +283,8 @@ class HazardReportNotifier extends ChangeNotifier {
         ...hazardReportDetails
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.post('/sms/hazard-report',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+      final restOperation = Amplify.API.post('/hazard-report',
+          apiName: 'AmplifyNoticesAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -307,8 +307,8 @@ class HazardReportNotifier extends ChangeNotifier {
         ...hazardReportDetails
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.patch('/sms/hazard-report',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+      final restOperation = Amplify.API.patch('/hazard-report',
+          apiName: 'AmplifyNoticesAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -332,7 +332,7 @@ class HazardReportNotifier extends ChangeNotifier {
       };
       // debugPrint(body.toString());
       final restOperation = Amplify.API.post('/notifications',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+          apiName: 'AmplifyNotificationsAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -355,7 +355,7 @@ class HazardReportNotifier extends ChangeNotifier {
       };
       // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/notifications',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+          apiName: 'AmplifyNotificationsAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();

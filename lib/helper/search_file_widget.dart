@@ -41,7 +41,7 @@ class _SearchFileWidgetState extends State<SearchFileWidget> {
         ...limit ?? {}
       };
       final restOperation = Amplify.API.get('/documents',
-          apiName: 'AmplifyAviationAPI', queryParameters: queryParameters);
+          apiName: 'AmplifyDocumentsAPI', queryParameters: queryParameters);
 
       final response = await restOperation.response;
 

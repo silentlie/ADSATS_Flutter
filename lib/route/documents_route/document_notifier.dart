@@ -13,7 +13,7 @@ class DocumentNotifier extends ChangeNotifier {
       body.addAll(results);
       debugPrint(body.toString());
       final restOperation = Amplify.API.post('/documents',
-          apiName: 'AmplifyAviationAPI', body: HttpPayload.json(body));
+          apiName: 'AmplifyDocumentsAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();

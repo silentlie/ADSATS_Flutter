@@ -157,7 +157,7 @@ class AuthNotifier with ChangeNotifier {
       };
       final restOperation = Amplify.API.get(
         '/staff',
-        apiName: 'AmplifyFilterAPI',
+        apiName: 'AmplifyStaffAPI',
         queryParameters: queryParameters,
       );
       final response = await restOperation.response;
@@ -179,8 +179,8 @@ class AuthNotifier with ChangeNotifier {
       aircraft = strToList(aircraftStr);
       categories = strToList(categoriesStr);
       subcategories = strToList(subcategoriesStr);
-      isAdmin = roles.contains("Administrator");
-      isEditor = roles.contains("Editor");
+      isAdmin = roles.contains("administrator");
+      isEditor = roles.contains("editor");
       this.email = email;
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
@@ -202,7 +202,7 @@ class AuthNotifier with ChangeNotifier {
   Future<void> fetchStaff() async {
     try {
       RestOperation restOperation =
-          Amplify.API.get('/staff', apiName: 'AmplifyFilterAPI');
+          Amplify.API.get('/staff', apiName: 'AmplifyStaffAPI');
       AWSHttpResponse response = await restOperation.response;
       String jsonStr = response.decodeBody();
       // debugPrint("finished fetch staff");
@@ -225,7 +225,7 @@ class AuthNotifier with ChangeNotifier {
       };
       // debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/notifications',
-          apiName: 'AmplifyAviationAPI', queryParameters: queryParameters);
+          apiName: 'AmplifyNotificationsAPI', queryParameters: queryParameters);
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
