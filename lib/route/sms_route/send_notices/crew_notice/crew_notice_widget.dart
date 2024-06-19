@@ -4,6 +4,7 @@ import 'package:adsats_flutter/amplify/auth.dart';
 import 'package:adsats_flutter/helper/recipients.dart';
 import 'package:adsats_flutter/helper/search_file_widget.dart';
 import 'package:adsats_flutter/route/sms_route/send_notices/notice_basic_details.dart';
+import 'package:adsats_flutter/route/sms_route/send_notices/to_json.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -163,7 +164,9 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
                         onPressed: () async {
                           if (formKey.currentState!.validate()) {
                             formKey.currentState!.save();
-
+                            noticeBasicDetails = toJSON(noticeBasicDetails);
+                            crewNoticeDetails = toJSON(crewNoticeDetails);
+                            recipients = toJSON(recipients);
                             debugPrint(noticeBasicDetails.toString());
                             debugPrint(crewNoticeDetails.toString());
                             debugPrint(recipients.toString());
@@ -207,8 +210,12 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
 
   Future<int> sendNoticeBasic(Map<String, dynamic> noticeBasicDetails) async {
     try {
-      Map<String, dynamic> body = {'archived': false, ...noticeBasicDetails};
-      // debugPrint(body.toString());
+      Map<String, dynamic> body = {
+        'archived': false,
+        "category": "Crew notice",
+        ...noticeBasicDetails,
+      };
+      debugPrint(body.toString());
       final restOperation = Amplify.API.post('/notices',
           apiName: 'AmplifyNoticesAPI', body: HttpPayload.json(body));
 
@@ -262,7 +269,7 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
         ...crewNoticeDetails,
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.post('/rew-notice',
+      final restOperation = Amplify.API.post('/crew-notices',
           apiName: 'AmplifyNoticesAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
@@ -288,7 +295,7 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
         ...crewNoticeDetails,
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.patch('/crew-notice',
+      final restOperation = Amplify.API.patch('/crew-notices',
           apiName: 'AmplifyNoticesAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;

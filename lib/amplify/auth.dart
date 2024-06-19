@@ -122,7 +122,10 @@ class AuthNotifier with ChangeNotifier {
       ]);
     }
     // not call the first time but the second time onward
-    if (email.isNotEmpty) fetchStaff();
+    if (email.isNotEmpty) {
+      fetchStaff();
+      // fetchNotifications(limit);
+    }
     return true;
   }
 
@@ -142,10 +145,8 @@ class AuthNotifier with ChangeNotifier {
       final test = await cognitoPlugin.fetchAuthSession();
       final result = await cognitoPlugin.fetchUserAttributes();
       // maybe be buggy, if nothing changes this should the index of the email
-      await Future.wait([
-        fetchStaffDetails(result[0].value),
-        fetchNotifications(limit),
-      ]);
+      await fetchStaffDetails(result[0].value);
+      await fetchNotifications(limit);
     } on AuthException catch (e) {
       debugPrint('Error retrieving auth session: ${e.message}');
     }
@@ -180,8 +181,8 @@ class AuthNotifier with ChangeNotifier {
       aircraft = strToList(aircraftStr);
       categories = strToList(categoriesStr);
       subcategories = strToList(subcategoriesStr);
-      isAdmin = roles.contains("Administrator");
-      isEditor = roles.contains("Editor");
+      isAdmin = roles.contains("administrator");
+      isEditor = roles.contains("editor");
       this.email = email;
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
@@ -219,6 +220,7 @@ class AuthNotifier with ChangeNotifier {
 
   Future<void> fetchNotifications(int limit) async {
     try {
+      debugPrint("start fetch notifications");
       Map<String, String> queryParameters = {
         'staff_id': staffID.toString(),
         "offset": "0",
@@ -257,17 +259,6 @@ class AuthNotifier with ChangeNotifier {
             ),
           ),
         ...notifications.map((notif) => notif.toListTile()),
-        Row(
-          children: [
-            TextButton.icon(
-              onPressed: () {
-                fetchNotifications(limit);
-              },
-              label: const Text("Refresh"),
-              icon: const Icon(Icons.refresh),
-            ),
-          ],
-        ),
       ];
       notifyListeners();
       debugPrint("you have $numOfOverdue overdue");

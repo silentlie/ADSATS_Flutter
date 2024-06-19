@@ -5,14 +5,30 @@ import 'package:provider/provider.dart';
 
 part 'notification_class.dart';
 
-class NotificationWidget extends StatelessWidget {
+class NotificationWidget extends StatefulWidget {
   const NotificationWidget({super.key});
 
   @override
+  State<NotificationWidget> createState() => _NotificationWidgetState();
+}
+
+class _NotificationWidgetState extends State<NotificationWidget> {
+  @override
   Widget build(BuildContext context) {
     AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
+    List<Widget> children = authNotifier.notificationWidgets;
+    children.add(
+      TextButton.icon(
+        onPressed: () {
+          authNotifier.fetchNotifications(authNotifier.limit);
+          setState(() {});
+        },
+        label: const Text("Refresh"),
+        icon: const Icon(Icons.refresh),
+      ),
+    );
     return MenuAnchor(
-      menuChildren: authNotifier.notificationWidgets,
+      menuChildren: children,
       builder: (context, controller, child) {
         return Stack(
           children: [

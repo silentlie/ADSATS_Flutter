@@ -36,14 +36,14 @@ class RecepientsWidget extends StatelessWidget {
                   "Email",
                 ),
                 onConfirm: (selectedOptions) {
-                  recipients['emails'] = List<String>.from(selectedOptions);
+                  recipients['staff'] = List<String>.from(selectedOptions);
                 },
                 items: authNotifier.staff.map(
                   (staff) {
                     return MultiSelectItem(staff, staff);
                   },
                 ).toList(),
-                initialValue: recipients['emails'] ?? [],
+                initialValue: recipients['staff'] ?? [],
               ),
             ),
             Expanded(
