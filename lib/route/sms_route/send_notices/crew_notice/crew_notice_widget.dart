@@ -38,7 +38,7 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
       if (widget.noticeBasicDetails != null) {
         noticeBasicDetails = widget.noticeBasicDetails!;
         recipients = {};
-        isRead = noticeBasicDetails['status'];
+        isRead = intToBool(noticeBasicDetails['status'])!;
       } else {
         noticeBasicDetails = {
           'file_names': <String>[],
@@ -52,12 +52,25 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
         'notice_id': noticeBasicDetails['notice_id'].toString(),
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.get('/crew-notice',
+      final restOperation = Amplify.API.get('/crew-notices',
           apiName: 'AmplifyNoticesAPI', queryParameters: queryParameters);
 
       final response = await restOperation.response;
       final jsonStr = response.decodeBody();
+      debugPrint(jsonStr);
       final data = Map<String, dynamic>.from(jsonDecode(jsonStr));
+      Map<String, dynamic> result = {};
+      data.forEach(
+        (key, value) {
+          if (key == 'archived') {
+            result[key] = intToBool(value);
+          } else if (key == 'resolved') {
+            result[key] = intToBool(value);
+          } else {
+            result[key] = value;
+          }
+        },
+      );
       crewNoticeDetails = data;
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
@@ -66,6 +79,13 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
       debugPrint('Error: $e');
       rethrow;
     }
+  }
+
+  static bool? intToBool(int? value) {
+    if (value == null) {
+      return null;
+    }
+    return value != 0;
   }
 
   @override
