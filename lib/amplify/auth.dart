@@ -180,7 +180,7 @@ class AuthNotifier with ChangeNotifier {
       aircraft = strToList(aircraftStr);
       categories = strToList(categoriesStr);
       subcategories = strToList(subcategoriesStr);
-      isAdmin = roles.contains("Administrator");
+      isAdmin = roles.contains("administrator");
       isEditor = roles.contains("Editor");
       this.email = email;
     } on ApiException catch (e) {

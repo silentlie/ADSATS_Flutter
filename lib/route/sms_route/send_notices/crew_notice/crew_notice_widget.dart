@@ -90,7 +90,7 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
               Container(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: const Text(
-                  'Crew Notice',
+                  'Notice to Crew',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,

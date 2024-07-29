@@ -19,7 +19,7 @@ class _SendNoticesState extends State<SendNotices> {
     const NavigationRailDestination(
       icon: Icon(Icons.notifications_outlined),
       selectedIcon: Icon(Icons.notifications),
-      label: Text("Crew Notice"),
+      label: Text("Notice to crew"),
     ),
     const NavigationRailDestination(
       icon: Icon(Icons.gpp_maybe_outlined),
@@ -31,32 +31,22 @@ class _SendNoticesState extends State<SendNotices> {
       selectedIcon: Icon(Icons.report),
       label: Text("Hazard report"),
     ),
-    const NavigationRailDestination(
-      icon: Icon(Icons.document_scanner_outlined),
-      selectedIcon: Icon(Icons.document_scanner),
-      label: Text("BCAA report"),
-    ),
   ];
   final List<NavigationDestination> _navigationDestinations = [
     const NavigationDestination(
       icon: Icon(Icons.notifications_outlined),
       selectedIcon: Icon(Icons.notifications),
-      label: "Crews Notice",
+      label: "Notice to crew",
     ),
     const NavigationDestination(
       icon: Icon(Icons.gpp_maybe_outlined),
       selectedIcon: Icon(Icons.gpp_maybe),
-      label: "Safety Notice",
+      label: "Safety notice",
     ),
     const NavigationDestination(
       icon: Icon(Icons.report_outlined),
       selectedIcon: Icon(Icons.report),
-      label: "Hazard Report",
-    ),
-    const NavigationDestination(
-      icon: Icon(Icons.document_scanner_outlined),
-      selectedIcon: Icon(Icons.document_scanner),
-      label: "BCAA report",
+      label: "Hazard report",
     ),
   ];
 

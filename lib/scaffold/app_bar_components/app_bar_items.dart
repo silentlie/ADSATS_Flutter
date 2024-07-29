@@ -20,7 +20,6 @@ class AppBarItems {
     itemSMS,
     itemCompliance,
     itemTraining,
-    itemPurchases,
   ];
 
   static const List<MenuItem> tabletMenuItems = [
@@ -31,7 +30,6 @@ class AppBarItems {
   static const List<MenuItem> tabletPopupItems = [
     itemCompliance,
     itemTraining,
-    itemPurchases,
   ];
 
   static const itemDocuments = MenuItem(
