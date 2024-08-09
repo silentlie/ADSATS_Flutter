@@ -37,6 +37,9 @@ class _CrewNoticeWidgetState extends State<CrewNoticeWidget> {
       editPermission = false;
       if (widget.noticeBasicDetails != null) {
         noticeBasicDetails = widget.noticeBasicDetails!;
+        if (noticeBasicDetails['file_names'] == null) {
+          noticeBasicDetails['file_names'] = <String>[];
+        }
         recipients = {};
         isRead = intToBool(noticeBasicDetails['status'])!;
       } else {

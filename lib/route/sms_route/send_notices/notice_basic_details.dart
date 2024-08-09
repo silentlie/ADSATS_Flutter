@@ -67,7 +67,7 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
                 labelText: 'Report Number',
                 results: noticeBasicDetails,
                 enabled: false,
-                initialValue: noticeBasicDetails['notice_id'] ?? '',
+                initialValue: noticeBasicDetails['notice_id']?.toString() ?? '',
               ),
             ),
             Expanded(
@@ -177,7 +177,7 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
                     return MultiSelectItem(aircraft, aircraft);
                   },
                 ).toList(),
-                initialValue: noticeBasicDetails['aircraft'] ?? [],
+                initialValue: noticeBasicDetails['aircraft']?.split(',') ?? [],
               ),
             )
           ],
