@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "paths": {
+    "/staff": {
+      "name": "/staff",
+      "lambdaFunction": "AdminQueries0a0227c1",
+      "permissions": {
+        "groups": {
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/aircraft": {
+      "name": "/aircraft",
+      "lambdaFunction": "AdminQueries0a0227c1",
+      "permissions": {
+        "groups": {
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/categories": {
+      "name": "/categories",
+      "lambdaFunction": "AdminQueries0a0227c1",
+      "permissions": {
+        "groups": {
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/subcategories": {
+      "name": "/subcategories",
+      "lambdaFunction": "AdminQueries0a0227c1",
+      "permissions": {
+        "groups": {
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    },
+    "/roles": {
+      "name": "/roles",
+      "lambdaFunction": "AdminQueries0a0227c1",
+      "permissions": {
+        "groups": {
+          "admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
+    }
+  }
+}
