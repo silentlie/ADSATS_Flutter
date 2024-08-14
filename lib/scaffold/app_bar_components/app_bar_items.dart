@@ -44,8 +44,4 @@ class AppBarItems {
       text: 'Training',
       icon: FontAwesomeIcons.graduationCap,
       route: '/training');
-  static const itemPurchases = MenuItem(
-      text: 'Purchases',
-      icon: FontAwesomeIcons.fileInvoiceDollar,
-      route: '/purchases');
 }

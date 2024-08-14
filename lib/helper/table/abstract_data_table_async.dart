@@ -89,6 +89,7 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
         controller: _controller,
         hidePaginator: false,
         wrapInCard: true,
+        
       ),
     );
   }

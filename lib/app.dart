@@ -76,10 +76,6 @@ final _router = GoRouter(
           builder: (context, state) => const TrainingWidget(),
         ),
         GoRoute(
-          path: '/purchases',
-          builder: (context, state) => const PurchaseWidget(),
-        ),
-        GoRoute(
           path: '/send-notices',
           builder: (context, state) => const SendNotices(),
         ),

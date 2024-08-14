@@ -334,7 +334,7 @@ class HazardReportNotifier extends ChangeNotifier {
         ...hazardReportDetails
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.post('/hazard-report',
+      final restOperation = Amplify.API.post('/hazard-reports',
           apiName: 'AmplifyNoticesAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
@@ -360,7 +360,7 @@ class HazardReportNotifier extends ChangeNotifier {
         ...hazardReportDetails
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.patch('/hazard-report',
+      final restOperation = Amplify.API.patch('/hazard-reports',
           apiName: 'AmplifyNoticesAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;

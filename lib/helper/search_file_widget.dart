@@ -201,8 +201,9 @@ _Debounceable<S?, T, U?> _debounce<S, T, U>(_Debounceable<S?, T, U?> function) {
     if (debounceTimer != null && !debounceTimer!.isCompleted) {
       debounceTimer!.cancel();
     }
-    debounceTimer = _DebounceTimer();
+
     try {
+      debounceTimer = _DebounceTimer();
       await debounceTimer!.future;
     } catch (error) {
       if (error is _CancelException) {
