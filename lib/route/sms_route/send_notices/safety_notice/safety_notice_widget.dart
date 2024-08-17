@@ -143,8 +143,8 @@ class _SafetyNoticeWidgetState extends State<SafetyNoticeWidget> {
                     if (viewMode && !isRead)
                       ElevatedButton.icon(
                         onPressed: () {
-                          setRead(authNotifier.staffID,
-                              noticeBasicDetails['notice_id']);
+                          setRead(
+                              authNotifier.id, noticeBasicDetails['notice_id']);
                           setState(() {
                             isRead = false;
                           });

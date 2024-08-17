@@ -10,9 +10,7 @@ class DocumentAPI extends DataTableSourceAsync {
   @override
   List<String> get columnNames => [
         "File name",
-        // "Author",
-        "Sub category",
-        "Category",
+        "Subcategory",
         "Aircraft",
         "Roles",
         "Archived",
@@ -41,16 +39,16 @@ class DocumentAPI extends DataTableSourceAsync {
         'limit': count.toString()
       };
       queryParameters.addAll(filter.toJSON());
-      // debugPrint(queryParameters.toString());
+      debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/documents',
-          apiName: 'AmplifyDocumentsAPI', queryParameters: queryParameters);
+          apiName: 'adsatsStaffAPI', queryParameters: queryParameters);
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
       Map<String, dynamic> rawData = jsonDecode(jsonStr);
-      _totalRecords = rawData["total_records"];
-      final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
 
+      _totalRecords = rawData["total_records"];
+      final rowsData = List<Map<String, dynamic>>.from(rawData["documents"]);
       _documents = [for (var row in rowsData) Document.fromJSON(row)];
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
@@ -69,9 +67,7 @@ class DocumentAPI extends DataTableSourceAsync {
 
   Map<String, String> get sqlColumns => {
         'File Name': 'file_name',
-        // 'Author': 'email',
         'Archived': "archived",
-        'Category': 'category',
         'Subcategory': 'sub_category',
         'Aircraft': 'aircraft',
         'Date': 'created_at',
@@ -99,8 +95,8 @@ class DocumentAPI extends DataTableSourceAsync {
             // 'limit_aircraft': staff.aircraft,
             // 'limit_subcategories': staff.subcategories,
             // 'limit_roles': staff.roles,
-            'limit_categories': authNotifier.categories,
-            'limit_author': authNotifier.email,
+            // 'limit_categories': authNotifier.categories,
+            // 'limit_author': authNotifier.email,
           });
           return Row(
             children: [
@@ -110,7 +106,7 @@ class DocumentAPI extends DataTableSourceAsync {
                 },
                 icon: const Icon(Icons.refresh),
               ),
-              if (authNotifier.staffID > -1)
+              if (authNotifier.id > -1)
                 ElevatedButton.icon(
                   onPressed: () {
                     context.go('/add-a-document');

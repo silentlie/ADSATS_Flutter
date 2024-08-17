@@ -30,6 +30,50 @@ class RecepientsWidget extends StatelessWidget {
             Expanded(
               child: MultiSelect(
                 buttonText: const Text(
+                  "Aircraft",
+                ),
+                title: const Text(
+                  "Aircraft",
+                ),
+                onConfirm: (selectedOptions) {
+                  recipients['aircraft'] = List<String>.from(selectedOptions);
+                },
+                items: authNotifier.aircraftCache.entries.map(
+                  (entry) {
+                    return MultiSelectItem(
+                      entry.key,
+                      entry.value,
+                    );
+                  },
+                ).toList(),
+                initialValue: recipients['aircraft'] ?? [],
+              ),
+            ),
+            Expanded(
+              child: MultiSelect(
+                buttonText: const Text(
+                  "Role",
+                ),
+                title: const Text(
+                  "Role",
+                ),
+                onConfirm: (selectedOptions) {
+                  recipients['roles'] = List<String>.from(selectedOptions);
+                },
+                items: authNotifier.rolesCache.entries.map(
+                  (entry) {
+                    return MultiSelectItem(
+                      entry.key,
+                      entry.value,
+                    );
+                  },
+                ).toList(),
+                initialValue: recipients['roles'] ?? [],
+              ),
+            ),
+            Expanded(
+              child: MultiSelect(
+                buttonText: const Text(
                   "Email",
                 ),
                 title: const Text(
@@ -38,42 +82,15 @@ class RecepientsWidget extends StatelessWidget {
                 onConfirm: (selectedOptions) {
                   recipients['staff'] = List<String>.from(selectedOptions);
                 },
-                items: authNotifier.staff.map(
-                  (staff) {
-                    return MultiSelectItem(staff, staff);
-                  },
-                ).toList(),
                 initialValue: recipients['staff'] ?? [],
-              ),
-            ),
-            Expanded(
-              child: MultiSelect(
-                buttonText: const Text("Role"),
-                title: const Text("Role"),
-                onConfirm: (selectedOptions) {
-                  recipients['roles'] = List<String>.from(selectedOptions);
-                },
-                items: authNotifier.roles.map(
-                  (role) {
-                    return MultiSelectItem(role, role);
+                items: authNotifier.staffCache.entries.map(
+                  (entry) {
+                    return MultiSelectItem(
+                      entry.key,
+                      entry.value,
+                    );
                   },
                 ).toList(),
-                initialValue: recipients['roles'] ?? [],
-              ),
-            ),
-            Expanded(
-              child: MultiSelect(
-                buttonText: const Text("Aircraft"),
-                title: const Text("Aircraft"),
-                onConfirm: (selectedOptions) {
-                  recipients['aircraft'] = List<String>.from(selectedOptions);
-                },
-                items: authNotifier.aircraft.map(
-                  (aircraft) {
-                    return MultiSelectItem(aircraft, aircraft);
-                  },
-                ).toList(),
-                initialValue: recipients['aircraft'] ?? [],
               ),
             )
           ],

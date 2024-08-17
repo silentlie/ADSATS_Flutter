@@ -60,8 +60,8 @@ class HazardReportNotifier extends ChangeNotifier {
                     if (viewMode && !isRead)
                       ElevatedButton.icon(
                         onPressed: () {
-                          setRead(authNotifier.staffID,
-                              noticeBasicDetails['notice_id']);
+                          setRead(
+                              authNotifier.id, noticeBasicDetails['notice_id']);
                           // NEED TO SET ISREAD TO TRUE
                           context.go('/sms');
                         },

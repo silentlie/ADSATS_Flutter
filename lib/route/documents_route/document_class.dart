@@ -20,26 +20,24 @@ part 'components.dart';
 part 'document_notifier.dart';
 
 class Document {
-  Document.fromJSON(Map<String, dynamic> json)
-      : id = json["document_id"] as int,
-        fileName = json["file_name"] as String,
-        archived = intToBool(json["archived"] as int)!,
-        author = json["author"] as String,
-        roles = json["roles"] as String,
-        subcategory = json["subcategory"] as String,
-        category = json["category"] as String,
-        aircraft = json["aircraft"] as String?,
-        createdAt = DateTime.parse(json["created_at"]);
-  int id;
-  String fileName;
-  bool archived;
-  String author;
+  Document.fromJSON(Map<String, dynamic> json) {
+    id = json["document_id"] as int;
+    fileName = json["document_name"] as String;
+    archived = intToBool(json["archived"] as int)!;
+    staffId = json["staff_id"] as int?;
+    subcategory = json["subcategory_id"] as int?;
+    roles = json["roles"] as String?;
+    aircraft = json["aircraft"] as String?;
+    createdAt = DateTime.parse(json["created_at"]);
+  }
+  late int id;
+  late String fileName;
+  late bool archived;
+  late int? staffId;
+  late int? subcategory;
   String? roles;
-  String subcategory;
-  String category;
   String? aircraft;
-
-  DateTime createdAt;
+  late DateTime createdAt;
 
   static bool? intToBool(int? value) {
     if (value == null) {
@@ -48,29 +46,12 @@ class Document {
     return value != 0;
   }
 
-  Map<String, String> toJSON() {
-    Map<String, String> temp = {};
-    temp["id"] = id.toString();
-    temp["file_name"] = fileName;
-    temp["email"] = author;
-    temp["subcategory"] = subcategory;
-    if (roles != null) {
-      temp["roles"] = roles.toString();
-    }
-    if (aircraft != null) {
-      temp["aircraft"] = aircraft.toString();
-    }
-    return temp;
-  }
-
   // can rearrange collumn
   DataRow toDataRow(void Function() refreshDatasource) {
     return DataRow(
       cells: <DataCell>[
         cellFor(fileName),
-        // cellFor(author),
         cellFor(subcategory),
-        cellFor(category),
         cellFor(aircraft),
         cellFor(roles),
         cellFor(archived),

@@ -1,7 +1,6 @@
 library data_table;
 
 import 'package:adsats_flutter/amplify/auth.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
@@ -89,7 +88,7 @@ class _PaginatedDataTableAsyncState extends State<PaginatedDataTableAsync> {
         controller: _controller,
         hidePaginator: false,
         wrapInCard: true,
-        
+
       ),
     );
   }

@@ -1,9 +1,9 @@
-import 'package:adsats_flutter/amplify/auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 import 'package:adsats_flutter/scaffold/appbar_widget.dart';
 import 'package:adsats_flutter/scaffold/drawer_widget.dart';
-import 'package:provider/provider.dart';
+
+import 'package:adsats_flutter/amplify/auth.dart';
 
 class MyScaffold extends StatelessWidget {
   const MyScaffold({super.key, required this.child});
@@ -21,7 +21,8 @@ class MyScaffold extends StatelessWidget {
           return Text('Error: ${snapshot.error}');
         } else if (snapshot.hasData) {
           AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
-          if (authNotifier.numOfOverdue < 0) {
+          // TODO: testing
+          if (authNotifier.overdueCount < 0) {
             return AlertDialog(
               content: SingleChildScrollView(
                 child: Column(

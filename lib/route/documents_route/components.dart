@@ -6,7 +6,8 @@ class ChooseAircraft extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DocumentNotifier newDocument = Provider.of<DocumentNotifier>(context);
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
+    AuthNotifier authNotifier =
+        Provider.of<AuthNotifier>(context, listen: false);
     return MultiSelect(
       buttonText: const Text("Add aircraft"),
       title: const Text("Add aircraft"),
@@ -17,9 +18,12 @@ class ChooseAircraft extends StatelessWidget {
         newDocument.results['aircraft'] =
             List<String>.from(selectedItem).join(',');
       },
-      items: authNotifier.aircraft.map(
-        (aircraft) {
-          return MultiSelectItem(aircraft, aircraft);
+      items: authNotifier.aircraftCache.entries.map(
+        (entry) {
+          return MultiSelectItem(
+            entry.key,
+            entry.value,
+          );
         },
       ).toList(),
       initialValue: const [],
@@ -33,16 +37,21 @@ class ChooseCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DocumentNotifier newDocument = Provider.of<DocumentNotifier>(context);
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
-    newDocument.results['subcategory'] = authNotifier.subcategories[0];
+    AuthNotifier authNotifier =
+        Provider.of<AuthNotifier>(context, listen: false);
+    newDocument.results['subcategory'] =
+        authNotifier.subcategoriesCache.keys.firstOrNull;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: DropdownMenu(
         inputDecorationTheme:
             const InputDecorationTheme(border: OutlineInputBorder()),
-        dropdownMenuEntries: authNotifier.subcategories.map(
-          (role) {
-            return DropdownMenuEntry(value: role, label: role);
+        dropdownMenuEntries: authNotifier.aircraftCache.entries.map(
+          (entry) {
+            return DropdownMenuEntry(
+              value: entry.key,
+              label: entry.value,
+            );
           },
         ).toList(),
         enableSearch: true,
@@ -54,7 +63,7 @@ class ChooseCategory extends StatelessWidget {
         onSelected: (value) {
           newDocument.results['subcategory'] = value!;
         },
-        initialSelection: authNotifier.subcategories.firstOrNull,
+        initialSelection: authNotifier.subcategoriesCache.keys.firstOrNull,
         expandedInsets: EdgeInsets.zero,
       ),
     );

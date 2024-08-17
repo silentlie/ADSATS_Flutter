@@ -1,11 +1,11 @@
-import 'package:adsats_flutter/notifications/notification_widget.dart';
-import 'package:adsats_flutter/scaffold/app_bar_components/app_bar_items.dart';
-import 'package:adsats_flutter/scaffold/app_bar_components/menu_item_row.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:adsats_flutter/theme/theme_notifier.dart';
 import 'package:adsats_flutter/scaffold/default_widget.dart';
+import 'package:adsats_flutter/notifications/notification_widget.dart';
+import 'package:adsats_flutter/scaffold/app_bar_components/app_bar_items.dart';
+import 'package:adsats_flutter/scaffold/app_bar_components/menu_item_row.dart';
 
 // https://api.flutter.dev/flutter/material/SliverAppBar-class.html
 // adjust again for fine-grained detail

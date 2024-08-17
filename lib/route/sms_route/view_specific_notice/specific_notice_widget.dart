@@ -49,7 +49,7 @@ class _SpecificNoticeWidgetState extends State<SpecificNoticeWidget> {
     AuthNotifier authNotifier =
         Provider.of<AuthNotifier>(context, listen: false);
     return FutureBuilder(
-      future: fetchNotice(context, widget.documentID, authNotifier.staffID),
+      future: fetchNotice(context, widget.documentID, authNotifier.id),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // loading widget can be customise

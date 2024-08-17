@@ -1,19 +1,33 @@
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_authenticator/amplify_authenticator.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'default_widget.dart';
 
+import 'default_widget.dart';
 import 'package:adsats_flutter/amplify/auth.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
 
+  Future<void> signOutCurrentUser() async {
+    final result = await Amplify.Auth.signOut();
+    if (result is CognitoCompleteSignOut) {
+      // debugPrint('Sign out completed successfully');
+    } else if (result is CognitoFailedSignOut) {
+      debugPrint('Error signing user out: ${result.exception.message}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Access color scheme
     ColorScheme colorScheme = Theme.of(context).colorScheme;
-    AuthNotifier authNotifier =
-        Provider.of<AuthNotifier>(context, listen: false);
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(
+      context,
+      listen: false,
+    );
     return Drawer(
       child: ListView(
         // Important: Remove any padding from the ListView.
@@ -61,12 +75,15 @@ class MyDrawer extends StatelessWidget {
               // confirm before logout?
               signOutCurrentUser();
             },
+            // Change button background color
             style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all<Color>(
-                  colorScheme.secondary), // Change button background color
+              backgroundColor:
+                  WidgetStateProperty.all<Color>(colorScheme.secondary),
             ),
-            child: Text('Log out',
-                style: TextStyle(color: colorScheme.onSecondary)),
+            child: Text(
+              'Log out',
+              style: TextStyle(color: colorScheme.onSecondary),
+            ),
           ),
         ],
       ),
@@ -90,7 +107,7 @@ class MyDrawerHeader extends StatelessWidget {
     }
     return SizedBox(
       // height of header
-      height: 270,
+      height: 500,
       child: DrawerHeader(
         decoration: const BoxDecoration(
           color: Colors.transparent,
@@ -102,9 +119,8 @@ class MyDrawerHeader extends StatelessWidget {
             // Add some space between the header text and additional text
             const SizedBox(height: 10),
             Center(
-              // Center the name text
               child: Text(
-                "${staff.fName} ${staff.lName}",
+                staff.name,
                 style: const TextStyle(
                   fontSize: 16,
                 ),
@@ -112,7 +128,6 @@ class MyDrawerHeader extends StatelessWidget {
               ),
             ),
             Center(
-              // Center the email text
               child: Text(
                 staff.email,
                 style: const TextStyle(
@@ -123,33 +138,42 @@ class MyDrawerHeader extends StatelessWidget {
             ),
             Center(
               child: Text(
-                'Roles: ${staff.roles.map((item) {
-                  return item;
-                }).join(', ')}',
+                'Roles: ${staff.getListString("roles").join(', ')}',
                 textAlign: TextAlign.center,
               ),
             ),
             Center(
               child: Text(
-                'Aircraft: ${staff.aircraft.map((item) {
-                  return item;
-                }).join(', ')}',
+                'Aircraft: ${staff.getListString("aircraft").join(', ')}',
                 textAlign: TextAlign.center,
               ),
             ),
-            Center(
-              child: Text(
-                'Categories: ${staff.categories.map((item) {
-                  return item;
-                }).join(', ')}',
-                textAlign: TextAlign.center,
-              ),
+            Text(
+              'Subcategores: ${staff.getListString("subcategories").join(', ')}',
+              textAlign: TextAlign.center,
             ),
-            // Text(
-            //   'Subcategores: ${staff.subcategories.map((item) => item.capitalized).join(', ')}',
-            // ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CustomResetPasswordForm extends StatelessWidget {
+  const CustomResetPasswordForm({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          // flutter logo
+          const Center(child: DefaultLogoWidget()),
+          Container(
+            constraints: const BoxConstraints(maxWidth: 500.0, minWidth: 100),
+            child: ResetPasswordForm(),
+          ),
+        ],
       ),
     );
   }

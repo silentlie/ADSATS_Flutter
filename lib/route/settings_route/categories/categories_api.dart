@@ -185,9 +185,12 @@ class CategoriesApi extends DataTableSourceAsync {
                   onConfirm: (selectedOptions) {
                     emails = List<String>.from(selectedOptions);
                   },
-                  items: authNotifier.staff.map(
-                    (staff) {
-                      return MultiSelectItem(staff, staff);
+                  items: authNotifier.staffCache.entries.map(
+                    (entry) {
+                      return MultiSelectItem(
+                        entry.key,
+                        entry.value,
+                      );
                     },
                   ).toList(),
                 )

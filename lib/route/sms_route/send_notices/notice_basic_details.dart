@@ -171,10 +171,12 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
                   }
                 },
                 items: Provider.of<AuthNotifier>(context, listen: false)
-                    .aircraft
-                    .map(
-                  (aircraft) {
-                    return MultiSelectItem(aircraft, aircraft);
+                    .aircraftCache.entries.map(
+                  (entry) {
+                    return MultiSelectItem(
+                      entry.key,
+                      entry.value,
+                    );
                   },
                 ).toList(),
                 initialValue: noticeBasicDetails['aircraft']?.split(',') ?? [],

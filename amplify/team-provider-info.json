@@ -1,17 +1,4 @@
 {
-  "dev": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-adsatsflutterv1-dev-96e46-authRole",
-      "UnauthRoleArn": "arn:aws:iam::891377389351:role/amplify-adsatsflutterv1-dev-96e46-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::891377389351:role/amplify-adsatsflutterv1-dev-96e46-authRole",
-      "Region": "ap-southeast-2",
-      "DeploymentBucketName": "amplify-adsatsflutterv1-dev-96e46-deployment",
-      "UnauthRoleName": "amplify-adsatsflutterv1-dev-96e46-unauthRole",
-      "StackName": "amplify-adsatsflutterv1-dev-96e46",
-      "StackId": "arn:aws:cloudformation:ap-southeast-2:891377389351:stack/amplify-adsatsflutterv1-dev-96e46/5987c0b0-59e0-11ef-b43d-0a020b3c053f",
-      "AmplifyAppId": "d2f7a5hg34xjzh"
-    }
-  },
   "prod": {
     "awscloudformation": {
       "AuthRoleName": "amplify-adsatsflutterv1-prod-1abfd-authRole",
@@ -25,31 +12,6 @@
       "AmplifyAppId": "d2f7a5hg34xjzh",
       "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-adsatsflutterv1-prod-1abfd-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json",
       "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-adsatsflutterv1-prod-1abfd-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
-    },
-    "categories": {
-      "auth": {
-        "adsatsAuth": {},
-        "userPoolGroups": {}
-      },
-      "function": {
-        "adsatsAuthPostConfirmation": {
-          "GROUP": "admin",
-          "deploymentBucketName": "amplify-adsatsflutterv1-prod-1abfd-deployment",
-          "s3Key": "amplify-builds/adsatsAuthPostConfirmation-644e4870494236447049-build.zip"
-        },
-        "AdminQueries0a0227c1": {
-          "deploymentBucketName": "amplify-adsatsflutterv1-prod-1abfd-deployment",
-          "s3Key": "amplify-builds/AdminQueries0a0227c1-7a6133774574515a446e-build.zip"
-        }
-      },
-      "api": {
-        "AdminQueries": {},
-        "adsatsAdminAPI": {},
-        "adsatsStaffAPI": {}
-      },
-      "storage": {
-        "adsatsS3": {}
-      }
     }
   }
 }

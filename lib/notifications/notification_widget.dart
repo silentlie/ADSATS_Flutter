@@ -2,6 +2,7 @@ import 'package:adsats_flutter/amplify/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:badges/badges.dart' as badges;
 
 part 'notification_class.dart';
 
@@ -13,83 +14,60 @@ class NotificationWidget extends StatefulWidget {
 }
 
 class _NotificationWidgetState extends State<NotificationWidget> {
-  @override
-  Widget build(BuildContext context) {
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
-    List<Widget> children = authNotifier.notificationWidgets;
+  List<Widget> _buildChildrenWidgets(AuthNotifier authNotifier) {
+    List<Widget> children = authNotifier.notifications.map(
+      (e) {
+        return e.toListTile();
+      },
+    ).toList();
+    if (children.isEmpty) {
+      children.add(
+        const ListTile(
+          title: Text("There is no pending notice"),
+        ),
+      );
+    }
     children.add(
       TextButton.icon(
-        onPressed: () {
-          authNotifier.fetchNotifications(authNotifier.limit);
-          setState(() {});
+        onPressed: () async {
+          await authNotifier.fetchCache();
+          setState(() {
+            _buildChildrenWidgets(authNotifier);
+          });
         },
         label: const Text("Refresh"),
         icon: const Icon(Icons.refresh),
       ),
     );
+    return children;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    AuthNotifier authNotifier =
+        Provider.of<AuthNotifier>(context, listen: false);
+    List<Widget> children = _buildChildrenWidgets(authNotifier);
     return MenuAnchor(
       menuChildren: children,
+      alignmentOffset: const Offset(100, 0),
       builder: (context, controller, child) {
-        return Stack(
-          children: [
-            IconButton(
-              onPressed: () {
-                if (controller.isOpen) {
-                  controller.close();
-                } else {
-                  controller.open();
-                }
-              },
-              icon: const Icon(Icons.notifications_none),
+        return badges.Badge(
+          position: badges.BadgePosition.topEnd(top: -5, end: -5),
+          badgeContent: Text(authNotifier.notifications.length.toString()),
+          showBadge: authNotifier.notifications.isNotEmpty,
+          badgeAnimation: const badges.BadgeAnimation.scale(),
+          child: IconButton(
+            onPressed: () {
+              if (controller.isOpen) {
+                controller.close();
+              } else {
+                controller.open();
+              }
+            },
+            icon: const Icon(
+              Icons.notifications_none,
             ),
-            if (authNotifier.numOfUnread > 0)
-              Positioned(
-                right: 0,
-                top: 0,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.yellow,
-                    shape: BoxShape.circle,
-                  ),
-                  constraints: const BoxConstraints(
-                    minWidth: 16,
-                    minHeight: 16,
-                  ),
-                  child: Center(
-                    child: Text(
-                      authNotifier.numOfUnread.toString(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            if (authNotifier.numOfOverdue > 0)
-              Positioned(
-                right: 24,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.circle,
-                  ),
-                  constraints: const BoxConstraints(
-                    minWidth: 16,
-                    minHeight: 16,
-                  ),
-                  child: Center(
-                    child: Text(
-                      authNotifier.numOfOverdue.toString(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-          ],
+          ),
         );
       },
     );
