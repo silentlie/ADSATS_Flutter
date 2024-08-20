@@ -34,14 +34,14 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
     viewMode = widget.viewMode;
     noticeBasicDetails = widget.noticeBasicDetails;
     if (noticeBasicDetails['notice_at'] != null) {
-      _noticeDateController.text =
-          DateFormat('dd/MM/yyyy').format(noticeBasicDetails['notice_at']);
+      _noticeDateController.text = DateFormat('dd/MM/yyyy')
+          .format(DateTime.parse(noticeBasicDetails['notice_at']));
     } else {
       _noticeDateController.text = "";
     }
     if (noticeBasicDetails['deadline_at'] != null) {
-      _delineDateController.text =
-          DateFormat('dd/MM/yyyy').format(noticeBasicDetails['deadline_at']);
+      _delineDateController.text = DateFormat('dd/MM/yyyy')
+          .format(DateTime.parse(noticeBasicDetails['deadline_at']));
     } else {
       _delineDateController.text = "";
     }
@@ -67,7 +67,7 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
                 labelText: 'Report Number',
                 results: noticeBasicDetails,
                 enabled: false,
-                initialValue: noticeBasicDetails['notice_id'] ?? '',
+                initialValue: noticeBasicDetails['notice_id']?.toString() ?? '',
               ),
             ),
             Expanded(
@@ -92,18 +92,22 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
             if (!viewMode || editPermission)
               IconButton(
                 onPressed: () async {
-                  noticeBasicDetails['notice_at'] = await showDatePicker(
+                  DateTime? temp = await showDatePicker(
                     context: context,
                     firstDate:
                         DateTime.now().subtract(const Duration(days: 365 * 10)),
                     lastDate: DateTime.now(),
-                    initialDate: noticeBasicDetails['notice_at'],
+                    initialDate: noticeBasicDetails['notice_at'] == null
+                        ? null
+                        : DateTime.parse(noticeBasicDetails['notice_at']),
                   );
-                  if (noticeBasicDetails['notice_at'] != null) {
-                    _noticeDateController.text = DateFormat('dd/MM/yyyy')
-                        .format(noticeBasicDetails['notice_at']);
+                  if (temp != null) {
+                    _noticeDateController.text =
+                        DateFormat('dd/MM/yyyy').format(temp);
+                    noticeBasicDetails['notice_at'] = temp.toIso8601String();
                   } else {
                     _noticeDateController.text = "";
+                    noticeBasicDetails['notice_at'] = null;
                   }
                   setState(() {});
                 },
@@ -121,19 +125,23 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
             if (!viewMode || editPermission)
               IconButton(
                 onPressed: () async {
-                  noticeBasicDetails['deadline_at'] = await showDatePicker(
+                  DateTime? temp = await showDatePicker(
                     context: context,
                     firstDate:
                         DateTime.now().subtract(const Duration(days: 365 * 10)),
                     lastDate:
                         DateTime.now().add(const Duration(days: 365 * 10)),
-                    initialDate: noticeBasicDetails['deadline_at'],
+                    initialDate: noticeBasicDetails['deadline_at'] == null
+                        ? null
+                        : DateTime.parse(noticeBasicDetails['deadline_at']),
                   );
-                  if (noticeBasicDetails['deadline_at'] != null) {
-                    _delineDateController.text = DateFormat('dd/MM/yyyy')
-                        .format(noticeBasicDetails['deadline_at']);
+                  if (temp != null) {
+                    _delineDateController.text =
+                        DateFormat('dd/MM/yyyy').format(temp);
+                    noticeBasicDetails['deadline_at'] = temp.toIso8601String();
                   } else {
                     _delineDateController.text = "";
+                    noticeBasicDetails['deadline_at'] = null;
                   }
                   setState(() {});
                 },
@@ -157,19 +165,21 @@ class _NoticeBasicDetailsState extends State<NoticeBasicDetails> {
                 buttonText: const Text("Aircraft"),
                 title: const Text("Aircraft"),
                 onConfirm: (selectedOptions) {
-                  if (!viewMode || editPermission){
+                  if (!viewMode || editPermission) {
                     noticeBasicDetails['aircraft'] =
-                      List<String>.from(selectedOptions);
+                        List<String>.from(selectedOptions);
                   }
                 },
                 items: Provider.of<AuthNotifier>(context, listen: false)
-                    .aircraft
-                    .map(
-                  (aircraft) {
-                    return MultiSelectItem(aircraft, aircraft);
+                    .aircraftCache.entries.map(
+                  (entry) {
+                    return MultiSelectItem(
+                      entry.key,
+                      entry.value,
+                    );
                   },
                 ).toList(),
-                initialValue: noticeBasicDetails['aircraft'] ?? [],
+                initialValue: noticeBasicDetails['aircraft']?.split(',') ?? [],
               ),
             )
           ],

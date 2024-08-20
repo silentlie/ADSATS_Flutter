@@ -30,32 +30,42 @@ class RecepientsWidget extends StatelessWidget {
             Expanded(
               child: MultiSelect(
                 buttonText: const Text(
-                  "Email",
+                  "Aircraft",
                 ),
                 title: const Text(
-                  "Email",
+                  "Aircraft",
                 ),
                 onConfirm: (selectedOptions) {
-                  recipients['emails'] = List<String>.from(selectedOptions);
+                  recipients['aircraft'] = List<String>.from(selectedOptions);
                 },
-                items: authNotifier.staff.map(
-                  (staff) {
-                    return MultiSelectItem(staff, staff);
+                items: authNotifier.aircraftCache.entries.map(
+                  (entry) {
+                    return MultiSelectItem(
+                      entry.key,
+                      entry.value,
+                    );
                   },
                 ).toList(),
-                initialValue: recipients['emails'] ?? [],
+                initialValue: recipients['aircraft'] ?? [],
               ),
             ),
             Expanded(
               child: MultiSelect(
-                buttonText: const Text("Role"),
-                title: const Text("Role"),
+                buttonText: const Text(
+                  "Role",
+                ),
+                title: const Text(
+                  "Role",
+                ),
                 onConfirm: (selectedOptions) {
                   recipients['roles'] = List<String>.from(selectedOptions);
                 },
-                items: authNotifier.roles.map(
-                  (role) {
-                    return MultiSelectItem(role, role);
+                items: authNotifier.rolesCache.entries.map(
+                  (entry) {
+                    return MultiSelectItem(
+                      entry.key,
+                      entry.value,
+                    );
                   },
                 ).toList(),
                 initialValue: recipients['roles'] ?? [],
@@ -63,17 +73,24 @@ class RecepientsWidget extends StatelessWidget {
             ),
             Expanded(
               child: MultiSelect(
-                buttonText: const Text("Aircraft"),
-                title: const Text("Aircraft"),
+                buttonText: const Text(
+                  "Email",
+                ),
+                title: const Text(
+                  "Email",
+                ),
                 onConfirm: (selectedOptions) {
-                  recipients['aircraft'] = List<String>.from(selectedOptions);
+                  recipients['staff'] = List<String>.from(selectedOptions);
                 },
-                items: authNotifier.aircraft.map(
-                  (aircraft) {
-                    return MultiSelectItem(aircraft, aircraft);
+                initialValue: recipients['staff'] ?? [],
+                items: authNotifier.staffCache.entries.map(
+                  (entry) {
+                    return MultiSelectItem(
+                      entry.key,
+                      entry.value,
+                    );
                   },
                 ).toList(),
-                initialValue: recipients['aircraft'] ?? [],
               ),
             )
           ],

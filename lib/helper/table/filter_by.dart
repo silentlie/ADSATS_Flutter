@@ -54,15 +54,19 @@ class FilterBy extends StatelessWidget {
 
   List<Widget> getFilterContent(
       BuildContext context, Map<String, dynamic> filterResult) {
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
+    AuthNotifier authNotifier =
+        Provider.of<AuthNotifier>(context, listen: false);
     return [
       if (filterByAuthors)
-      MultiSelect(
+        MultiSelect(
           buttonText: const Text("Filter by authors"),
           title: const Text("Filter by authors"),
-          items: authNotifier.staff.map(
-            (staff) {
-              return MultiSelectItem(staff, staff);
+          items: authNotifier.staffCache.entries.map(
+            (entry) {
+              return MultiSelectItem(
+                entry.key,
+                entry.value,
+              );
             },
           ).toList(),
           onConfirm: (selectedOptions) {
@@ -71,12 +75,15 @@ class FilterBy extends StatelessWidget {
           initialValue: filters.filterResults["authors"] ?? [],
         ),
       if (filterByAircraft)
-      MultiSelect(
+        MultiSelect(
           buttonText: const Text("Filter by aircraft"),
           title: const Text("Filter by aircraft"),
-          items: authNotifier.aircraft.map(
-            (aircraft) {
-              return MultiSelectItem(aircraft, aircraft);
+          items: authNotifier.aircraftCache.entries.map(
+            (entry) {
+              return MultiSelectItem(
+                entry.key,
+                entry.value,
+              );
             },
           ).toList(),
           onConfirm: (selectedOptions) {
@@ -85,12 +92,15 @@ class FilterBy extends StatelessWidget {
           initialValue: filters.filterResults["aircraft"] ?? [],
         ),
       if (filterByRoles)
-      MultiSelect(
+        MultiSelect(
           buttonText: const Text("Filter by roles"),
           title: const Text("Filter by roles"),
-          items: authNotifier.roles.map(
-            (role) {
-              return MultiSelectItem(role, role.capitalized);
+          items: authNotifier.rolesCache.entries.map(
+            (entry) {
+              return MultiSelectItem(
+                entry.key,
+                entry.value,
+              );
             },
           ).toList(),
           onConfirm: (selectedOptions) {
@@ -99,12 +109,15 @@ class FilterBy extends StatelessWidget {
           initialValue: filters.filterResults["roles"] ?? [],
         ),
       if (filterByCategories)
-      MultiSelect(
+        MultiSelect(
           buttonText: const Text("Filter by categories"),
           title: const Text("Filter by categories"),
-          items: authNotifier.categories.map(
-            (category) {
-              return MultiSelectItem(category, category);
+          items: authNotifier.categoriesCache.entries.map(
+            (entry) {
+              return MultiSelectItem(
+                entry.key,
+                entry.value,
+              );
             },
           ).toList(),
           onConfirm: (selectedOptions) {
@@ -112,13 +125,16 @@ class FilterBy extends StatelessWidget {
           },
           initialValue: filters.filterResults["categories"] ?? [],
         ),
-        if (filterBySubcategories)
+      if (filterBySubcategories)
         MultiSelect(
           buttonText: const Text("Filter by subcategories"),
           title: const Text("Filter by subcategories"),
-          items: authNotifier.subcategories.map(
-            (subcategory) {
-              return MultiSelectItem(subcategory, subcategory);
+          items: authNotifier.subcategoriesCache.entries.map(
+            (entry) {
+              return MultiSelectItem(
+                entry.key,
+                entry.value,
+              );
             },
           ).toList(),
           onConfirm: (selectedOptions) {
@@ -126,7 +142,7 @@ class FilterBy extends StatelessWidget {
           },
           initialValue: filters.filterResults["subcategories"] ?? [],
         ),
-        if (filterByNoticeTypes)
+      if (filterByNoticeTypes)
         MultiSelect(
           buttonText: const Text("Filter by notice types"),
           title: const Text("Filter by notice types"),
@@ -140,7 +156,7 @@ class FilterBy extends StatelessWidget {
           },
           initialValue: filters.filterResults["categories"] ?? [],
         ),
-        if (filterByArchived)
+      if (filterByArchived)
         Container(
           padding: const EdgeInsets.all(8),
           child: DropdownMenu(
@@ -161,7 +177,7 @@ class FilterBy extends StatelessWidget {
             ),
           ),
         ),
-        if (filterByCreatedAt)
+      if (filterByCreatedAt)
         Container(
           padding: const EdgeInsets.all(8),
           child: DateTimeRangePicker(

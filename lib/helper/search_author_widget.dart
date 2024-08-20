@@ -10,13 +10,16 @@ class SearchAuthorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     AuthNotifier authNotifier =
         Provider.of<AuthNotifier>(context, listen: false);
-    result['author'] = authNotifier.email;
+    result['author'] = authNotifier.id;
     return Container(
       padding: const EdgeInsets.all(8.0),
       child: DropdownMenu(
-        dropdownMenuEntries: authNotifier.staff.map(
-          (staff) {
-            return DropdownMenuEntry(label: staff, value: staff);
+        dropdownMenuEntries: authNotifier.staffCache.entries.map(
+          (entry) {
+            return DropdownMenuEntry(
+              label: entry.value,
+              value: entry.key,
+            );
           },
         ).toList(),
         enableFilter: true,

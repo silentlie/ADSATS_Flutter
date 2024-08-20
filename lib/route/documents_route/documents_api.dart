@@ -10,11 +10,8 @@ class DocumentAPI extends DataTableSourceAsync {
   @override
   List<String> get columnNames => [
         "File name",
-        // "Author",
-        "Sub category",
-        "Category",
+        "Subcategory",
         "Aircraft",
-        "Roles",
         "Archived",
         "Date",
         "Actions",
@@ -41,16 +38,16 @@ class DocumentAPI extends DataTableSourceAsync {
         'limit': count.toString()
       };
       queryParameters.addAll(filter.toJSON());
-      // debugPrint(queryParameters.toString());
+      debugPrint(queryParameters.toString());
       final restOperation = Amplify.API.get('/documents',
-          apiName: 'AmplifyDocumentsAPI', queryParameters: queryParameters);
+          apiName: 'adsatsStaffAPI', queryParameters: queryParameters);
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
       Map<String, dynamic> rawData = jsonDecode(jsonStr);
-      _totalRecords = rawData["total_records"];
-      final rowsData = List<Map<String, dynamic>>.from(rawData["rows"]);
 
+      _totalRecords = rawData["total_records"];
+      final rowsData = List<Map<String, dynamic>>.from(rawData["documents"]);
       _documents = [for (var row in rowsData) Document.fromJSON(row)];
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
@@ -69,9 +66,7 @@ class DocumentAPI extends DataTableSourceAsync {
 
   Map<String, String> get sqlColumns => {
         'File Name': 'file_name',
-        // 'Author': 'email',
         'Archived': "archived",
-        'Category': 'category',
         'Subcategory': 'sub_category',
         'Aircraft': 'aircraft',
         'Date': 'created_at',
@@ -92,67 +87,71 @@ class DocumentAPI extends DataTableSourceAsync {
         padding: const EdgeInsets.only(bottom: 5),
         scrollDirection: Axis.horizontal,
         reverse: true,
-        child: Builder(builder: (context) {
-          AuthNotifier authNotifier =
-              Provider.of<AuthNotifier>(context, listen: false);
-          _filters.filterResults.addAll({
-            // 'limit_aircraft': staff.aircraft,
-            // 'limit_subcategories': staff.subcategories,
-            // 'limit_roles': staff.roles,
-            'limit_categories': authNotifier.categories,
-            'limit_author': authNotifier.email,
-          });
-          return Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  refreshDatasource();
-                },
-                icon: const Icon(Icons.refresh),
-              ),
-              if (authNotifier.staffID > -1)
-                ElevatedButton.icon(
+        child: Builder(
+          builder: (context) {
+            AuthNotifier authNotifier =
+                Provider.of<AuthNotifier>(context, listen: false);
+            _filters.filterResults.addAll(
+              {
+                // 'limit_aircraft': staff.aircraft,
+                // 'limit_subcategories': staff.subcategories,
+                // 'limit_roles': staff.roles,
+                // 'limit_categories': authNotifier.categories,
+                // 'limit_author': authNotifier.email,
+              },
+            );
+            return Row(
+              children: [
+                IconButton(
                   onPressed: () {
-                    context.go('/add-a-document');
+                    refreshDatasource();
                   },
-                  label: const Text('Add a document'),
-                  icon: const Icon(
-                    Icons.add,
-                    size: 25,
-                  ),
+                  icon: const Icon(Icons.refresh),
                 ),
-              const SizedBox(
-                width: 10,
-              ),
-              FilterBy(
-                filters: _filters,
-                refreshDatasource: refreshDatasource,
-                filterByAuthors: true,
-                filterByRoles: true,
-                filterByAircraft: true,
-                filterByCategories: true,
-                filterBySubcategories: true,
-                filterByArchived: true,
-                filterByCreatedAt: true,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              SortBy(
-                filters: _filters,
-                refreshDatasource: refreshDatasource,
-                sqlColumns: sqlColumns,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              SearchBarWidget(
-                filters: _filters,
-                refreshDatasource: refreshDatasource,
-              ),
-            ],
-          );
-        }),
+                if (authNotifier.id > -1)
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      context.go('/add-a-document');
+                    },
+                    label: const Text('Add a document'),
+                    icon: const Icon(
+                      Icons.add,
+                      size: 25,
+                    ),
+                  ),
+                const SizedBox(
+                  width: 10,
+                ),
+                FilterBy(
+                  filters: _filters,
+                  refreshDatasource: refreshDatasource,
+                  filterByAuthors: true,
+                  filterByRoles: true,
+                  filterByAircraft: true,
+                  filterByCategories: true,
+                  filterBySubcategories: true,
+                  filterByArchived: true,
+                  filterByCreatedAt: true,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                SortBy(
+                  filters: _filters,
+                  refreshDatasource: refreshDatasource,
+                  sqlColumns: sqlColumns,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                SearchBarWidget(
+                  filters: _filters,
+                  refreshDatasource: refreshDatasource,
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

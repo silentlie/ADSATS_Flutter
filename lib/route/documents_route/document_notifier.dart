@@ -2,7 +2,7 @@ part of 'document_class.dart';
 
 class DocumentNotifier extends ChangeNotifier {
   FilePickerResult? filePickerResult;
-  Map<String, String> results = {};
+  Map<String, dynamic> results = {};
 
   Future<void> uploadFile(PlatformFile file) async {
     try {
@@ -13,7 +13,7 @@ class DocumentNotifier extends ChangeNotifier {
       body.addAll(results);
       debugPrint(body.toString());
       final restOperation = Amplify.API.post('/documents',
-          apiName: 'AmplifyDocumentsAPI', body: HttpPayload.json(body));
+          apiName: 'adsatsStaffAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();

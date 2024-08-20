@@ -20,7 +20,6 @@ class AppBarItems {
     itemSMS,
     itemCompliance,
     itemTraining,
-    itemPurchases,
   ];
 
   static const List<MenuItem> tabletMenuItems = [
@@ -31,7 +30,6 @@ class AppBarItems {
   static const List<MenuItem> tabletPopupItems = [
     itemCompliance,
     itemTraining,
-    itemPurchases,
   ];
 
   static const itemDocuments = MenuItem(
@@ -46,8 +44,4 @@ class AppBarItems {
       text: 'Training',
       icon: FontAwesomeIcons.graduationCap,
       route: '/training');
-  static const itemPurchases = MenuItem(
-      text: 'Purchases',
-      icon: FontAwesomeIcons.fileInvoiceDollar,
-      route: '/purchases');
 }

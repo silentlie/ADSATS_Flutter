@@ -60,8 +60,8 @@ class HazardReportNotifier extends ChangeNotifier {
                     if (viewMode && !isRead)
                       ElevatedButton.icon(
                         onPressed: () {
-                          setRead(authNotifier.staffID,
-                              noticeBasicDetails['notice_id']);
+                          setRead(
+                              authNotifier.id, noticeBasicDetails['notice_id']);
                           // NEED TO SET ISREAD TO TRUE
                           context.go('/sms');
                         },
@@ -97,17 +97,18 @@ class HazardReportNotifier extends ChangeNotifier {
                             debugPrint(recipients.toString());
                             // context.go('/sms');
                             if (!viewMode) {
-                              // int noticeID = await sendNoticeBasicDetails(noticeBasicDetails);
-                              // sendHazardReportDetails(
-                              //     hazardReportDetails, noticeID);
-                              // sendNotifications(recipients, noticeID);
+                              int noticeID = await sendNoticeBasicDetails(
+                                  noticeBasicDetails);
+                              sendHazardReportDetails(
+                                  hazardReportDetails, noticeID);
+                              sendNotifications(recipients, noticeID);
                             } else {
-                              // int noticeID = noticeBasicDetails['notice_id'];
-                              // updateNoticeBasicDetails(
-                              //     noticeBasicDetails, noticeID);
-                              // updateHazardReportDetails(
-                              //     hazardReportDetails, noticeID);
-                              // sendNotifications(recipients, noticeID);
+                              int noticeID = noticeBasicDetails['notice_id'];
+                              updateNoticeBasicDetails(
+                                  noticeBasicDetails, noticeID);
+                              updateHazardReportDetails(
+                                  hazardReportDetails, noticeID);
+                              sendNotifications(recipients, noticeID);
                             }
                           }
                         },
@@ -191,6 +192,53 @@ class HazardReportNotifier extends ChangeNotifier {
           hazardReportDetails: hazardReportDetails,
         ),
       if (viewMode)
+        Container(
+          padding: const EdgeInsets.all(8),
+          child: Row(
+            children: [
+              Flexible(
+                child: DropdownMenu(
+                  dropdownMenuEntries: List<DropdownMenuEntry>.generate(
+                    5,
+                    (int index) {
+                      return DropdownMenuEntry(
+                          label: index.toString(), value: index);
+                    },
+                  ),
+                  enabled: editPermission,
+                  requestFocusOnTap: false,
+                  initialSelection:
+                      hazardReportDetails['review_likelihood'] ?? 0,
+                  expandedInsets: EdgeInsets.zero,
+                  label: const Text("Reviewed likelihood"),
+                  onSelected: (value) {
+                    hazardReportDetails['review_likelihood'] = value;
+                  },
+                ),
+              ),
+              Flexible(
+                child: DropdownMenu(
+                  dropdownMenuEntries: List<DropdownMenuEntry>.generate(
+                    5,
+                    (int index) {
+                      return DropdownMenuEntry(
+                          label: index.toString(), value: index);
+                    },
+                  ),
+                  enabled: editPermission,
+                  requestFocusOnTap: false,
+                  initialSelection: hazardReportDetails['review_severity'] ?? 0,
+                  expandedInsets: EdgeInsets.zero,
+                  label: const Text("Reviewed severity"),
+                  onSelected: (value) {
+                    hazardReportDetails['review_severity'] = value;
+                  },
+                ),
+              )
+            ],
+          ),
+        ),
+      if (viewMode)
         ResolveWidget(
           noticeBasicDetails: noticeBasicDetails,
           enabled: editPermission,
@@ -257,7 +305,10 @@ class HazardReportNotifier extends ChangeNotifier {
   Future<void> updateNoticeBasicDetails(
       Map<String, dynamic> noticeBasicDetails, int noticeID) async {
     try {
-      Map<String, dynamic> body = {'noticeID': noticeID, ...noticeBasicDetails,};
+      Map<String, dynamic> body = {
+        'noticeID': noticeID,
+        ...noticeBasicDetails,
+      };
       // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/notices',
           apiName: 'AmplifyNoticesAPI', body: HttpPayload.json(body));
@@ -283,7 +334,7 @@ class HazardReportNotifier extends ChangeNotifier {
         ...hazardReportDetails
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.post('/hazard-report',
+      final restOperation = Amplify.API.post('/hazard-reports',
           apiName: 'AmplifyNoticesAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
@@ -300,14 +351,16 @@ class HazardReportNotifier extends ChangeNotifier {
   }
 
   Future<void> updateHazardReportDetails(
-      Map<String, dynamic> hazardReportDetails, int noticeID,) async {
+    Map<String, dynamic> hazardReportDetails,
+    int noticeID,
+  ) async {
     try {
       Map<String, dynamic> body = {
         'notice_id': noticeID,
         ...hazardReportDetails
       };
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.patch('/hazard-report',
+      final restOperation = Amplify.API.patch('/hazard-reports',
           apiName: 'AmplifyNoticesAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;

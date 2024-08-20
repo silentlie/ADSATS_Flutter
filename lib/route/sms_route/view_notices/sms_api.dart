@@ -94,7 +94,7 @@ class NoticeAPI extends DataTableSourceAsync {
         child: Builder(builder: (context) {
           AuthNotifier authNotifier =
               Provider.of<AuthNotifier>(context, listen: false);
-          _filters.filterResults['staff_id'] = authNotifier.staffID;
+          _filters.filterResults['staff_id'] = authNotifier.id;
           return Row(
             children: [
               Text('KPI: $_totalRecords'),
@@ -104,7 +104,7 @@ class NoticeAPI extends DataTableSourceAsync {
                 },
                 icon: const Icon(Icons.refresh),
               ),
-              if (authNotifier.staffID > -1)
+              if (authNotifier.id > -1)
                 ElevatedButton.icon(
                   onPressed: () {
                     context.go('/send-notices');

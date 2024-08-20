@@ -13,6 +13,7 @@ import 'package:adsats_flutter/amplify/auth.dart';
 import 'package:adsats_flutter/amplifyconfiguration.dart';
 import 'package:adsats_flutter/route/route.dart';
 import 'package:adsats_flutter/scaffold/scaffold_widget.dart';
+import 'package:adsats_flutter/scaffold/drawer_widget.dart';
 
 final _router = GoRouter(
   initialLocation: '/documents',
@@ -48,25 +49,26 @@ final _router = GoRouter(
           builder: (context, state) => const CustomResetPasswordForm(),
         ),
         GoRoute(
-            path: '/sms',
-            builder: (context, state) => const SMSWidget(),
-            routes: [
-              GoRoute(
-                path: ':notice_id',
-                builder: (context, state) {
-                  String? noticeID = state.pathParameters["notice_id"];
-                  if (noticeID != null && noticeID.isNotEmpty) {
-                    int? parsedID = int.tryParse(noticeID);
-                    if (parsedID != null) {
-                      return SpecificNoticeWidget(
-                        documentID: parsedID,
-                      );
-                    }
+          path: '/sms',
+          builder: (context, state) => const SMSWidget(),
+          routes: [
+            GoRoute(
+              path: ':notice_id',
+              builder: (context, state) {
+                String? noticeID = state.pathParameters["notice_id"];
+                if (noticeID != null && noticeID.isNotEmpty) {
+                  int? parsedID = int.tryParse(noticeID);
+                  if (parsedID != null) {
+                    return SpecificNoticeWidget(
+                      documentID: parsedID,
+                    );
                   }
-                  return const Placeholder();
-                },
-              ),
-            ],),
+                }
+                return const Placeholder();
+              },
+            ),
+          ],
+        ),
         GoRoute(
           path: '/compliance',
           builder: (context, state) => const ComplianceWidget(),
@@ -74,10 +76,6 @@ final _router = GoRouter(
         GoRoute(
           path: '/training',
           builder: (context, state) => const TrainingWidget(),
-        ),
-        GoRoute(
-          path: '/purchases',
-          builder: (context, state) => const PurchaseWidget(),
         ),
         GoRoute(
           path: '/send-notices',
@@ -135,12 +133,13 @@ class _MyAppState extends State<MyApp> {
         authenticatorBuilder: (context, state) {
           switch (state.currentStep) {
             case AuthenticatorStep.signIn:
-              return const SignInScafold();
+              return const SignInWidget();
             default:
               return null;
           }
         },
         child: MaterialApp.router(
+          title: "ADSATS - Aviation Document Storage and Tracking System",
           builder: Authenticator.builder(),
           theme: lightMode,
           darkTheme: darkMode,

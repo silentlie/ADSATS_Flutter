@@ -99,10 +99,10 @@ class _SearchFileWidgetState extends State<SearchFileWidget> {
   TextEditingController barController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
+    // AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
     Map<String, String> limit = {
-      'limit_categories': authNotifier.categories.join(','),
-      'limit_author': authNotifier.email,
+      // 'limit_categories': authNotifier.categories.join(','),
+      // 'limit_author': authNotifier.email,
     };
 
     return Column(
@@ -201,8 +201,9 @@ _Debounceable<S?, T, U?> _debounce<S, T, U>(_Debounceable<S?, T, U?> function) {
     if (debounceTimer != null && !debounceTimer!.isCompleted) {
       debounceTimer!.cancel();
     }
-    debounceTimer = _DebounceTimer();
+
     try {
+      debounceTimer = _DebounceTimer();
       await debounceTimer!.future;
     } catch (error) {
       if (error is _CancelException) {

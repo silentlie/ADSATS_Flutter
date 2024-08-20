@@ -143,8 +143,8 @@ class _SafetyNoticeWidgetState extends State<SafetyNoticeWidget> {
                     if (viewMode && !isRead)
                       ElevatedButton.icon(
                         onPressed: () {
-                          setRead(authNotifier.staffID,
-                              noticeBasicDetails['notice_id']);
+                          setRead(
+                              authNotifier.id, noticeBasicDetails['notice_id']);
                           setState(() {
                             isRead = false;
                           });
@@ -279,7 +279,7 @@ class _SafetyNoticeWidgetState extends State<SafetyNoticeWidget> {
       };
       body.addAll(safetyNoticeDetails);
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.post('/afety-notice',
+      final restOperation = Amplify.API.post('/afety-notices',
           apiName: 'AmplifyNoticesAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
@@ -306,7 +306,7 @@ class _SafetyNoticeWidgetState extends State<SafetyNoticeWidget> {
       };
       body.addAll(safetyNoticeDetails);
       // debugPrint(body.toString());
-      final restOperation = Amplify.API.patch('/safety-notice',
+      final restOperation = Amplify.API.patch('/safety-notices',
           apiName: 'AmplifyNoticesAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
