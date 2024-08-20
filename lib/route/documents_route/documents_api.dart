@@ -12,7 +12,6 @@ class DocumentAPI extends DataTableSourceAsync {
         "File name",
         "Subcategory",
         "Aircraft",
-        "Roles",
         "Archived",
         "Date",
         "Actions",
@@ -88,67 +87,71 @@ class DocumentAPI extends DataTableSourceAsync {
         padding: const EdgeInsets.only(bottom: 5),
         scrollDirection: Axis.horizontal,
         reverse: true,
-        child: Builder(builder: (context) {
-          AuthNotifier authNotifier =
-              Provider.of<AuthNotifier>(context, listen: false);
-          _filters.filterResults.addAll({
-            // 'limit_aircraft': staff.aircraft,
-            // 'limit_subcategories': staff.subcategories,
-            // 'limit_roles': staff.roles,
-            // 'limit_categories': authNotifier.categories,
-            // 'limit_author': authNotifier.email,
-          });
-          return Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  refreshDatasource();
-                },
-                icon: const Icon(Icons.refresh),
-              ),
-              if (authNotifier.id > -1)
-                ElevatedButton.icon(
+        child: Builder(
+          builder: (context) {
+            AuthNotifier authNotifier =
+                Provider.of<AuthNotifier>(context, listen: false);
+            _filters.filterResults.addAll(
+              {
+                // 'limit_aircraft': staff.aircraft,
+                // 'limit_subcategories': staff.subcategories,
+                // 'limit_roles': staff.roles,
+                // 'limit_categories': authNotifier.categories,
+                // 'limit_author': authNotifier.email,
+              },
+            );
+            return Row(
+              children: [
+                IconButton(
                   onPressed: () {
-                    context.go('/add-a-document');
+                    refreshDatasource();
                   },
-                  label: const Text('Add a document'),
-                  icon: const Icon(
-                    Icons.add,
-                    size: 25,
-                  ),
+                  icon: const Icon(Icons.refresh),
                 ),
-              const SizedBox(
-                width: 10,
-              ),
-              FilterBy(
-                filters: _filters,
-                refreshDatasource: refreshDatasource,
-                filterByAuthors: true,
-                filterByRoles: true,
-                filterByAircraft: true,
-                filterByCategories: true,
-                filterBySubcategories: true,
-                filterByArchived: true,
-                filterByCreatedAt: true,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              SortBy(
-                filters: _filters,
-                refreshDatasource: refreshDatasource,
-                sqlColumns: sqlColumns,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              SearchBarWidget(
-                filters: _filters,
-                refreshDatasource: refreshDatasource,
-              ),
-            ],
-          );
-        }),
+                if (authNotifier.id > -1)
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      context.go('/add-a-document');
+                    },
+                    label: const Text('Add a document'),
+                    icon: const Icon(
+                      Icons.add,
+                      size: 25,
+                    ),
+                  ),
+                const SizedBox(
+                  width: 10,
+                ),
+                FilterBy(
+                  filters: _filters,
+                  refreshDatasource: refreshDatasource,
+                  filterByAuthors: true,
+                  filterByRoles: true,
+                  filterByAircraft: true,
+                  filterByCategories: true,
+                  filterBySubcategories: true,
+                  filterByArchived: true,
+                  filterByCreatedAt: true,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                SortBy(
+                  filters: _filters,
+                  refreshDatasource: refreshDatasource,
+                  sqlColumns: sqlColumns,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                SearchBarWidget(
+                  filters: _filters,
+                  refreshDatasource: refreshDatasource,
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

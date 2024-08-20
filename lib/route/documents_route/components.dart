@@ -46,7 +46,7 @@ class ChooseCategory extends StatelessWidget {
       child: DropdownMenu(
         inputDecorationTheme:
             const InputDecorationTheme(border: OutlineInputBorder()),
-        dropdownMenuEntries: authNotifier.aircraftCache.entries.map(
+        dropdownMenuEntries: authNotifier.subcategoriesCache.entries.map(
           (entry) {
             return DropdownMenuEntry(
               value: entry.key,

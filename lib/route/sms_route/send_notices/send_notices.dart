@@ -19,7 +19,7 @@ class _SendNoticesState extends State<SendNotices> {
     const NavigationRailDestination(
       icon: Icon(Icons.notifications_outlined),
       selectedIcon: Icon(Icons.notifications),
-      label: Text("Crew Notice"),
+      label: Text("Notice to Crew"),
     ),
     const NavigationRailDestination(
       icon: Icon(Icons.gpp_maybe_outlined),
@@ -41,7 +41,7 @@ class _SendNoticesState extends State<SendNotices> {
     const NavigationDestination(
       icon: Icon(Icons.notifications_outlined),
       selectedIcon: Icon(Icons.notifications),
-      label: "Crews Notice",
+      label: "Notice to Crew",
     ),
     const NavigationDestination(
       icon: Icon(Icons.gpp_maybe_outlined),

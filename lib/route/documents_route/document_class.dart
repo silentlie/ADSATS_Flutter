@@ -7,6 +7,7 @@ import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
@@ -21,22 +22,20 @@ part 'document_notifier.dart';
 
 class Document {
   Document.fromJSON(Map<String, dynamic> json) {
-    id = json["document_id"] as int;
-    fileName = json["document_name"] as String;
-    archived = intToBool(json["archived"] as int)!;
-    staffId = json["staff_id"] as int?;
-    subcategory = json["subcategory_id"] as int?;
-    roles = json["roles"] as String?;
-    aircraft = json["aircraft"] as String?;
+    id = json["document_id"];
+    fileName = json["document_name"];
+    archived = intToBool(json["archived"])!;
+    staffId = json["staff_id"];
+    subcategoryId = json["subcategory_id"];
+    aircraftIds = json["aircraft_ids"];
     createdAt = DateTime.parse(json["created_at"]);
   }
   late int id;
   late String fileName;
   late bool archived;
   late int? staffId;
-  late int? subcategory;
-  String? roles;
-  String? aircraft;
+  late int? subcategoryId;
+  String? aircraftIds;
   late DateTime createdAt;
 
   static bool? intToBool(int? value) {
@@ -50,68 +49,125 @@ class Document {
   DataRow toDataRow(void Function() refreshDatasource) {
     return DataRow(
       cells: <DataCell>[
-        cellFor(fileName),
-        cellFor(subcategory),
-        cellFor(aircraft),
-        cellFor(roles),
-        cellFor(archived),
-        cellFor(createdAt),
         DataCell(
-          Builder(builder: (context) {
-            AuthNotifier authNotifier =
-                Provider.of<AuthNotifier>(context, listen: false);
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: () async {
-                    Uri genUrl = await getFileUrl();
-                    launchUrl(genUrl);
-                  },
-                  icon: const Icon(Icons.remove_red_eye_outlined),
-                  tooltip: 'View',
+          Center(
+            child: Text(fileName),
+          ),
+        ),
+        DataCell(
+          Builder(
+            builder: (context) {
+              AuthNotifier authNotifier = Provider.of<AuthNotifier>(
+                context,
+                listen: false,
+              );
+              return Center(
+                child: Text(
+                  authNotifier.subcategoriesCache[subcategoryId] ?? "",
                 ),
-                if (authNotifier.isAdmin || authNotifier.isEditor)
+              );
+            },
+          ),
+        ),
+        DataCell(
+          Builder(
+            builder: (context) {
+              AuthNotifier authNotifier = Provider.of<AuthNotifier>(
+                context,
+                listen: false,
+              );
+              return Center(
+                child: Text(
+                  // TODO: FIX
+                  authNotifier.aircraftCache[aircraftIds] ?? "",
+                ),
+              );
+            },
+          ),
+        ),
+        DataCell(
+          Center( 
+            child: Container(
+              width: 60,
+              height: 20,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(20),
+                color: archived ? Colors.grey : Colors.blue.shade600,
+              ),
+              child: Center(
+                child: Text(archived ? "Yes" : "No"),
+              ),
+            ),
+          ),
+        ),
+        DataCell(
+          Center(
+            child: Text(
+              DateFormat('yyyy-MM-dd').format(createdAt),
+            ),
+          ),
+        ),
+        DataCell(
+          Builder(
+            builder: (context) {
+              AuthNotifier authNotifier = Provider.of<AuthNotifier>(
+                context,
+                listen: false,
+              );
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   IconButton(
                     onPressed: () async {
-                      await showDialog(
-                        context: context,
-                        builder: (context) {
-                          return changeDocumentDetailsWidget(context);
-                        },
-                      );
-                      refreshDatasource();
+                      Uri genUrl = await getFileUrl();
+                      launchUrl(genUrl);
                     },
-                    icon: const Icon(Icons.edit_outlined),
-                    tooltip: 'Edit',
+                    icon: const Icon(Icons.remove_red_eye_outlined),
+                    tooltip: 'View',
                   ),
-                if (authNotifier.isAdmin || authNotifier.isEditor)
-                  IconButton(
-                    onPressed: () async {
-                      await archive();
-                      refreshDatasource();
-                    },
-                    icon: const Icon(Icons.archive_outlined),
-                    tooltip: 'Archive',
-                  ),
-                if (authNotifier.isAdmin)
-                  IconButton(
-                    onPressed: () async {
-                      await delete();
-                      refreshDatasource();
-                    },
-                    icon: const Icon(Icons.delete_outline),
-                    tooltip: 'Delete',
-                  ),
-              ],
-            );
-          }),
+                  if (authNotifier.isAdmin || authNotifier.isEditor)
+                    IconButton(
+                      onPressed: () async {
+                        await showDialog(
+                          context: context,
+                          builder: (context) {
+                            return _changeDocumentDetailsWidget(context);
+                          },
+                        );
+                        refreshDatasource();
+                      },
+                      icon: const Icon(Icons.edit_outlined),
+                      tooltip: 'Edit',
+                    ),
+                  if (authNotifier.isAdmin || authNotifier.isEditor)
+                    IconButton(
+                      onPressed: () async {
+                        await archive();
+                        refreshDatasource();
+                      },
+                      icon: const Icon(Icons.archive_outlined),
+                      tooltip: 'Archive',
+                    ),
+                  if (authNotifier.isAdmin)
+                    IconButton(
+                      onPressed: () async {
+                        await delete();
+                        refreshDatasource();
+                      },
+                      icon: const Icon(Icons.delete_outline),
+                      tooltip: 'Delete',
+                    ),
+                ],
+              );
+            },
+          ),
         ),
       ],
     );
   }
 
-  Widget changeDocumentDetailsWidget(BuildContext context) {
+  Widget _changeDocumentDetailsWidget(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => DocumentNotifier(),
       builder: (context, child) {
@@ -133,7 +189,7 @@ class Document {
                 ),
                 const ChooseCategory(),
                 ChooseAircraft(
-                  initialValue: aircraft
+                  initialValue: aircraftIds
                           ?.split(',')
                           .map((item) => item.trim())
                           .toList() ??
@@ -163,7 +219,7 @@ class Document {
                     formKey.currentState!.validate()) {
                   formKey.currentState!.save();
                   newDocument.results['author'] ??= authNotifier.email;
-                  changeDocumentDetails(newDocument);
+                  _changeDocumentDetails(newDocument);
                   Navigator.pop(context, 'Apply');
                 }
               },
@@ -175,7 +231,7 @@ class Document {
     );
   }
 
-  Future<void> changeDocumentDetails(DocumentNotifier newDocument) async {
+  Future<void> _changeDocumentDetails(DocumentNotifier newDocument) async {
     try {
       Map<String, dynamic> body = {
         'document_id': id,
@@ -183,7 +239,7 @@ class Document {
       body.addAll(newDocument.results);
       // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/documents',
-          apiName: 'AmplifyDocumentsAPI', body: HttpPayload.json(body));
+          apiName: 'adsatsStaffAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -282,7 +338,7 @@ class Document {
       };
       // debugPrint(body.toString());
       final restOperation = Amplify.API.patch('/documents',
-          apiName: 'AmplifyDocumentsAPI', body: HttpPayload.json(body));
+          apiName: 'adsatsStaffAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();
@@ -305,7 +361,7 @@ class Document {
       };
       // debugPrint(body.toString());
       final restOperation = Amplify.API.delete('/documents',
-          apiName: 'AmplifyDocumentsAPI', body: HttpPayload.json(body));
+          apiName: 'adsatsStaffAPI', body: HttpPayload.json(body));
 
       final response = await restOperation.response;
       String jsonStr = response.decodeBody();

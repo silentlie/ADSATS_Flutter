@@ -66,14 +66,12 @@ class AuthNotifier with ChangeNotifier {
     "subcategories": {},
   };
   Map<int, String> get staffCache => _cache["staff"] ?? {};
-  Map<int, String> get aircraftCache => _cache["staff"] ?? {};
-  Map<int, String> get rolesCache => _cache["staff"] ?? {};
-  Map<int, String> get categoriesCache => _cache["staff"] ?? {};
-  Map<int, String> get subcategoriesCache => _cache["staff"] ?? {};
+  Map<int, String> get aircraftCache => _cache["aircraft"] ?? {};
+  Map<int, String> get rolesCache => _cache["roles"] ?? {};
+  Map<int, String> get categoriesCache => _cache["categories"] ?? {};
+  Map<int, String> get subcategoriesCache => _cache["subcategories"] ?? {};
   List<Notification> notifications = [];
   List<Widget> notificationWidgets = [];
-  int limit = 10;
-  int numOfUnread = 0;
   int overdueCount = 0;
 
   Future<bool> initialize() async {
@@ -157,6 +155,12 @@ class AuthNotifier with ChangeNotifier {
 
     aircraftIds = toListInt(json["aircraft_ids"]);
     roleIds = toListInt(json["role_ids"]);
+    if (roleIds.contains(1)) {
+      isAdmin = true;
+    }
+    if (roleIds.contains(2)) {
+      isEditor = true;
+    }
     subcategoryIds = {
       for (var item in json["subcategory_ids"] ?? [])
         item["subcategory_id"] as int: item["access_level_id"] as int
@@ -231,10 +235,6 @@ class AuthNotifier with ChangeNotifier {
     // Return list of strings from cache
     return [for (var key in ids) cache[key] ?? "Error: Missing key $key"];
   }
-
-  String? getName(String input, int id) {
-    return _cache[input]?[id];
-  }
 }
 
 class Notification {
@@ -246,13 +246,26 @@ class Notification {
   DateTime? deadlineAt;
   late bool isOverdue;
   Notification.fromJSON(Map<String, dynamic> json) {
-    noticeId = json["notice_id"] as int;
-    subject = json["subject"] as String;
-    type = json["type"] as String;
-    staffId = json["staff_id"] as int;
+    noticeId = json["notice_id"];
+    subject = json["subject"];
+    type = json["type"];
+    staffId = json["staff_id"];
     noticedAt = DateTime.tryParse(json["noticed_at"] ?? '');
     deadlineAt = DateTime.tryParse(json["deadline_at"] ?? '');
     isOverdue = deadlineAt?.isBefore(DateTime.now()) ?? false;
+  }
+
+  IconData _getIcon(String type) {
+    switch (type) {
+      case "Notice to crew":
+        return Icons.notifications_outlined;
+      case "Safety notice":
+        return Icons.gpp_maybe_outlined;
+      case "Hazard report":
+        return Icons.report_outlined;
+      default:
+        return Icons.question_mark;
+    }
   }
 
   Widget toListTile() {
@@ -287,7 +300,7 @@ class Notification {
             ],
           ),
         ),
-        leading: const Icon(Icons.edit_document),
+        leading: Icon(_getIcon(type)),
         onTap: () {
           context.go('/sms/$noticeId');
         },

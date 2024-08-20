@@ -164,16 +164,31 @@ class CustomResetPasswordForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          // flutter logo
-          const Center(child: DefaultLogoWidget()),
-          Container(
-            constraints: const BoxConstraints(maxWidth: 500.0, minWidth: 100),
-            child: ResetPasswordForm(),
-          ),
-        ],
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const Center(
+              child: Text(
+                'Aviation Document Storage and Tracking System',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Center(
+              child: Container(
+                width: 550,
+                height: 150,
+                margin: const EdgeInsets.all(30),
+                child: const DefaultLogoWidget(),
+              ),
+            ),
+            Container(
+              constraints: const BoxConstraints(maxWidth: 500.0, minWidth: 100),
+              child: ResetPasswordForm(),
+            ),
+          ],
+        ),
       ),
     );
   }
